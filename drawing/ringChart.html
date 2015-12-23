@@ -31,6 +31,33 @@
 	<script type="text/javascript" src="../libs/jquery-2.1.4.min.js" charset="utf-8"></script>
 	<script type="text/javascript">
 
+		var color = {
+
+			'新入監前家庭狀況': {
+				'不詳': '#6B96AD',
+				'貧困無以為生': '#669FCC',
+				'免足維持生活': '#5FA4D4',
+				'小康之家': '#58ABD8',
+				'中產之上': '#55B5DF'
+			},
+
+			'新入監犯罪次數與種類' : {
+				'累犯': '#F16B23',
+				'再犯': '#F27422',
+				'初犯': '#ED8222'	
+			},
+
+			'新入監前教育程度': {
+				'大專以上': '#61B045',
+				'高中職': '#6EBE44',
+				'國中': '#78C14A',
+				'國小': '#87C66A',
+				'自修': '#8CBC71',
+				'不識字': '#8AB276',
+				'不詳': '#8AA679'
+			}
+		};
+
 		/* Graph is the mother of the charts */
 		var graphClass = function() {
 
@@ -51,7 +78,7 @@
 				parseInt(this.panel.style('width').replace('px', '')),
 
 			this.panelHeight = 
-				parseInt(this.panel.style('width').replace('px', '')),
+				parseInt(this.panel.style('height').replace('px', '')),
 
 			this.panelPadding = {
 				top:     this.panel.style('padding-top').replace('px', ''),
@@ -71,18 +98,23 @@
 			// Import ring graphClass into Graph Class
 			graphClass.call(this);
 
-			// Radius of the ring
+			
+
+			// Outer Radius of the ring sequence
 			this.ringOuterRadius = (function(h, w) { 
 				return Math.min(h,w)/ 2 
-			})(this.panelWidth, this.panelHeight);
+			})(
+				this.panelWidth - this.panelPadding.left, 
+				this.panelHeight - this.panelPadding.top
+			);
 
 			// Ring Object
-			this.ringsGroup = (function (self) {
+			this.ringGroup = (function (self) {
 
 				var _this = self;
 			
 				return d3.select('#SKETCHPAD').append('g')
-					.attr('id', 'RING')
+					.attr('class', 'RING_GROUP')
 					.attr('transform', function(d) {
 
 						// Put the ring at the center of the panel
@@ -105,231 +137,200 @@
 				d3.layout.partition()
 					.sort(null)
 					.size([ 2*Math.PI, this.ringOuterRadius*this.ringOuterRadius ])
-					.value(function(d) { return d.value }),
+					.value(function(d) { return d.value });
 
 			// Arc of the rings
-			this.arc = d3.svg.arc()
+			this.ringArc = d3.svg.arc()
 				.startAngle(function(d) { return d.x })
 				.endAngle(function(d) { return d.x + d.dx })
 				.innerRadius(function(d) { return Math.sqrt(d.y) })
 				.outerRadius(function(d) { return Math.sqrt(d.y + d.dy) });
+
+			// A variable for storing Year value in ROC
+			this.rocYr = null;
+
+			// Count for the number of the ring
+			this.countRing = 0;
+
+			this.ringNumber = null;
+
 		}
 
 		/* Inherit the ringGraphClass from the graph */
 		ringGraphClass.prototype = Object.create(graphClass.prototype);
 		ringGraphClass.prototype.constructor = ringGraphClass;
 
+		ringGraphClass.prototype.updateRingOuterRadius = function(h, w) {
+			this.ringOuterRadius =  Math.min(h,w)/ 2 
+		}
+
+		ringGraphClass.prototype.updateRingPartition = function() {
+
+			this.ringPartition = 
+				d3.layout.partition()
+					.sort(null)
+					.size([ 2*Math.PI, this.ringOuterRadius*this.ringOuterRadius ])
+					.value(function(d) { return d.value });
+		}
+
+		ringGraphClass.prototype.addRingGroup = function() {
+
+			var self = this;
+
+			this.ringGroup =  this.panel.append('g')
+				.attr('class', 'RING_GROUP')
+				.attr('transform', function(d) {
+
+						// Put the ring at the center of the panel
+						return 'translate(' + 
+							(
+								self.panelWidth / 2 - 
+								self.panelPadding.left
+							)
+							+ ',' + 
+							(
+								self.panelHeight / 2 -
+								self.panelPadding.top							
+							) 
+							+ ')'
+					});
+		}
+
+		/* Select the year in ROC */
+		ringGraphClass.prototype.selectROCYr = function(yr) {
+
+			var date = new Date();
+
+			// The data of current year won't be published until the next year
+			this.rocYr = ( yr >= 75 && (date.getFullYear()-1911-1) > yr ) ? yr: null;
+		}
+
+		/* Row Index of data of ROC year */
+		ringGraphClass.prototype.selectRow = function() {
+			if ( this.rocYr ) return this.rocYr-75
+			else return null
+		}
+
 		/*  */
 		ringGraphClass.prototype.drawRing = function(path) {
-			
-			this.readCSV(path)
-					.row(function(d, i) { console.log(i); return d })
-					.get(function(err, rows) {
 
-						var dataset = [],
-								color = {
-									'不詳': '#6B96AD',
-									'貧困無以為生': '#669FCC',
-									'免足維持生活': '#5FA4D4',
-									'小康之家': '#58ABD8',
-									'中產之上': '#55B5DF'
-								};
+			var self = this,
+					isYrSelected = this.rocYr ? true: false,
+					keywords = path.match(/[\u4e00-\u9fa5]+/),
+					_color = keywords ? color[keywords]: null;
 
-						for ( var i=0; i<rows.length; i++ ) {
+			var p = new Promise(function(resolve, reject) {
 
-							var row = rows[i];
+				self.readCSV(path)
+					.row(function(d, i) {
+						if ( isYrSelected ) if ( i === self.selectRow() ) return d
+						else return null
+					})
+					.get(function(err, selectedRows) {
 
-							// Assign a custiomized pop function to a json data.
-							row.pop = jsonPop;
+						var selectedRow = 
+							selectedRows.length === 1 ? selectedRows[0]: null;
 
-							dataset.push(transtoPartitonFormat(row, '民國'));
-						}
+						if ( selectedRow ) {
 
-						console.log(this.ringOuterRadius);
+							selectedRow.pop = jsonPop;
+							selectedRow = transtoPartitonFormat(selectedRow, '民國');
 
+							var path = self.ringGroup.datum(selectedRow).selectAll('path')
+								.data(self.ringPartition.nodes)
+								.enter().append('path')
+									.attr(
+										'class', 
+										function(d, i) { 
+											// The index 0 is the index for parent which is also the center
+											if ( i === 0 ){
+
+												var prevRingCenter = 
+													d3.select('.current-ring-center');
+									
+												prevRingCenter ? 
+													prevRingCenter.classed('current-ring-center', false) : null;
+											}
+											return d.depth ? null : 'current-ring-center'; }
+									)
+									.attr('d', self.ringArc)
+									.style(
+										'fill',
+										function(d, i) {
+											// Make the first sector (central one) white
+											if ( i === 0 ) return '#fff'
+											else {
+												if ( i === selectedRow.children.length-1 ) 
+													resolve((function() {
+														
+														// A new Circle is the place to put the new ring.
+														var newCircle = d3.select('.current-ring-center')
+														
+														// Establish a new ring group for rings.
+														self.addRingGroup();
+
+														return newCircle.node()
+													})());
+												for ( var key in _color ) if ( d.name === key ) return _color[key]
+											}
+										}
+									)
+		  						.style('fill-rule', 'evenodd');
+							}
 					});
+				});
+				return p
+			}
+
+		ringGraphClass.prototype.drawMultiRings = function(paths, newRing) {
+
+			var self = this;
+
+			var promise = new Promise(function(resolve, reject) {
+
+				var path = paths ? paths.shift(): null;
+
+				if ( self.countRing === 0 ) {
+
+					self.drawRing(path).then(function(newRing) {
+						++self.countRing;
+						resolve({dataPaths: paths, newRing: newRing});
+					});
+
+				} else if ( path ) {
+
+					self.updateRingOuterRadius( 
+						newRing.getBBox().height, 
+						newRing.getBBox().width
+					);
+
+					self.updateRingPartition();
+					self.drawRing(path).then(function(newRing) {
+						++self.countRing;
+						resolve({dataPaths: paths, newRing: newRing});
+					});
+					
+				} 
+				else return null
+				
+			});
+
+			promise.then(function(obj) {
+				
+				self.drawMultiRings(obj.dataPaths, obj.newRing);
+			});
 		}
 
 		var ring = new ringGraphClass();
 
-		ring.drawRing('/correction/新入監前家庭狀況.csv');
-
-
-	// 	var svg = d3.select('#DISPLAY_PANEL')
-	// 				.append('svg')
-	// 				.attr('id', 'SKETCHPAD')
-	// 				.style({
-	// 					'padding-top':    '5%',
-	// 					'padding-left':   '5%',
-	// 					'padding-right':  '5%',
-	// 					'padding-bottom': '5%'
-	// 				})
-	// 				.style("height", "100%").style("width", "100%"),
-
-	// 			svgWidth = parseInt(svg.style('width').replace('px', '')),
-	// 			svgHeight = parseInt(svg.style('height').replace('px', '')),
-	// 			svgPadding = {
-	// 				top:     svg.style('padding-top').replace('px', ''),
-	// 				bottom:  svg.style('padding-bottom').replace('px', ''),
-	// 				left:    svg.style('padding-left').replace('px', ''),
-	// 				right:   svg.style('padding-right').replace('px', '')
-	// 			},
-
-	// 			radius = Math.min(svgWidth-svgPadding.left, svgHeight-svgPadding.top) / 2,
-				
-	// 			sunBurstChrt = svg.append('g')
-	// 				.attr('id', 'SUNBURST')
-	// 				.attr('transform', function(d) {
-	// 					return 'translate(' + 
-	// 						(
-	// 							svgWidth / 2 - 
-	// 							svgPadding.left
-	// 						)
-	// 						+ ',' + 
-	// 						(
-	// 							svgHeight / 2 -
-	// 							svgPadding.top							
-	// 						) 
-	// 						+ ')'
-	// 				}),
-
-	// 			partition = d3.layout.partition()
-	// 				.sort(null)
-	// 				.size([ 2*Math.PI, radius*radius ])
-	// 				.value(function(d) { return d.value }),
-
-	// 			arc = d3.svg.arc()
-	// 				.startAngle(function(d) { return d.x })
-	// 				.endAngle(function(d) { return d.x + d.dx })
-	// 				.innerRadius(function(d) { return Math.sqrt(d.y) })
-	// 				.outerRadius(function(d) { return Math.sqrt(d.y + d.dy) }),
-
-	// 			color = {
-	// 				'不詳': '#6B96AD',
-	// 				'貧困無以為生': '#669FCC',
-	// 				'免足維持生活': '#5FA4D4',
-	// 				'小康之家': '#58ABD8',
-	// 				'中產之上': '#55B5DF'
-	// 			};
-
-
-	// 	sketchSunburst('/correction/新入監前家庭狀況.csv');
-
-	// 	function sketchSunburst(path) {
-
-	// 		d3.csv(path)
-	// 			.row(function(d) { return d })
-	// 			.get(function(error, rows) {
-
-	// 				var dataset = [];
-
-	// 				for ( var i=0; i<rows.length; i++ ) {
-	// 					var row = rows[i];
-
-	// 					// Assign a custiomized pop function to a json data.
-	// 					row.pop = jsonPop;
-
-	// 					dataset.push(transtoPartitonFormat(row, '民國'));
-	// 				}
-
-	// 				var p = new Promise(function(resolve, reject) {
-	// 					var path = sunBurstChrt.datum(dataset[0]).selectAll('path')
-	// 						.data(partition.nodes)
-	// 						.enter().append('path')
-	// 							.attr(
-	// 								'id', 
-	// 								function(d) { return d.depth ? null : 'CENTROID'; }
-	// 							)
-	// 							.attr('d', arc)
-	// 							.style(
-	// 								'fill',
-	// 								function(d, i) {
-	// 									// Make the first sector (central one) white
-	// 									if ( i === 0 ) return '#fff'
-
-	// 									else {
-	// 										if ( i === dataset[0].children.length-1 ) 
-	// 											resolve((function() {
-	// 												return d3.select('#CENTROID')
-	// 											})());
-	// 										for ( var key in color ) if ( d.name === key ) return color[key]
-	// 									}
-	// 								}
-	// 							)
-	// 	  					.style('fill-rule', 'evenodd');
-	// 				});
-
-	// 				p.then(function(circle) { 
-
-	// 						var sunBurstChrt_2 = svg.append('g')
-	// 								.attr('id', 'SUNBURST')
-	// 								.attr('transform', function(d) {
-	// 									return 'translate(' + 
-	// 										(
-	// 											svgWidth / 2 - 
-	// 											svgPadding.left
-	// 										)
-	// 										+ ',' + 
-	// 										(
-	// 											svgHeight / 2 -
-	// 											svgPadding.top							
-	// 										) 
-	// 										+ ')'
-	// 								}), 
-
-	// 							radius = Math.min(
-	// 								circle.node().getBBox().height, 
-	// 								circle.node().getBBox().width) / 2,
-
-	// 							partition = d3.layout.partition()
-	// 								.sort(null)
-	// 								.size([ 2*Math.PI, radius*radius ])
-	// 								.value(function(d) { return d.value }),
-
-	// 							color = {
-	// 								'累犯': '#F16B23',
-	// 								'再犯': '#F27422',
-	// 								'初犯': '#ED8222'									
-	// 							};
-
-	// 						// Remove the previous circle once we create the new paths.
-	// 						circle.remove();
-
-	// 							d3.csv('/correction/__新入監犯罪次數與種類.csv')
-	// 								.row(function(d) { return d })
-	// 								.get(function(error, rows) {
-										
-	// 									var dataset = [];
-
-	// 									for ( var i=0; i<rows.length; i++ ) {
-	// 										var row = rows[i];
-	// 										row.pop = jsonPop;
-	// 										dataset.push(transtoPartitonFormat(row, '民國'));
-	// 									}
-
-	// 										var path = sunBurstChrt_2.datum(dataset[0]).selectAll('path')
-	// 											.data(partition.nodes)
-	// 											.enter().append('path')
-	// 												.attr(
-	// 													'id', 
-	// 													function(d) { 
-	// 														return d.depth ? null : 'CENTROID_2'; 
-	// 													}
-	// 												)
-	// 												.attr('d', arc)
-	// 												.style(
-	// 													'fill',
-	// 													function(d, i) {
-	// 														// Make the first sector (central one) white
-	// 														if ( i === 0 ) return '#fff'
-	// 														for ( var key in color ) if ( d.name === key ) return color[key]
-	// 													}
-	// 												)
-	// 	  										.style('fill-rule', 'evenodd');
-	// 								});
-	// 				});
-	// 			});
-	// }
+		ring.selectROCYr(95);
+		ring.drawMultiRings(
+			[
+				'/correction/新入監前家庭狀況.csv', 
+				'/correction/新入監犯罪次數與種類.csv',
+				'/correction/__新入監前教育程度.csv'
+			]
+		);
 
 	/* A function allows json data to pop a value with specific key. */
 	function jsonPop(key) {
