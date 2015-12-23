@@ -98,15 +98,22 @@
 			// Import ring graphClass into Graph Class
 			graphClass.call(this);
 
-			
+			// Core radius of the ring sequence
+			this.coreRadius = 100;
 
 			// Outer Radius of the ring sequence
-			this.ringOuterRadius = (function(h, w) { 
+			this.shellRadius = (function(h, w) { 
 				return Math.min(h,w)/ 2 
 			})(
 				this.panelWidth - this.panelPadding.left, 
 				this.panelHeight - this.panelPadding.top
 			);
+
+			// The drawing ring inner radius 
+			this.ringInnerRadius = this.coreRadius;
+
+			// Delta of the ring radius
+			this.ringDelta = 0;
 
 			// Ring Object
 			this.ringGroup = (function (self) {
@@ -136,15 +143,17 @@
 			this.ringPartition = 
 				d3.layout.partition()
 					.sort(null)
-					.size([ 2*Math.PI, this.ringOuterRadius*this.ringOuterRadius ])
+					.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
 					.value(function(d) { return d.value });
 
 			// Arc of the rings
-			this.ringArc = d3.svg.arc()
-				.startAngle(function(d) { return d.x })
-				.endAngle(function(d) { return d.x + d.dx })
-				.innerRadius(function(d) { return Math.sqrt(d.y) })
-				.outerRadius(function(d) { return Math.sqrt(d.y + d.dy) });
+			this.ringArc = null;
+			// this.ringArc = d3.svg.arc()
+			// 	.startAngle(function(d) { return d.x })
+			// 	.endAngle(function(d) { return d.x + d.dx })
+			// 	.innerRadius(function(d) { return Math.sqrt(d.y) })
+			// 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy) });
+
 
 			// A variable for storing Year value in ROC
 			this.rocYr = null;
@@ -160,17 +169,36 @@
 		ringGraphClass.prototype = Object.create(graphClass.prototype);
 		ringGraphClass.prototype.constructor = ringGraphClass;
 
-		ringGraphClass.prototype.updateRingOuterRadius = function(h, w) {
-			this.ringOuterRadius =  Math.min(h,w)/ 2 
+		ringGraphClass.prototype.updateShellRadius = function(h, w) {
+			this.shellRadius =  Math.min(h,w)/ 2 
 		}
 
-		ringGraphClass.prototype.updateRingPartition = function() {
+		ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
+			this.ringDelta = 
+				(this.shellRadius - this.coreRadius) / categoryNum;
+		}
 
+		ringGraphClass.prototype.updateRingInnerRadius = function() {
+			this.ringInnerRadius = this.ringInnerRadius + this.ringDelta;
+		}
+
+
+		ringGraphClass.prototype.updateRingPartition = function() {
 			this.ringPartition = 
 				d3.layout.partition()
 					.sort(null)
-					.size([ 2*Math.PI, this.ringOuterRadius*this.ringOuterRadius ])
+					.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
 					.value(function(d) { return d.value });
+		}
+
+		ringGraphClass.prototype.updateRingArc = function() {
+			var self = this;
+			self.ringArc = 
+				d3.svg.arc()
+				.startAngle(function(d) { return d.x })
+				.endAngle(function(d) { return d.x + d.dx })
+				.innerRadius(function(d) { return self.ringInnerRadius })
+				.outerRadius(function(d) { return self.ringInnerRadius + self.ringDelta });
 		}
 
 		ringGraphClass.prototype.addRingGroup = function() {
@@ -219,6 +247,8 @@
 					keywords = path.match(/[\u4e00-\u9fa5]+/),
 					_color = keywords ? color[keywords]: null;
 
+			self.updateRingArc();
+
 			var p = new Promise(function(resolve, reject) {
 
 				self.readCSV(path)
@@ -262,6 +292,8 @@
 											else {
 												if ( i === selectedRow.children.length-1 ) 
 													resolve((function() {
+
+														self.updateRingInnerRadius();
 														
 														// A new Circle is the place to put the new ring.
 														var newCircle = d3.select('.current-ring-center')
@@ -299,7 +331,7 @@
 
 				} else if ( path ) {
 
-					self.updateRingOuterRadius( 
+					self.updateShellRadius( 
 						newRing.getBBox().height, 
 						newRing.getBBox().width
 					);
@@ -321,16 +353,16 @@
 			});
 		}
 
-		var ring = new ringGraphClass();
+		var ring = new ringGraphClass(),
+				dataPaths = [
+					'/correction/新入監前家庭狀況.csv', 
+					'/correction/新入監犯罪次數與種類.csv',
+					'/correction/__新入監前教育程度.csv'
+				];
 
 		ring.selectROCYr(95);
-		ring.drawMultiRings(
-			[
-				'/correction/新入監前家庭狀況.csv', 
-				'/correction/新入監犯罪次數與種類.csv',
-				'/correction/__新入監前教育程度.csv'
-			]
-		);
+		ring.calRadiusDelta(dataPaths.length);
+		ring.drawMultiRings(dataPaths);
 
 	/* A function allows json data to pop a value with specific key. */
 	function jsonPop(key) {
