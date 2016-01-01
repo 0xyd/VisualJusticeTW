@@ -14,7 +14,6 @@
 		}
 		#DISPLAY_PANEL, #CRTL_PANEL { display: inline-block; }
 		#DISPLAY_PANEL { height: 100%; }
-		/*#SKETCHPAD { padding-top: 10%; padding-left: 5%; /*padding-bottom: 5%;*/ }*/
 		circle, path { cursor: pointer; }
 		circle { fill: none; pointer-events: all; }
 	</style>
@@ -95,6 +94,8 @@
 		/* Class for drawing rings chart */
 		var ringGraphClass = function() {
 
+			var self = this;
+
 			// Import ring graphClass into Graph Class
 			graphClass.call(this);
 
@@ -115,13 +116,16 @@
 			// Delta of the ring radius
 			this.ringDelta = 0;
 
+			// The gap between each ring
+			this.ringGap = 2;
+
 			// Ring Object
-			this.ringGroup = (function (self) {
+			this.ring = (function (self) {
 
 				var _this = self;
 			
 				return d3.select('#SKETCHPAD').append('g')
-					.attr('class', 'RING_GROUP')
+					.attr('class', 'RING')
 					.attr('transform', function(d) {
 
 						// Put the ring at the center of the panel
@@ -137,7 +141,10 @@
 							) 
 							+ ')'
 					});
-		})(this);
+			})(this);
+
+			// Ring Objects
+			this.rings = [];
 
 			// Partition of the rings
 			this.ringPartition = 
@@ -148,12 +155,6 @@
 
 			// Arc of the rings
 			this.ringArc = null;
-			// this.ringArc = d3.svg.arc()
-			// 	.startAngle(function(d) { return d.x })
-			// 	.endAngle(function(d) { return d.x + d.dx })
-			// 	.innerRadius(function(d) { return Math.sqrt(d.y) })
-			// 	.outerRadius(function(d) { return Math.sqrt(d.y + d.dy) });
-
 
 			// A variable for storing Year value in ROC
 			this.rocYr = null;
@@ -162,6 +163,14 @@
 			this.countRing = 0;
 
 			this.ringNumber = null;
+
+			this.dataInfoView = {
+				textArea: null,
+				percentage: null,
+				categoryName: null,
+				itemName: null,
+				itemNumber: null
+			};
 
 		}
 
@@ -179,7 +188,8 @@
 		}
 
 		ringGraphClass.prototype.updateRingInnerRadius = function() {
-			this.ringInnerRadius = this.ringInnerRadius + this.ringDelta;
+				this.ringInnerRadius = 
+					this.ringInnerRadius + this.ringDelta + this.ringGap;
 		}
 
 
@@ -201,12 +211,12 @@
 				.outerRadius(function(d) { return self.ringInnerRadius + self.ringDelta });
 		}
 
-		ringGraphClass.prototype.addRingGroup = function() {
+		ringGraphClass.prototype.addRing = function() {
 
 			var self = this;
 
-			this.ringGroup =  this.panel.append('g')
-				.attr('class', 'RING_GROUP')
+			this.ring =  this.panel.append('g')
+				.attr('class', 'RING')
 				.attr('transform', function(d) {
 
 						// Put the ring at the center of the panel
@@ -266,7 +276,7 @@
 							selectedRow.pop = jsonPop;
 							selectedRow = transtoPartitonFormat(selectedRow, '民國');
 
-							var path = self.ringGroup.datum(selectedRow).selectAll('path')
+							var path = self.ring.datum(selectedRow).selectAll('path')
 								.data(self.ringPartition.nodes)
 								.enter().append('path')
 									.attr(
@@ -275,11 +285,19 @@
 											// The index 0 is the index for parent which is also the center
 											if ( i === 0 ){
 
-												var prevRingCenter = 
+												// Mark the current ring which has created the new ring
+												var currentRingCenter = 
 													d3.select('.current-ring-center');
-									
-												prevRingCenter ? 
-													prevRingCenter.classed('current-ring-center', false) : null;
+
+												// Decline the current-ring class for the new one
+												currentRingCenter ? 
+													currentRingCenter
+														.classed('current-ring-center', false)
+														.classed('ring-center', true) 
+														: null;
+
+												// Append the statistic category name
+												this.__data__.category = keywords[0];
 											}
 											return d.depth ? null : 'current-ring-center'; }
 									)
@@ -299,7 +317,7 @@
 														var newCircle = d3.select('.current-ring-center')
 														
 														// Establish a new ring group for rings.
-														self.addRingGroup();
+														self.addRing();
 
 														return newCircle.node()
 													})());
@@ -320,7 +338,7 @@
 
 			var promise = new Promise(function(resolve, reject) {
 
-				var path = paths ? paths.shift(): null;
+				var path = (paths !== [] ) ? paths.shift(): null;
 
 				if ( self.countRing === 0 ) {
 
@@ -331,39 +349,213 @@
 
 				} else if ( path ) {
 
+					// Update the outer radius for the new ring
 					self.updateShellRadius( 
 						newRing.getBBox().height, 
 						newRing.getBBox().width
 					);
 
+					// Update the partition of the new ring
 					self.updateRingPartition();
+
 					self.drawRing(path).then(function(newRing) {
 						++self.countRing;
 						resolve({dataPaths: paths, newRing: newRing});
 					});
 					
 				} 
-				else return null
-				
+				else {
+					var rings = d3.selectAll('.RING');
+					resolve({rings: rings});
+					return null
+				}
 			});
 
 			promise.then(function(obj) {
-				
-				self.drawMultiRings(obj.dataPaths, obj.newRing);
+				if (!obj.rings)
+					self.drawMultiRings(obj.dataPaths, obj.newRing);
+				return obj.rings ? obj.rings : null
+
+				}).then(function(rings) { 
+
+					if (rings) 
+						// Select the path except the central one.
+						rings.selectAll('path')
+							.filter(function(d, i) { return i !== 0 })
+								.on('mouseover', self._displayData);
+					
 			});
 		}
 
-		var ring = new ringGraphClass(),
-				dataPaths = [
+		// Add the hover event listeners to the rings and their paths.
+		ringGraphClass.prototype._displayData = function() {
+
+			var self = ringGraph,
+					selectedArc = this;
+					
+			function __calPercentage() {
+				var calResult = 
+					selectedArc.__data__.dx/(2*Math.PI)*100;
+
+				if (calResult < 100 && calResult >= 1) 
+					return calResult.toPrecision(3) + '%' 
+				else if ( calResult < 1 ) 
+					return calResult.toPrecision(2) + '%'
+			}
+
+			/* 
+				Gradient effect allows the ring the mouse hovering display clearly and 
+				the rest of the rings become blur. 
+				Besides, the arc of the hovering ring has two styles:
+				the one mouse is hovering is solid and the other turns to be transparent.
+			*/
+			function __ringGradient() {
+
+				var 
+					arcBrothers = 
+						Array.from(selectedArc.parentNode.childNodes)
+							.filter(function(arc) { 
+								
+								if ( 
+									arc !== selectedArc &&
+									arc.getAttribute('class') === null  
+								) return arc
+
+								return null
+							}),
+
+					otherRings = 
+						Array.from(selectedArc.parentNode.parentNode.childNodes)
+							.filter(function(ring) { 
+								if ( 
+									ring.getAttribute('id') !== 'INFOVIEW' &&
+									ring !== selectedArc.parentNode
+								) return ring
+
+							});
+
+					selectedArc.style.opacity = '1';
+					selectedArc.parentNode.opacity = '1';
+
+					for ( var i in arcBrothers ) 
+						arcBrothers[i].style.opacity = '0.8';
+					for ( var i in otherRings ) {
+						var children = Array.from(otherRings[i].childNodes);
+						for ( var j in children )
+							children[j].style.opacity = '0.3';
+					}
+			}
+
+			// Build infoview group containing the text infomation
+			function __buildInfoView() {
+				var p = new Promise(function(resolve, reject) {
+					self.dataInfoView.textArea = 
+						d3.select('#SKETCHPAD').append('g')
+							.attr('id', 'INFOVIEW')
+							.attr(
+								'transform',
+									function(d) {
+										resolve();
+											return 'translate('
+											+
+											(self.panelWidth/2-self.panelPadding.left-60)
+												+ ',' +
+											(self.panelHeight/2-self.panelPadding.top-15)
+											+ ')'
+										}	
+								);
+				});
+				return p
+			}
+
+			// Add more text infomation
+			function __moreInfoText(partName, fontSize, xPos, yPos, txtInput) {
+
+				var p = new Promise(function(resolve, reject) {
+					self.dataInfoView[partName] = 
+						d3.select("#INFOVIEW").append('text')
+							.attr('font-size', fontSize)
+							.attr('x', xPos)
+							.attr('y', yPos)
+						.text(txtInput)
+							.call(function() {
+								resolve();
+							});
+				});
+				return p
+			}
+
+			// If the infoview is created beforehand
+			if ( ringGraph.dataInfoView.textArea ) { 
+
+				// Load or Update the infomation for display.
+				ringGraph.dataInfoView.percentage.text(__calPercentage);
+				ringGraph.dataInfoView.categoryName.text(
+					selectedArc.parentNode.childNodes[0].__data__.category + ':');
+				ringGraph.dataInfoView.itemName.text(selectedArc.__data__.name);
+				ringGraph.dataInfoView.itemNumber.text(selectedArc.__data__.value);
+
+				/* Gradient effect */
+				__ringGradient();
+				
+			} else { // The infoview hasn't been built yet.
+
+				var q = new queue();
+
+				var t0 = q.taskConst(__buildInfoView, null),
+						t1 = q.taskConst(
+							__moreInfoText, 
+							[
+								'percentage', 
+								'50px', 
+								null,
+								null,
+								__calPercentage()
+							]),
+						t2 = q.taskConst(
+							__moreInfoText,
+							[
+								'categoryName',
+								'16px',
+								-12.5,
+								35,
+								selectedArc.parentNode.childNodes[0].__data__.category + ':'
+							]),
+						t3 = q.taskConst(
+							__moreInfoText,
+							[
+								'itemName',
+								'16px',
+								-12.5,
+								55,
+								selectedArc.__data__.name
+							]),
+						t4 = q.taskConst(
+							__moreInfoText,
+							[
+								'itemNumber',
+								'16px',
+								-12.5,
+								75,
+								selectedArc.__data__.value
+							]);
+
+				q.pushTasks([t0, t1, t2, t3, t4]);
+				q.queuing(__ringGradient);
+			}
+		}
+
+		var dataPaths = [
 					'/correction/新入監前家庭狀況.csv', 
 					'/correction/新入監犯罪次數與種類.csv',
 					'/correction/__新入監前教育程度.csv'
-				];
+				],
+				ringGraph = new ringGraphClass();
 
-		ring.selectROCYr(95);
-		ring.calRadiusDelta(dataPaths.length);
-		ring.drawMultiRings(dataPaths);
-
+		ringGraph.selectROCYr(95);
+		ringGraph.calRadiusDelta(dataPaths.length);
+		ringGraph.drawMultiRings(dataPaths);
+		
 	/* A function allows json data to pop a value with specific key. */
 	function jsonPop(key) {
 
@@ -409,6 +601,48 @@
 					}
 					return ary
 				})(obj)
+		}
+	}
+
+	var queue = function() {
+		this.queueTasks = [];
+	}
+	queue.prototype.taskConst = function(fn, args) {
+		return { f: fn, fArgs: args }
+	}
+
+	queue.prototype.push = function(task) {
+		this.queueTasks.push(task);
+	}
+
+	queue.prototype.pushTasks = function(tasks) {
+		for ( var i in tasks ) {
+			this.queueTasks.push(tasks[i]);
+		}
+	}
+
+	queue.prototype.shift = function() {
+		return this.queueTasks.shift()
+	}
+	queue.prototype.queuing = function(complete) {
+
+		var self = this,
+				task = 
+					(self.queueTasks !== []) ?
+							self.shift() : null;
+
+		// A p which is returned from a task object with promise 
+		var p = (task) ? task.f.apply(this, task.fArgs): null;
+		
+		if (p) {
+			// The p.then won't run util the state truns to be resolved.
+			p.then(function() {
+				self.queuing(complete);
+			});
+		} else {
+			if (complete) {
+				complete();
+			}
 		}
 	}
 	</script>
