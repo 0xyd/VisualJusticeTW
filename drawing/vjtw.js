@@ -1,3 +1,46 @@
+/* Queuing process */
+var queue = function() {
+	this.queueTasks = [];
+}
+queue.prototype.taskConst = function(fn, args) {
+	return { f: fn, fArgs: args }
+}
+
+queue.prototype.push = function(task) {
+	this.queueTasks.push(task);
+}
+
+queue.prototype.pushTasks = function(tasks) {
+	for ( var i in tasks ) {
+		this.queueTasks.push(tasks[i]);
+	}
+}
+
+queue.prototype.shift = function() {
+	return this.queueTasks.shift()
+}
+queue.prototype.queuing = function(complete) {
+
+	var self = this,
+		task = 
+			(self.queueTasks !== []) ?
+				self.shift() : null;
+
+	// A p which is returned from a task object with promise 
+	var p = (task) ? task.f.apply(this, task.fArgs): null;
+		
+	if (p) {
+		// The p.then won't run util the state truns to be resolved.
+		p.then(function() {
+			self.queuing(complete);
+		});
+	} else {
+		if (complete) {
+			complete();
+		}
+	}
+}
+
 /* Graph is the mother of the charts */
 var graphClass = function() {
 
@@ -32,6 +75,7 @@ graphClass.prototype.readCSV = function(path) {
 	return d3.csv(path)
 }
 
+/* A class for Bar chart */
 var barGraphClass = function() {
 
 	graphClass.call(this);
@@ -181,7 +225,6 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 		.enter()
 		.append('text')
 			.text(function(d) {
-				console.log(d);
 				return dOption ? d[dOption]: d
 			})
 			.attr('class', 'mark')
@@ -195,31 +238,36 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.drawing = function(path, xLabel, yLabel, dOption) {
+barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 
 	var self = this;
 
-	this.readCSV(path)
-		.row(function(d) { return d })
-		.get(function(errors, rows) {
 
-			self._setBarWidth(rows);
+		this.readCSV(path)
+			.row(function(d) { return d })
+			.get(function(errors, rows) {
 
-			// Set the scale
-			self._setOrdinalXScale(rows, xLabel);
-			self._setLinearYScale(rows, dOption);
+				self._setBarWidth(rows);
+	
+				// Set the scale
+				self._setOrdinalXScale(rows, xLabel);
+				self._setLinearYScale(rows, dOption);
 
-			// Set the axes
-			self._setYAxis('left', kTick);
-			self._setXAxis('bottom');
+				// Set the axes
+				self._setYAxis('left', kTick);
+				self._setXAxis('bottom');
 
-			// Draw the axes
-			self._createXAxis(rows, xLabel);
-			self._createYAxis(rows, yLabel);
+				// Draw the axes
+				self._createXAxis(rows, xLabel);
+				self._createYAxis(rows, yLabel);
 
-			self._createBars(rows, dOption);
-			self._markValOnBar(rows, dOption);
-		});
+				self._createBars(rows, dOption);
+				self._markValOnBar(rows, dOption);
+
+				
+			});
+	
+
 }
 
 barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
@@ -282,6 +330,101 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 		});
 }
 
+/* A Line chart class */
+var lineGraphClass = function() {
+
+	graphClass.call(this);
+
+	this.chartHeight = 
+		this.panelHeight - 
+			this.panelPadding.top - this.panelPadding.bottom;
+	this.chartWidth = 
+		this.panelWidth - 
+			this.panelPadding.left - this.panelPadding.right;
+
+	this.xScale = null;
+	this.xAxis = null;
+
+	this.yScale = null;
+	this.yAxis = null;
+}
+
+/* Inherit the lineGraphClass from the graph */
+lineGraphClass.prototype = Object.create(graphClass.prototype);
+lineGraphClass.prototype.constructor = lineGraphClass;
+
+
+// Sletch data sent externally 
+lineGraphClass.prototype.plotBars = function(data, offsetX, offsetY) {
+	console.log(d3.select("#SKETCHPAD").select('rect'));
+}
+
+lineGraphClass.prototype.inheritXScale = function(xScale) {
+
+	this.xScale = xScale;
+}
+
+lineGraphClass.prototype.inheritYScale = function(yScale) {
+
+	this.yScale = yScale;
+}
+
+lineGraphClass.prototype.inheritXAxis = function(xAxis) {
+
+ this.xAxis = xAxis;
+}
+
+lineGraphClass.prototype.inheritYAxis = function(yAxis) {
+ this.yAxis = yAxis;
+
+}
+
+lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, yLabel, dOption) {
+
+	var self = this;
+	
+	this.readCSV(path)
+		.row(function(d) { return d })
+		.get(function(errors, rows) {
+			
+			self.xScale = !this.xScale ? 
+				d3.scale.ordinal()
+					.domain(rows.map(function(d){ console.log(d[xLabel]); return d[xLabel] }))
+						.rangeBands([0, self.chartWidth])
+				: self.xScale;
+			
+			self.yScale = !this.yScale ?
+				d3.scale.linear()
+					.domain([0, d3.max(rows, 
+									function(d) { return parseInt(d[dOption]) })
+							])
+					.rangeRound([self.chartHeight, 0])
+					: self.yScale;
+
+			self.line = d3.svg.line()
+				.x(function(d) { return self.xScale(d[xLabel]) + offsetX})
+				.y(function(d) { return self.yScale(d[dOption]) });
+
+			// self.panel.append('g')
+			// 	.append('path')
+			// 	.datum(rows)
+			// 	.attr('class', 'line')
+			// 	.attr('d', self.line)
+			// 	.attr('fill', 'none')
+			// 	.attr('stroke', 'red');
+			d3.select("#SKETCHPAD")
+				.append('g')
+				.append('path')
+				.datum(rows)
+				.attr('class', 'line')
+				.attr('d', self.line)
+				.attr('fill', 'none')
+				.attr('stroke', 'red');
+
+		});
+
+}
+
 
 /* Additional Functions */
 function kTick(tick) {
@@ -335,14 +478,30 @@ function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
 }
 
 
-
 /* Graph Operation */
 
 var barGraph = new barGraphClass();
 
 barGraph.setOutPadding(10);
 barGraph.setStep(10);
-barGraph.drawing('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數');
+barGraph.drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數');
 barGraph.update('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年入監人數');
 
+console.log(barGraph.barWidth/2);
+console.log(barGraph.outPadding);
 
+var lineGraph = new lineGraphClass();
+
+// lineGraph.inheritXAxis(barGraph.xAxis);
+// lineGraph.inheritYAxis(barGraph.yAxis);
+lineGraph.inheritXScale(barGraph.xScale); 
+lineGraph.inheritYScale(barGraph.yScale);
+lineGraph.plotBars();
+// lineGraph.drawingData(
+// 	'/correction/監獄人數概況.csv', 
+// 	null,
+// 	null,
+// 	'民國',
+// 	null,
+// 	'本年入監人數'
+// );
