@@ -41,10 +41,55 @@ queue.prototype.queuing = function(complete) {
 	}
 }
 
+var colorClass = function() {
+
+	this.bar = {
+		'本年執行人數': '#BA0F30',
+		'本年入監人數': '#C41F3A',
+		'新入監人數': '#61B045',
+		'上年底留監人數': '#E9C247',
+		'本年出獄人數': '#F16B23',
+		'本年年底留監人數': '#55B5DF'
+	},
+	this.line = {
+		'本年執行人數': '#BA0F30',
+		'本年入監人數': '#C41F3A',
+		'新入監人數': '#61B045',
+		'上年底留監人數': '#E9C247',
+		'本年出獄人數': '#F16B23',
+		'本年年底留監人數': '#55B5DF'
+	}
+}
+
+colorClass.prototype.hexToRgb = function(hex) {
+	
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);     
+	return result ? {         
+			r: parseInt(result[1], 16),         
+			g: parseInt(result[2], 16),         
+			b: parseInt(result[3], 16)     
+		   } : null; 
+}
+
+var colorObj = new colorClass();
+
+
 /* Graph is the mother of the charts */
 var graphClass = function() {
+	
+	// A place for drawing
+	this.pad = null;
 
-	this.panel = (function() {
+	// Define the basic setting for the pad
+	this.padHeight = null;
+	this.padWidth = null;
+	this.padPadding = null;
+}
+
+graphClass.prototype.initializeAPad = function() {
+
+	this.pad = (function() {
+
 		return d3.select('#DISPLAY_PANEL')
 			.append('svg')
 			.attr('id', 'SKETCHPAD')
@@ -55,19 +100,19 @@ var graphClass = function() {
 				'padding-bottom': '5%'
 			})
 			.style('height', '100%').style('width', '100%')
-			})(),
+			})();
 
-	this.panelWidth = 
-		parseInt(this.panel.style('width').replace('px', '')),
+	this.padWidth = 
+		parseInt(this.pad.style('width').replace('px', '')),
 
-	this.panelHeight = 
-		parseInt(this.panel.style('height').replace('px', '')),
+	this.padHeight = 
+		parseInt(this.pad.style('height').replace('px', '')),
 
-	this.panelPadding = {
-		top:     this.panel.style('padding-top').replace('px', ''),
-		bottom:  this.panel.style('padding-bottom').replace('px', ''),
-		left:    this.panel.style('padding-left').replace('px', ''),
-		right:   this.panel.style('padding-right').replace('px', '')
+	this.padPadding = {
+		top:     this.pad.style('padding-top').replace('px', ''),
+		bottom:  this.pad.style('padding-bottom').replace('px', ''),
+		left:    this.pad.style('padding-left').replace('px', ''),
+		right:   this.pad.style('padding-right').replace('px', '')
 	}
 }
 
@@ -80,13 +125,11 @@ var barGraphClass = function() {
 
 	graphClass.call(this);
 
-	this.chartHeight = 
-		this.panelHeight - 
-			this.panelPadding.top - this.panelPadding.bottom;
-	this.chartWidth = 
-		this.panelWidth - 
-			this.panelPadding.left - this.panelPadding.right;
-
+	this.chartHeight = null;
+		
+	this.chartWidth = null;
+		
+	this.bars = null;
 	this.barWidth = null;
 
 	this.outPadding = null;
@@ -99,20 +142,21 @@ var barGraphClass = function() {
 	this.yScale = null;
 	this.yAxis = null;
 
-	// this.dataset = null;
 }
+
 
 /* Inherit the barGraphClass from the graph */
 barGraphClass.prototype = Object.create(graphClass.prototype);
 barGraphClass.prototype.constructor = barGraphClass;
 
-barGraphClass.prototype.setOutPadding = function(val) {
-	this.outPadding = val;
+barGraphClass.prototype.setChartSize = function() {
+	this.chartHeight = this.padHeight - this.padPadding.top - this.padPadding.bottom;
+	this.chartWidth = this.padWidth - this.padPadding.left - this.padPadding.right	;
 }
 
-barGraphClass.prototype.setStep = function(val) {
-	this.step = val;
-}
+barGraphClass.prototype.setOutPadding = function(val) { this.outPadding = val; }
+
+barGraphClass.prototype.setStep = function(val) { this.step = val; }
 
 barGraphClass.prototype._setBarWidth = function(dataset) {
 	this.barWidth = 
@@ -155,7 +199,7 @@ barGraphClass.prototype._setYAxis = function(pos, tickFormater) {
 		pos === 'right' || 'left' || 'bottom' || 'top' ) {
 
 		this.yAxis = d3.svg.axis()
-			.scale(this.yScale).orient(pos).tickFormat(tickFormater);
+			.scale(this.yScale).orient(pos).tickFormat(tickFormater).ticks(10);
 
 	} 
 }
@@ -164,7 +208,7 @@ barGraphClass.prototype._createXAxis = function(dataset, xLabel) {
 
 	var self = this;
 	
-	this.panel
+	this.pad
 		.append('g')
 			.attr('class', 'x-axis')
 			.attr('transform', 'translate(0,' + this.chartHeight + ')')
@@ -180,7 +224,7 @@ barGraphClass.prototype._createXAxis = function(dataset, xLabel) {
 }
 
 barGraphClass.prototype._createYAxis = function(dataset, yLabel) {
-	this.panel
+	this.pad
 		.append('g')
 			.attr('class', 'y-axis')
 			.call(this.yAxis)
@@ -190,35 +234,39 @@ barGraphClass.prototype._createYAxis = function(dataset, yLabel) {
 			.text(yLabel);
 }
 
-barGraphClass.prototype._createBars = function(dataset, dOption) {
+barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 
 	var self = this;
 
-	this.panel.selectAll('rect')
-		.data(dataset)
-		.enter()
-		.append('rect')
-			.attr('x', function(d, i) {
-				return self.outPadding + 
-					i * (self.barWidth + self.step)
-			})
-			.attr('y', function(d) {
-				return self.yScale(d[dOption])
-			})
-			.attr('width', self.barWidth)
-			.attr('height', function(d) {
-				return self.chartHeight - self.yScale(parseInt(d[dOption]))
-			})
-			.attr('fill', function(d) {
-				return '#C41F3A'
-			});
+	this.bars = 
+		this.pad.append('g')
+			.attr('class', 'bar-group')
+			.selectAll('rect')
+			.data(dataset)
+			.enter()
+			.append('rect')
+				.attr('class', 'bar')
+				.attr('x', function(d, i) {
+					return self.outPadding + 
+						i * (self.barWidth + self.step)
+				})
+				.attr('y', function(d) {
+					return self.yScale(d[dOption])
+				})
+				.attr('width', self.barWidth)
+				.attr('height', function(d) {
+					return self.chartHeight - self.yScale(parseInt(d[dOption]))
+				})
+				.attr('fill', function(d) {
+					return colorObj.bar[dOption]
+				});
 }
 
 barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 
 	var self = this;
 
-	this.panel.append('g')
+	this.pad.append('g')
 		.attr('id', 'TXTGROUP')
 		.selectAll('text')
 		.data(dataset)
@@ -242,8 +290,9 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 
 	var self = this;
 
+	var p = new Promise(function(resolve, reject) {
 
-		this.readCSV(path)
+		self.readCSV(path)
 			.row(function(d) { return d })
 			.get(function(errors, rows) {
 
@@ -264,70 +313,168 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 				self._createBars(rows, dOption);
 				self._markValOnBar(rows, dOption);
 
-				
-			});
-	
+				resolve({
+					data: rows,
+					pad: self.pad,
+					step: self.step,
+					barWidth: self.barWidth,
+					outPadding: self.outPadding
+				});
 
+			});
+	});
+
+	return p
 }
 
 barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 	var self = this;
 
-	this.readCSV(path)
-		.row(function(d) { return d })
-		.get(function(error, rows) {
+	var p = new Promise(function(resolve, reject) {
 
-			var _bars = self.panel.selectAll('rect'),
-				_txts = self.panel.selectAll('.mark'),
+		self.readCSV(path)
+			.row(function(d) { return d })
+			.get(function(error, rows) {
 
-				// Former x value of bars
-				f_Pos = (function() {
-					var posAry = [];
-					for ( var i = 0; i < _bars[0].length; i++ ) {
-						posAry.push({
-						x: _bars[0][i].getAttribute('x'),
-						y: _bars[0][i].getAttribute('y')
+				var _bars = self.pad.selectAll('rect'),
+					_txts = self.pad.selectAll('.mark'),
+
+					// Former x value of bars
+					f_Pos = (function() {
+						var posAry = [];
+						for ( var i = 0; i < _bars[0].length; i++ ) {
+							posAry.push({
+							x: _bars[0][i].getAttribute('x'),
+							y: _bars[0][i].getAttribute('y')
+						});
+					};
+					return posAry
+				})(),
+
+				// The positions of bars after update
+				c_Pos = [];
+
+				self._setLinearYScale(rows, dOption);
+				self._setYAxis('left', kTick);
+
+				_bars
+					.transition()
+						.attr('y', function(d, i) { 
+
+							// get current positions of 
+							c_Pos.push(
+								{
+									x: this.getAttribute('x'),
+									y: self.yScale(d[dOption])
+								}
+							);
+						return c_Pos[i].y })
+						.attr('height', 
+							function(d) { 
+								return self.chartHeight - self.yScale(parseInt(d[dOption])) 
+						})
+						.attr('fill', function() {
+							return colorObj.bar[dOption]
+						})
+					.each(
+						'end', 
+						function(d, i) {
+
+							// When the last bar is transited, resolve to the next animation.
+							if ( i === _bars[0].length - 1) {
+
+								resolve({
+									data: rows,
+									pad: self.pad,
+									step: self.step,
+									barWidth: self.barWidth,
+									outPadding: self.outPadding
+								});
+
+							}
 					});
-				};
-				return posAry
-			})(),
 
-			// The positions of bars after update
-			c_Pos = [];
+				_txts
+					.transition()
+					// The text has been rotated about 90 degree
+					.attr('x', function(d, i) {
+						var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
+						return parseInt(this.getAttribute('x')) + deltaX })
+					.text(function(d) { return d[dOption] });
 
-			self._setLinearYScale(rows, dOption);
-			self._setYAxis('left', kTick);
-
-			_bars
-				.transition()
-					.attr('y', function(d, i) { 
-					// get current positions of 
-					c_Pos.push(
-						{
-							x: this.getAttribute('x'),
-							y: self.yScale(d[dOption])
-						}
-					);
-					return c_Pos[i].y })
-				.attr('height', 
-					function(d) { 
-						return self.chartHeight - self.yScale(parseInt(d[dOption])) 
-					});
-
-			_txts
-				.transition()
-				// The text has been rotated about 90 degree
-				.attr('x', function(d, i) {
-					var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
-					return parseInt(this.getAttribute('x')) + deltaX })
-				.text(function(d) { return d[dOption] });
-
-			// Update Y axis
-			self.panel
+				// Update Y axis
+				self.pad
 					.selectAll('.y-axis')
 					.call(self.yAxis);
+			});
+
 		});
+	
+	return p
+}
+
+
+barGraphClass.prototype.isInvisible = function() {
+	if ( this.bars.style('opacity') ) return true
+	else false
+}
+
+barGraphClass.prototype.bePhantom = function() {
+
+	this.bars.style('opacity', 0);
+
+	if ( this.isBarHidden() ) 
+		this.beDisplayed();
+}
+
+barGraphClass.prototype.beVisible = function() {
+
+	this.bars.style('opacity', 1);
+
+	if ( this.isBarHidden() ) 
+		this.beDisplayed();
+}
+
+barGraphClass.prototype.hide = function() {
+	this.bars.style('display', 'none');
+}
+
+barGraphClass.prototype.beDisplayed = function() {
+	this.bars.style('display', 'inline');
+}
+
+barGraphClass.prototype.isBarHidden = function() {
+
+	var displayStatus = 
+			this.bars.style('display');
+
+	if ( displayStatus === 'none') return true
+	else return false
+}
+
+/* Make the x line for the grids */
+barGraphClass.prototype._makeXGridLines = function() {
+
+	return d3.svg.axis(this.xScale).orient('bottom')
+
+}
+barGraphClass.prototype._makeYGridLines = function() {
+
+	return d3.svg.axis(this.yScale).orient('left')
+
+}
+
+/* Bar chart's grid*/
+barGraphClass.prototype.makeGrid = function() {
+
+	this.pad.append('g')
+		.attr('class', 'grid')
+		.attr('transform', '')
+	this.pad.append('g')
+		.attr('class', 'grid')
+		.attr('transform', '')
+
 }
 
 /* A Line chart class */
@@ -335,48 +482,197 @@ var lineGraphClass = function() {
 
 	graphClass.call(this);
 
-	this.chartHeight = 
-		this.panelHeight - 
-			this.panelPadding.top - this.panelPadding.bottom;
-	this.chartWidth = 
-		this.panelWidth - 
-			this.panelPadding.left - this.panelPadding.right;
+	this.pad = null;
+	this.padPadding = null;
+	this.padHeight = 0;
+	this.padWidth = 0;
+
+	this.chartHeight = null;
+	this.chartWidth = null;
+
+	this.linePath = null;
+	this.lineDots = null;
+	this.areaUnderLine = null;
 
 	this.xScale = null;
 	this.xAxis = null;
 
 	this.yScale = null;
 	this.yAxis = null;
+
+	this.area = null;
+
 }
 
 /* Inherit the lineGraphClass from the graph */
 lineGraphClass.prototype = Object.create(graphClass.prototype);
 lineGraphClass.prototype.constructor = lineGraphClass;
 
+lineGraphClass.prototype.setChartSize = function(motherPad) {
+	/*
+		motherPad = { pad: '', padWidth: '', padHeight: '', padPadding: '' }
+	*/
+	this.chartHeight = motherPad ? 
+		motherPad.padHeight - 
+			motherPad.padPadding.top - motherPad.padPadding.bottom :
+		this.padHeight - 
+			this.padPadding.top - this.padPadding.bottom;
 
-// Sletch data sent externally 
-lineGraphClass.prototype.plotBars = function(data, offsetX, offsetY) {
-	console.log(d3.select("#SKETCHPAD").select('rect'));
+	this.chartWidth = motherPad ? 
+		motherPad.padWidth - 
+			motherPad.padPadding.left - motherPad.padPadding.right :
+		this.padWidth - 
+			this.padPadding.left - this.padPadding.right;
 }
 
-lineGraphClass.prototype.inheritXScale = function(xScale) {
+// Plot the data from bar graph.
+lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPinned) {
 
-	this.xScale = xScale;
+	var self = this,
+		isPinned = isPinned ? true: false;
+
+	var p0 = new Promise(function(resolve, reject) {
+
+		var rects = bars ? 
+				bars[0]: motherPad.selectAll('rect')[0],
+			// Get hex code of rect elements
+			hex = 
+				d3.select('#SKETCHPAD').select('rect').attr('fill');
+
+		// Get the all elements' x y position besides the parent
+		for (var i = 0; i < rects.length; i++) {
+
+			var box = rects[i].getBBox();
+
+			// Added the dot's position in data
+			data[i].dotX = box.x + offset;
+			data[i].dotY = box.y ;
+		}
+
+		var line = d3.svg.line()
+				.x(function(d) { return d.dotX })
+				.y(function(d) { return d.dotY });
+
+		// Check if line is existed or not
+		if ( self.linePath ) {
+
+			self.linePath
+				.datum(data)
+				.transition()
+					.attr('d', line)
+					.attr('stroke', colorAdjust(hex, 20));
+
+		// Create a line once it is not existed
+		} else {
+
+			self.linePath = 
+				self.pad
+					.append('g')
+					.append('path')
+						.attr('class', 'dotted-path')
+					.datum(data)
+						.attr('d', line)
+						.attr('fill', 'none')
+						.attr('stroke', colorAdjust(hex, 20))
+						.attr('stroke-width', 2);
+
+		}
+
+		// Check the dots on line are existed or not
+		if ( self.lineDots ) {
+
+			self.lineDots
+				.data(data)
+				.transition()
+					.attr('fill', colorAdjust(hex, 20))
+					.attr('cx', function(d) { return d.dotX })
+					.attr('cy', function(d) { return d.dotY });
+
+		// Create the dots once they aren't existed
+		} else {
+
+			self.lineDots = self.pad
+				.append('g')
+					.attr('class', 'dots-cluster')
+				.selectAll('circle')
+				.data(data)
+					.enter()
+					.append('circle')
+						.attr('cx', function(d) { return d.dotX })
+						.attr('cy', function(d) { return d.dotY })
+						.attr('class', 'dots')
+						.attr('fill', colorAdjust(hex, 20))
+						.attr('stroke-width', 2)
+						.attr('stroke', '#fff')
+						.attr('r', 5);
+
+		}
+
+		// Check if the unde line area is existed 
+		if ( self.areaUnderLine ) {
+			self.updateUnderArea(data, colorAdjust(hex, 40));
+
+		// If it is not, then create one.
+		} else {
+			self.drawUnderArea(data, colorAdjust(hex, 40));
+		}
+
+		resolve({ 
+			data: data, 
+			hexCode: hex, 
+			line: self.linePath,
+			dots: self.lineDots,
+			area: self.areaUnderLine
+		});
+
+	});
+
+	function colorAdjust(hex, colorDelta) {
+
+		// Make the stroke color slightly different from the bars.
+		var rgb = colorObj.hexToRgb(hex);
+
+		// Abjust one of the color.
+		if ( 255 - rgb.r > colorDelta ) rgb.r += colorDelta
+		else {
+			if ( 255 - rgb.g > colorDelta ) rgb.g += colorDelta
+			else {
+				if ( 255 - rgb.b > colorDelta) rgb.b += colorDelta
+				}
+			}
+
+		return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
+	}
+
+	return p0
 }
 
-lineGraphClass.prototype.inheritYScale = function(yScale) {
+// lineGraphClass.prototype.inheritXScale = function(xScale) {
 
-	this.yScale = yScale;
-}
+// 	this.xScale = xScale;
+// }
 
-lineGraphClass.prototype.inheritXAxis = function(xAxis) {
+// lineGraphClass.prototype.inheritYScale = function(yScale) {
 
- this.xAxis = xAxis;
-}
+// 	this.yScale = yScale;
+// }
 
-lineGraphClass.prototype.inheritYAxis = function(yAxis) {
- this.yAxis = yAxis;
+// lineGraphClass.prototype.inheritXAxis = function(xAxis) {
 
+//  	this.xAxis = xAxis;
+// }
+
+// lineGraphClass.prototype.inheritYAxis = function(yAxis) {
+//  this.yAxis = yAxis;
+
+// }
+
+lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, padPadding) {
+	
+	this.pad = motherPad;
+	this.padHeight = padHeight;
+	this.padWidth = padWidth;
+	this.padPadding = padPadding;	
 }
 
 lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, yLabel, dOption) {
@@ -389,7 +685,7 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 			
 			self.xScale = !this.xScale ? 
 				d3.scale.ordinal()
-					.domain(rows.map(function(d){ console.log(d[xLabel]); return d[xLabel] }))
+					.domain(rows.map(function(d){ return d[xLabel] }))
 						.rangeBands([0, self.chartWidth])
 				: self.xScale;
 			
@@ -399,19 +695,13 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 									function(d) { return parseInt(d[dOption]) })
 							])
 					.rangeRound([self.chartHeight, 0])
-					: self.yScale;
+				: self.yScale;
 
 			self.line = d3.svg.line()
-				.x(function(d) { return self.xScale(d[xLabel]) + offsetX})
+				.x(function(d) { return self.xScale(d[xLabel]) + offsetX })
 				.y(function(d) { return self.yScale(d[dOption]) });
 
-			// self.panel.append('g')
-			// 	.append('path')
-			// 	.datum(rows)
-			// 	.attr('class', 'line')
-			// 	.attr('d', self.line)
-			// 	.attr('fill', 'none')
-			// 	.attr('stroke', 'red');
+			
 			d3.select("#SKETCHPAD")
 				.append('g')
 				.append('path')
@@ -419,10 +709,171 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 				.attr('class', 'line')
 				.attr('d', self.line)
 				.attr('fill', 'none')
-				.attr('stroke', 'red');
+				.attr('stroke', colorObj.line[dOption]);
 
 		});
 
+}
+
+lineGraphClass.prototype.drawUnderArea = function(data, color) {
+
+	this.area = d3.svg.area()
+		.x(function(d) { return d.dotX })
+		.y0(this.chartHeight)
+		.y1(function(d) { return d.dotY });
+
+	this.areaUnderLine = 
+		this.pad
+			.append('g')
+				.attr('class', 'under-line-area-group')
+			.append('path')
+			.datum(data)
+				.attr('class', 'under-line-area')
+				.attr('fill', color)
+				.attr('d', this.area);
+
+}
+
+lineGraphClass.prototype.updateUnderArea = function(data, color) {
+
+	this.areaUnderLine
+		.datum(data)
+		.transition()
+			.attr('d', this.area)
+			.attr('fill', color)
+			.style('opacity', 0.8);
+
+}
+
+lineGraphClass.prototype.isInvisible = function() {
+	if ( this.linePath.style('opacity') ) return true
+	else false
+}
+
+// lineGraphClass.prototype.beInvisible = function() {
+
+// 	this.linePath.style('opacity', 0);
+
+// 	if ( this.isLineHidden() ) 
+// 		this.displayLine();
+
+// }
+
+// lineGraphClass.prototype.beVisible = function() {
+
+// 	this.linePath.style('opacity', 1);
+// 	this.displayLine();
+
+// }
+
+lineGraphClass.prototype.hide = function() {
+	this.linePath.style('display', 'none');
+	this.lineDots.style('display', 'none');
+}
+
+lineGraphClass.prototype.beDisplayed = function() {
+	this.linePath.style('display', 'inline');
+	this.lineDots.style('display', 'inline');
+}
+
+lineGraphClass.prototype.isLineHidden = function() {
+
+	var displayStatus = 
+			this.linePath.style('display');
+
+	if ( displayStatus === 'none') return true
+	else return false
+}
+
+lineGraphClass.prototype.displayUnderArea = function() {
+	console.log(this.areaUnderLine);
+	this.areaUnderLine.style('display', 'inline');
+}
+
+lineGraphClass.prototype.hideUnderArea = function() {
+	console.log(this.areaUnderLine);
+	this.areaUnderLine.style('display', 'none');
+}
+
+
+/* A class for tooltip */
+var tipClass = function() {
+
+	this.dotTip = d3.select('#DISPLAY_PANEL')
+		.append('div')
+		.attr('id', 'DOT-TIP')
+		.attr('class', 'tip');
+}
+
+tipClass.prototype.appendMouseOver = function(dOption) {
+
+	var self = this;
+
+	var dotTipNode = document.getElementById('DOT-TIP'),
+		parentContainers = listAncestorNodes(dotTipNode),
+		offset = calOffsetFromOrigins(parentContainers);
+
+		d3.select('#SKETCHPAD')
+			.selectAll('.dots')
+			.on(
+				'mouseover', 
+				function(d) {
+
+					var posX = parseInt(this.getAttribute('cx')),
+						posY = parseInt(this.getAttribute('cy')),
+						svgStyle = window.getComputedStyle(this.parentNode.parentNode, null);
+	
+					self.dotTip
+						.classed('display', true)
+
+						// Make the tip's origin fixed at center of circles
+						.style(
+							'top', 
+							posY +
+							offset.Y 
+								// calculate the top padding of svg for y offset
+								+ parseInt(svgStyle['padding-top'].replace('px', '') ) 
+								+ 'px'
+							)
+						.style(
+							'left',
+						 	posX +
+						 	offset.X 
+						 		// calculate the left padding of svg for x offset
+							 	+ parseInt(svgStyle['padding-left'].replace('px', '')) 
+							 	+ 'px'
+						 	)
+
+						.html(function() {
+
+							return '民國 ' + d['民國'] + '<br>' +
+							   dOption + ': ' + d[dOption]
+
+						})
+						.call(self._correctPos);
+			})
+			.on(
+				'mouseout',
+				function(d) {
+					self.dotTip
+						.classed('display', false);
+				}
+			);	
+
+}
+
+tipClass.prototype._correctPos = function() {
+
+	// "this" is the tip object with d3 object type
+	var node = this.node(),
+		originTop = parseInt(node.style.top.replace('px', '')),
+		originLeft = parseInt(node.style.left.replace('px', '')),
+		deltaX = node.offsetWidth / 2,
+		deltaY = node.offsetHeight;
+
+	this
+		.style('top', originTop - deltaY - 9 + 'px')
+		.style('left', originLeft - deltaX - 9/Math.sqrt(3) + 'px');
 }
 
 
@@ -430,7 +881,6 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 function kTick(tick) {
 	return Math.round(tick/1e3) + 'K'
 }
-
 
 /* 
 	A function for pinnig label at the middle bottom of the bar 
@@ -478,30 +928,49 @@ function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
 }
 
 
-/* Graph Operation */
+function listAncestorNodes(node) {
 
-var barGraph = new barGraphClass();
+	var childNode = node,
 
-barGraph.setOutPadding(10);
-barGraph.setStep(10);
-barGraph.drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數');
-barGraph.update('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年入監人數');
+		nodes = [];
 
-console.log(barGraph.barWidth/2);
-console.log(barGraph.outPadding);
+	while ( childNode && childNode.parentNode ) {
 
-var lineGraph = new lineGraphClass();
+		if ( childNode.tagName !== 'BODY' ) {
 
-// lineGraph.inheritXAxis(barGraph.xAxis);
-// lineGraph.inheritYAxis(barGraph.yAxis);
-lineGraph.inheritXScale(barGraph.xScale); 
-lineGraph.inheritYScale(barGraph.yScale);
-lineGraph.plotBars();
-// lineGraph.drawingData(
-// 	'/correction/監獄人數概況.csv', 
-// 	null,
-// 	null,
-// 	'民國',
-// 	null,
-// 	'本年入監人數'
-// );
+			nodes.push(childNode.parentNode);
+			childNode = childNode.parentNode;
+		} else childNode = null;
+	}
+
+	return nodes
+
+}
+
+function calOffsetFromOrigins(containers) {
+
+	var offsetX = 0,
+		offsetY = 0,
+		borderRex = /\d+px/;
+
+	for ( var i in containers ) {
+
+		var containerSpec = 
+			window.getComputedStyle(containers[i], null);
+
+		offsetX += 
+			(parseInt(containerSpec['border-left'].match(borderRex)[0].replace('px', '')) + 
+				parseInt(containerSpec['padding-left'].replace('px', '')) + 
+					parseInt(containerSpec['margin-left'].replace('px', '')));
+
+		offsetY += 
+			(parseInt(containerSpec['border-top'].match(borderRex)[0].replace('px', '')) + 
+				parseInt(containerSpec['padding-top'].replace('px', '')) + 
+					parseInt(containerSpec['margin-top'].replace('px', '')));
+
+	} 
+
+	return { X: offsetX, Y: offsetY }
+}
+
+

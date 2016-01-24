@@ -18,25 +18,54 @@
 		#DISPLAY_PANEL, #CRTL_PANEL { display: inline-block; }
 		#DISPLAY_PANEL { height: 100%; }
 		#CRTL_PANEL { height: 100%; position: relative; }
+		#OPTSCHART { position: absolute; top: 10%; }
 		#OPTS { position: absolute; top: 30%; }
 		#OPTS fieldset { display:block; margin: 0px auto; border: 0px; }
 		#OPTS fieldset legend { font-size: 1.2em; }
 		#OPTS fieldset label { display: block; font-weight: 400; }
 		/* Left the padding for axes */
-		#SKETCHPAD { padding-top: 10%; padding-left: 5%; padding-bottom: 5%; }
+		/*#SKETCHPAD { padding-top: 10%; padding-left: 5%; padding-bottom: 5%; }*/
 		.mark { font-family: sans-serif; font-size: 0.8em; fill: #fff; }
 		.x-axis path { fill: none; }
 		.x-axis .axis-name,
 		.y-axis .axis-name { font-size: 0.95em; font-family: sans-serif; }
+		.x-axis path { fill: none; stroke: #909090; }
 		.y-axis path { fill: none; stroke: #f1f1f1; }
 		.x-axis .tick text,
 		.y-axis .tick text { font-size: 0.95em;font-family: monospace; }
+
+		.tip {
+			display: none;
+			position: absolute;
+			/*width: 100px;*/
+			padding: 5px;
+			background-color: #333;
+			color: #fff;
+			line-height: 1.5;
+			font-size: 16px;
+		}
+		.tip:after { 
+			box-sizing: border-box;
+			position: absolute; 
+			content: "\25BC";
+			color: #333;
+			font-size: 16px;
+			width: 100%;
+			top: 100%;
+			left: 50%;
+			line-height: 0.6;
+
+		}
+		.tip.display { display: inline-block; }
+		.tip, .tip:after { opacity: 0.8; }
+
 	</style>
+	<script type="text/javascript" src="../libs/d3.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../libs/jquery-2.1.4.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="./vjtw.js"></script>
+
 </head>
 <body class="container-fluid">
-	<!-- <nav id="HEAD">
-		<div><img src="../Visual Design/elements/JusticeVisualizingLOGO_1.png" /></div>
-	</nav> -->
 	<div id="PANEL" class="row">
 		<div id="DISPLAY_PANEL" class="col-md-10"></div>
 		<div id="CRTL_PANEL" class="col-md-2">
@@ -47,8 +76,16 @@
 						<input 
 							type="radio" name="prisonDataOption" 
 							value="本年執行人數" 
-							onclick=
-							"updateBarChart('/correction/監獄人數概況.csv', '本年執行人數');"
+							onclick= 
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數');
+
+							 "
+						 	}
+
+							}
+							
 							checked>本年執行人數
 						</label>
 					<label>
@@ -57,14 +94,21 @@
 							type="radio" name="prisonDataOption" 
 							value="本年入監人數" 
 							onclick=
-							"updateBarChart('/correction/監獄人數概況.csv', '本年入監人數');">
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年入監人數');
+
+							 	">
 							本年入監人數
 						</label>
 					<label>
 						<input 
 							type="radio" name="prisonDataOption" 
 							value="新入監人數"
-							onclick="updateBarChart('/correction/監獄人數概況.csv', '新入監人數');">
+							onclick=
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '新入監人數');">
 							新入監人數
 						</label>
 					<label>
@@ -72,7 +116,9 @@
 							type="radio" name="prisonDataOption" 
 							value="本年出獄人數"
 							onclick=
-							"updateBarChart('/correction/監獄人數概況.csv', '本年出獄人數');">
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年出獄人數');">
 								本年出獄人數
 						</label>
 					<label>
@@ -80,16 +126,151 @@
 							type="radio" name="prisonDataOption" 
 							value="本年年底留監人數"
 							onclick=
-							"updateBarChart('/correction/監獄人數概況.csv', '本年年底留監人數');">
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年年底留監人數');
+							">
 							本年年底留監人數
 						</label>
 				</fieldset>
 			</form>
+			<form id="OPTSCHART">
+				<label style="display: block;">
+					<input id="OPTBARCHRT" type="radio" name="charttype" 
+						   onclick="
+							if ( this.checked ) {
+								prepareBarChrt();
+								
+								barGraph.beVisible();
+								lineGraph.hide();
+								lineGraph.hideUnderArea();
+							}
+							" checked> 
+					長條圖 
+				</label>
+				<label style="display: block;">
+					<input id="OPTLINECHRT" type="radio" name="charttype" 
+						   onclick="
+						   if ( this.checked ) {
+						   		prepareBarChrt();
+								lineGraph.beDisplayed();
+								lineGraph.hideUnderArea();
+								barGraph.hide();
+						   }
+						   
+						    "> 
+					折線圖
+				</label>
+				<label style="display: block;">
+					<input id="AREAOPT" type="radio" name="charttype" 
+					onclick="
+						if ( this.checked ) {
+							prepareBarChrt();
+							
+							
+							lineGraph.displayUnderArea();
+							lineGraph.hide();
+							barGraph.hide();
+						}
+						
+					">
+					面積圖
+				</label>
+			</form>
 		</div>
 	</div>
 	</div>
-	<script type="text/javascript" src="../libs/d3.js" charset="utf-8"></script>
-	<script type="text/javascript" src="../libs/jquery-2.1.4.min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="./vjtw.js"></script>
+	<script type="text/javascript">
+
+		var barGraph = new barGraphClass(),
+			lineGraph = new lineGraphClass(),
+			tip = new tipClass();
+
+			barGraph.initializeAPad();
+			barGraph.setChartSize();
+			barGraph.setOutPadding(10);
+			barGraph.setStep(10);
+			barGraph.drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數')
+				.then(function(jsonOutput) {
+
+					lineGraph.inheritPad(
+						barGraph.pad, 
+						barGraph.padHeight, 
+						barGraph.padWidth, 
+						barGraph.padPadding);
+
+					lineGraph.setChartSize();
+
+					lineGraph.plotBars(
+						jsonOutput.data,
+						jsonOutput.pad, 
+						null,
+						jsonOutput.barWidth/2
+						).then(function(o) {
+
+							lineGraph.linePath = o.line;
+							lineGraph.lineDots = o.dots; 
+							lineGraph.areaUnderLine = o.area;
+
+							whichDisplayed();
+
+							tip.appendMouseOver('本年執行人數');
+						});
+
+			});
+
+		function prepareBarChrt() {
+
+			if (document.getElementById('OPTBARCHRT').checked)
+				barGraph.beVisible();
+			else barGraph.bePhantom();
+		}
+
+		function updateChrt(path, xLabel, yLabel, dOption) {
+
+			barGraph
+				.update(path, xLabel, yLabel, dOption)
+					.then(function(jsonOutput) {
+
+						lineGraph.plotBars(
+							jsonOutput.data,
+							jsonOutput.pad,
+							jsonOutput.updatedBars, 
+							jsonOutput.barWidth/2
+						).then(function(o) {
+
+							 lineGraph.linePath = o.line;
+							 lineGraph.lineDots = o.dots;
+							 lineGraph.areaUnderLine = o.area;
+
+							 whichDisplayed();
+
+							 tip.appendMouseOver(dOption);
+
+							 });
+					});
+
+		}
+
+		function whichDisplayed() {
+
+			if (document.getElementById('OPTLINECHRT').checked) {
+				barGraph.hide();
+				lineGraph.beDisplayed();
+				lineGraph.hideUnderArea();
+			} else if (document.getElementById('OPTBARCHRT').checked) {
+				barGraph.beVisible();
+				lineGraph.hide();
+				lineGraph.hideUnderArea();
+			}
+			else {
+				barGraph.hide();
+				lineGraph.hide();
+				lineGraph.displayUnderArea();
+			}			
+
+		}
+
+	</script>
 </body>
 </html>
