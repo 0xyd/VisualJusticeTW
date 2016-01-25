@@ -574,7 +574,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 						.attr('d', line)
 						.attr('fill', 'none')
 						.attr('stroke', colorAdjust(hex, 20))
-						.attr('stroke-width', 2);
+						.attr('stroke-width', 3);
 
 		}
 
@@ -604,7 +604,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 						.attr('fill', colorAdjust(hex, 20))
 						.attr('stroke-width', 2)
 						.attr('stroke', '#fff')
-						.attr('r', 5);
+						.attr('r', 7);
 
 		}
 
@@ -786,12 +786,10 @@ lineGraphClass.prototype.isLineHidden = function() {
 }
 
 lineGraphClass.prototype.displayUnderArea = function() {
-	console.log(this.areaUnderLine);
 	this.areaUnderLine.style('display', 'inline');
 }
 
 lineGraphClass.prototype.hideUnderArea = function() {
-	console.log(this.areaUnderLine);
 	this.areaUnderLine.style('display', 'none');
 }
 
@@ -799,7 +797,7 @@ lineGraphClass.prototype.hideUnderArea = function() {
 /* A class for tooltip */
 var tipClass = function() {
 
-	this.dotTip = d3.select('#DISPLAY_PANEL')
+	this.dotTip = d3.select('#PANEL')
 		.append('div')
 		.attr('id', 'DOT-TIP')
 		.attr('class', 'tip');
@@ -811,7 +809,18 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 
 	var dotTipNode = document.getElementById('DOT-TIP'),
 		parentContainers = listAncestorNodes(dotTipNode),
-		offset = calOffsetFromOrigins(parentContainers);
+
+		offset = 
+			calOffsetFromOrigins(parentContainers),
+
+		displayPanelStyle = 
+			window.getComputedStyle(document.getElementById('DISPLAY_PANEL'));
+
+
+		offset.X += 
+				parseInt(displayPanelStyle['padding-left'].replace('px', ''));
+		offset.Y += 
+				parseInt(displayPanelStyle['padding-top'].replace('px', ''));
 
 		d3.select('#SKETCHPAD')
 			.selectAll('.dots')
@@ -846,11 +855,16 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 
 						.html(function() {
 
-							return '民國 ' + d['民國'] + '<br>' +
-							   dOption + ': ' + d[dOption]
+							info = 
+								'民國 ' + d['民國'] + '<br>' +
+							   		dOption + ': ' + d[dOption];
+
+							return info
 
 						})
-						.call(self._correctPos);
+						.call(function(d) {
+							self._correctPos();
+						});
 			})
 			.on(
 				'mouseout',
@@ -864,14 +878,15 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 
 tipClass.prototype._correctPos = function() {
 
-	// "this" is the tip object with d3 object type
-	var node = this.node(),
+	var node = this.dotTip.node(),
 		originTop = parseInt(node.style.top.replace('px', '')),
 		originLeft = parseInt(node.style.left.replace('px', '')),
+
+		// There are some bug issues over offsetWidth and offsetHeight
 		deltaX = node.offsetWidth / 2,
 		deltaY = node.offsetHeight;
-
-	this
+	
+	this.dotTip
 		.style('top', originTop - deltaY - 9 + 'px')
 		.style('left', originLeft - deltaX - 9/Math.sqrt(3) + 'px');
 }
