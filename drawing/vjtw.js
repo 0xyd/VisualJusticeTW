@@ -799,28 +799,21 @@ var tipClass = function() {
 
 	this.dotTip = d3.select('#PANEL')
 		.append('div')
-		.attr('id', 'DOT-TIP')
-		.attr('class', 'tip');
+			.attr('id', 'DOT-TIP')
+			.attr('class', 'tip');
+
+	this.barTip = d3.select('#PANEL')
+		.append('div')
+			.attr('id', 'BAR-TIP')
+			.attr('class', 'tip');			
 }
 
-tipClass.prototype.appendMouseOver = function(dOption) {
+tipClass.prototype.appendDotMouseOver = function(dOption) {
 
-	var self = this;
+	var self = this,
 
-	var dotTipNode = document.getElementById('DOT-TIP'),
-		parentContainers = listAncestorNodes(dotTipNode),
-
-		offset = 
-			calOffsetFromOrigins(parentContainers),
-
-		displayPanelStyle = 
-			window.getComputedStyle(document.getElementById('DISPLAY_PANEL'));
-
-
-		offset.X += 
-				parseInt(displayPanelStyle['padding-left'].replace('px', ''));
-		offset.Y += 
-				parseInt(displayPanelStyle['padding-top'].replace('px', ''));
+		// Set up the origin of the dot tip
+		offset = this._setOffset('DOT-TIP');
 
 		d3.select('#SKETCHPAD')
 			.selectAll('.dots')
@@ -829,30 +822,14 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 				function(d) {
 
 					var posX = parseInt(this.getAttribute('cx')),
-						posY = parseInt(this.getAttribute('cy')),
-						svgStyle = window.getComputedStyle(this.parentNode.parentNode, null);
+						posY = parseInt(this.getAttribute('cy'));
 	
 					self.dotTip
 						.classed('display', true)
 
 						// Make the tip's origin fixed at center of circles
-						.style(
-							'top', 
-							posY +
-							offset.Y 
-								// calculate the top padding of svg for y offset
-								+ parseInt(svgStyle['padding-top'].replace('px', '') ) 
-								+ 'px'
-							)
-						.style(
-							'left',
-						 	posX +
-						 	offset.X 
-						 		// calculate the left padding of svg for x offset
-							 	+ parseInt(svgStyle['padding-left'].replace('px', '')) 
-							 	+ 'px'
-						 	)
-
+						.style('top', posY + offset.Y + 'px')
+						.style('left', posX +offset.X + 'px')
 						.html(function() {
 
 							info = 
@@ -863,7 +840,7 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 
 						})
 						.call(function(d) {
-							self._correctPos();
+							self._correctPos('DOT-TIP');
 						});
 			})
 			.on(
@@ -876,19 +853,132 @@ tipClass.prototype.appendMouseOver = function(dOption) {
 
 }
 
-tipClass.prototype._correctPos = function() {
+tipClass.prototype.appendBarMouseOver = function(dOption) {
 
-	var node = this.dotTip.node(),
-		originTop = parseInt(node.style.top.replace('px', '')),
-		originLeft = parseInt(node.style.left.replace('px', '')),
+	var self = this;
+		// Set up the origin of the bar tip
+		offset = this._setOffset('BAR-TIP');
 
-		// There are some bug issues over offsetWidth and offsetHeight
-		deltaX = node.offsetWidth / 2,
-		deltaY = node.offsetHeight;
-	
-	this.dotTip
-		.style('top', originTop - deltaY - 9 + 'px')
-		.style('left', originLeft - deltaX - 9/Math.sqrt(3) + 'px');
+	d3.select('#SKETCHPAD')
+		.selectAll('.bar')
+		.on(
+			'mouseover', 
+			function(d) {
+				
+				var posX = 
+						parseFloat(this.getAttribute('x')) + 
+						parseFloat(this.getAttribute('width')/2),
+					posY = parseFloat(this.getAttribute('y'));
+
+				self.barTip
+					.classed('display', true)
+
+					// Make the tip's origin fixed at center of circles
+					.style('top',  posY + offset.Y + 'px')
+					.style('left', posX + offset.X + 'px')
+
+					.html(function() {
+
+						info = 
+							'民國 ' + d['民國'] + '<br>' +
+						   		dOption + ': ' + d[dOption];
+
+						return info
+
+					})
+					.call(function(d) {
+						self._correctPos('BAR-TIP');
+					});
+			})
+		.on(
+			'mouseout',
+			function(d) {
+				self.barTip
+					.classed('display', false);
+			}
+		);	
+}
+
+tipClass.prototype._setOffset = function(nodeId) {
+
+	// The origin of tip has to be the same as the origin of the sketchpad.
+	var dotTipNode = document.getElementById(nodeId),
+		parentContainers = listAncestorNodes(dotTipNode),
+
+		offset = 
+			calOffsetFromOrigins(parentContainers),
+
+		displayPanelStyle = 
+			window.getComputedStyle(document.getElementById('DISPLAY_PANEL')),
+
+		svgPadStyle = 
+			window.getComputedStyle(document.getElementById('SKETCHPAD'), null);
+
+		offset.X += 
+				parseInt(displayPanelStyle['padding-left'].replace('px', '')) +
+					parseInt(svgPadStyle['padding-left'].replace('px', ''))
+		offset.Y += 
+				parseInt(displayPanelStyle['padding-top'].replace('px', '')) +
+					parseInt(svgPadStyle['padding-top'].replace('px', ''))
+	return offset
+
+}
+
+
+tipClass.prototype._correctPos = function(tipId) {
+
+	var self = this,
+
+		tipD3Obj = null,
+		node = null,
+
+		arrowHeight = 9,
+		arrowHalfWidth = 9/Math.sqrt(3);
+
+		// deltaX = null;
+		// deltaY = null;
+
+		(function() {
+			if ( tipId === 'DOT-TIP' ) {
+				tipD3Obj = self.dotTip;
+				node = self.dotTip.node();
+				
+			}
+			else if ( tipId === 'BAR-TIP' ){
+				tipD3Obj = self.barTip;
+				node = self.barTip.node();
+				// deltaX = ;
+				// deltaY = ;
+			}
+		})();
+
+	var originTop = parseInt(node.style.top.replace('px', '')),
+		originLeft = parseInt(node.style.left.replace('px', ''));
+
+	var updatedTop = 
+			originTop - node.offsetHeight - arrowHeight,
+		updatedLeft = 
+			originLeft - node.offsetWidth/2 - arrowHalfWidth;	
+
+
+	if ( updatedTop > 0 && updatedLeft > 0 ) {
+
+		tipD3Obj
+			.classed('tip-before-display', false)
+			.classed('tip-after-display', true)
+			.style('top', updatedTop + 'px')
+			.style('left', updatedLeft + 'px');
+
+	} else if ( updatedTop < 0 ) {
+
+		updatedTop = originTop + arrowHeight;
+
+		tipD3Obj
+			.classed('tip-before-display', true)
+			.classed('tip-after-display', false)
+			.style('top', updatedTop + 'px')
+			.style('left', updatedLeft + 'px');
+	}
 }
 
 
