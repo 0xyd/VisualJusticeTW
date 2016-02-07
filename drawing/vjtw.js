@@ -262,6 +262,17 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 				});
 }
 
+
+/* 
+The bar information is the combined information of other sub elements
+Stack bars display the users about what the bars are composed of.
+*/
+barGraphClass.prototype._makeStackBars = function() {
+
+
+
+}
+
 barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 
 	var self = this;
