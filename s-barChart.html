@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<link rel="stylesheet" type="text/css" href="./style/reset.css">
+	<link rel="stylesheet" type="text/css" href="./style/pureGrid.css">
+	<link rel="stylesheet" type="text/css" href="./style/common.css">
+	<script type="text/javascript" src="./libs/react-0.14.7.js"></script>
+	<script type="text/javascript" src="./libs/react-dom-0.14.7.js"></script>
+	<style type="text/css">
+		html, body, #CONTAINER, #HOME, #PANEL {
+			width: 100%;
+			height: 100%;
+		}
+		#LOGO-WRAPPER { 
+			padding: 20px;
+		}
+		#LOGO {
+			background: url('./src/vjtw-logo.png');
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-position: 50%;
+		}
+		#TITLE { 
+			display: block;  
+			margin: 0px auto;
+		}
+		#PANEL { 
+			height: 100%; 
+			/*background-image: url('../Visual Design/elements/JusticeVisualizingLOGO_1_w300.png');*/
+			/*background-size: contain;*/
+			background-position: 50% 50%;
+			background-repeat: no-repeat;
+			/*background-size: #f7f9f9;*/
+		}
+		#DISPLAY_PANEL, #CRTL_PANEL { display: inline-block; }
+		#DISPLAY_PANEL { height: 100%; }
+		#CRTL_PANEL { height: 100%; position: relative; }
+		/*#OPTSCHART { position: absolute; top: 10%; }*/
+		/*#OPTS { position: absolute; top: 30%; }*/
+		#OPTS fieldset { display:block; margin: 0px auto; border: 0px; }
+		#OPTS fieldset legend { font-size: 1.2em; }
+		#OPTS fieldset label { display: block; font-weight: 400; }
+		/*#SUBOPTS { position: absolute; top: 60%; }*/
+		#SUBOPTS label { display: block; }
+		/* Left the padding for axes */
+		/*#SKETCHPAD { padding-top: 10%; padding-left: 5%; padding-bottom: 5%; }*/
+
+		#NAVI { padding: 10px 20px; }
+
+		#FILTER {
+			position: relative;
+			border: 1px solid #adadad;
+			border-radius: 4px;
+		}
+		#FILTER-TITLE { 
+			text-align: center; 
+			font-weight: 800;
+ 			background-color: #333;
+			color: #f1f1f1;
+			font-size: 0.8em;
+		}
+
+		.hdr-div--txt-mid { text-align: center; }
+
+		.formblock-fieldset {
+			border-bottom: 1px solid #ddd;
+		}
+
+		.formblock-fieldset:last-child { border-bottom: 1px solid transparent; }
+
+		.dropdown {
+			padding: 0 10%;
+		}
+
+		.dropdown-btn {
+			display: block;
+			height: 30px;
+			width: 100%;
+			margin: 0px auto;
+			background-color: #337ab7;
+			border: 1px solid #236da4;
+			border-radius: 4px;
+		}
+
+		.dropdown-txt {  
+			color: #fff;
+			font-size: 1.2em;
+		}
+
+		.dropdown-group { 
+			position: relative;
+			display: inline-block;
+			vertical-align: middle;
+			width: 98%; 
+		}
+
+		.dropdown-title {
+			color: #666;
+			text-align: center;
+			margin: 0.25em auto 0.25em;
+		}
+
+		.dropdown-caret {
+			display: inline-block;
+			width: 0;
+			height: 0;
+			border-right: 4px solid transparent;
+			border-left: 4px solid transparent;
+			border-top: 4px solid #fff;
+			vertical-align: middle;
+		}
+
+		.dropdown-menu {
+			position: absolute;
+			top: 100%;
+			z-index: 1000;
+			display: none;
+			border: 1px solid #999;
+			border-radius: 4px;
+			font-size: 0.8em;
+			text-align: center;
+			min-width: 170px;
+			background-color: #fff;
+		}
+
+		.dropdown-menu.displayed { display: block; }
+
+		.dropdown-menu li {
+			padding: 0.5em 0em;
+			border-bottom: 1px solid #888;
+		}
+
+		.dropdown-menu li:last-child {
+			border-bottom: none;
+		}
+
+		.formblock-fieldset:last-child .dropdown-menu { top: 25px; }
+
+		.mark { font-family: sans-serif; font-size: 0.8em; fill: #fff; }
+		.x-axis path { fill: none; }
+		.x-axis .axis-name,
+		.y-axis .axis-name { font-size: 0.95em; font-family: sans-serif; }
+		.x-axis path { fill: none; stroke: #909090; }
+		.y-axis path { fill: none; stroke: #f1f1f1; }
+		.x-axis .tick text,
+		.y-axis .tick text { font-size: 0.95em;font-family: monospace; }
+
+		.tip {
+			display: none;
+			position: absolute;
+			/*width: 100px;*/
+			padding: 5px;
+			background-color: #333;
+			color: #fff;
+			line-height: 1.5;
+			font-size: 14px;
+		}
+		.tip::after, .tip::before { 
+			box-sizing: border-box;
+			position: absolute; 
+			color: #333;
+			font-size: 16px;
+			width: 100%;
+			left: 49%;
+			line-height: 0.6;
+
+		}
+
+		.tip::before { 
+			display: none;
+			content: "\25B2";
+			top: -9px; 
+		}
+
+		.tip::after { 
+			display: none;
+			content: "\25BC";
+			top: 100%; 
+		}
+
+		.tip-after-display::after, 
+		.tip-before-display::before { display: block; }
+
+		.tip-after-none::after, 
+		.tip-before-none::before { display: none; }
+
+
+		.tip.display { display: inline-block; }
+		.tip, .tip:after { opacity: 0.8; }
+	</style>
+</head>
+<body>
+	<div id="CONTAINER">
+		<!-- <header class="b20-col-md-4 b12-row-md-12">
+			<div id="LOGO-WRAPPER" class="b12-col-md-12 b15-row-md-5 hdr-div">
+				<div id="LOGO" class="b12-col-md-12 b12-row-md-12"></div>
+			</div>
+			<div class="b12-col-md-12 b15-row-md-1 hdr-div">
+				<img id="TITLE" src="./src/correctStatTitle.png">
+			</div>
+			<nav id="NAVI" class="b12-col-md-12 b15-row-md-8 hdr-div">
+				<form id="FILTER" class="b15-row-md-15">
+					<div id="FILTER-TITLE" class="b15-row-md-1">
+						<span class="ver-helper"></span>
+						<span style="vertical-align: middle;">資料選擇</span>
+					</div>
+					<div class="b12-col-md-12 b15-row-md-14">
+						<fieldset class="b12-col-md-12 b12-row-md-3 formblock-fieldset">
+						<span class="ver-helper"></span>
+						<div class="dropdown-group">
+							<legend class="dropdown-title">
+								<span>選擇主題</span>
+							</legend>
+							<div class="dropdown">
+								<button class="dropdown-btn">
+									<span class="dropdown-txt">監獄人數概況</span>
+									<span class="dropdown-caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									
+								</ul>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="b12-col-md-12 b12-row-md-3 formblock-fieldset">
+						<div class="b12-col-md-12 b12-row-md-12">
+							<span class="ver-helper"></span>
+							<div class="dropdown-group">
+								<legend class="dropdown-title"><span>選擇類別</span></legend>
+								<div class="dropdown">
+									<button class="dropdown-btn">
+										<span class="dropdown-txt">本年執行人數</span>
+										<span class="dropdown-caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li>本年執行人數</li>
+										<li>本年入監人數</li>
+										<li>新入監人數</li>
+										<li>本年出獄人數</li>
+										<li>本年年底留監人數</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="b12-col-md-12 b12-row-md-3 formblock-fieldset">
+						<div class="b12-col-md-12 b12-row-md-12">
+							<span class="ver-helper"></span>
+							<div class="dropdown-group">
+								<legend class="dropdown-title"><span>選擇子類別</span></legend>
+								<div class="dropdown">
+									<button class="dropdown-btn">
+										<span class="dropdown-txt">總數</span>
+										<span class="dropdown-caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li></li>
+										<li></li>
+										<li></li>
+										<li></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="b12-col-md-12 b12-row-md-3 formblock-fieldset">
+						<div class="b12-col-md-12 b12-row-md-12">
+							<span class="ver-helper"></span>
+							<div class="dropdown-group">
+								<legend class="dropdown-title"><span>選擇圖形</span></legend>
+								<div class="dropdown">
+									<button class="dropdown-btn">
+										<span class="dropdown-txt">長條圖</span>
+										<span class="dropdown-caret"></span>
+									</button>
+									<ul class="dropdown-menu">
+										<li>長條圖</li>
+										<li>折線圖</li>
+										<li>面積圖</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+					</div>
+				</form> -->
+				<!-- <form id="OPTSCHART">
+				<label style="display: block;">
+					<input id="OPTBARCHRT" type="radio" name="charttype" 
+						   onclick="
+							if ( this.checked ) {
+								prepareBarChrt();
+								
+								barGraph.beVisible();
+								lineGraph.hide();
+								lineGraph.hideUnderArea();
+							}
+							" checked> 
+					<span>長條圖</span> 
+				</label>
+				<label style="display: block;">
+					<input id="OPTLINECHRT" type="radio" name="charttype" 
+						   onclick="
+						   if ( this.checked ) {
+						   		prepareBarChrt();
+								lineGraph.beDisplayed();
+								lineGraph.hideUnderArea();
+								barGraph.hide();
+						   }
+						   
+						    "> 
+					<span>折線圖</span>
+				</label>
+				<label style="display: block;">
+					<input id="AREAOPT" type="radio" name="charttype" 
+					onclick="
+						if ( this.checked ) {
+							prepareBarChrt();
+							
+							
+							lineGraph.displayUnderArea();
+							lineGraph.hide();
+							barGraph.hide();
+						}
+						
+					">
+					<span>面積圖</span>
+				</label>
+			</form>
+			<form id="OPTS">
+				<fieldset>
+					<legend>監獄人數概況</legend>
+					<label>
+						<input 
+							type="radio" name="prisonDataOption" 
+							value="本年執行人數" 
+							id="OPT1"
+							onclick= 
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數');
+
+							 "
+						 	}
+
+							}
+							
+							checked><span>本年執行人數</span>
+						</label>
+					<label>
+					<label>
+						<input 
+							type="radio" name="prisonDataOption" 
+							value="本年入監人數" 
+							id="OPT2"
+							onclick=
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年入監人數');
+
+							 	">
+							<span>本年入監人數</span>
+						</label>
+					<label>
+						<input 
+							type="radio" name="prisonDataOption" 
+							value="新入監人數"
+							id="OPT3"
+							onclick=
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '新入監人數');">
+							<span>新入監人數</span>
+						</label>
+					<label>
+						<input 
+							type="radio" name="prisonDataOption" 
+							value="本年出獄人數"
+							id="OPT4"
+							onclick=
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年出獄人數');">
+								<span>本年出獄人數</span>
+						</label>
+					<label>
+						<input 
+							type="radio" name="prisonDataOption" 
+							value="本年年底留監人數"
+							id="OPT5"
+							onclick=
+							"
+							prepareBarChrt();
+							updateChrt('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年年底留監人數');
+							">
+							<span>本年年底留監人數</span>
+						</label>
+				</fieldset>
+			</form>
+			<form id="SUBOPTS">
+				<label>
+					<input type="radio" name="suboption" id="SUBOPT1" checked>
+						<span>總數</span>
+				</label>
+				<label>
+					<input type="radio" name="suboption" id="SUBOPT2">
+						<span>上年留監與年底在監人數</span>
+				</label>
+			</form> -->
+			</nav>
+			<div class="b12-col-md-12 b15-row-md-1 hdr-div hdr-div--txt-mid">
+				<span class="ver-helper"></span>
+				<a id="HOME-LINK" href="">vjtw.org</a>
+			</div>
+		</header>
+		<section>
+			
+		</section>
+	</div>
+	<script type="text/javascript">
+		// Add event listers to options
+		var opts = [ 
+			{
+				'#OPT1': ['總數', '上年底留監人數與在監人數']
+			}, 
+			{
+				'#OPT2': ['總數']
+			}, 
+			{
+				'#OPT3': ['總數', '教育程度', '犯罪次數與種類', '家庭狀況']
+			}, 
+			{
+				'#OPT4': ['總數']
+			}, 
+			{
+				'#OPT5': ['總數']
+			}];
+
+		(function() {
+
+			var subOptsForm = 
+					document.getElementById('SUBOPTS');
+
+			for ( var i = 0; i < opts.length ; ++i ) {
+
+				var optId = "#OPT" + (i+1);
+
+				$(optId).on('click', function() {
+
+					// Clear all old suboptions.
+					$(subOptsForm).empty();
+
+					// 
+					var selectedSubOpts = (function(option) {
+
+						var idSelector = '#' + option.id;
+
+						for ( var j=0; j<opts.length; ++j )
+
+							if (opts[j][idSelector])
+								return {
+							 		items: opts[j][idSelector]
+								}
+					})(this);
+
+
+					for ( var k in selectedSubOpts.items ) {
+
+						var subOptId = "SUBOPT" + (parseInt(k)+1),
+							label = document.createElement('label'),
+							radio = document.createElement('input'),
+							span = document.createElement('span');
+
+						radio.id = subOptId;
+						radio.name = 'suboption';
+						radio.type = 'radio';
+
+						if ( k === '0' ) radio.checked = true;
+
+						span.innerHTML = selectedSubOpts.items[k];
+
+						label.appendChild(radio);
+						label.appendChild(span);
+						
+						subOptsForm.appendChild(label);
+
+					}
+				});
+			}
+
+				
+
+		})();
+
+
+		// var barGraph = new barGraphClass(),
+		// 	lineGraph = new lineGraphClass(),
+		// 	tip = new tipClass();
+
+		// 	barGraph.initializeAPad();
+		// 	barGraph.setChartSize();
+		// 	barGraph.setOutPadding(10);
+		// 	barGraph.setStep(10);
+		// 	barGraph.drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數')
+		// 		.then(function(jsonOutput) {
+
+		// 			lineGraph.inheritPad(
+		// 				barGraph.pad, 
+		// 				barGraph.padHeight, 
+		// 				barGraph.padWidth, 
+		// 				barGraph.padPadding);
+
+		// 			lineGraph.setChartSize();
+
+		// 			lineGraph.plotBars(
+		// 				jsonOutput.data,
+		// 				jsonOutput.pad, 
+		// 				null,
+		// 				jsonOutput.barWidth/2
+		// 				).then(function(o) {
+
+		// 					lineGraph.linePath = o.line;
+		// 					lineGraph.lineDots = o.dots; 
+		// 					lineGraph.areaUnderLine = o.area;
+
+		// 					whichDisplayed();
+
+		// 					tip.appendDotMouseOver('本年執行人數');
+		// 					tip.appendBarMouseOver('本年執行人數');
+		// 				});
+
+		// 	});
+
+		function prepareBarChrt() {
+
+			if (document.getElementById('OPTBARCHRT').checked)
+				barGraph.beVisible();
+			else barGraph.bePhantom();
+		}
+
+		function updateChrt(path, xLabel, yLabel, dOption) {
+
+			barGraph
+				.update(path, xLabel, yLabel, dOption)
+					.then(function(jsonOutput) {
+
+						lineGraph.plotBars(
+							jsonOutput.data,
+							jsonOutput.pad,
+							jsonOutput.updatedBars, 
+							jsonOutput.barWidth/2
+						).then(function(o) {
+
+							 lineGraph.linePath = o.line;
+							 lineGraph.lineDots = o.dots;
+							 lineGraph.areaUnderLine = o.area;
+
+							 whichDisplayed();
+
+							 tip.appendDotMouseOver(dOption);
+							 tip.appendBarMouseOver(dOption);
+
+							 });
+					});
+
+		}
+
+		function whichDisplayed() {
+
+			if (document.getElementById('OPTLINECHRT').checked) {
+				barGraph.hide();
+				lineGraph.beDisplayed();
+				lineGraph.hideUnderArea();
+			} else if (document.getElementById('OPTBARCHRT').checked) {
+				barGraph.beVisible();
+				lineGraph.hide();
+				lineGraph.hideUnderArea();
+			}
+			else {
+				barGraph.hide();
+				lineGraph.hide();
+				lineGraph.displayUnderArea();
+			}			
+		}
+	</script>
+	<script type="text/javascript" src="./libs/d3.js"></script>
+	<script type="text/javascript" src="./scripts/vjtw.js"></script>
+	<script type="text/javascript" src="./scripts/buildBarChart-compiled.js"></script>
+</body>
+</html>

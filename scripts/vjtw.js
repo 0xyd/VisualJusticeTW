@@ -114,6 +114,7 @@ graphClass.prototype.initializeAPad = function() {
 		left:    this.pad.style('padding-left').replace('px', ''),
 		right:   this.pad.style('padding-right').replace('px', '')
 	}
+	return this
 }
 
 graphClass.prototype.readCSV = function(path) {
@@ -152,11 +153,18 @@ barGraphClass.prototype.constructor = barGraphClass;
 barGraphClass.prototype.setChartSize = function() {
 	this.chartHeight = this.padHeight - this.padPadding.top - this.padPadding.bottom;
 	this.chartWidth = this.padWidth - this.padPadding.left - this.padPadding.right	;
+	return this
 }
 
-barGraphClass.prototype.setOutPadding = function(val) { this.outPadding = val; }
+barGraphClass.prototype.setOutPadding = function(val) { 
+	this.outPadding = val; 
+	return this
+}
 
-barGraphClass.prototype.setStep = function(val) { this.step = val; }
+barGraphClass.prototype.setStep = function(val) { 
+	this.step = val; 
+	return this
+}
 
 barGraphClass.prototype._setBarWidth = function(dataset) {
 	this.barWidth = 
@@ -534,6 +542,8 @@ lineGraphClass.prototype.setChartSize = function(motherPad) {
 			motherPad.padPadding.left - motherPad.padPadding.right :
 		this.padWidth - 
 			this.padPadding.left - this.padPadding.right;
+
+	return this
 }
 
 // Plot the data from bar graph.
@@ -684,6 +694,7 @@ lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, p
 	this.padHeight = padHeight;
 	this.padWidth = padWidth;
 	this.padPadding = padPadding;	
+	return this
 }
 
 lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, yLabel, dOption) {
@@ -780,11 +791,13 @@ lineGraphClass.prototype.isInvisible = function() {
 lineGraphClass.prototype.hide = function() {
 	this.linePath.style('display', 'none');
 	this.lineDots.style('display', 'none');
+	return this
 }
 
 lineGraphClass.prototype.beDisplayed = function() {
 	this.linePath.style('display', 'inline');
 	this.lineDots.style('display', 'inline');
+	return this
 }
 
 lineGraphClass.prototype.isLineHidden = function() {
@@ -807,16 +820,21 @@ lineGraphClass.prototype.hideUnderArea = function() {
 
 /* A class for tooltip */
 var tipClass = function() {
-
+	console.log(d3.select('#PANEL'));
+	
 	this.dotTip = d3.select('#PANEL')
 		.append('div')
 			.attr('id', 'DOT-TIP')
 			.attr('class', 'tip');
 
+	console.log(this.dotTip);
+
 	this.barTip = d3.select('#PANEL')
 		.append('div')
 			.attr('id', 'BAR-TIP')
-			.attr('class', 'tip');			
+			.attr('class', 'tip');
+
+	console.log(this.barTip);			
 }
 
 tipClass.prototype.appendDotMouseOver = function(dOption) {
@@ -831,7 +849,7 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 			.on(
 				'mouseover', 
 				function(d) {
-
+					
 					var posX = parseInt(this.getAttribute('cx')),
 						posY = parseInt(this.getAttribute('cy'));
 	
@@ -875,7 +893,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		.on(
 			'mouseover', 
 			function(d) {
-				
+
 				var posX = 
 						parseFloat(this.getAttribute('x')) + 
 						parseFloat(this.getAttribute('width')/2),
@@ -962,6 +980,8 @@ tipClass.prototype._correctPos = function(tipId) {
 				// deltaY = ;
 			}
 		})();
+
+	console.log(self.barTip);
 
 	var originTop = parseInt(node.style.top.replace('px', '')),
 		originLeft = parseInt(node.style.left.replace('px', ''));

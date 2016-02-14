@@ -193,7 +193,6 @@ var IndexSectionDiv = React.createClass({
 				</div>
 			</div>
 		)
-		
 	}
 });
 
