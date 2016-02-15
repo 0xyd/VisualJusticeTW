@@ -820,21 +820,30 @@ lineGraphClass.prototype.hideUnderArea = function() {
 
 /* A class for tooltip */
 var tipClass = function() {
-	console.log(d3.select('#PANEL'));
+
+	var panel = d3.select('#PANEL');
 	
-	this.dotTip = d3.select('#PANEL')
-		.append('div')
+	this.dotTip = panel ? 
+		panel.append('div')
 			.attr('id', 'DOT-TIP')
-			.attr('class', 'tip');
+			.attr('class', 'tip') : undefined;
 
-	console.log(this.dotTip);
-
-	this.barTip = d3.select('#PANEL')
-		.append('div')
+	this.barTip = panel ? 
+		panel.append('div')
 			.attr('id', 'BAR-TIP')
-			.attr('class', 'tip');
+			.attr('class', 'tip') : undefined;
 
-	console.log(this.barTip);			
+}
+
+tipClass.prototype.initTips = function() {
+	this.dotTip = 
+		d3.select('#PANEL')
+			.append('div')
+				.attr('id', 'DOT-TIP').attr('class', 'tip'); 
+	this.barTip = 
+		d3.select('#PANEL')
+			.append('div')
+				.attr('id', 'BAR-TIP').attr('class', 'tip'); 
 }
 
 tipClass.prototype.appendDotMouseOver = function(dOption) {
@@ -865,7 +874,7 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 								'民國 ' + d['民國'] + '<br>' +
 							   		dOption + ': ' + d[dOption];
 
-							return info
+							return '<span id="DOT-INFO">' + info + '</span>'
 
 						})
 						.call(function(d) {
@@ -897,7 +906,8 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 				var posX = 
 						parseFloat(this.getAttribute('x')) + 
 						parseFloat(this.getAttribute('width')/2),
-					posY = parseFloat(this.getAttribute('y'));
+					posY = 
+						parseFloat(this.getAttribute('y'));
 
 				self.barTip
 					.classed('display', true)
@@ -912,7 +922,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 							'民國 ' + d['民國'] + '<br>' +
 						   		dOption + ': ' + d[dOption];
 
-						return info
+						return '<span id="BAR-INFO">' + info + '</span>'
 
 					})
 					.call(function(d) {
@@ -935,20 +945,24 @@ tipClass.prototype._setOffset = function(nodeId) {
 		parentContainers = listAncestorNodes(dotTipNode),
 
 		offset = 
-			calOffsetFromOrigins(parentContainers),
+			calOffsetFromOrigins(parentContainers, dotTipNode),
 
 		displayPanelStyle = 
 			window.getComputedStyle(document.getElementById('DISPLAY_PANEL')),
 
 		svgPadStyle = 
-			window.getComputedStyle(document.getElementById('SKETCHPAD'), null);
+			window.getComputedStyle(document.getElementById('SKETCHPAD'), null),
+
+		headerStyle = 
+			window.getComputedStyle(document.getElementById('DASHBOARD_HDR'), null);
 
 		offset.X += 
 				parseInt(displayPanelStyle['padding-left'].replace('px', '')) +
-					parseInt(svgPadStyle['padding-left'].replace('px', ''))
+					parseInt(svgPadStyle['padding-left'].replace('px', '')) +
+						parseInt(headerStyle['width'].replace('px', ''));
 		offset.Y += 
 				parseInt(displayPanelStyle['padding-top'].replace('px', '')) +
-					parseInt(svgPadStyle['padding-top'].replace('px', ''))
+					parseInt(svgPadStyle['padding-top'].replace('px', ''));
 	return offset
 
 }
@@ -960,28 +974,23 @@ tipClass.prototype._correctPos = function(tipId) {
 
 		tipD3Obj = null,
 		node = null,
+		infoNode = null,
 
 		arrowHeight = 9,
 		arrowHalfWidth = 9/Math.sqrt(3);
-
-		// deltaX = null;
-		// deltaY = null;
 
 		(function() {
 			if ( tipId === 'DOT-TIP' ) {
 				tipD3Obj = self.dotTip;
 				node = self.dotTip.node();
+				infoNode = self.barTip.select('#DOT-INFO').node();
 				
-			}
-			else if ( tipId === 'BAR-TIP' ){
+			} else if ( tipId === 'BAR-TIP' ) {
 				tipD3Obj = self.barTip;
 				node = self.barTip.node();
-				// deltaX = ;
-				// deltaY = ;
+				infoNode = self.barTip.select('#BAR-INFO').node();
 			}
 		})();
-
-	console.log(self.barTip);
 
 	var originTop = parseInt(node.style.top.replace('px', '')),
 		originLeft = parseInt(node.style.left.replace('px', ''));
@@ -991,7 +1000,6 @@ tipClass.prototype._correctPos = function(tipId) {
 		updatedLeft = 
 			originLeft - node.offsetWidth/2 - arrowHalfWidth;	
 
-
 	if ( updatedTop > 0 && updatedLeft > 0 ) {
 
 		tipD3Obj
@@ -1000,6 +1008,7 @@ tipClass.prototype._correctPos = function(tipId) {
 			.style('top', updatedTop + 'px')
 			.style('left', updatedLeft + 'px');
 
+	/* When the tip is beyond the view we can see */
 	} else if ( updatedTop < 0 ) {
 
 		updatedTop = originTop + arrowHeight;
@@ -1009,7 +1018,9 @@ tipClass.prototype._correctPos = function(tipId) {
 			.classed('tip-after-display', false)
 			.style('top', updatedTop + 'px')
 			.style('left', updatedLeft + 'px');
-	}
+
+	} 
+
 }
 
 
@@ -1083,7 +1094,7 @@ function listAncestorNodes(node) {
 
 }
 
-function calOffsetFromOrigins(containers) {
+function calOffsetFromOrigins(containers, contextNode) {
 
 	var offsetX = 0,
 		offsetY = 0,
@@ -1105,7 +1116,6 @@ function calOffsetFromOrigins(containers) {
 					parseInt(containerSpec['margin-top'].replace('px', '')));
 
 	} 
-
 	return { X: offsetX, Y: offsetY }
 }
 

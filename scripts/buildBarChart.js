@@ -55,6 +55,8 @@ var ChartPanel = React.createClass({
 			.drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數')
 				.then(function(jsonOutput) {
 
+					t.initTips();
+
 					lG.inheritPad(
 						bG.pad, 
 						bG.padHeight, 
@@ -100,7 +102,7 @@ var ChartPanel = React.createClass({
 var DashBoardSide = React.createClass({
 	render: function() {
 		return(
-			<header className="b20-col-md-4 b12-row-md-12">
+			<header id="DASHBOARD_HDR" className="b20-col-md-4 b12-row-md-12">
 				<Logo />
 				<StatTitle />
 				<StatNav />

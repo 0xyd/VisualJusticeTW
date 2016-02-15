@@ -53,6 +53,8 @@ var ChartPanel = React.createClass({
 
 		bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數').then(function (jsonOutput) {
 
+			t.initTips();
+
 			lG.inheritPad(bG.pad, bG.padHeight, bG.padWidth, bG.padPadding).setChartSize().plotBars(jsonOutput.data, jsonOutput.pad, null, jsonOutput.barWidth / 2).then(function (o) {
 
 				lG.linePath = o.line;
@@ -79,7 +81,7 @@ var DashBoardSide = React.createClass({
 	render: function render() {
 		return React.createElement(
 			'header',
-			{ className: 'b20-col-md-4 b12-row-md-12' },
+			{ id: 'DASHBOARD_HDR', className: 'b20-col-md-4 b12-row-md-12' },
 			React.createElement(Logo, null),
 			React.createElement(StatTitle, null),
 			React.createElement(StatNav, null),
