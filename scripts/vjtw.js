@@ -811,10 +811,12 @@ lineGraphClass.prototype.isLineHidden = function() {
 
 lineGraphClass.prototype.displayUnderArea = function() {
 	this.areaUnderLine.style('display', 'inline');
+	return this
 }
 
 lineGraphClass.prototype.hideUnderArea = function() {
 	this.areaUnderLine.style('display', 'none');
+	return this
 }
 
 

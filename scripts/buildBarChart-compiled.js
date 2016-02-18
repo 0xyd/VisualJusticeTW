@@ -10,10 +10,126 @@ var DashBoard = React.createClass({
 		};
 	}(),
 
+	getInitialState: function getInitialState() {
+		return {
+			dataset: null,
+			topic: null,
+			chartType: null,
+
+			indexDB: [{
+				dataset: '監獄人數概況',
+				content: {
+					topics: [{
+						name: '本年執行人數',
+						compos: ["總數"],
+						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+					}, {
+						name: '本年入監人數',
+						compos: ["總數"],
+						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+					}, {
+						name: '新入監人數',
+						compos: ["總數"],
+						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+					}, {
+						name: '本年出獄人數',
+						compos: ["總數"],
+						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+					}, {
+						name: '本年年底留監人數',
+						compos: ["總數"],
+						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+					}]
+				}
+			}, {
+				dataset: '新入監資料概覽',
+				content: {
+					topics: []
+				}
+			}]
+		};
+	},
+
+	componentWillMount: function componentWillMount() {
+		this.setState({
+			dataset: '監獄人數概況',
+			topic: '本年執行人數',
+			chartType: '長條圖'
+		});
+	},
+
 	componentDidMount: function componentDidMount() {
 		// this.graphs.tip = new tipClass();
 		// this.graphs.tip.appendDotMouseOver('本年執行人數');
 		// this.graphs.tip.appendBarMouseOver('本年執行人數');
+	},
+
+	chartRefresh: function chartRefresh() {
+		var inputStr = arguments.length <= 0 || arguments[0] === undefined ? null : arguments[0];
+		var menuIndex = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+		console.log('chart starts to refresh');
+
+		if (menuIndex === 0) {
+
+			var r = this.state.indexDB.find(function (d) {
+				if (d.dataset === inputStr) return true;
+			});
+
+			this.setState({
+				dataset: r.dataset,
+				topic: r.content.topics[0].name
+			});
+		} else if (menuIndex === 1) {
+
+			var state = this.state,
+			   
+
+			// Find out the index of current selected dataset.
+			cDatasetIdx = findCurrentDatasetIndex(this.state),
+			    r = this.state.indexDB[cDatasetIdx].content.topics.find(function (d) {
+				if (d.name === inputStr) return true;
+			});
+
+			this.setState({ topic: r.name });
+		} else if (menuIndex === 2) {} else if (menuIndex === 3) {
+
+			var cDatasetIdx = findCurrentDatasetIndex(this.state),
+			    cTopicIdx = findCurrentTopicIndex(this.state, cDatasetIdx),
+			    r = this.state.indexDB[cDatasetIdx].content.topics[cTopicIdx].availableChartTypes.find(function (d) {
+				if (d === inputStr) return true;
+			});
+
+			this.setState({ chartType: r });
+		}
+
+		// Find out the index of current selected dataset.
+		function findCurrentDatasetIndex(s) {
+			var index = s.indexDB.findIndex(function (d) {
+				if (d.dataset === s.dataset) return true;
+			});
+			return index;
+		}
+
+		function findCurrentTopicIndex(s, datasetIdx) {
+			var index = s.indexDB[datasetIdx].content.topics.findIndex(function (d) {
+				if (d.name === s.topic) return true;
+			});
+			return index;
+		}
+
+		// this.setState({
+		// 	dataset: r.dataset,
+		// 	topic: topic
+		// });
+	},
+
+	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+		console.log('DashBoard should refresh');
+	},
+
+	shouldComponentUpdate: function shouldComponentUpdate() {
+		return true;
 	},
 
 	render: function render() {
@@ -21,8 +137,13 @@ var DashBoard = React.createClass({
 		return React.createElement(
 			'div',
 			{ id: 'PANEL' },
-			React.createElement(DashBoardSide, null),
+			React.createElement(DashBoardSide, {
+				chartRefresh: this.chartRefresh,
+				indexDB: this.state.indexDB }),
 			React.createElement(ChartPanel, {
+				dataset: this.state.dataset,
+				topic: this.state.topic,
+				chartType: this.state.chartType,
 				barGraph: this.graphs.barGraph,
 				lineGraph: this.graphs.lineGraph })
 		);
@@ -36,23 +157,51 @@ var ChartPanel = React.createClass({
 
 	getInitialState: function getInitialState() {
 		return {
-			dataSource: '/correction/監獄人數概況.csv',
-			dataOption: '本年執行人數',
-			xAxis: '民國',
-			yAxis: '人數(仟人)'
+			sheetName: null,
+			dataTopic: null,
+			sheetUrl: null,
+			chartAxes: null,
+			chartType: null,
+
+			dataSheets: [{
+				name: '監獄人數概況',
+				url: '/correction/監獄人數概況.csv',
+				axes: {
+					xAxis: '民國',
+					yAxis: '人數(仟人)'
+				}
+			}]
 		};
+	},
+
+	componentWillMount: function componentWillMount() {
+
+		var tSheetName = this.props.dataset;
+
+		var currentDataSheet = this.state.dataSheets.find(function (sheet) {
+			if (sheet.name === tSheetName) return sheet;
+		});
+
+		this.setState({
+			sheetName: currentDataSheet.name,
+			sheetUrl: currentDataSheet.url,
+			chartAxes: currentDataSheet.axes,
+			dataTopic: this.props.topic,
+			chartType: this.props.chartType
+		});
 	},
 
 	componentDidMount: function componentDidMount() {
 
-		var bG = this.props.barGraph,
-		    lG = this.props.lineGraph,
-		    t = this.tip;
+		var p = this.props,
+		    bG = p.barGraph,
+		    lG = p.lineGraph,
+		    t = this.tip,
+		    chartTypeDisplay = this.chartTypeDisplay;
 
-		console.log(d3.select('#PANEL'));
+		bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(this.state.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, this.state.dataTopic).then(function (jsonOutput) {
 
-		bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData('/correction/監獄人數概況.csv', '民國', '人數(仟人)', '本年執行人數').then(function (jsonOutput) {
-
+			// Initialize the tips
 			t.initTips();
 
 			lG.inheritPad(bG.pad, bG.padHeight, bG.padWidth, bG.padPadding).setChartSize().plotBars(jsonOutput.data, jsonOutput.pad, null, jsonOutput.barWidth / 2).then(function (o) {
@@ -60,14 +209,67 @@ var ChartPanel = React.createClass({
 				lG.linePath = o.line;
 				lG.lineDots = o.dots;
 				lG.areaUnderLine = o.area;
-				lG.hide().hideUnderArea();
+				// lG.hide().hideUnderArea();
 				// whichDisplayed();
+				chartTypeDisplay(p.chartType);
 
 				t.appendDotMouseOver('本年執行人數');
 				t.appendBarMouseOver('本年執行人數');
-				console.log('finished drawing');
 			});
 		});
+	},
+
+	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+		console.log(nextProps);
+
+		var i = this.state.dataSheets.findIndex(function (d) {
+			if (d.name === nextProps.dataset) return true;
+		});
+
+		this.setState({
+			sheetName: nextProps.dataset,
+			dataTopic: nextProps.topic,
+			chartType: nextProps.chartType,
+			sheetUrl: this.state.dataSheets[i].url
+		});
+	},
+
+	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
+		console.log('Chart Panel will update');
+		var lineGraph = this.props.lineGraph,
+		    chartTypeDisplay = this.chartTypeDisplay;
+
+		this.props.barGraph.update(nextStates.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
+			lineGraph.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
+
+				lineGraph.linePath = o.line;
+				lineGraph.lineDots = o.dots;
+				lineGraph.areaUnderLine = o.area;
+
+				// whichDisplayed();
+				chartTypeDisplay(nextStates.chartType);
+
+				// tip.appendDotMouseOver(dOption);
+				// tip.appendBarMouseOver(dOption);
+			});
+		});
+	},
+
+	chartTypeDisplay: function chartTypeDisplay(chartType) {
+		console.log('chart type:' + chartType);
+		var b = this.props.barGraph,
+		    l = this.props.lineGraph;
+
+		if (chartType === "長條圖") {
+			if (b.isInvisible) b.beVisible();
+			l.hide().hideUnderArea();
+		} else if (chartType === "折線圖") {
+			b.bePhantom();
+			l.beDisplayed().hideUnderArea();
+		} else if (chartType === "面積圖") {
+			b.bePhantom();
+			l.displayUnderArea().hide();
+		}
 	},
 
 	render: function render() {
@@ -84,7 +286,9 @@ var DashBoardSide = React.createClass({
 			{ id: 'DASHBOARD_HDR', className: 'b20-col-md-4 b12-row-md-12' },
 			React.createElement(Logo, null),
 			React.createElement(StatTitle, null),
-			React.createElement(StatNav, null),
+			React.createElement(StatNav, {
+				chartRefresh: this.props.chartRefresh,
+				indexDB: this.props.indexDB }),
 			React.createElement(SideFoot, null)
 		);
 	}
@@ -121,7 +325,9 @@ var StatNav = React.createClass({
 		return React.createElement(
 			'nav',
 			{ id: 'NAVI', className: 'b12-col-md-12 b15-row-md-8 hdr-div' },
-			React.createElement(StatFilter, null)
+			React.createElement(StatFilter, {
+				chartRefresh: this.props.chartRefresh,
+				indexDB: this.props.indexDB })
 		);
 	}
 });
@@ -133,58 +339,30 @@ var StatFilter = React.createClass({
 		return {
 
 			current: {
-				topic: '監獄人數概況',
-				subTopic: '本年執行人數',
+				dataset: '監獄人數概況',
+				topic: '本年執行人數',
 				filter: '總數',
 				chartType: '長條圖'
 			},
 			filterNames: ['選擇主題', '選擇類別', '選擇成分', '選擇圖形'],
-
-			menuDisplayedStatus: [false, false, false, false],
-			// currentDisplayedMenuIndex: 0,
-
-			fields: [{
-				topic: '監獄人數概況',
-				content: {
-					subTopics: [{
-						name: '本年執行人數',
-						compos: ["總數"],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
-					}, {
-						name: '本年入監人數',
-						compos: ["總數"],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
-					}, {
-						name: '新入監人數',
-						compos: ["總數"],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
-					}, {
-						name: '本年出獄人數',
-						compos: ["總數"],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
-					}, {
-						name: '本年年底留監人數',
-						compos: ["總數"],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
-					}]
-				}
-			}, {
-				topic: '新入監資料概覽',
-				content: {
-					subTopics: []
-				}
-			}]
+			menuDisplayedStatus: [false, false, false, false]
 		};
 	},
 
-	refeshMenu: function refeshMenu(displayedMenuIndex) {
+	expandMenu: function expandMenu(menuIndex) {
 
 		var s = [false, false, false, false];
 
-		s[displayedMenuIndex] = true;
+		s[menuIndex] = true;
 
 		this.setState({
 			menuDisplayedStatus: s
+		});
+	},
+
+	collapseMenu: function collapseMenu() {
+		this.setState({
+			menuDisplayedStatus: [false, false, false, false]
 		});
 	},
 
@@ -193,20 +371,20 @@ var StatFilter = React.createClass({
 		var l = this.state.filterNames.length,
 		    fieldsets = [],
 		    c = this.state.current,
-		    index = this.state.fields.findIndex(function (field, index) {
-			if (field.topic === c.topic) return true;
+		    index = this.props.indexDB.findIndex(function (field, index) {
+			if (field.dataset === c.dataset) return true;
 		}),
-		    topicList = this.state.fields.map(function (obj) {
-			return obj.topic;
+		    datasetList = this.props.indexDB.map(function (obj) {
+			return obj.dataset;
 		}),
-		    subTopicList = this.state.fields[index].content.subTopics.map(function (obj) {
+		    topicList = this.props.indexDB[index].content.topics.map(function (obj) {
 			return obj.name;
 		}),
 		   
 
 		// otherList contains the filters and avialable chart types
-		otherList = this.state.fields[index].content.subTopics.find(function (obj) {
-			if (obj.name === c.subTopic) return true;
+		otherList = this.props.indexDB[index].content.topics.find(function (obj) {
+			if (obj.name === c.topic) return true;
 		}),
 		   
 
@@ -217,7 +395,7 @@ var StatFilter = React.createClass({
 		   
 
 		// Mapping the list into the array for generating the menus
-		menus = [topicList, subTopicList, otherList.compos, otherList.availableChartTypes];
+		menus = [datasetList, topicList, otherList.compos, otherList.availableChartTypes];
 
 		for (var i = 0; i < l; i++) {
 
@@ -227,9 +405,10 @@ var StatFilter = React.createClass({
 				filterName: this.state.filterNames[i],
 				fieldName: currentStates[i],
 				fieldMenu: menus[i],
-				clickEvt: this.refeshMenu,
+				expandMenu: this.expandMenu,
+				collapseMenu: this.collapseMenu,
+				chartRefresh: this.props.chartRefresh,
 				menuIsDisplayed: this.state.menuDisplayedStatus[i]
-
 			}));
 		}
 
@@ -280,21 +459,20 @@ var StatFilterField = React.createClass({
 	},
 
 	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
-		console.log('state filer field receives props');
+
 		this.setState({
 			isMenuDisplayed: nextProps.menuIsDisplayed
 		});
 	},
 
 	// Click for displaying the hidden menu
-	displayMenu: function displayMenu(e) {
-
-		// Pass the index of the displayed menu to the parent
-		this.props.clickEvt(this.state.menuIndex);
-
-		this.setState({
-			isMenuDisplayed: !this.state.isMenuDisplayed
-		});
+	toggleMenu: function toggleMenu(e) {
+		console.log('toggle the menu');
+		console.log(this.state.isMenuDisplayed);
+		console.log(this.props);
+		if (this.state.isMenuDisplayed) this.props.collapseMenu();else
+			// Pass the index of the displayed menu to the parent
+			this.props.expandMenu(this.state.menuIndex);
 	},
 
 	// Click for updating the seleted option on the button
@@ -331,12 +509,16 @@ var StatFilterField = React.createClass({
 						'div',
 						{ className: 'dropdown' },
 						React.createElement(StatFilterBtn, {
-							clickEvt: this.displayMenu,
+							index: this.state.menuIndex,
+							toggleMenu: this.toggleMenu,
 							name: this.state.selectedOption }),
 						React.createElement(StatFilterMenu, {
-							clickEvt: this.selectOption,
+							select: this.selectOption,
+							chartRefresh: this.props.chartRefresh,
 							displayed: this.state.isMenuDisplayed,
-							menu: this.props.fieldMenu })
+							menu: this.props.fieldMenu,
+							collapseMenu: this.props.collapseMenu,
+							index: this.state.menuIndex })
 					)
 				)
 			)
@@ -364,7 +546,7 @@ var StatFilterBtn = React.createClass({
 		return React.createElement(
 			'button',
 			{ className: 'dropdown-btn',
-				type: 'button', onClick: this.props.clickEvt },
+				type: 'button', onClick: this.props.toggleMenu },
 			React.createElement(
 				'span',
 				{ className: 'dropdown-txt' },
@@ -380,12 +562,16 @@ var StatFilterMenu = React.createClass({
 
 	clickHandler: function clickHandler(e) {
 
-		this.props.clickEvt(e.target.innerHTML);
+		this.props.select(e.target.innerHTML);
+		this.props.collapseMenu();
+
+		this.props.chartRefresh(e.target.innerHTML, this.props.index);
 	},
 
 	render: function render() {
-		console.log('Menu Displayed:');
-		console.log(this.props.displayed);
+
+		console.log('Menu render');
+		console.log('Menu is displayed:' + this.props.displayed);
 
 		var items = [],
 		    className = this.props.displayed ? 'dropdown-menu displayed' : 'dropdown-menu';
