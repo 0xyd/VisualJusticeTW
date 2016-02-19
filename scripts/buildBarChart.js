@@ -22,7 +22,7 @@ var DashBoard = React.createClass({
 							{
 								name: '本年執行人數',
 								compos: [
-									"總數"
+									'總數'
 								],
 								availableChartTypes: [
 									'長條圖',
@@ -33,7 +33,7 @@ var DashBoard = React.createClass({
 							{
 								name: '本年入監人數',
 								compos: [
-									"總數"
+									'總數'
 								],
 								availableChartTypes: [
 									'長條圖',
@@ -44,7 +44,7 @@ var DashBoard = React.createClass({
 							{
 								name: '新入監人數',
 								compos: [
-									"總數"
+									'總數'
 								],
 								availableChartTypes: [
 									'長條圖',
@@ -55,7 +55,7 @@ var DashBoard = React.createClass({
 							{
 								name: '本年出獄人數',
 								compos: [
-									"總數"
+									'總數'
 								],
 								availableChartTypes: [
 									'長條圖',
@@ -66,7 +66,7 @@ var DashBoard = React.createClass({
 							{
 								name: '本年年底留監人數',
 								compos: [
-									"總數"
+									'總數'
 								],
 								availableChartTypes: [
 									'長條圖',
@@ -81,7 +81,162 @@ var DashBoard = React.createClass({
 					dataset: '新入監資料概覽',
 					content: {
 						topics: [
-
+							{
+								name: '75',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '76',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '77',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '78',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '79',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '80',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '81',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '82',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '83',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '84',
+								compos: [
+									'新入監前家庭狀況',
+									'新入監前犯罪次數與種類',
+									'新入監前教育程度',
+									'新入監年齡統計'
+								],
+								availableChartTypes: [
+									'圓環圖'
+								]
+							},
+							{
+								name: '85',
+							},
+							{
+								name: '86',
+							},
+							{
+								name: '87',
+							},
+							{
+								name: '88',
+							},
+							{
+								name: '89',
+							},
+							{
+								name: '90',
+							},
+							{
+								name: '91',
+							},
+							{
+								name: '92',
+							},
+							{
+								name: '93',
+							},
+							{
+								name: '94',
+							},
+							{
+								name: '95',
+							},
+							{
+								name: '96',
+							}
 						]
 					}
 				}
@@ -104,7 +259,6 @@ var DashBoard = React.createClass({
 	},
 
 	chartRefresh: function(inputStr = null, menuIndex = 0) {
-		console.log('chart starts to refresh');
 
 		if (menuIndex === 0) {
 
@@ -183,8 +337,6 @@ var DashBoard = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		console.log('DashBoard should refresh');
-
 	},
 
 	shouldComponentUpdate: function() {
@@ -213,6 +365,15 @@ var ChartPanel = React.createClass({
 
 	tip: new tipClass(),
 
+	_chartGroup_1: (function() {
+		const s = new Set(['長條圖', '折線圖', '面積圖']);
+		return s
+	})(),
+	_chartGroup_2: (function() {
+		const s = new Set(['圓環圖']);
+		return s
+	})(),
+
 	getInitialState: function() {
 		return {
 			sheetName: null,
@@ -229,6 +390,15 @@ var ChartPanel = React.createClass({
 						xAxis: '民國',
 						yAxis: '人數(仟人)'
 					}
+				},
+				{
+					name: '新入監資料概覽',
+					urls: [
+					'/correction/新入監前家庭狀況.csv', 
+					'/correction/新入監犯罪次數與種類.csv',
+					'/correction/新入監前教育程度.csv',
+					'/correction/歷年新入監年齡歷年統計.csv' 
+					]
 				}
 			]
 		}
@@ -254,6 +424,7 @@ var ChartPanel = React.createClass({
 		});
 	},
 
+	// The barchart is the default chart we render
 	componentDidMount: function() {
 
 		let p = this.props,
@@ -294,8 +465,7 @@ var ChartPanel = React.createClass({
 									lG.linePath = o.line;
 									lG.lineDots = o.dots; 
 									lG.areaUnderLine = o.area;
-									// lG.hide().hideUnderArea();
-									// whichDisplayed();
+
 									chartTypeDisplay(p.chartType);
 
 
@@ -308,22 +478,25 @@ var ChartPanel = React.createClass({
 	},
 
 	componentWillReceiveProps: function(nextProps) {
-		console.log(nextProps);
 
-		let i = 
-			this.state.dataSheets
-				.findIndex(
-					function(d) {
-						if (d.name === nextProps.dataset)
-							return true
-						});
+		if (this._chartGroup_1.has(nextProps.chartType)) {
+			let i = 
+				this.state.dataSheets
+					.findIndex(
+						function(d) {
+							if (d.name === nextProps.dataset)
+								return true
+							});
 
-		this.setState({
-			sheetName: nextProps.dataset,
-			dataTopic: nextProps.topic,
-			chartType: nextProps.chartType,
-			sheetUrl : this.state.dataSheets[i].url
-		});
+			this.setState({
+				sheetName: nextProps.dataset,
+				dataTopic: nextProps.topic,
+				chartType: nextProps.chartType,
+				sheetUrl : this.state.dataSheets[i].url
+			});
+		} else if (this._chartGroup_2.has(nextProps.chartType)) {
+			console.log('This chart type is at the chart group 2');
+		}
 	},
 
 	componentWillUpdate: function(nextProps, nextStates) {
@@ -457,6 +630,8 @@ var StatFilter = React.createClass({
 		}
 	},
 
+	/**/
+
 	expandMenu: function(menuIndex) {
 
 		var s = [false, false, false, false];
@@ -514,6 +689,9 @@ var StatFilter = React.createClass({
 			// Mapping the list into the array for generating the menus
 			menus = 
 				[datasetList, topicList, otherList.compos, otherList.availableChartTypes];
+
+		console.log('checking current state here:');
+		console.log(c);
 
 		for (let i=0;i<l;i++) {
 
@@ -581,9 +759,7 @@ var StatFilterField = React.createClass({
 
 	// Click for displaying the hidden menu
 	toggleMenu: function(e) {
-		console.log('toggle the menu');
-		console.log(this.state.isMenuDisplayed);
-		console.log(this.props);
+		
 		if ( this.state.isMenuDisplayed )
 			this.props.collapseMenu();
 		else 
@@ -670,9 +846,6 @@ var StatFilterMenu = React.createClass({
 	},
 
 	render: function() {
-
-		console.log('Menu render');
-		console.log('Menu is displayed:' + this.props.displayed);
 
 		var items = [],
 			className = 
