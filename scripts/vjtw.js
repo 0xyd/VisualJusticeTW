@@ -835,6 +835,11 @@ var tipClass = function() {
 			.attr('id', 'BAR-TIP')
 			.attr('class', 'tip') : undefined;
 
+	/* These varaibles are designed for preventing any kinds of exceptional value of the node */
+	// The below two record the size value of tip and are used for checking the elements' resize.
+	this._bTipH = null;
+	this._bTipW = null;
+
 }
 
 tipClass.prototype.initTips = function() {
@@ -889,7 +894,8 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 					self.dotTip
 						.classed('display', false);
 				}
-			);	
+			);
+
 
 }
 
@@ -915,7 +921,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 					.classed('display', true)
 
 					// Make the tip's origin fixed at center of circles
-					.style('top',  posY + offset.Y + 'px')
+					.style('top' , posY + offset.Y + 'px')
 					.style('left', posX + offset.X + 'px')
 
 					.html(function() {
@@ -928,7 +934,13 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 					})
 					.call(function(d) {
-						self._correctPos('BAR-TIP');
+						self._correctPos('BAR-TIP')
+							._nodeSizeCorrect('BAR-TIP');
+
+						console.log('final height');
+						console.log(self.barTip.node().offsetHeight);
+						console.log('final width');
+						console.log(self.barTip.node().offsetWidth);
 					});
 			})
 		.on(
@@ -937,7 +949,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 				self.barTip
 					.classed('display', false);
 			}
-		);	
+		);
 }
 
 tipClass.prototype._setOffset = function(nodeId) {
@@ -974,37 +986,46 @@ tipClass.prototype._correctPos = function(tipId) {
 
 	var self = this,
 
-		tipD3Obj = null,
-		node = null,
-		infoNode = null,
+		tip = null,
 
 		arrowHeight = 9,
 		arrowHalfWidth = 9/Math.sqrt(3);
 
 		(function() {
-			if ( tipId === 'DOT-TIP' ) {
-				tipD3Obj = self.dotTip;
-				node = self.dotTip.node();
-				infoNode = self.barTip.select('#DOT-INFO').node();
-				
-			} else if ( tipId === 'BAR-TIP' ) {
-				tipD3Obj = self.barTip;
-				node = self.barTip.node();
-				infoNode = self.barTip.select('#BAR-INFO').node();
-			}
+			if ( tipId === 'DOT-TIP' ) tip = self.dotTip;
+			else if ( tipId === 'BAR-TIP' ) tip = self.barTip;
 		})();
 
-	var originTop = parseInt(node.style.top.replace('px', '')),
-		originLeft = parseInt(node.style.left.replace('px', ''));
+	// Stores the node's offsetHeight property in case of tip resizing.
+	this._bTipH = tip.node().offsetHeight;
+	this._bTipW = tip.node().offsetWidth ;
+
+	var originTop = parseInt(tip.node().style.top.replace('px', '')),
+		originLeft = parseInt(tip.node().style.left.replace('px', ''));
 
 	var updatedTop = 
-			originTop - node.offsetHeight - arrowHeight,
+			originTop - tip.node().offsetHeight - arrowHeight,
 		updatedLeft = 
-			originLeft - node.offsetWidth/2 - arrowHalfWidth;	
+			originLeft - tip.node().offsetWidth/2 - arrowHalfWidth;
+
+	// console.log('tip.node().offsetHeight:');
+	// console.log(tip.node().offsetHeight);
+	// console.log('tip.node().offsetWidth:');
+	// console.log(tip.node().offsetWidth);
+	// console.log('originTop:');
+	// console.log(originTop);
+	console.log('originLeft:');
+	console.log(originLeft);
+	console.log('originRight:');
+	console.log(originLeft + tip.node().offsetWidth)
+	// console.log('updatedTop:');
+	// console.log(updatedTop);
+	// console.log('updatedLeft:');
+	// console.log(updatedLeft);
 
 	if ( updatedTop > 0 && updatedLeft > 0 ) {
 
-		tipD3Obj
+		tip
 			.classed('tip-before-display', false)
 			.classed('tip-after-display', true)
 			.style('top', updatedTop + 'px')
@@ -1015,7 +1036,7 @@ tipClass.prototype._correctPos = function(tipId) {
 
 		updatedTop = originTop + arrowHeight;
 
-		tipD3Obj
+		tip
 			.classed('tip-before-display', true)
 			.classed('tip-after-display', false)
 			.style('top', updatedTop + 'px')
@@ -1023,6 +1044,54 @@ tipClass.prototype._correctPos = function(tipId) {
 
 	} 
 
+	return this
+
+}
+
+tipClass.prototype._nodeSizeCorrect = function(tipType) {
+	
+	var self = this;
+
+	if (tipType === 'BAR-TIP') {
+
+		var nh = self.barTip.node().offsetHeight,
+			nw = self.barTip.node().offsetWidth ;
+		console.log('after correct pos');
+		console.log(nh);
+		console.log(nw);
+
+		// if ( this._bTipH !== nh )
+			this.barTip
+				.style('top', function() {
+
+					var t = this.style.top;
+
+					if (self._bTipH !== nh) {
+						var ot = 
+							parseInt(t.replace('px', ''));
+						return ot + self._bTipH - nh + 'px' 
+					} else 
+						return t
+				})
+				.style('left', function() {
+
+					var l = this.style.left;
+
+					if (self._bTipW !== nw) {
+						var ol = 
+							parseInt(l.replace('px', ''));
+						return ol + self._bTipW/2 - nw/2 + 'px'
+					} else
+						return l
+				})
+				.style('width', function() {
+					return nw + 'px'
+				});
+	}
+	else if (tipType === 'DOT-TIP')
+		console.log(this.dotTip.node().offsetHeight);
+
+	return this
 }
 
 
