@@ -1008,21 +1008,6 @@ tipClass.prototype._correctPos = function(tipId) {
 		updatedLeft = 
 			originLeft - tip.node().offsetWidth/2 - arrowHalfWidth;
 
-	// console.log('tip.node().offsetHeight:');
-	// console.log(tip.node().offsetHeight);
-	// console.log('tip.node().offsetWidth:');
-	// console.log(tip.node().offsetWidth);
-	// console.log('originTop:');
-	// console.log(originTop);
-	console.log('originLeft:');
-	console.log(originLeft);
-	console.log('originRight:');
-	console.log(originLeft + tip.node().offsetWidth)
-	// console.log('updatedTop:');
-	// console.log(updatedTop);
-	// console.log('updatedLeft:');
-	// console.log(updatedLeft);
-
 	if ( updatedTop > 0 && updatedLeft > 0 ) {
 
 		tip
@@ -1056,11 +1041,7 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 
 		var nh = self.barTip.node().offsetHeight,
 			nw = self.barTip.node().offsetWidth ;
-		console.log('after correct pos');
-		console.log(nh);
-		console.log(nw);
 
-		// if ( this._bTipH !== nh )
 			this.barTip
 				.style('top', function() {
 
@@ -1084,6 +1065,7 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 					} else
 						return l
 				})
+				// fix the width to prevent the resizing.
 				.style('width', function() {
 					return nw + 'px'
 				});

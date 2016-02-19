@@ -239,6 +239,8 @@ var ChartPanel = React.createClass({
 		var lineGraph = this.props.lineGraph,
 		    chartTypeDisplay = this.chartTypeDisplay;
 
+		if (nextProps.chartType !== '長條圖') this.props.barGraph.bePhantom();
+
 		this.props.barGraph.update(nextStates.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
 			lineGraph.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
 
@@ -264,11 +266,13 @@ var ChartPanel = React.createClass({
 			if (b.isInvisible) b.beVisible();
 			l.hide().hideUnderArea();
 		} else if (chartType === "折線圖") {
-			b.bePhantom();
+			// b.bePhantom();
 			l.beDisplayed().hideUnderArea();
+			b.hide();
 		} else if (chartType === "面積圖") {
-			b.bePhantom();
+			// b.bePhantom();
 			l.displayUnderArea().hide();
+			b.hide();
 		}
 	},
 

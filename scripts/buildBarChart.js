@@ -327,9 +327,12 @@ var ChartPanel = React.createClass({
 	},
 
 	componentWillUpdate: function(nextProps, nextStates) {
-		console.log('Chart Panel will update');
+		
 		let lineGraph = this.props.lineGraph,
 			chartTypeDisplay = this.chartTypeDisplay;
+
+		if (nextProps.chartType !== '長條圖') 
+			this.props.barGraph.bePhantom();
 
 		this.props.barGraph
 			.update(
@@ -350,19 +353,14 @@ var ChartPanel = React.createClass({
 							 lineGraph.lineDots = o.dots;
 							 lineGraph.areaUnderLine = o.area;
 
-							 // whichDisplayed();
 							 chartTypeDisplay(nextStates.chartType);
-
-							 // tip.appendDotMouseOver(dOption);
-							 // tip.appendBarMouseOver(dOption);
-
 							 });
 				});
 				
 	},
 
 	chartTypeDisplay: function(chartType) {
-		console.log('chart type:' + chartType);
+		
 		let b = this.props.barGraph,
 			l = this.props.lineGraph;
 
@@ -370,11 +368,11 @@ var ChartPanel = React.createClass({
 			if (b.isInvisible) b.beVisible();
 			l.hide().hideUnderArea();
 		} else if (chartType === "折線圖") {
-			b.bePhantom();
 			l.beDisplayed().hideUnderArea();
+			b.hide();
 		} else if (chartType === "面積圖") {
-			b.bePhantom();
 			l.displayUnderArea().hide();
+			b.hide();
 		}
 
 	},
