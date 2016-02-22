@@ -6,7 +6,8 @@ var DashBoard = React.createClass({
 	graphs: function () {
 		return {
 			barGraph: new barGraphClass(),
-			lineGraph: new lineGraphClass()
+			lineGraph: new lineGraphClass(),
+			ringGraph: new ringGraphClass()
 		};
 	}(),
 
@@ -45,43 +46,43 @@ var DashBoard = React.createClass({
 				dataset: '新入監資料概覽',
 				content: {
 					topics: [{
-						name: '75',
+						name: '民國75年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '76',
+						name: '民國76年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '77',
+						name: '民國77年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '78',
+						name: '民國78年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '79',
+						name: '民國79年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '80',
+						name: '民國80年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '81',
+						name: '民國81年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '82',
+						name: '民國82年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '83',
+						name: '民國83年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
-						name: '84',
+						name: '民國84年',
 						compos: ['新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
@@ -120,12 +121,6 @@ var DashBoard = React.createClass({
 			topic: '本年執行人數',
 			chartType: '長條圖'
 		});
-	},
-
-	componentDidMount: function componentDidMount() {
-		// this.graphs.tip = new tipClass();
-		// this.graphs.tip.appendDotMouseOver('本年執行人數');
-		// this.graphs.tip.appendBarMouseOver('本年執行人數');
 	},
 
 	chartRefresh: function chartRefresh() {
@@ -179,11 +174,6 @@ var DashBoard = React.createClass({
 			});
 			return index;
 		}
-
-		// this.setState({
-		// 	dataset: r.dataset,
-		// 	topic: topic
-		// });
 	},
 
 	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {},
@@ -198,6 +188,7 @@ var DashBoard = React.createClass({
 			'div',
 			{ id: 'PANEL' },
 			React.createElement(DashBoardSide, {
+				dataset: this.state.dataset,
 				chartRefresh: this.chartRefresh,
 				indexDB: this.state.indexDB }),
 			React.createElement(ChartPanel, {
@@ -205,7 +196,8 @@ var DashBoard = React.createClass({
 				topic: this.state.topic,
 				chartType: this.state.chartType,
 				barGraph: this.graphs.barGraph,
-				lineGraph: this.graphs.lineGraph })
+				lineGraph: this.graphs.lineGraph,
+				ringGraph: this.graphs.ringGraph })
 		);
 	}
 });
@@ -265,14 +257,78 @@ var ChartPanel = React.createClass({
 
 	// The barchart is the default chart we render
 	componentDidMount: function componentDidMount() {
+		this.initBarChart();
+	},
 
-		var p = this.props,
-		    bG = p.barGraph,
-		    lG = p.lineGraph,
+	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+
+		var i = this.state.dataSheets.findIndex(function (d) {
+			if (d.name === nextProps.dataset) return true;
+		});
+
+		// Check the chart types whether it is one of '長條圖', '折線圖', '面積圖'
+		if (this._chartGroup_1.has(nextProps.chartType)) {
+			this.setState({
+				sheetName: nextProps.dataset,
+				dataTopic: nextProps.topic,
+				chartType: nextProps.chartType,
+				sheetUrl: this.state.dataSheets[i].url
+			});
+		} else if (this._chartGroup_2.has(nextProps.chartType)) {
+			this.setState({
+				sheetName: nextProps.dataset,
+				dataTopic: nextProps.topic,
+				chartType: nextProps.chartType,
+				sheetUrl: this.state.dataSheets[i].url
+			});
+		}
+	},
+
+	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
+		var _this = this;
+
+		// Initial the data when user switches
+		if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === '監獄人數概況') {
+			d3.select('#SKETCHPAD').remove();
+			this.initBarChart(nextProps, nextStates);
+		}
+		// Show the update results of '監獄人數概況' dataset
+		else if (nextProps.dataset === this.state.dataSheets[0].name) {
+				(function () {
+
+					var lG = _this.props.lineGraph,
+					    chartTypeDisplay = _this.chartTypeDisplay;
+
+					if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
+
+					_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
+						lG.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
+
+							lG.linePath = o.line;
+							lG.lineDots = o.dots;
+							lG.areaUnderLine = o.area;
+
+							chartTypeDisplay(nextStates.chartType);
+						});
+					});
+				})();
+			} else if (nextProps.dataset === this.state.dataSheets[1].name) {
+
+				d3.select('#SKETCHPAD').remove();
+
+				this.initRingChart();
+			}
+	},
+
+	initBarChart: function initBarChart(nextProps, nextStates) {
+
+		var self = this,
+		    bG = nextProps ? nextProps.barGraph : this.props.barGraph,
+		    lG = nextProps ? nextProps.lineGraph : this.props.lineGraph,
 		    t = this.tip,
 		    chartTypeDisplay = this.chartTypeDisplay;
 
-		bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(this.state.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, this.state.dataTopic).then(function (jsonOutput) {
+		bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(nextStates ? nextStates.sheetUrl : this.state.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, nextStates ? nextStates.dataTopic : this.state.dataTopic).then(function (jsonOutput) {
 
 			// Initialize the tips
 			t.initTips();
@@ -283,7 +339,7 @@ var ChartPanel = React.createClass({
 				lG.lineDots = o.dots;
 				lG.areaUnderLine = o.area;
 
-				chartTypeDisplay(p.chartType);
+				chartTypeDisplay(self.props.chartType);
 
 				t.appendDotMouseOver('本年執行人數');
 				t.appendBarMouseOver('本年執行人數');
@@ -291,41 +347,12 @@ var ChartPanel = React.createClass({
 		});
 	},
 
-	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+	// spot
+	initRingChart: function initRingChart() {
 
-		if (this._chartGroup_1.has(nextProps.chartType)) {
-			var i = this.state.dataSheets.findIndex(function (d) {
-				if (d.name === nextProps.dataset) return true;
-			});
+		var rG = this.props.ringGraph;
 
-			this.setState({
-				sheetName: nextProps.dataset,
-				dataTopic: nextProps.topic,
-				chartType: nextProps.chartType,
-				sheetUrl: this.state.dataSheets[i].url
-			});
-		} else if (this._chartGroup_2.has(nextProps.chartType)) {
-			console.log('This chart type is at the chart group 2');
-		}
-	},
-
-	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
-
-		var lineGraph = this.props.lineGraph,
-		    chartTypeDisplay = this.chartTypeDisplay;
-
-		if (nextProps.chartType !== '長條圖') this.props.barGraph.bePhantom();
-
-		this.props.barGraph.update(nextStates.sheetUrl, this.state.chartAxes.xAxis, this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
-			lineGraph.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
-
-				lineGraph.linePath = o.line;
-				lineGraph.lineDots = o.dots;
-				lineGraph.areaUnderLine = o.area;
-
-				chartTypeDisplay(nextStates.chartType);
-			});
-		});
+		rG.initializeAPad().initSeq();
 	},
 
 	chartTypeDisplay: function chartTypeDisplay(chartType) {
@@ -360,6 +387,7 @@ var DashBoardSide = React.createClass({
 			React.createElement(Logo, null),
 			React.createElement(StatTitle, null),
 			React.createElement(StatNav, {
+				dataset: this.props.dataset,
 				chartRefresh: this.props.chartRefresh,
 				indexDB: this.props.indexDB }),
 			React.createElement(SideFoot, null)
@@ -399,6 +427,7 @@ var StatNav = React.createClass({
 			'nav',
 			{ id: 'NAVI', className: 'b12-col-md-12 b15-row-md-8 hdr-div' },
 			React.createElement(StatFilter, {
+				dataset: this.props.dataset,
 				chartRefresh: this.props.chartRefresh,
 				indexDB: this.props.indexDB })
 		);
@@ -408,18 +437,47 @@ var StatNav = React.createClass({
 var StatFilter = React.createClass({
 	displayName: 'StatFilter',
 
+	initialValues: function () {
+		// Initail the start states when every thime that theme changes.
+		var initialDefaults = [{
+			dataset: '監獄人數概況',
+			topic: '本年執行人數',
+			filter: '總數',
+			chartType: '長條圖'
+		}, {
+			dataset: '新入監資料概覽',
+			topic: '民國75年',
+			filter: '新入監前家庭狀況',
+			chartType: '圓環圖'
+		}];
+		return initialDefaults;
+	}(),
+
 	getInitialState: function getInitialState() {
 		return {
 
-			current: {
-				dataset: '監獄人數概況',
-				topic: '本年執行人數',
-				filter: '總數',
-				chartType: '長條圖'
-			},
 			filterNames: ['選擇主題', '選擇類別', '選擇成分', '選擇圖形'],
+
+			filterValues: {
+				dataset: null,
+				topic: null,
+				filter: null,
+				chartType: null
+			},
+
 			menuDisplayedStatus: [false, false, false, false]
 		};
+	},
+
+	componentWillMount: function componentWillMount() {
+
+		this.setState({
+			filterValues: this.initialValues[0]
+		});
+	},
+
+	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+		if (nextProps.dataset === '監獄人數概況') this.setState({ filterValues: this.initialValues[0] });else if (nextProps.dataset === '新入監資料概覽') this.setState({ filterValues: this.initialValues[1] });
 	},
 
 	expandMenu: function expandMenu(menuIndex) {
@@ -443,8 +501,11 @@ var StatFilter = React.createClass({
 
 		var l = this.state.filterNames.length,
 		    fieldsets = [],
-		    c = this.state.current,
-		    index = this.props.indexDB.findIndex(function (field, index) {
+		    c = this.state.filterValues,
+		   
+
+		// index is designed for appointing the wanting object
+		index = this.props.indexDB.findIndex(function (field, index) {
 			if (field.dataset === c.dataset) return true;
 		}),
 		    datasetList = this.props.indexDB.map(function (obj) {
@@ -462,16 +523,13 @@ var StatFilter = React.createClass({
 		   
 
 		// Mapping the state's current into an array
-		currentStates = Object.keys(this.state.current).map(function (key) {
+		currentStates = Object.keys(this.state.filterValues).map(function (key) {
 			return c[key];
 		}),
 		   
 
 		// Mapping the list into the array for generating the menus
 		menus = [datasetList, topicList, otherList.compos, otherList.availableChartTypes];
-
-		console.log('checking current state here:');
-		console.log(c);
 
 		for (var i = 0; i < l; i++) {
 
@@ -531,14 +589,17 @@ var StatFilterField = React.createClass({
 
 	shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextStates) {
 
-		if (this.state.isMenuDisplayed !== nextStates.isMenuDisplayed) return true;else if (this.state.selectedOption !== nextStates.selectedOption) return true;else return false;
+		if (this.state.isMenuDisplayed !== nextStates.isMenuDisplayed) return true;else if (this.state.selectedOption !== nextStates.selectedOption) return true;
+
+		// Update the whole default settings displayed after the theme is changed.
+		// Ex: '監獄人數概況' => '新入監資料概覽'
+		else if (this.props.fieldName !== nextProps.fieldName) return true;else return false;
 	},
 
 	componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
 
-		this.setState({
-			isMenuDisplayed: nextProps.menuIsDisplayed
-		});
+		// Updated the selected item in button after a theme changed
+		if (this.props.fieldName !== nextProps.fieldName) this.setState({ selectedOption: nextProps.fieldName });else this.setState({ isMenuDisplayed: nextProps.menuIsDisplayed });
 	},
 
 	// Click for displaying the hidden menu

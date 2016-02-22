@@ -58,7 +58,54 @@ var colorClass = function() {
 		'上年底留監人數': '#E9C247',
 		'本年出獄人數': '#F16B23',
 		'本年年底留監人數': '#55B5DF'
-	}
+	},
+	this.rings = [
+		{
+			name: '新入監前家庭狀況',
+			value: {
+				'不詳': '#6B96AD',
+				'貧困無以為生': '#669FCC',
+				'免足維持生活': '#5FA4D4',
+				'小康之家': '#58ABD8',
+				'中產之上': '#55B5DF'
+			}
+		},
+		{
+			name: '新入監犯罪次數與種類',
+			value: {
+				'累犯': '#F16B23',
+				'再犯': '#F27422',
+				'初犯': '#ED8222'
+			}
+		},
+		{
+			name: '新入監前教育程度',
+			value: {
+				'大專以上': '#61B045',
+				'高中職': '#6EBE44',
+				'國中': '#78C14A',
+				'國小': '#87C66A',
+				'自修': '#8CBC71',
+				'不識字': '#8AB276',
+				'不詳': '#8AA679'
+			}
+		},
+		{
+			name: '歷年新入監年齡歷年統計',
+			value: {
+				'14 ~ 18': '#A885A4',
+				'18 ~ 20': '#AA77A2',
+				'20 ~ 24': '#B26DA5',
+				'24 ~ 30': '#B765A5',
+				'30 ~ 40': '#B9529E',
+				'40 ~ 50': '#B5479A',
+				'50 ~ 60': '#AD3C96',
+				'60 ~ 70': '#A93393',
+				'70 ~ 80': '#A42D91',
+				'80 ~': '#9F238E'
+			}
+		}
+	]
 }
 
 colorClass.prototype.hexToRgb = function(hex) {
@@ -668,26 +715,6 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 	return p0
 }
 
-// lineGraphClass.prototype.inheritXScale = function(xScale) {
-
-// 	this.xScale = xScale;
-// }
-
-// lineGraphClass.prototype.inheritYScale = function(yScale) {
-
-// 	this.yScale = yScale;
-// }
-
-// lineGraphClass.prototype.inheritXAxis = function(xAxis) {
-
-//  	this.xAxis = xAxis;
-// }
-
-// lineGraphClass.prototype.inheritYAxis = function(yAxis) {
-//  this.yAxis = yAxis;
-
-// }
-
 lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, padPadding) {
 	
 	this.pad = motherPad;
@@ -826,17 +853,12 @@ var ringGraphClass = function() {
 
 	// Import ring graphClass into Graph Class
 	graphClass.call(this);
-
+	
 	// Core radius of the ring sequence
 	this.coreRadius = 100;
 
 	// Outer Radius of the ring sequence
-	this.shellRadius = (function(h, w) { 
-		return Math.min(h,w)/ 2 
-	})(
-		this.panelWidth - this.panelPadding.left, 
-		this.panelHeight - this.panelPadding.top
-	);
+	this.shellRadius = null;
 
 	// The drawing ring inner radius 
 	this.ringInnerRadius = this.coreRadius;
@@ -848,38 +870,13 @@ var ringGraphClass = function() {
 	this.ringGap = 2;
 
 	// Ring Object
-	this.ring = (function (self) {
-
-	var _this = self;
-			
-	return d3.select('#SKETCHPAD').append('g')
-		.attr('class', 'RING')
-		.attr('transform', function(d) {
-
-			// Put the ring at the center of the panel
-			return 'translate(' + 
-				(
-					_this.panelWidth / 2 - 
-					_this.panelPadding.left
-				)
-				+ ',' + 
-				(
-					_this.panelHeight / 2 -
-					_this.panelPadding.top							
-				) 
-				+ ')'
-		});
-	})(this);
-
+	this.ring = null;
+	
 	// Ring Objects
 	this.rings = [];
 
 	// Partition of the rings
-	this.ringPartition = 
-		d3.layout.partition()
-			.sort(null)
-			.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
-			.value(function(d) { return d.value });
+	this.ringPartition = null;
 
 	// Arc of the rings
 	this.ringArc = null;
@@ -906,18 +903,39 @@ var ringGraphClass = function() {
 ringGraphClass.prototype = Object.create(graphClass.prototype);
 ringGraphClass.prototype.constructor = ringGraphClass;
 
+ringGraphClass.prototype.initSeq = function() {
+
+	// Initial an outer Radius of the ring sequence
+	this.shellRadius = (function(h, w) { 
+		return Math.min(h,w)/ 2 
+	})(
+		this.padWidth - this.padPadding.left, 
+		this.padHeight - this.padPadding.top
+	);
+
+	// Initial a partition of the rings
+	this.ringPartition = 
+		d3.layout.partition()
+			.sort(null)
+			.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
+			.value(function(d) { return d.value });
+}
+
 ringGraphClass.prototype.updateShellRadius = function(h, w) {
-	this.shellRadius =  Math.min(h,w)/ 2 
+	this.shellRadius =  Math.min(h,w)/ 2;
+	return this
 }
 
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
 	this.ringDelta = 
 		(this.shellRadius - this.coreRadius) / categoryNum;
+		return this
 }
 
 ringGraphClass.prototype.updateRingInnerRadius = function() {
 		this.ringInnerRadius = 
 			this.ringInnerRadius + this.ringDelta + this.ringGap;
+			return this
 }
 
 ringGraphClass.prototype.updateRingPartition = function() {
@@ -926,6 +944,7 @@ ringGraphClass.prototype.updateRingPartition = function() {
 			.sort(null)
 			.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
 			.value(function(d) { return d.value });
+		return this
 }
 
 ringGraphClass.prototype.updateRingArc = function() {
@@ -949,19 +968,19 @@ ringGraphClass.prototype.addRing = function() {
 					// Put the ring at the center of the panel
 					return 'translate(' + 
 						(
-							self.panelWidth / 2 - 
-							self.panelPadding.left
+							self.padWidth / 2 - 
+							self.padPadding.left
 						)
 						+ ',' + 
 						(
-							self.panelHeight / 2 -
-							self.panelPadding.top							
+							self.padHeight / 2 -
+							self.padPadding.top							
 						) 
 						+ ')'
 				});
 	}
 	
-	/* Select the year in ROC */
+/* Select the year in ROC */
 ringGraphClass.prototype.selectROCYr = function(yr) {
 
 	var date = new Date();
@@ -982,8 +1001,8 @@ ringGraphClass.prototype.drawRing = function(path) {
 	var self = this,
 		isYrSelected = this.rocYr ? true: false,
 		keywords = path.match(/[\u4e00-\u9fa5]+/),
-				_color = keywords ? color[keywords]: null;
-
+		_color = keywords ? color[keywords]: null;
+	console.log(keywords);
 		self.updateRingArc();
 
 		var p = new Promise(function(resolve, reject) {
@@ -1184,9 +1203,9 @@ ringGraphClass.prototype._displayData = function() {
 							resolve();
 								return 'translate('
 								+
-								(self.panelWidth/2-self.panelPadding.left-60)
+								(self.padWidth/2-self.padPadding.left-60)
 									+ ',' +
-								(self.panelHeight/2-self.panelPadding.top-15)
+								(self.padHeight/2-self.padPadding.top-15)
 								+ ')'
 							}	
 					);
@@ -1271,19 +1290,6 @@ ringGraphClass.prototype._displayData = function() {
 		}
 }
 
-	// var dataPaths = [
-	// 	'/correction/新入監前家庭狀況.csv', 
-	// 	'/correction/新入監犯罪次數與種類.csv',
-	// 	'/correction/新入監前教育程度.csv',
-	// 	'/correction/歷年新入監年齡歷年統計.csv'
-	// 	],
-	// 	ringGraph = new ringGraphClass();
-
-	// ringGraph.selectROCYr(95);
-	// ringGraph.calRadiusDelta(dataPaths.length);
-	// ringGraph.drawMultiRings(dataPaths);
-			
-	
 /* A class for tooltip */
 var tipClass = function() {
 
@@ -1359,8 +1365,6 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 						.classed('display', false);
 				}
 			);
-
-
 }
 
 tipClass.prototype.appendBarMouseOver = function(dOption) {
@@ -1400,11 +1404,6 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 					.call(function(d) {
 						self._correctPos('BAR-TIP')
 							._nodeSizeCorrect('BAR-TIP');
-
-						console.log('final height');
-						console.log(self.barTip.node().offsetHeight);
-						console.log('final width');
-						console.log(self.barTip.node().offsetWidth);
 					});
 			})
 		.on(
