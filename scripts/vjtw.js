@@ -848,17 +848,22 @@ lineGraphClass.prototype.hideUnderArea = function() {
 
 /* A Class for ring chart */
 var ringGraphClass = function() {
-
+	
 	var self = this;
 
 	// Import ring graphClass into Graph Class
 	graphClass.call(this);
-	
+
 	// Core radius of the ring sequence
 	this.coreRadius = 100;
 
 	// Outer Radius of the ring sequence
-	this.shellRadius = null;
+	this.shellRadius = (function(h, w) { 
+		return Math.min(h,w)/ 2 
+	})(
+		this.panelWidth - this.panelPadding.left, 
+		this.panelHeight - this.panelPadding.top
+	);
 
 	// The drawing ring inner radius 
 	this.ringInnerRadius = this.coreRadius;
@@ -869,17 +874,8 @@ var ringGraphClass = function() {
 	// The gap between each ring
 	this.ringGap = 2;
 
-	// Ring Object
-	this.ring = null;
-	
-	// Ring Objects
-	this.rings = [];
-
-	// Partition of the rings
-	this.ringPartition = null;
-
-	// Arc of the rings
-	this.ringArc = null;
+	// Ring Group for collecting ring Objects
+	this.ringGroup = [];
 
 	// A variable for storing Year value in ROC
 	this.rocYr = null;
@@ -896,97 +892,61 @@ var ringGraphClass = function() {
 		itemName: null,
 		itemNumber: null
 	};
-
 }
 
 /* Inherit the ringGraphClass from the graph */
 ringGraphClass.prototype = Object.create(graphClass.prototype);
 ringGraphClass.prototype.constructor = ringGraphClass;
 
-ringGraphClass.prototype.initSeq = function() {
+// A constructor for creating the rings for ring chart
+ringGraphClass.prototype.ringConstructor = function(source, innerR, outerR) {
 
-	// Initial an outer Radius of the ring sequence
-	this.shellRadius = (function(h, w) { 
-		return Math.min(h,w)/ 2 
-	})(
-		this.padWidth - this.padPadding.left, 
-		this.padHeight - this.padPadding.top
-	);
+	var ring = function(iR, oR, s) {
 
-	// Initial a partition of the rings
-	this.ringPartition = 
-		d3.layout.partition()
-			.sort(null)
-			.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
-			.value(function(d) { return d.value });
-}
+		// Set the source of the data
+		this.dataSource = s;
 
-ringGraphClass.prototype.updateShellRadius = function(h, w) {
-	this.shellRadius =  Math.min(h,w)/ 2;
-	return this
+		// Define the basic of the ring
+		this.outerRadius = oR;
+		this.innerRadius = iR;
+
+		// Define the way we dipict the ring
+		this.partition = 
+			d3.layout.partition()
+				.sort(null)
+					.size([ 2*Math.PI, this.outerRadius*this.outerRadius ])
+					.value(function(d) { return d.value });
+
+				
+		this.arc =
+			d3.svg.arc()
+				.startAngle(function(d) { return d.x })
+				.endAngle(function(d) { return d.x + d.dx })
+				.innerRadius(this.innerRadius)
+				.outerRadius(this.outerRadius);
+		};
+
+	var r = new ring(innerR, outerR, source);
+
+	return r
 }
 
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
+
 	this.ringDelta = 
-		(this.shellRadius - this.coreRadius) / categoryNum;
-		return this
+		(this.shellRadius - 
+		 	this.coreRadius - 
+		 		(categoryNum - 1) * this.ringGap) / categoryNum;
+
 }
 
-ringGraphClass.prototype.updateRingInnerRadius = function() {
-		this.ringInnerRadius = 
-			this.ringInnerRadius + this.ringDelta + this.ringGap;
-			return this
-}
-
-ringGraphClass.prototype.updateRingPartition = function() {
-	this.ringPartition = 
-		d3.layout.partition()
-			.sort(null)
-			.size([ 2*Math.PI, this.shellRadius*this.shellRadius ])
-			.value(function(d) { return d.value });
-		return this
-}
-
-ringGraphClass.prototype.updateRingArc = function() {
-	var self = this;
-	self.ringArc = 
-		d3.svg.arc()
-		.startAngle(function(d) { return d.x })
-		.endAngle(function(d) { return d.x + d.dx })
-		.innerRadius(function(d) { return self.ringInnerRadius })
-		.outerRadius(function(d) { return self.ringInnerRadius + self.ringDelta });
-}
-
-ringGraphClass.prototype.addRing = function() {
-
-	var self = this;
-
-		this.ring =  this.panel.append('g')
-			.attr('class', 'RING')
-			.attr('transform', function(d) {
-	
-					// Put the ring at the center of the panel
-					return 'translate(' + 
-						(
-							self.padWidth / 2 - 
-							self.padPadding.left
-						)
-						+ ',' + 
-						(
-							self.padHeight / 2 -
-							self.padPadding.top							
-						) 
-						+ ')'
-				});
-	}
-	
 /* Select the year in ROC */
 ringGraphClass.prototype.selectROCYr = function(yr) {
 
 	var date = new Date();
 
 	// The data of current year won't be published until the next year
-	this.rocYr = ( yr >= 75 && (date.getFullYear()-1911-1) > yr ) ? yr: null;
+	this.rocYr = ( yr >= 75 && (date.getFullYear()-1911-1) > yr ) ? yr : null;
 }
 
 /* Row Index of data of ROC year */
@@ -995,299 +955,102 @@ ringGraphClass.prototype.selectRow = function() {
 	else return null
 }
 
-/*  */
-ringGraphClass.prototype.drawRing = function(path) {
+ringGraphClass.prototype.drawRing = function(ringObj) {
 
 	var self = this,
 		isYrSelected = this.rocYr ? true: false,
-		keywords = path.match(/[\u4e00-\u9fa5]+/),
+		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/),
 		_color = keywords ? color[keywords]: null;
-	console.log(keywords);
-		self.updateRingArc();
+			
+	this.readCSV(ringObj.dataSource)
+		.row(function(d, i) {
+			if ( isYrSelected ) if ( i === self.selectRow() ) return d
+			else return null
+		})
+		.get(function(err, selectedRows) {
 
-		var p = new Promise(function(resolve, reject) {
-
-			self.readCSV(path)
-				.row(function(d, i) {
-					if ( isYrSelected ) if ( i === self.selectRow() ) return d
-					else return null
-				})
-				.get(function(err, selectedRows) {
-
-					var selectedRow = 
-						selectedRows.length === 1 ? selectedRows[0]: null;
-
-					if ( selectedRow ) {
-
-						selectedRow.pop = jsonPop;
-						selectedRow = transtoPartitonFormat(selectedRow, '民國');
-
-						var path = self.ring.datum(selectedRow).selectAll('path')
-							.data(self.ringPartition.nodes)
-							.enter().append('path')
-								.attr(
-									'class', 
-									function(d, i) { 
-										// The index 0 is the index for parent which is also the center
-										if ( i === 0 ){
-
-											// Mark the current ring which has created the new ring
-											var currentRingCenter = 
-												d3.select('.current-ring-center');
-
-											// Decline the current-ring class for the new one
-											currentRingCenter ? 
-												currentRingCenter
-													.classed('current-ring-center', false)
-													.classed('ring-center', true) 
-													: null;
-
-											// Append the statistic category name
-											this.__data__.category = keywords[0];
-										}
-										return d.depth ? null : 'current-ring-center'; }
-								)
-								.attr('d', self.ringArc)
-								.style(
-									'fill',
-									function(d, i) {
-										// Make the first sector (central one) white
-										if ( i === 0 ) return '#fff'
-										else {
-											if ( i === selectedRow.children.length-1 ) 
-												resolve((function() {
-
-													self.updateRingInnerRadius();
-													
-													// A new Circle is the place to put the new ring.
-													var newCircle = d3.select('.current-ring-center')
-													
-													// Establish a new ring group for rings.
-													self.addRing();
-
-													return newCircle.node()
-												})());
-											for ( var key in _color ) if ( d.name === key ) return _color[key]
-										}
-									}
-								)
-	  						.style('fill-rule', 'evenodd');
-						}
-				});
-			});
-			return p
-		}
-
-ringGraphClass.prototype.drawMultiRings = function(paths, newRing) {
-
-		var self = this;
-
-		var promise = new Promise(function(resolve, reject) {
-
-			var path = (paths !== [] ) ? paths.shift(): null;
-
-			if ( self.countRing === 0 ) {
-
-				self.drawRing(path).then(function(newRing) {
-					++self.countRing;
-					resolve({dataPaths: paths, newRing: newRing});
-				});
-
-			} else if ( path ) {
-
-				// Update the outer radius for the new ring
-				self.updateShellRadius( 
-					newRing.getBBox().height, 
-					newRing.getBBox().width
-				);
-
-				// Update the partition of the new ring
-				self.updateRingPartition();
-
-				self.drawRing(path).then(function(newRing) {
-					++self.countRing;
-					resolve({dataPaths: paths, newRing: newRing});
-				});
+			var selectedRow = 
+					selectedRows.length === 1 ? 
+						selectedRows[0]: null;
 					
-			} 
-			else {
-				var rings = d3.selectAll('.RING');
-				resolve({rings: rings});
-				return null
-			}
+			if (selectedRow) {
+
+				selectedRow.pop = jsonPop;
+				selectedRow = transtoPartitonFormat(selectedRow, '民國');
+				
+				self.panel.append('g')
+					.attr('class', 'RING')
+					.attr('transform', function() {
+
+						// Put the ring at the center of the panel
+						return 'translate(' + 
+							(
+								self.panelWidth / 2 - 
+								self.panelPadding.left
+							)
+							+ ',' + 
+							(
+								self.panelHeight / 2 -
+								self.panelPadding.top							
+							) 
+							+ ')'
+					})
+					.datum(selectedRow)
+						.selectAll('path')
+							.data(ringObj.partition.nodes)
+							.enter()
+							.append('path')
+								.attr('d', ringObj.arc)
+								// Working spot
+							.style('fill', function(d, i) {
+								return color[keywords][d.name] || null
+							})
+							.style('fill-rule', 'evenodd');
+		}
+	});
+}
+ringGraphClass.prototype.drawMultiRings = function(paths) {
+
+	var self = this,
+		l = paths.length,
+		_rings = [];
+
+	this.calRadiusDelta(l);
+	
+	for ( var i = 0; i < l; i++ ) {
+				
+		_rings.push({
+
+			path:
+				paths[i],
+
+			innerRadius: 
+				this.coreRadius + 
+					(i-1) * this.ringGap + 
+						(i-1) * this.ringDelta, 
+
+			outerRadius: 
+				this.coreRadius + 
+					(i-1) * this.ringGap + 
+						i * this.ringDelta
 		});
-
-		promise.then(function(obj) {
-			if (!obj.rings)
-				self.drawMultiRings(obj.dataPaths, obj.newRing);
-			return obj.rings ? obj.rings : null
-
-			}).then(function(rings) { 
-
-				if (rings) 
-					// Select the path except the central one.
-					rings.selectAll('path')
-						.filter(function(d, i) { return i !== 0 })
-							.on('mouseover', self._displayData);
-		});
 	}
 
-// Add the hover event listeners to the rings and their paths.
-ringGraphClass.prototype._displayData = function() {
+	var _rings_l = _rings.length;
 
-	var self = ringGraph,
-			selectedArc = this;
-			
-	function __calPercentage() {
-		var calResult = 
-			selectedArc.__data__.dx/(2*Math.PI)*100;
-
-		if (calResult < 100 && calResult >= 1) 
-			return calResult.toPrecision(3) + '%' 
-		else if ( calResult < 1 ) 
-			return calResult.toPrecision(2) + '%'
+	for (var j = 0; j < _rings_l; ++j) {
+		
+		var r = _rings.shift();
+				
+		this.ringGroup.push(
+			this.ringConstructor(
+				r.path, 
+				r.innerRadius, 
+				r.outerRadius));
 	}
 
-	/* 
-	Gradient effect allows the ring the mouse hovering display clearly and 
-	the rest of the rings become blur. 
-	Besides, the arc of the hovering ring has two styles:
-		the one mouse is hovering is solid and the other turns to be transparent.
-	*/
-	function __ringGradient() {
-
-		var 
-			arcBrothers = 
-				Array.from(selectedArc.parentNode.childNodes)
-					.filter(function(arc) { 
-						
-						if ( 
-							arc !== selectedArc &&
-							arc.getAttribute('class') === null  
-						) return arc
-
-						return null
-					}),
-
-			otherRings = 
-				Array.from(selectedArc.parentNode.parentNode.childNodes)
-					.filter(function(ring) { 
-						if ( 
-							ring.getAttribute('id') !== 'INFOVIEW' &&
-							ring !== selectedArc.parentNode
-						) return ring
-
-					});
-
-			selectedArc.style.opacity = '1';
-			selectedArc.parentNode.opacity = '1';
-
-			for ( var i in arcBrothers ) 
-				arcBrothers[i].style.opacity = '0.8';
-			for ( var i in otherRings ) {
-				var children = Array.from(otherRings[i].childNodes);
-				for ( var j in children )
-					children[j].style.opacity = '0.3';
-			}
-	}
-
-	// Build infoview group containing the text infomation
-	function __buildInfoView() {
-		var p = new Promise(function(resolve, reject) {
-			self.dataInfoView.textArea = 
-				d3.select('#SKETCHPAD').append('g')
-					.attr('id', 'INFOVIEW')
-					.attr(
-						'transform',
-						function(d) {
-							resolve();
-								return 'translate('
-								+
-								(self.padWidth/2-self.padPadding.left-60)
-									+ ',' +
-								(self.padHeight/2-self.padPadding.top-15)
-								+ ')'
-							}	
-					);
-			});
-			return p
-		}
-
-	// Add more text infomation
-	function __moreInfoText(partName, fontSize, xPos, yPos, txtInput) {
-
-		var p = new Promise(function(resolve, reject) {
-			self.dataInfoView[partName] = 
-				d3.select("#INFOVIEW").append('text')
-						.attr('font-size', fontSize)
-						.attr('x', xPos)
-						.attr('y', yPos)
-					.text(txtInput)
-						.call(function() {
-							resolve();
-						});
-			});
-			return p
-		}
-
-		// If the infoview is created beforehand
-		if ( ringGraph.dataInfoView.textArea ) { 
-
-			// Load or Update the infomation for display.
-			ringGraph.dataInfoView.percentage.text(__calPercentage);
-			ringGraph.dataInfoView.categoryName.text(
-				selectedArc.parentNode.childNodes[0].__data__.category + ':');
-			ringGraph.dataInfoView.itemName.text(selectedArc.__data__.name);
-			ringGraph.dataInfoView.itemNumber.text(selectedArc.__data__.value);
-
-			/* Gradient effect */
-			__ringGradient();
-			
-		} else { // The infoview hasn't been built yet.
-
-			var q = new queue();
-
-			var t0 = q.taskConst(__buildInfoView, null),
-					t1 = q.taskConst(
-						__moreInfoText, 
-						[
-							'percentage', 
-							'50px', 
-							null,
-							null,
-							__calPercentage()
-						]),
-					t2 = q.taskConst(
-						__moreInfoText,
-						[
-							'categoryName',
-							'16px',
-							-12.5,
-							35,
-							selectedArc.parentNode.childNodes[0].__data__.category + ':'
-						]),
-					t3 = q.taskConst(
-						__moreInfoText,
-						[
-							'itemName',
-							'16px',
-							-12.5,
-							55,
-								selectedArc.__data__.name
-						]),
-					t4 = q.taskConst(
-						__moreInfoText,
-						[
-							'itemNumber',
-							'16px',
-							-12.5,
-							75,
-							selectedArc.__data__.value
-						]);
-
-			q.pushTasks([t0, t1, t2, t3, t4]);
-			q.queuing(__ringGradient);
-		}
+	for (var k = 0; k < this.ringGroup.length; ++k) 
+		this.drawRing(this.ringGroup[k]);
 }
 
 /* A class for tooltip */
