@@ -800,22 +800,6 @@ lineGraphClass.prototype.isInvisible = function() {
 	else false
 }
 
-// lineGraphClass.prototype.beInvisible = function() {
-
-// 	this.linePath.style('opacity', 0);
-
-// 	if ( this.isLineHidden() ) 
-// 		this.displayLine();
-
-// }
-
-// lineGraphClass.prototype.beVisible = function() {
-
-// 	this.linePath.style('opacity', 1);
-// 	this.displayLine();
-
-// }
-
 lineGraphClass.prototype.hide = function() {
 	this.linePath.style('display', 'none');
 	this.lineDots.style('display', 'none');
@@ -997,7 +981,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 						// Put the ring at the center of the pad
 						return 'translate(' + 
 							(
-								self.padWidth / 2 - 
+								self.padWidth / 5 * 3 - 
 								self.padPadding.left
 							)
 							+ ',' + 
@@ -1023,19 +1007,13 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							})
 							.style('fill-rule', 'evenodd')
 							.call(function(pathCluster) {
-
-								// Paths are stored at the path cluster at index 0
-								for (var i in pathCluster[0]) 
-									// The root of ring is index 0 and it doesn't need to change the appearance.
-									if (parseInt(i) > 0) 
-										ringObj.pathOriginPos.push({
-											x0:  pathCluster[0][i].__data__.x, 
-											dx0: pathCluster[0][i].__data__.dx
-										});
+								ringObj.pathOriginPos = 
+									self._stashOriginPathPos(pathCluster[0]);
 							});
 		}
 	});
 }
+
 ringGraphClass.prototype.drawMultiRings = function(paths) {
 
 	var self = this,
@@ -1084,21 +1062,18 @@ ringGraphClass.prototype.drawMultiRings = function(paths) {
 		this.drawRing(this.ringGroup[k]);
 }	
 
-// Working spot
 ringGraphClass.prototype.updateRings = function() {
 
-	for (var r of this.ringGroup) {
+	for (var r of this.ringGroup) 
 		this.updateRing(r);
-	}
 }
 
-// Working spot
 ringGraphClass.prototype.updateRing = function(ringObj) {
 
 	var self = this,
 		rowNumber = this.selectRow(),
 		isYrSelected = this.rocYr ? true: false
-	
+
 	this.readCSV(ringObj.dataSource)
 		.row(function(d, i) {
 			if ( isYrSelected ) if ( i === rowNumber ) return d
@@ -1123,7 +1098,7 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
       					}
 					})
 					.transition()
-						.duration(1000)
+						.duration(500)
 						.attrTween(
 							'd',
 							function(d, i, a) {
@@ -1137,13 +1112,31 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 									var b = itp(t);
 									d.x0 = b.x;
 									d.dx0 = b.dx;
-									return ringObj.arc(b);
+									return ringObj.arc(b)
 								};
 						      }	
 							}
-						);
+						)
+					// Stores the updated position 
+					.call(function(pathCluster) {
+						ringObj.pathOriginPos =
+							self._stashOriginPathPos(pathCluster[0]);
+					});
 			}
 		});
+}
+
+ringGraphClass.prototype._stashOriginPathPos = function(paths) {
+	
+	var originPoses = [];
+
+	for (var i in paths)
+		if (parseInt(i) > 0) 
+			originPoses.push({
+				x0 : paths[i].__data__.x, 
+				dx0: paths[i].__data__.dx
+		});
+	return originPoses
 }
 
 /* A class for tooltip */

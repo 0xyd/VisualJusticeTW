@@ -85,6 +85,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國75年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -97,6 +98,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國76年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -109,6 +111,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國77年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -121,6 +124,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國78年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -133,6 +137,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國79年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -145,6 +150,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國80年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -157,6 +163,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國81年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -169,6 +176,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國82年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -181,6 +189,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國83年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -193,6 +202,7 @@ var DashBoard = React.createClass({
 							{
 								name: '民國84年',
 								compos: [
+									'總覽',
 									'新入監前家庭狀況',
 									'新入監前犯罪次數與種類',
 									'新入監前教育程度',
@@ -401,10 +411,10 @@ var ChartPanel = React.createClass({
 				{
 					name: '新入監資料概覽',
 					urls: [
-					'/correction/新入監前家庭狀況.csv', 
-					'/correction/新入監犯罪次數與種類.csv',
-					'/correction/新入監前教育程度.csv',
-					'/correction/歷年新入監年齡歷年統計.csv' 
+						'/correction/新入監前家庭狀況.csv', 
+						'/correction/新入監犯罪次數與種類.csv',
+						'/correction/新入監前教育程度.csv',
+						'/correction/歷年新入監年齡歷年統計.csv' 
 					]
 				}
 			]
@@ -671,7 +681,7 @@ var StatFilter = React.createClass({
 			{
 				dataset  : '新入監資料概覽',
 				topic    : '民國75年',
-				filter   : '新入監前家庭狀況',
+				filter   : '總覽',
 				chartType: '圓環圖'  
 			}
 		];
