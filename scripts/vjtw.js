@@ -161,6 +161,7 @@ graphClass.prototype.initializeAPad = function() {
 		left:    this.pad.style('padding-left').replace('px', ''),
 		right:   this.pad.style('padding-right').replace('px', '')
 	}
+
 	return this
 }
 
@@ -272,9 +273,9 @@ barGraphClass.prototype._createXAxis = function(dataset, xLabel) {
 		.append('text')
 			.attr('class', 'axis-name')
 			.attr('x', function() {
-				return dataset.length*(self.barWidth+self.step)+self.outPadding-40
+				return dataset.length*(self.barWidth+self.step)+self.outPadding
 			})
-			.attr('y', '40')
+			.attr('y', '25')
 		.text(xLabel);
 }
 
@@ -857,14 +858,6 @@ var ringGraphClass = function() {
 	// Core radius of the ring sequence
 	this.coreRadius = 100;
 
-	// Outer Radius of the ring sequence
-	this.shellRadius = (function(h, w) { 
-		return Math.min(h,w)/ 2 
-	})(
-		this.panelWidth - this.panelPadding.left, 
-		this.panelHeight - this.panelPadding.top
-	);
-
 	// The drawing ring inner radius 
 	this.ringInnerRadius = this.coreRadius;
 
@@ -898,10 +891,25 @@ var ringGraphClass = function() {
 ringGraphClass.prototype = Object.create(graphClass.prototype);
 ringGraphClass.prototype.constructor = ringGraphClass;
 
-// A constructor for creating the rings for ring chart
-ringGraphClass.prototype.ringConstructor = function(source, innerR, outerR) {
+ringGraphClass.prototype.initSeq = function() {
 
-	var ring = function(iR, oR, s) {
+	// Initial an outer Radius of the ring sequence
+	this.shellRadius = (function(h, w) { 
+		return Math.min(h,w)/ 2 
+	})(
+		this.padWidth - this.padPadding.left, 
+		this.padHeight - this.padPadding.top
+	);
+	return this
+}
+
+// A constructor for creating the rings for ring chart
+ringGraphClass.prototype.ringConstructor = function(idName, source, innerR, outerR) {
+
+	var ring = function(idName, iR, oR, s) {
+
+		// Let d3js select element easier.
+		this.idName = idName;
 
 		// Set the source of the data
 		this.dataSource = s;
@@ -917,16 +925,19 @@ ringGraphClass.prototype.ringConstructor = function(source, innerR, outerR) {
 					.size([ 2*Math.PI, this.outerRadius*this.outerRadius ])
 					.value(function(d) { return d.value });
 
-				
 		this.arc =
 			d3.svg.arc()
 				.startAngle(function(d) { return d.x })
 				.endAngle(function(d) { return d.x + d.dx })
 				.innerRadius(this.innerRadius)
 				.outerRadius(this.outerRadius);
+
+		// Stores the position of the path of ring after rendering
+		this.pathOriginPos = [];
+
 		};
 
-	var r = new ring(innerR, outerR, source);
+	var r = new ring(idName ,innerR, outerR, source);
 
 	return r
 }
@@ -947,6 +958,7 @@ ringGraphClass.prototype.selectROCYr = function(yr) {
 
 	// The data of current year won't be published until the next year
 	this.rocYr = ( yr >= 75 && (date.getFullYear()-1911-1) > yr ) ? yr : null;
+	return this
 }
 
 /* Row Index of data of ROC year */
@@ -959,8 +971,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 	var self = this,
 		isYrSelected = this.rocYr ? true: false,
-		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/),
-		_color = keywords ? color[keywords]: null;
+		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/);
 			
 	this.readCSV(ringObj.dataSource)
 		.row(function(d, i) {
@@ -978,20 +989,21 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 				selectedRow.pop = jsonPop;
 				selectedRow = transtoPartitonFormat(selectedRow, '民國');
 				
-				self.panel.append('g')
+				self.pad.append('g')
+					.attr('id', ringObj.idName)
 					.attr('class', 'RING')
 					.attr('transform', function() {
 
-						// Put the ring at the center of the panel
+						// Put the ring at the center of the pad
 						return 'translate(' + 
 							(
-								self.panelWidth / 2 - 
-								self.panelPadding.left
+								self.padWidth / 2 - 
+								self.padPadding.left
 							)
 							+ ',' + 
 							(
-								self.panelHeight / 2 -
-								self.panelPadding.top							
+								self.padHeight / 2 -
+								self.padPadding.top							
 							) 
 							+ ')'
 					})
@@ -1001,11 +1013,26 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							.enter()
 							.append('path')
 								.attr('d', ringObj.arc)
-								// Working spot
+							.style('stroke', '#fff')
 							.style('fill', function(d, i) {
-								return color[keywords][d.name] || null
+								var cIndex = colorObj.rings
+									.findIndex(function(o) {
+										if ( o.name === keywords[0] ) return true
+								});
+								return colorObj.rings[cIndex].value[d.name]
 							})
-							.style('fill-rule', 'evenodd');
+							.style('fill-rule', 'evenodd')
+							.call(function(pathCluster) {
+
+								// Paths are stored at the path cluster at index 0
+								for (var i in pathCluster[0]) 
+									// The root of ring is index 0 and it doesn't need to change the appearance.
+									if (parseInt(i) > 0) 
+										ringObj.pathOriginPos.push({
+											x0:  pathCluster[0][i].__data__.x, 
+											dx0: pathCluster[0][i].__data__.dx
+										});
+							});
 		}
 	});
 }
@@ -1020,6 +1047,9 @@ ringGraphClass.prototype.drawMultiRings = function(paths) {
 	for ( var i = 0; i < l; i++ ) {
 				
 		_rings.push({
+
+			idName:
+				'RING_' + i,
 
 			path:
 				paths[i],
@@ -1044,6 +1074,7 @@ ringGraphClass.prototype.drawMultiRings = function(paths) {
 				
 		this.ringGroup.push(
 			this.ringConstructor(
+				r.idName,
 				r.path, 
 				r.innerRadius, 
 				r.outerRadius));
@@ -1051,6 +1082,68 @@ ringGraphClass.prototype.drawMultiRings = function(paths) {
 
 	for (var k = 0; k < this.ringGroup.length; ++k) 
 		this.drawRing(this.ringGroup[k]);
+}	
+
+// Working spot
+ringGraphClass.prototype.updateRings = function() {
+
+	for (var r of this.ringGroup) {
+		this.updateRing(r);
+	}
+}
+
+// Working spot
+ringGraphClass.prototype.updateRing = function(ringObj) {
+
+	var self = this,
+		rowNumber = this.selectRow(),
+		isYrSelected = this.rocYr ? true: false
+	
+	this.readCSV(ringObj.dataSource)
+		.row(function(d, i) {
+			if ( isYrSelected ) if ( i === rowNumber ) return d
+			else return null
+		})
+		.get(function(err, selectedRows) {
+			var selectedRow = 
+					selectedRows.length === 1 ? 
+						selectedRows[0]: null;
+					
+			if (selectedRow) {
+
+				selectedRow.pop = jsonPop;
+				selectedRow = transtoPartitonFormat(selectedRow, '民國');
+
+				d3.select('#'+ringObj.idName).datum(selectedRow)
+					.selectAll('path').data(ringObj.partition.nodes)
+					.each(function(d, i) {
+						if (i !== 0 && i <= ringObj.pathOriginPos.length) {
+      						d.x0  = ringObj.pathOriginPos[i-1].x0; 
+      						d.dx0 = ringObj.pathOriginPos[i-1].dx0;
+      					}
+					})
+					.transition()
+						.duration(1000)
+						.attrTween(
+							'd',
+							function(d, i, a) {
+								if ( i > 0 ) {
+      							
+								var itp = d3.interpolate({x: d.x0, dx: d.dx0}, d);
+
+								// Step function for interpolation
+								return function(t) {
+	  				
+									var b = itp(t);
+									d.x0 = b.x;
+									d.dx0 = b.dx;
+									return ringObj.arc(b);
+								};
+						      }	
+							}
+						);
+			}
+		});
 }
 
 /* A class for tooltip */
@@ -1187,6 +1280,9 @@ tipClass.prototype._setOffset = function(nodeId) {
 		offset = 
 			calOffsetFromOrigins(parentContainers, dotTipNode),
 
+		displayPanelWrapperStyle = 
+			window.getComputedStyle(document.getElementById('DISPLAY_PANEL_WRAPPER')),
+
 		displayPanelStyle = 
 			window.getComputedStyle(document.getElementById('DISPLAY_PANEL')),
 
@@ -1197,11 +1293,11 @@ tipClass.prototype._setOffset = function(nodeId) {
 			window.getComputedStyle(document.getElementById('DASHBOARD_HDR'), null);
 
 		offset.X += 
-				parseInt(displayPanelStyle['padding-left'].replace('px', '')) +
+				parseInt(displayPanelWrapperStyle['padding-left'].replace('px', '')) +
 					parseInt(svgPadStyle['padding-left'].replace('px', '')) +
 						parseInt(headerStyle['width'].replace('px', ''));
 		offset.Y += 
-				parseInt(displayPanelStyle['padding-top'].replace('px', '')) +
+				parseInt(displayPanelWrapperStyle['padding-top'].replace('px', '')) +
 					parseInt(svgPadStyle['padding-top'].replace('px', ''));
 	return offset
 
@@ -1254,9 +1350,7 @@ tipClass.prototype._correctPos = function(tipId) {
 			.style('left', updatedLeft + 'px');
 
 	} 
-
 	return this
-
 }
 
 tipClass.prototype._nodeSizeCorrect = function(tipType) {

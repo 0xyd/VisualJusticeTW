@@ -341,7 +341,7 @@ var DashBoard = React.createClass({
 					dataset={this.state.dataset}
 					chartRefresh={this.chartRefresh}
 					indexDB={this.state.indexDB} />
-				<ChartPanel 
+				<ChartPanelWrapper 
 					dataset={this.state.dataset}
 					topic={this.state.topic}
 					chartType={this.state.chartType}
@@ -350,6 +350,21 @@ var DashBoard = React.createClass({
 					ringGraph={this.graphs.ringGraph} />
 			</div>
 		)
+	}
+});
+
+var ChartPanelWrapper = React.createClass({
+	render: function() {
+		return (
+			<div id='DISPLAY_PANEL_WRAPPER' className='b20-col-md-16'>
+				<ChartPanel
+					dataset={this.props.dataset}
+					topic={this.props.topic}
+					chartType={this.props.chartType}
+					barGraph={this.props.barGraph} 
+					lineGraph={this.props.lineGraph}
+					ringGraph={this.props.ringGraph} />
+			</div>)
 	}
 });
 
@@ -451,13 +466,19 @@ var ChartPanel = React.createClass({
 
 	componentWillUpdate: function(nextProps, nextStates) {
 
-		// Initial the data when user switches 
+		// Initial the data when user switches to dataSheet 0
 		if (this.props.dataset !== nextProps.dataset && 
-			nextStates.sheetName === '監獄人數概況') {
+			nextStates.sheetName === this.state.dataSheets[0].name) {
 			d3.select('#SKETCHPAD').remove();
 			this.initBarChart(nextProps, nextStates);
+
+		// Initial the data when user switches to dataSheet 1
+		} else if (this.props.dataset !== nextProps.dataset && 
+			nextStates.sheetName === this.state.dataSheets[1].name) {
+			d3.select('#SKETCHPAD').remove();
+			this.initRingChart();
 		}
-		// Show the update results of '監獄人數概況' dataset
+		// Show the update results of to dataSheet 0
 		else if (nextProps.dataset === this.state.dataSheets[0].name) {
 
 			let lG = this.props.lineGraph,
@@ -488,14 +509,15 @@ var ChartPanel = React.createClass({
 						chartTypeDisplay(nextStates.chartType);
 					});
 				});
+		// Show the update results of to dataSheet 1
 		} else if (nextProps.dataset === this.state.dataSheets[1].name) {
 
-			d3.select('#SKETCHPAD').remove();
-
-			this.initRingChart();
-
-
-		}
+			let yr = parseInt(nextProps.topic.match(/\d+/));
+			
+			this.props.ringGraph
+				.selectROCYr(yr)
+				.updateRings();
+		} 
 	},
 
 	initBarChart: function(nextProps, nextStates) {
@@ -547,12 +569,16 @@ var ChartPanel = React.createClass({
 			});
 	},
 
-	// spot
 	initRingChart: function() {
 
 		let rG = this.props.ringGraph;
 
-		rG.initializeAPad().initSeq();
+		rG.initializeAPad()
+			.initSeq()
+				.selectROCYr(75)
+					.drawMultiRings(
+						this.state.dataSheets[1].urls);
+
 	},
 
 	chartTypeDisplay: function(chartType) {
@@ -574,7 +600,7 @@ var ChartPanel = React.createClass({
 
 	render: function() {
 		return (
-			<div id='DISPLAY_PANEL' className='b20-col-md-16'>
+			<div id='DISPLAY_PANEL' className='b20-col-md-20'>
 
 			</div>
 		)

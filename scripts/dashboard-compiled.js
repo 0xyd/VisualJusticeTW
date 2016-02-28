@@ -191,13 +191,31 @@ var DashBoard = React.createClass({
 				dataset: this.state.dataset,
 				chartRefresh: this.chartRefresh,
 				indexDB: this.state.indexDB }),
-			React.createElement(ChartPanel, {
+			React.createElement(ChartPanelWrapper, {
 				dataset: this.state.dataset,
 				topic: this.state.topic,
 				chartType: this.state.chartType,
 				barGraph: this.graphs.barGraph,
 				lineGraph: this.graphs.lineGraph,
 				ringGraph: this.graphs.ringGraph })
+		);
+	}
+});
+
+var ChartPanelWrapper = React.createClass({
+	displayName: 'ChartPanelWrapper',
+
+	render: function render() {
+		return React.createElement(
+			'div',
+			{ id: 'DISPLAY_PANEL_WRAPPER', className: 'b20-col-md-16' },
+			React.createElement(ChartPanel, {
+				dataset: this.props.dataset,
+				topic: this.props.topic,
+				chartType: this.props.chartType,
+				barGraph: this.props.barGraph,
+				lineGraph: this.props.lineGraph,
+				ringGraph: this.props.ringGraph })
 		);
 	}
 });
@@ -287,37 +305,43 @@ var ChartPanel = React.createClass({
 	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
 		var _this = this;
 
-		// Initial the data when user switches
-		if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === '監獄人數概況') {
+		// Initial the data when user switches to dataSheet 0
+		if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === this.state.dataSheets[0].name) {
 			d3.select('#SKETCHPAD').remove();
 			this.initBarChart(nextProps, nextStates);
-		}
-		// Show the update results of '監獄人數概況' dataset
-		else if (nextProps.dataset === this.state.dataSheets[0].name) {
-				(function () {
 
-					var lG = _this.props.lineGraph,
-					    chartTypeDisplay = _this.chartTypeDisplay;
-
-					if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
-
-					_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
-						lG.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
-
-							lG.linePath = o.line;
-							lG.lineDots = o.dots;
-							lG.areaUnderLine = o.area;
-
-							chartTypeDisplay(nextStates.chartType);
-						});
-					});
-				})();
-			} else if (nextProps.dataset === this.state.dataSheets[1].name) {
-
+			// Initial the data when user switches to dataSheet 1
+		} else if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === this.state.dataSheets[1].name) {
 				d3.select('#SKETCHPAD').remove();
-
 				this.initRingChart();
 			}
+			// Show the update results of to dataSheet 0
+			else if (nextProps.dataset === this.state.dataSheets[0].name) {
+					(function () {
+
+						var lG = _this.props.lineGraph,
+						    chartTypeDisplay = _this.chartTypeDisplay;
+
+						if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
+
+						_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
+							lG.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
+
+								lG.linePath = o.line;
+								lG.lineDots = o.dots;
+								lG.areaUnderLine = o.area;
+
+								chartTypeDisplay(nextStates.chartType);
+							});
+						});
+						// Show the update results of to dataSheet 1
+					})();
+				} else if (nextProps.dataset === this.state.dataSheets[1].name) {
+
+						var yr = parseInt(nextProps.topic.match(/\d+/));
+
+						this.props.ringGraph.selectROCYr(yr).updateRings();
+					}
 	},
 
 	initBarChart: function initBarChart(nextProps, nextStates) {
@@ -347,12 +371,11 @@ var ChartPanel = React.createClass({
 		});
 	},
 
-	// spot
 	initRingChart: function initRingChart() {
 
 		var rG = this.props.ringGraph;
 
-		rG.initializeAPad().initSeq();
+		rG.initializeAPad().initSeq().selectROCYr(75).drawMultiRings(this.state.dataSheets[1].urls);
 	},
 
 	chartTypeDisplay: function chartTypeDisplay(chartType) {
@@ -373,7 +396,7 @@ var ChartPanel = React.createClass({
 	},
 
 	render: function render() {
-		return React.createElement('div', { id: 'DISPLAY_PANEL', className: 'b20-col-md-16' });
+		return React.createElement('div', { id: 'DISPLAY_PANEL', className: 'b20-col-md-20' });
 	}
 });
 
