@@ -374,7 +374,8 @@ var ChartPanelWrapper = React.createClass({
 					barGraph={this.props.barGraph} 
 					lineGraph={this.props.lineGraph}
 					ringGraph={this.props.ringGraph} />
-			</div>)
+			</div>
+		)
 	}
 });
 
@@ -479,17 +480,27 @@ var ChartPanel = React.createClass({
 		// Initial the data when user switches to dataSheet 0
 		if (this.props.dataset !== nextProps.dataset && 
 			nextStates.sheetName === this.state.dataSheets[0].name) {
+			console.log('init the bar chart');
 			d3.select('#SKETCHPAD').remove();
+
+			// Clear the old setting of the previous
+			nextProps.lineGraph.empty();
 			this.initBarChart(nextProps, nextStates);
 
 		// Initial the data when user switches to dataSheet 1
 		} else if (this.props.dataset !== nextProps.dataset && 
 			nextStates.sheetName === this.state.dataSheets[1].name) {
+			console.log('init a ring chart');
 			d3.select('#SKETCHPAD').remove();
+			
+			// Clear the old setting of the previous
+			nextProps.ringGraph.empty();
+
 			this.initRingChart();
 		}
 		// Show the update results of to dataSheet 0
 		else if (nextProps.dataset === this.state.dataSheets[0].name) {
+			console.log('update the bar chart');
 
 			let lG = this.props.lineGraph,
 				chartTypeDisplay = this.chartTypeDisplay;
@@ -505,6 +516,7 @@ var ChartPanel = React.createClass({
 					nextStates.dataTopic
 					)
 				.then(function(jsonOutput) {
+					console.log(jsonOutput);
 					lG.plotBars(
 						jsonOutput.data,
 						jsonOutput.pad,
@@ -521,6 +533,7 @@ var ChartPanel = React.createClass({
 				});
 		// Show the update results of to dataSheet 1
 		} else if (nextProps.dataset === this.state.dataSheets[1].name) {
+			console.log('update the ring chart');
 
 			let yr = parseInt(nextProps.topic.match(/\d+/));
 			
@@ -584,7 +597,7 @@ var ChartPanel = React.createClass({
 		let rG = this.props.ringGraph;
 
 		rG.initializeAPad()
-			.initSeq()
+			.init()
 				.selectROCYr(75)
 					.drawMultiRings(
 						this.state.dataSheets[1].urls);

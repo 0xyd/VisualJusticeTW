@@ -1,3 +1,7 @@
+/* Import Velocity library to control the non-svg elements */
+// Simplified Velocity function
+var $v = Velocity;
+
 /* Queuing process */
 var queue = function() {
 	this.queueTasks = [];
@@ -595,6 +599,7 @@ lineGraphClass.prototype.setChartSize = function(motherPad) {
 }
 
 // Plot the data from bar graph.
+// Debugging
 lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPinned) {
 
 	var self = this,
@@ -624,7 +629,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check if line is existed or not
 		if ( self.linePath ) {
-
+			console.log('Line is existed');
 			self.linePath
 				.datum(data)
 				.transition()
@@ -633,7 +638,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create a line once it is not existed
 		} else {
-
+			console.log('Line is not existed');
 			self.linePath = 
 				self.pad
 					.append('g')
@@ -649,7 +654,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check the dots on line are existed or not
 		if ( self.lineDots ) {
-
+			console.log('Dots are existed');
 			self.lineDots
 				.data(data)
 				.transition()
@@ -659,7 +664,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create the dots once they aren't existed
 		} else {
-
+			console.log('Dots did not exist');
 			self.lineDots = self.pad
 				.append('g')
 					.attr('class', 'dots-cluster')
@@ -831,6 +836,15 @@ lineGraphClass.prototype.hideUnderArea = function() {
 	return this
 }
 
+lineGraphClass.prototype.empty = function() {
+
+	this.linePath = null
+	this.lineDots = null
+	this.areaUnderLine = null
+
+	return this
+}
+
 /* A Class for ring chart */
 var ringGraphClass = function() {
 	
@@ -857,11 +871,6 @@ var ringGraphClass = function() {
 	// A variable for storing Year value in ROC
 	this.rocYr = null;
 
-	// Count for the number of the ring
-	this.countRing = 0;
-
-	this.ringNumber = null;
-
 	this.dataInfoView = {
 		textArea: null,
 		percentage: null,
@@ -869,13 +878,20 @@ var ringGraphClass = function() {
 		itemName: null,
 		itemNumber: null
 	};
+
+	// Working spot
+	// A ring info board for displaying the chart detail.
+	this.ringInfoBoard = {
+		body: null,
+		info : []
+	}
 }
 
 /* Inherit the ringGraphClass from the graph */
 ringGraphClass.prototype = Object.create(graphClass.prototype);
 ringGraphClass.prototype.constructor = ringGraphClass;
 
-ringGraphClass.prototype.initSeq = function() {
+ringGraphClass.prototype.init = function() {
 
 	// Initial an outer Radius of the ring sequence
 	this.shellRadius = (function(h, w) { 
@@ -884,6 +900,18 @@ ringGraphClass.prototype.initSeq = function() {
 		this.padWidth - this.padPadding.left, 
 		this.padHeight - this.padPadding.top
 	);
+
+	// Working spot
+	// Initial the board
+	this.ringInfoBoard.body =  
+		d3.select('#DISPLAY_PANEL').append('div')
+			.attr('id', 'RING_INFO_BOARD')
+			// .attr('class', 'b12-col-md-3 board')
+			.attr('class', 'board')
+			.style('top', '7%')
+			.style('left', '3%');
+
+
 	return this
 }
 
@@ -926,6 +954,198 @@ ringGraphClass.prototype.ringConstructor = function(idName, source, innerR, oute
 	return r
 }
 
+ringGraphClass.prototype._listRingInfo = function(titleName, idName, objs) {
+
+	var l = objs.length,
+		infoData = {
+			name   : titleName,
+			ringId : idName,
+			year   : null,
+			values : []
+		};
+
+	for (var i = 0; i < l; ++i) {
+		// Access the information from root
+		if (parseInt(i) === 0)
+			infoData.year = objs[i].__data__.name;
+		else 
+			infoData.values.push({
+				name : objs[i].__data__.name,
+				value: objs[i].__data__.value
+			});
+	}
+
+	this.ringInfoBoard.info.push(infoData);
+
+	return infoData
+
+}
+// Working spot
+// check _createBars method as refference
+ringGraphClass.prototype._infoBoardRender = function(info) {
+	
+	var 
+		self = this,
+		boardWidth = 
+			parseInt(this.ringInfoBoard.body.style('width').replace('px', '')),
+
+		// Load Color settings for current ring data from the color object.
+		colorSettings = 
+			colorObj.rings.find(function(d) {
+				if (d.name === info.name) return true
+			});
+
+	var scale = 
+		d3.scale.linear()
+			.domain(
+				[0, d3.max(
+						info.values, 
+						function(d) { return d.value })
+				])
+			.rangeRound([0, boardWidth * .5]);
+	
+	this.ringInfoBoard.body
+		.append('div')
+			.attr('id', info.ringId + '-menu')
+			.attr('class', 'board-dropdown')
+			.html(function(){
+				return (
+					'<div class="board-dropdown-header">'
+					+ '<span class="title">' 
+					+ info.name 
+					+ '</span>'
+					+ '<span class="arrow">'
+					+ '<div class="arrow-left"></div>'
+					+ '<div class="arrow-right"></div>'
+					+ '</span>'
+					+ '</div>'
+				)
+			})
+			.selectAll('div.board-dropdown')
+				.data([info])
+				.enter()
+				.append('div')
+				.attr('class', 'board-dropdown-menu')
+				.append('svg')
+					.selectAll('g')
+					.data(info.values)
+					.enter()
+					.append('g')
+					.append('text')
+						.text(function(d) {
+							return d.name
+						})
+						.attr('x', 0)
+						.attr('y', function(d, i) {
+							return 22.5 + 25 * (i > 0 ? i : 0) + 'px'
+						})
+						.attr('font-size', '0.8em')
+						.attr('fill', '#fff')
+						.call(function(textObjs) {
+
+							// Find the max width of text and set it as the bars' offset x.
+							var barXOffset = 
+								(function(d) {
+									
+									var textWidths = [],
+										dL = d.length;
+
+									for (var i = 0; i < dL; ++i) 
+										textWidths.push(
+											parseInt(
+												d3.select(d[i]).style('width')
+													.replace('px', '')
+											));
+									
+									return Math.max.apply(null, textWidths)
+
+								})(textObjs[0]);
+
+							var svg = textObjs.node().parentNode.parentNode;
+
+							// Draw the bars
+							d3.select(svg)
+								.selectAll('rect')
+								.data(info.values)
+								.enter()
+								.append('rect')
+									.attr('height', 15)
+									.attr('width', function(d, i) {
+										return scale(d.value)
+									})
+									.attr('default-color', function(d) {
+										return colorSettings.value[d.name]
+									})
+									.attr('fill', function(d) {
+										return colorSettings.value[d.name]
+									})
+									.attr('x', function(d, i) {
+										var paddingBefore = 20;
+										return 10 + barXOffset + 'px'
+									})
+									.attr('y', function(d, i) {
+										return 10 + 25 * (i > 0 ? i : 0) + 'px'
+									})
+									// Mark the number after the bars
+									.call(function(rectObjs) {
+										
+										var 
+											rects = rectObjs[0],
+											svg   = d3.select(rects).node().parentNode,
+											rectsNumber = rects.length,
+											svgHeight   = 0;
+
+										for ( var i = 0; i < rectsNumber; i++ ) {
+
+											var rect = d3.select(rects[i]),
+												rectD = rects[i].__data__,
+												rectW = parseInt(rect.attr('width').replace('px', '')),
+												rectX = parseInt(rect.attr('x')),
+												rectY = parseInt(rect.attr('y'));
+											
+											d3.select(svg)
+												.append('text')
+													.text(function() {
+														return rectD.value
+													})
+													.style('font-size', '0.8em')
+													.attr('x', rectX + rectW + 5)
+													.attr('y', rectY + 12)
+													.attr('fill', '#fff');
+
+											if (i === rectsNumber-1) 
+												svgHeight = parseInt(rect.attr('y')) + 30;
+										}
+
+										// Let the most outer ring's menu be displayed
+										// Suspend issue.
+										// if ( info.ringId === 'RING_3' ) {
+
+										// 	self.ringInfoBoard.body
+										// 		.attr('current-ring-data', 'RING_3');
+
+										// 	d3.select(svg)
+										// 		.attr('data-default-height', svgHeight) // Store the resizing result 
+										// 		.attr('height', svgHeight);
+										// }
+										// else {
+
+											d3.select(svg)
+													.attr('data-default-height', svgHeight)
+													.attr('height', 0);
+
+											d3.select('#'+info.ringId+'-menu')
+												.style('display', 'none');
+										// }
+									});
+						});
+}
+
+// Working spot
+ringGraphClass.prototype._stashRingInfo = function(info) {
+
+}
+
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
 
 	this.ringDelta = 
@@ -956,7 +1176,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 	var self = this,
 		isYrSelected = this.rocYr ? true: false,
 		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/);
-			
+
 	this.readCSV(ringObj.dataSource)
 		.row(function(d, i) {
 			if ( isYrSelected ) if ( i === self.selectRow() ) return d
@@ -972,7 +1192,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 				selectedRow.pop = jsonPop;
 				selectedRow = transtoPartitonFormat(selectedRow, '民國');
-				
+
 				self.pad.append('g')
 					.attr('id', ringObj.idName)
 					.attr('class', 'RING')
@@ -981,7 +1201,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 						// Put the ring at the center of the pad
 						return 'translate(' + 
 							(
-								self.padWidth / 5 * 3 - 
+								self.padWidth / 9 * 6 - 
 								self.padPadding.left
 							)
 							+ ',' + 
@@ -991,13 +1211,94 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							) 
 							+ ')'
 					})
+					.style('stroke', '#fff')
+					.style('opacity', 0.6)
+					// Working spot
+					.on('mouseenter', function(d, i) {
+
+						self.ringInfoBoard.body
+							.attr('current-ring-data', this.id);
+
+							var 
+								dropdownSVG = 
+									d3.select('#'+this.id+'-menu')
+										.select('div.board-dropdown-menu')
+										.select('svg'),
+								dropdownHeaderArrow = 
+									d3.select('#'+this.id+'-menu')
+										.select('div.board-dropdown-header')
+										.select('span.arrow');
+
+							d3.select('#'+ringObj.idName+'-menu')
+								.style('display', 'inline-block');
+
+							$v(
+								this,
+								{ opacity : 1.0 },
+								{ duration: 400 }
+							);
+
+							$v(
+								dropdownSVG.node(),
+								{ height  : dropdownSVG.attr('data-default-height')},
+								{ duration: 400 }
+							);
+
+							$v(
+								dropdownHeaderArrow.node(), 
+								{ rotateZ : '180deg' }, 
+								{ duration: 400 }
+							);
+						
+					})
+					.on('mouseleave', function(d, i) {
+
+						var 
+							dropdownSVG = 
+								d3.select('#'+this.id+'-menu')
+									.select('div.board-dropdown-menu')
+									.select('svg'),
+
+							dropdownHeaderArrow = 
+								d3.select('#'+this.id+'-menu')
+									.select('div.board-dropdown-header')
+									.select('span.arrow');
+
+						d3.select('#'+ringObj.idName+'-menu')
+							.style('display', 'none');
+
+						$v(
+							this,
+							{ opacity : 0.6 },
+							{ duration: 400 }
+						);
+						
+						$v(
+							dropdownSVG.node(),
+							{ height  : 0   },
+							{ duration: 400 }
+						);
+
+						$v(
+							d3.select('#'+this.id+'-menu')
+								.select('div.board-dropdown-header')
+								.select('span.arrow').node(), 
+							{ rotateZ : '0deg' }, 
+							{ duration: 400    }
+						);
+					})
 					.datum(selectedRow)
 						.selectAll('path')
 							.data(ringObj.partition.nodes)
 							.enter()
 							.append('path')
 								.attr('d', ringObj.arc)
-							.style('stroke', '#fff')
+							// Render the information into the board.
+							.call(function(d) {
+								self._infoBoardRender(
+									self._listRingInfo(keywords[0], ringObj.idName, d[0]));
+							})
+							// .style('stroke', '#fff')
 							.style('fill', function(d, i) {
 								var cIndex = colorObj.rings
 									.findIndex(function(o) {
@@ -1006,6 +1307,30 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								return colorObj.rings[cIndex].value[d.name]
 							})
 							.style('fill-rule', 'evenodd')
+							// Working spot
+							.on('mouseenter',function(d, index) {
+								
+								d3.select('#'+this.parentNode.id+'-menu')
+									.selectAll('rect')
+									.each(function(d, i) {
+										if ( index === i + 1)
+											d3.select(this).classed('selected', true);
+									});
+
+								d3.select(this)
+									.attr('stroke-width', '5px')
+									.attr('stroke', '#fff');
+							})
+							.on('mouseout' ,function(d, index) {
+
+								d3.select('#'+this.parentNode.id+'-menu')
+									.select('rect.selected')
+									.classed('selected', false);
+								
+								d3.select(this)
+									.attr('stroke-width', null)
+									.attr('stroke', null);
+							})
 							.call(function(pathCluster) {
 								ringObj.pathOriginPos = 
 									self._stashOriginPathPos(pathCluster[0]);
@@ -1137,6 +1462,12 @@ ringGraphClass.prototype._stashOriginPathPos = function(paths) {
 				dx0: paths[i].__data__.dx
 		});
 	return originPoses
+}
+
+
+ringGraphClass.prototype.empty = function() {
+	this.ringGroup = []
+	return this
 }
 
 /* A class for tooltip */

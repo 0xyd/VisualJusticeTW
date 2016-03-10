@@ -307,17 +307,27 @@ var ChartPanel = React.createClass({
 
 		// Initial the data when user switches to dataSheet 0
 		if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === this.state.dataSheets[0].name) {
+			console.log('init the bar chart');
 			d3.select('#SKETCHPAD').remove();
+
+			// Clear the old setting of the previous
+			nextProps.lineGraph.empty();
 			this.initBarChart(nextProps, nextStates);
 
 			// Initial the data when user switches to dataSheet 1
 		} else if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === this.state.dataSheets[1].name) {
+				console.log('init a ring chart');
 				d3.select('#SKETCHPAD').remove();
+
+				// Clear the old setting of the previous
+				nextProps.ringGraph.empty();
+
 				this.initRingChart();
 			}
 			// Show the update results of to dataSheet 0
 			else if (nextProps.dataset === this.state.dataSheets[0].name) {
 					(function () {
+						console.log('update the bar chart');
 
 						var lG = _this.props.lineGraph,
 						    chartTypeDisplay = _this.chartTypeDisplay;
@@ -325,6 +335,7 @@ var ChartPanel = React.createClass({
 						if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
 
 						_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
+							console.log(jsonOutput);
 							lG.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
 
 								lG.linePath = o.line;
@@ -337,6 +348,7 @@ var ChartPanel = React.createClass({
 						// Show the update results of to dataSheet 1
 					})();
 				} else if (nextProps.dataset === this.state.dataSheets[1].name) {
+						console.log('update the ring chart');
 
 						var yr = parseInt(nextProps.topic.match(/\d+/));
 
@@ -375,7 +387,7 @@ var ChartPanel = React.createClass({
 
 		var rG = this.props.ringGraph;
 
-		rG.initializeAPad().initSeq().selectROCYr(75).drawMultiRings(this.state.dataSheets[1].urls);
+		rG.initializeAPad().init().selectROCYr(75).drawMultiRings(this.state.dataSheets[1].urls);
 	},
 
 	chartTypeDisplay: function chartTypeDisplay(chartType) {
