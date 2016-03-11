@@ -901,12 +901,10 @@ ringGraphClass.prototype.init = function() {
 		this.padHeight - this.padPadding.top
 	);
 
-	// Working spot
 	// Initial the board
 	this.ringInfoBoard.body =  
 		d3.select('#DISPLAY_PANEL').append('div')
 			.attr('id', 'RING_INFO_BOARD')
-			// .attr('class', 'b12-col-md-3 board')
 			.attr('class', 'board')
 			.style('top', '7%')
 			.style('left', '3%');
@@ -975,8 +973,6 @@ ringGraphClass.prototype._listRingInfo = function(titleName, idName, objs) {
 			});
 	}
 
-	this.ringInfoBoard.info.push(infoData);
-
 	return infoData
 
 }
@@ -1025,6 +1021,10 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 				.data([info])
 				.enter()
 				.append('div')
+				// Working spot: Working for storing the most ring's infomation to info board
+				.call(function(d) {
+					self.ringInfoBoard.info.push(d.node().__data__);
+				})
 				.attr('class', 'board-dropdown-menu')
 				.append('svg')
 					.selectAll('g')
@@ -1119,16 +1119,16 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 
 										// Let the most outer ring's menu be displayed
 										// Suspend issue.
-										// if ( info.ringId === 'RING_3' ) {
+										if ( info.ringId === 'RING_3' ) {
 
-										// 	self.ringInfoBoard.body
-										// 		.attr('current-ring-data', 'RING_3');
+											self.ringInfoBoard.body
+												.attr('current-ring-data', 'RING_3');
 
-										// 	d3.select(svg)
-										// 		.attr('data-default-height', svgHeight) // Store the resizing result 
-										// 		.attr('height', svgHeight);
-										// }
-										// else {
+											d3.select(svg)
+												.attr('data-default-height', svgHeight) // Store the resizing result 
+												.attr('height', svgHeight);
+										}
+										else {
 
 											d3.select(svg)
 													.attr('data-default-height', svgHeight)
@@ -1136,7 +1136,7 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 
 											d3.select('#'+info.ringId+'-menu')
 												.style('display', 'none');
-										// }
+										}
 									});
 						});
 }
@@ -1213,79 +1213,18 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 					})
 					.style('stroke', '#fff')
 					.style('opacity', 0.6)
-					// Working spot
 					.on('mouseenter', function(d, i) {
 
 						self.ringInfoBoard.body
 							.attr('current-ring-data', this.id);
-
-							var 
-								dropdownSVG = 
-									d3.select('#'+this.id+'-menu')
-										.select('div.board-dropdown-menu')
-										.select('svg'),
-								dropdownHeaderArrow = 
-									d3.select('#'+this.id+'-menu')
-										.select('div.board-dropdown-header')
-										.select('span.arrow');
-
-							d3.select('#'+ringObj.idName+'-menu')
-								.style('display', 'inline-block');
-
-							$v(
-								this,
-								{ opacity : 1.0 },
-								{ duration: 400 }
-							);
-
-							$v(
-								dropdownSVG.node(),
-								{ height  : dropdownSVG.attr('data-default-height')},
-								{ duration: 400 }
-							);
-
-							$v(
-								dropdownHeaderArrow.node(), 
-								{ rotateZ : '180deg' }, 
-								{ duration: 400 }
-							);
+						
+						__menuAnimation(this.id, "expand");
 						
 					})
 					.on('mouseleave', function(d, i) {
-
-						var 
-							dropdownSVG = 
-								d3.select('#'+this.id+'-menu')
-									.select('div.board-dropdown-menu')
-									.select('svg'),
-
-							dropdownHeaderArrow = 
-								d3.select('#'+this.id+'-menu')
-									.select('div.board-dropdown-header')
-									.select('span.arrow');
-
-						d3.select('#'+ringObj.idName+'-menu')
-							.style('display', 'none');
-
-						$v(
-							this,
-							{ opacity : 0.6 },
-							{ duration: 400 }
-						);
 						
-						$v(
-							dropdownSVG.node(),
-							{ height  : 0   },
-							{ duration: 400 }
-						);
+						__menuAnimation(this.id, "collapse");
 
-						$v(
-							d3.select('#'+this.id+'-menu')
-								.select('div.board-dropdown-header')
-								.select('span.arrow').node(), 
-							{ rotateZ : '0deg' }, 
-							{ duration: 400    }
-						);
 					})
 					.datum(selectedRow)
 						.selectAll('path')
@@ -1298,7 +1237,6 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								self._infoBoardRender(
 									self._listRingInfo(keywords[0], ringObj.idName, d[0]));
 							})
-							// .style('stroke', '#fff')
 							.style('fill', function(d, i) {
 								var cIndex = colorObj.rings
 									.findIndex(function(o) {
@@ -1307,7 +1245,6 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								return colorObj.rings[cIndex].value[d.name]
 							})
 							.style('fill-rule', 'evenodd')
-							// Working spot
 							.on('mouseenter',function(d, index) {
 								
 								d3.select('#'+this.parentNode.id+'-menu')
@@ -1335,6 +1272,146 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								ringObj.pathOriginPos = 
 									self._stashOriginPathPos(pathCluster[0]);
 							});
+		}
+		// Working spot
+		function __menuAnimation(ringId, evtName) {
+
+			var 
+				ringNumber =
+					self.ringInfoBoard.info.length,
+
+				innerRingId =
+					self.ringInfoBoard.info[0].ringId,
+
+				outerRingId =
+					self.ringInfoBoard.info[ringNumber-1].ringId,
+
+				ring =
+					d3.select('#'+ringId).node(),
+
+				dropdownMenu = 
+					d3.select('#'+ringId+'-menu'),
+
+				dropdownSVG = 
+					dropdownMenu
+						.select('div.board-dropdown-menu')
+						.select('svg'),
+
+				dropdownArrow = 
+					dropdownMenu
+						.select('div.board-dropdown-header')
+						.select('span.arrow');
+
+				innerDropdownMenu  = 
+					d3.select('#'+innerRingId+'-menu'),
+				innerDropdownSvg   = 
+					innerDropdownMenu
+						.select('div.board-dropdown-menu').select('svg'),
+				innerDropdownArrow = 
+					innerDropdownMenu
+						.select('div.board-dropdown-header').select('span.arrow'),
+
+				outerDropdownMenu  = 
+					d3.select('#'+outerRingId+'-menu'),
+				outerDropdownSvg   = 
+					outerDropdownMenu
+						.select('div.board-dropdown-menu').select('svg'),
+				outerDropdownArrow = 
+					outerDropdownMenu
+						.select('div.board-dropdown-header').select('span.arrow');
+
+				if ( evtName === "expand" ) {
+
+					$v(
+						ring,
+						{ opacity : 1.0 },
+						{ duration: 400 }
+					);
+
+					if ( ringId !== outerRingId && ringId !== innerRingId ) {
+						
+						if ( innerDropdownMenu.style('display') === 'block' ) {
+							__collapseMenu(
+								innerDropdownMenu,
+								innerDropdownSvg ,
+								innerDropdownArrow
+								);
+						} else if ( outerDropdownMenu.style('display') === 'block' ) {
+							__collapseMenu(
+								outerDropdownMenu,
+								outerDropdownSvg ,
+								outerDropdownArrow
+								);
+						}
+						__expandMenu(
+							dropdownMenu, 
+							dropdownSVG , 
+							dropdownArrow
+						);
+					} else if (ringId === outerRingId) {
+						__expandMenu(
+							dropdownMenu, 
+							dropdownSVG , 
+							dropdownArrow
+						);
+					} else if (ringId === innerRingId) {
+						__expandMenu(
+							dropdownMenu, 
+							dropdownSVG , 
+							dropdownArrow
+						);
+					}
+				} else if ( evtName === "collapse") {
+
+					$v(
+						ring,
+						{ opacity : 0.6 },
+						{ duration: 400 }
+					);
+
+					if ( ringId !== outerRingId && ringId !== innerRingId ) {
+						__collapseMenu(
+							dropdownMenu, 
+							dropdownSVG, 
+							dropdownArrow
+						);
+					}
+				}
+
+			function __expandMenu(menu, svg, arrow) {
+
+				menu
+					.style('display', 'block');
+
+				$v(
+					svg.node(),
+					{ height  : svg.attr('data-default-height')},
+					{ duration: 400 }
+				);
+
+				$v(
+					arrow.node(), 
+					{ rotateZ : '180deg' }, 
+					{ duration: 400 }
+				);
+			}
+
+			function __collapseMenu(menu, svg, arrow) {
+
+				menu.style('display', 'none');
+
+				$v(
+					svg.node(),
+					{ height  : 0   },
+					{ duration: 400 }
+				);
+
+				$v(
+					arrow.node(),
+					{ rotateZ : '0deg' },
+					{ duration: 400 }
+				);
+			}
 		}
 	});
 }
