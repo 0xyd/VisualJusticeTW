@@ -1,3 +1,5 @@
+'use strict';
+
 /* Import Velocity library to control the non-svg elements */
 // Simplified Velocity function
 var $v = Velocity;
@@ -879,11 +881,35 @@ var ringGraphClass = function() {
 		itemNumber: null
 	};
 
-	// Working spot
+	
 	// A ring info board for displaying the chart detail.
-	this.ringInfoBoard = {
-		body: null,
-		info : []
+	this.ringInfoBoard = { // Use for displaying the quantitive of each parts
+		statsBoard     : {
+			body: null,
+			info: []
+		}, 
+		percentageBoard: { // Use for displaying the percentage of the part.
+			body: null,
+			info: [],
+			
+			calVal: function(val) {
+				var val = 
+					val * 100 > 0.0999999999 ? 
+						(val * 100).toFixed(1) : 
+						'<span style="font-size: 0.4em;">&lt;</span> 0.1';
+				
+				this.body.select('.board-body-txt').html(val);
+				return this;
+			},
+			
+			setTitle: function(topic, category) {
+
+				this.body.select('.board-body-title')
+					.text(topic + ':' + category);
+
+				return this;
+			}
+		}
 	}
 }
 
@@ -901,15 +927,31 @@ ringGraphClass.prototype.init = function() {
 		this.padHeight - this.padPadding.top
 	);
 
-	// Initial the board
-	this.ringInfoBoard.body =  
+	// Initial the board for stats
+	this.ringInfoBoard.statsBoard.body =  
 		d3.select('#DISPLAY_PANEL').append('div')
-			.attr('id', 'RING_INFO_BOARD')
+			.attr('id', 'RING_STATS_BOARD')
 			.attr('class', 'board')
 			.style('top', '7%')
 			.style('left', '3%');
 
+	// Initial the board for pecentage
+	this.ringInfoBoard.percentageBoard.body = 
+		d3.select('#DISPLAY_PANEL').append('div')
+			.attr('id', 'RING_PERCENTAGE_BOARD')
+			.attr('class', 'board')
+			.style('bottom', '2%')
+			.style('left', '3%');
 
+	this.ringInfoBoard.percentageBoard.body
+		.append('section')
+			.attr('class', 'board-body board-body--centering')
+			.style('height', '100%')
+			.call(function() {
+				this.append('div').attr('class', 'board-body-title');
+				this.append('div').attr('class', 'board-body-txt');
+			});
+		
 	return this
 }
 
@@ -976,14 +1018,13 @@ ringGraphClass.prototype._listRingInfo = function(titleName, idName, objs) {
 	return infoData
 
 }
-// Working spot
 // check _createBars method as refference
 ringGraphClass.prototype._infoBoardRender = function(info) {
 	
 	var 
 		self = this,
 		boardWidth = 
-			parseInt(this.ringInfoBoard.body.style('width').replace('px', '')),
+			parseInt(this.ringInfoBoard.statsBoard.body.style('width').replace('px', '')),
 
 		// Load Color settings for current ring data from the color object.
 		colorSettings = 
@@ -1000,7 +1041,7 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 				])
 			.rangeRound([0, boardWidth * .5]);
 	
-	this.ringInfoBoard.body
+	this.ringInfoBoard.statsBoard.body
 		.append('div')
 			.attr('id', info.ringId + '-menu')
 			.attr('class', 'board-dropdown')
@@ -1021,9 +1062,8 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 				.data([info])
 				.enter()
 				.append('div')
-				// Working spot: Working for storing the most ring's infomation to info board
 				.call(function(d) {
-					self.ringInfoBoard.info.push(d.node().__data__);
+					self.ringInfoBoard.statsBoard.info.push(d.node().__data__);
 				})
 				.attr('class', 'board-dropdown-menu')
 				.append('svg')
@@ -1121,7 +1161,7 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 										// Suspend issue.
 										if ( info.ringId === 'RING_3' ) {
 
-											self.ringInfoBoard.body
+											self.ringInfoBoard.statsBoard.body
 												.attr('current-ring-data', 'RING_3');
 
 											d3.select(svg)
@@ -1139,11 +1179,6 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 										}
 									});
 						});
-}
-
-// Working spot
-ringGraphClass.prototype._stashRingInfo = function(info) {
-
 }
 
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
@@ -1187,7 +1222,18 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 			var selectedRow = 
 					selectedRows.length === 1 ? 
 						selectedRows[0]: null;
+			
+			// Working spot: Calculate the total.
+			var total = (function(vals) {
+
+				var sum = 0;
+				for (var i in vals) 
+					sum += parseInt(vals[i]);
+
+				return sum
 					
+			})(selectedRow);
+
 			if (selectedRow) {
 
 				selectedRow.pop = jsonPop;
@@ -1215,7 +1261,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 					.style('opacity', 0.6)
 					.on('mouseenter', function(d, i) {
 
-						self.ringInfoBoard.body
+						self.ringInfoBoard.statsBoard.body
 							.attr('current-ring-data', this.id);
 						
 						__menuAnimation(this.id, "expand");
@@ -1232,11 +1278,13 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							.enter()
 							.append('path')
 								.attr('d', ringObj.arc)
-							// Render the information into the board.
+
+							// Render the quantitive information to the board.
 							.call(function(d) {
 								self._infoBoardRender(
 									self._listRingInfo(keywords[0], ringObj.idName, d[0]));
 							})
+
 							.style('fill', function(d, i) {
 								var cIndex = colorObj.rings
 									.findIndex(function(o) {
@@ -1246,7 +1294,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							})
 							.style('fill-rule', 'evenodd')
 							.on('mouseenter',function(d, index) {
-								
+
 								d3.select('#'+this.parentNode.id+'-menu')
 									.selectAll('rect')
 									.each(function(d, i) {
@@ -1257,6 +1305,12 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								d3.select(this)
 									.attr('stroke-width', '5px')
 									.attr('stroke', '#fff');
+
+								// Render the percentage number to the percentage board
+								self.ringInfoBoard.percentageBoard
+									.calVal(d.value/total)
+									.setTitle(keywords, d.name);
+
 							})
 							.on('mouseout' ,function(d, index) {
 
@@ -1267,6 +1321,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 								d3.select(this)
 									.attr('stroke-width', null)
 									.attr('stroke', null);
+
 							})
 							.call(function(pathCluster) {
 								ringObj.pathOriginPos = 
@@ -1275,16 +1330,16 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 		}
 		// Working spot
 		function __menuAnimation(ringId, evtName) {
-
+			
 			var 
 				ringNumber =
-					self.ringInfoBoard.info.length,
+					self.ringInfoBoard.statsBoard.info.length,
 
 				innerRingId =
-					self.ringInfoBoard.info[0].ringId,
+					self.ringInfoBoard.statsBoard.info[0].ringId,
 
 				outerRingId =
-					self.ringInfoBoard.info[ringNumber-1].ringId,
+					self.ringInfoBoard.statsBoard.info[ringNumber-1].ringId,
 
 				ring =
 					d3.select('#'+ringId).node(),
@@ -1300,8 +1355,8 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 				dropdownArrow = 
 					dropdownMenu
 						.select('div.board-dropdown-header')
-						.select('span.arrow');
-
+						.select('span.arrow'),
+				
 				innerDropdownMenu  = 
 					d3.select('#'+innerRingId+'-menu'),
 				innerDropdownSvg   = 
@@ -1501,6 +1556,16 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 					})
 					.transition()
 						.duration(500)
+						.call(function() {
+							// The ring will flash when the transition happens and flashout after the animation.
+							d3.select(this.node().parentNode)
+								.transition()
+									.duration(500)
+										.style('opacity', 1.0)
+								.transition()
+									.duration(1000)
+										.style('opacity', 0.6);
+						})
 						.attrTween(
 							'd',
 							function(d, i, a) {
@@ -1516,7 +1581,7 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 									d.dx0 = b.dx;
 									return ringObj.arc(b)
 								};
-						      }	
+						    }	
 							}
 						)
 					// Stores the updated position 
@@ -1540,7 +1605,6 @@ ringGraphClass.prototype._stashOriginPathPos = function(paths) {
 		});
 	return originPoses
 }
-
 
 ringGraphClass.prototype.empty = function() {
 	this.ringGroup = []
@@ -1626,7 +1690,7 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 
 tipClass.prototype.appendBarMouseOver = function(dOption) {
 
-	var self = this;
+	var self = this,
 		// Set up the origin of the bar tip
 		offset = this._setOffset('BAR-TIP');
 
@@ -1651,7 +1715,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 					.html(function() {
 
-						info = 
+						var info = 
 							'民國 ' + d['民國'] + '<br>' +
 						   		dOption + ': ' + d[dOption];
 
