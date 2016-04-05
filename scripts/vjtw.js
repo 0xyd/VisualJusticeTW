@@ -885,8 +885,78 @@ var ringGraphClass = function() {
 	// A ring info board for displaying the chart detail.
 	this.ringInfoBoard = { // Use for displaying the quantitive of each parts
 		statsBoard     : {
-			body: null,
-			info: []
+			body : null,
+			scale: null,
+			info : [],
+			infoIdx: 0,
+
+			infoReset: function() {
+				this.info    = [];
+				this.infoIdx = 0;
+				return this
+			},
+
+			// working spot-1
+			setScale: function() {
+
+				var boardWidth = 
+					parseInt(this.body
+						.style('width').replace('px', ''));
+
+				this.scale = d3.scale.linear()
+					.domain(
+						[0, d3.max(
+								this.info[this.infoIdx].values,
+								function(d) { return d.value })
+						])
+					.rangeRound([0, boardWidth * .5]);
+			},
+
+			// working spot-1: store the info
+			storeInfo: function(titleName, idName, objs) {
+
+				var l = objs.length,
+					infoData = {
+						name   : titleName,
+						ringId : idName,
+						year   : null,
+						values : []
+					};
+
+				for (var i = 0; i < l; ++i) {
+					// Access the information from root
+					if (parseInt(i) === 0)
+						infoData.year = objs[i].__data__.name;
+					else 
+						infoData.values.push({
+							name : objs[i].__data__.name,
+							value: objs[i].__data__.value
+						});
+				}
+
+				this.info.push(infoData);
+
+			},
+
+			// working spot-1: Empty the previous info with an empty array.
+			emptyInfo: function() {
+				this.info = [];
+				return this
+			},
+
+			// working spot-1: the the stats board do the animation after the data updated
+			update: function(ringId, updatedData) {
+				this.body
+					.select(ringId+'-menu').selectAll('rect')
+						.each(function(d, i) {
+										console.log(self.ringInfoBoard.statsBoard.info);
+
+										this.__data__ = arcsData[i];
+									})
+									.call(function() {
+
+									});
+			}
 		}, 
 		percentageBoard: { // Use for displaying the percentage of the part.
 			body: null,
@@ -994,93 +1064,69 @@ ringGraphClass.prototype.ringConstructor = function(idName, source, innerR, oute
 	return r
 }
 
-ringGraphClass.prototype._listRingInfo = function(titleName, idName, objs) {
-
-	var l = objs.length,
-		infoData = {
-			name   : titleName,
-			ringId : idName,
-			year   : null,
-			values : []
-		};
-
-	for (var i = 0; i < l; ++i) {
-		// Access the information from root
-		if (parseInt(i) === 0)
-			infoData.year = objs[i].__data__.name;
-		else 
-			infoData.values.push({
-				name : objs[i].__data__.name,
-				value: objs[i].__data__.value
-			});
-	}
-
-	return infoData
-
-}
+// working spot-1: Trying to depart it into several modules.
 // check _createBars method as refference
-ringGraphClass.prototype._infoBoardRender = function(info) {
+ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 	
 	var 
 		self = this,
+		statsBoard = this.ringInfoBoard.statsBoard,
+
+		info  = statsBoard.info,
+		index = statsBoard.infoIdx,
+
+		isUpdate = isUpdate ? true : false,
+
 		boardWidth = 
-			parseInt(this.ringInfoBoard.statsBoard.body.style('width').replace('px', '')),
+			parseInt(statsBoard.body.style('width').replace('px', '')),
 
 		// Load Color settings for current ring data from the color object.
 		colorSettings = 
 			colorObj.rings.find(function(d) {
-				if (d.name === info.name) return true
+				if (d.name === info[index].name) 
+					return true
 			});
 
-	var scale = 
-		d3.scale.linear()
-			.domain(
-				[0, d3.max(
-						info.values, 
-						function(d) { return d.value })
-				])
-			.rangeRound([0, boardWidth * .5]);
-	
-	this.ringInfoBoard.statsBoard.body
-		.append('div')
-			.attr('id', info.ringId + '-menu')
-			.attr('class', 'board-dropdown')
-			.html(function(){
-				return (
-					'<div class="board-dropdown-header">'
-					+ '<span class="title">' 
-					+ info.name 
-					+ '</span>'
-					+ '<span class="arrow">'
-					+ '<div class="arrow-left"></div>'
-					+ '<div class="arrow-right"></div>'
-					+ '</span>'
-					+ '</div>'
-				)
-			})
-			.selectAll('div.board-dropdown')
-				.data([info])
-				.enter()
-				.append('div')
-				.call(function(d) {
-					self.ringInfoBoard.statsBoard.info.push(d.node().__data__);
+	statsBoard.setScale();
+
+	if (!isUpdate) {
+		statsBoard.body
+			.append('div')
+				.attr('id', info[index].ringId + '-menu')
+				.attr('class', 'board-dropdown')
+				.html(function(){
+					return (
+						'<div class="board-dropdown-header">'
+						+ '<span class="title">' 
+						+ info[index].name 
+						+ '</span>'
+						+ '<span class="arrow">'
+						+ '<div class="arrow-left"></div>'
+						+ '<div class="arrow-right"></div>'
+						+ '</span>'
+						+ '</div>'
+					)
 				})
-				.attr('class', 'board-dropdown-menu')
-				.append('svg')
-					.selectAll('g')
-					.data(info.values)
+				.selectAll('div.board-dropdown')
+					.data([info[index]])
 					.enter()
-					.append('g')
-					.append('text')
-						.text(function(d) {
-							return d.name
-						})
-						.attr('x', 0)
-						.attr('y', function(d, i) {
-							return 22.5 + 25 * (i > 0 ? i : 0) + 'px'
-						})
-						.attr('font-size', '0.8em')
-						.attr('fill', '#fff')
+					.append('div')
+					.attr('class', 'board-dropdown-menu')
+					.append('svg')
+						.selectAll('g')
+						.data(info[index].values)
+						.enter()
+						.append('g')
+						.append('text')
+							.text(function(d) {
+								return d.name
+							})
+							.attr('x', 0)
+							.attr('y', function(d, i) {
+								return 22.5 + 25 * (i > 0 ? i : 0) + 'px'
+							})
+							.attr('font-size', '0.8em')
+							.attr('fill', '#fff')
 						.call(function(textObjs) {
 
 							// Find the max width of text and set it as the bars' offset x.
@@ -1106,12 +1152,12 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 							// Draw the bars
 							d3.select(svg)
 								.selectAll('rect')
-								.data(info.values)
+								.data(info[index].values)
 								.enter()
 								.append('rect')
 									.attr('height', 15)
 									.attr('width', function(d, i) {
-										return scale(d.value)
+										return statsBoard.scale(d.value)
 									})
 									.attr('default-color', function(d) {
 										return colorSettings.value[d.name]
@@ -1159,9 +1205,9 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 
 										// Let the most outer ring's menu be displayed
 										// Suspend issue.
-										if ( info.ringId === 'RING_3' ) {
+										if ( info[index].ringId === 'RING_3' ) {
 
-											self.ringInfoBoard.statsBoard.body
+											statsBoard.body
 												.attr('current-ring-data', 'RING_3');
 
 											d3.select(svg)
@@ -1174,11 +1220,22 @@ ringGraphClass.prototype._infoBoardRender = function(info) {
 													.attr('data-default-height', svgHeight)
 													.attr('height', 0);
 
-											d3.select('#'+info.ringId+'-menu')
+											d3.select('#'+info[index].ringId+'-menu')
 												.style('display', 'none');
 										}
 									});
 						});
+
+	// If the dropdown menus are exist, redraw the bars and update the texts.
+	} else {
+		console.log('here for update');
+		
+		statsBoard.body.selectAll('text').text();
+	}
+
+	statsBoard.infoIdx += 1;
+	
+
 }
 
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
@@ -1223,7 +1280,6 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 					selectedRows.length === 1 ? 
 						selectedRows[0]: null;
 			
-			// Working spot: Calculate the total.
 			var total = (function(vals) {
 
 				var sum = 0;
@@ -1279,12 +1335,11 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 							.append('path')
 								.attr('d', ringObj.arc)
 
-							// Render the quantitive information to the board.
+							// Store the data and initialize the info board.
 							.call(function(d) {
-								self._infoBoardRender(
-									self._listRingInfo(keywords[0], ringObj.idName, d[0]));
+								self.ringInfoBoard.statsBoard.storeInfo(keywords[0], ringObj.idName, d[0]); 
+								self._infoBoardRender();
 							})
-
 							.style('fill', function(d, i) {
 								var cIndex = colorObj.rings
 									.findIndex(function(o) {
@@ -1328,9 +1383,10 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 									self._stashOriginPathPos(pathCluster[0]);
 							});
 		}
-		// Working spot
+		// Working spot-1
 		function __menuAnimation(ringId, evtName) {
-			
+			console.log('take a look at here');
+			console.log(self.ringInfoBoard.statsBoard.info);
 			var 
 				ringNumber =
 					self.ringInfoBoard.statsBoard.info.length,
@@ -1526,10 +1582,11 @@ ringGraphClass.prototype.updateRings = function() {
 }
 
 ringGraphClass.prototype.updateRing = function(ringObj) {
-
+	
 	var self = this,
 		rowNumber = this.selectRow(),
-		isYrSelected = this.rocYr ? true: false
+		isYrSelected = this.rocYr ? true: false,
+		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/);
 
 	this.readCSV(ringObj.dataSource)
 		.row(function(d, i) {
@@ -1545,7 +1602,7 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 
 				selectedRow.pop = jsonPop;
 				selectedRow = transtoPartitonFormat(selectedRow, '民國');
-
+				
 				d3.select('#'+ringObj.idName).datum(selectedRow)
 					.selectAll('path').data(ringObj.partition.nodes)
 					.each(function(d, i) {
@@ -1554,17 +1611,42 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
       						d.dx0 = ringObj.pathOriginPos[i-1].dx0;
       					}
 					})
+					// working spot-1: Reset the statsboard for updating.
+					// Testing
+					.call(function(d) {
+						self.ringInfoBoard.statsBoard
+							.infoReset().storeInfo(keywords[0], ringObj.idName, d[0]);
+						self._infoBoardRender(true);
+					})
 					.transition()
 						.duration(500)
 						.call(function() {
+
+							var arcsData = 
+								this[0].map(function(arc, i) { // Arcs are bounding with data
+									if ( i > 0 ) // i == 0 is the total.
+										return {
+											name : arc.__data__.name, 
+											value: arc.__data__.value
+										}
+								}).filter(function(e){ if (e) return e }),
+
+									ringNode = d3.select(this.node().parentNode);
+
 							// The ring will flash when the transition happens and flashout after the animation.
-							d3.select(this.node().parentNode)
+							ringNode
 								.transition()
 									.duration(500)
 										.style('opacity', 1.0)
 								.transition()
 									.duration(1000)
 										.style('opacity', 0.6);
+
+							// Working spot-1: Make the stats bars' animation for data update.
+							// self.ringInfoBoard.statsBoard.update(
+							// 	'#'+ringNode.attr('id'), arcsData
+							// 	);
+
 						})
 						.attrTween(
 							'd',
