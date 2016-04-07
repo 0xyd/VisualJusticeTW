@@ -896,7 +896,6 @@ var ringGraphClass = function() {
 				return this
 			},
 
-			// working spot-1
 			setScale: function() {
 
 				var boardWidth = 
@@ -945,18 +944,68 @@ var ringGraphClass = function() {
 			},
 
 			// working spot-1: the the stats board do the animation after the data updated
-			update: function(ringId, updatedData) {
-				this.body
-					.select(ringId+'-menu').selectAll('rect')
+			update: function() {
+
+				var 
+					board = this,
+					data  = this.info[this.infoIdx],
+					menu  = board.body.select('#'+data.ringId+'-menu');
+
+				// Reset the scale with new data for a proper view
+				board.setScale();
+
+				// Remove the text which show the older bars data
+				menu.selectAll('svg > text').remove();
+
+				menu.selectAll('rect')
 						.each(function(d, i) {
-										console.log(self.ringInfoBoard.statsBoard.info);
+							// Update the data for each bar
+							this.__data__ = data.values[i];
+						})
+						.call(function() {
+							// Draw the updated results
+							this.transition()
+								.duration(600)
+								.attr('width', function(d, i) {
+									return board.scale(d.value)
+								})
+								.each(function() {
+									
+								});
+								// .call(function(rects) {
 
-										this.__data__ = arcsData[i];
-									})
-									.call(function() {
+								// 	board._markValText.call(
+								// 		board, 
+								// 		{ rects: rects, svg: menu.select('svg') });
+								// });
+						});
+				},
 
-									});
-			}
+				// mark the data value after the bars and shift the text to correct positions.
+				_markValText: function() {
+					
+					var 
+						svg  = arguments[0].svg,
+						rects = arguments[0].rects,
+						rectsNumber = rects.length;
+					
+					rects.each(function(d, i) {
+						var 
+							rect = d3.select(this),
+							rectD = this.__data__,
+							rectW = parseInt(rect.attr('width').replace('px', '')),
+							rectX = parseInt(rect.attr('x')),
+							rectY = parseInt(rect.attr('y'));
+
+						svg
+							.append('text')
+								.text(rectD.value)
+								.style('font-size', '0.8em')
+								.attr('x', rectX + rectW + 5)
+								.attr('y', rectY + 12)
+								.attr('fill', '#fff');
+					});
+				},
 		}, 
 		percentageBoard: { // Use for displaying the percentage of the part.
 			body: null,
@@ -1174,7 +1223,8 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 									})
 									// Mark the number after the bars
 									.call(function(rectObjs) {
-										
+										console.log('Check here');
+										console.log(rectObjs);
 										var 
 											rects = rectObjs[0],
 											svg   = d3.select(rects).node().parentNode,
@@ -1182,7 +1232,6 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 											svgHeight   = 0;
 
 										for ( var i = 0; i < rectsNumber; i++ ) {
-
 											var rect = d3.select(rects[i]),
 												rectD = rects[i].__data__,
 												rectW = parseInt(rect.attr('width').replace('px', '')),
@@ -1226,11 +1275,19 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 									});
 						});
 
+	// Working spot-1
 	// If the dropdown menus are exist, redraw the bars and update the texts.
 	} else {
-		console.log('here for update');
 		
-		statsBoard.body.selectAll('text').text();
+		var ringData = statsBoard.info[statsBoard.infoIdx];
+		statsBoard.update();
+		// console.log(
+		// 		statsBoard.body
+		// 			.select('#' + ringData.ringId+ '-menu svg')
+		// 			.select('rect')
+		// 			.each(function(d, i) {
+
+		// 			}));
 	}
 
 	statsBoard.infoIdx += 1;
@@ -1385,8 +1442,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 		}
 		// Working spot-1
 		function __menuAnimation(ringId, evtName) {
-			console.log('take a look at here');
-			console.log(self.ringInfoBoard.statsBoard.info);
+			
 			var 
 				ringNumber =
 					self.ringInfoBoard.statsBoard.info.length,
@@ -1612,10 +1668,15 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
       					}
 					})
 					// working spot-1: Reset the statsboard for updating.
-					// Testing
 					.call(function(d) {
-						self.ringInfoBoard.statsBoard
-							.infoReset().storeInfo(keywords[0], ringObj.idName, d[0]);
+
+						if (ringObj.idName == 'RING_0') // Clear the old data when running into the first ring.
+							self.ringInfoBoard.statsBoard
+								.infoReset().storeInfo(keywords[0], ringObj.idName, d[0]);
+						else
+							self.ringInfoBoard.statsBoard
+								.storeInfo(keywords[0], ringObj.idName, d[0]);
+
 						self._infoBoardRender(true);
 					})
 					.transition()
