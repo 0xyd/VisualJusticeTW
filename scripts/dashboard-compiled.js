@@ -23,23 +23,23 @@ var DashBoard = React.createClass({
 					topics: [{
 						name: '本年執行人數',
 						compos: ['總數'],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+						availableChartTypes: ['長條圖', '走勢', '面積圖']
 					}, {
 						name: '本年入監人數',
 						compos: ['總數'],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+						availableChartTypes: ['長條圖', '走勢', '面積圖']
 					}, {
 						name: '新入監人數',
 						compos: ['總數'],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+						availableChartTypes: ['長條圖', '走勢', '面積圖']
 					}, {
 						name: '本年出獄人數',
 						compos: ['總數'],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+						availableChartTypes: ['長條圖', '走勢', '面積圖']
 					}, {
 						name: '本年年底留監人數',
 						compos: ['總數'],
-						availableChartTypes: ['長條圖', '折線圖', '面積圖']
+						availableChartTypes: ['長條圖', '走勢', '面積圖']
 					}]
 				}
 			}, {
@@ -226,7 +226,7 @@ var ChartPanel = React.createClass({
 	tip: new tipClass(),
 
 	_chartGroup_1: function () {
-		var s = new Set(['長條圖', '折線圖', '面積圖']);
+		var s = new Set(['長條圖', '走勢', '面積圖']);
 		return s;
 	}(),
 	_chartGroup_2: function () {
@@ -284,7 +284,7 @@ var ChartPanel = React.createClass({
 			if (d.name === nextProps.dataset) return true;
 		});
 
-		// Check the chart types whether it is one of '長條圖', '折線圖', '面積圖'
+		// Check the chart types whether it is one of '長條圖', '走勢', '面積圖'
 		if (this._chartGroup_1.has(nextProps.chartType)) {
 			this.setState({
 				sheetName: nextProps.dataset,
@@ -304,6 +304,9 @@ var ChartPanel = React.createClass({
 
 	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
 		var _this = this;
+
+		// working spot-1
+		var self = this;
 
 		// Initial the data when user switches to dataSheet 0
 		if (this.props.dataset !== nextProps.dataset && nextStates.sheetName === this.state.dataSheets[0].name) {
@@ -331,19 +334,22 @@ var ChartPanel = React.createClass({
 			else if (nextProps.dataset === this.state.dataSheets[0].name) {
 					(function () {
 						console.log('update the bar chart');
-
+						console.log(nextProps);
 						var lG = _this.props.lineGraph,
 						    chartTypeDisplay = _this.chartTypeDisplay;
 
 						if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
 
 						_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
-							console.log(jsonOutput);
+
 							lG.plotBars(jsonOutput.data, jsonOutput.pad, jsonOutput.updatedBars, jsonOutput.barWidth / 2).then(function (o) {
 
 								lG.linePath = o.line;
 								lG.lineDots = o.dots;
 								lG.areaUnderLine = o.area;
+								console.log(nextProps.topic);
+								self.tip.appendDotMouseOver(nextProps.topic);
+								self.tip.appendBarMouseOver(nextProps.topic);
 
 								chartTypeDisplay(nextStates.chartType);
 							});
@@ -401,7 +407,7 @@ var ChartPanel = React.createClass({
 		if (chartType === "長條圖") {
 			if (b.isInvisible) b.beVisible();
 			l.hide().hideUnderArea();
-		} else if (chartType === "折線圖") {
+		} else if (chartType === "走勢") {
 			l.beDisplayed().hideUnderArea();
 			b.hide();
 		} else if (chartType === "面積圖") {

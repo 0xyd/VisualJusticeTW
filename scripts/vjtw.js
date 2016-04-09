@@ -2000,6 +2000,9 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 }
 
 
+
+
+
 /* Additional Functions */
 function kTick(tick) {
 	return Math.round(tick/1e3) + 'K'
