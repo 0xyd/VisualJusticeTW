@@ -483,18 +483,21 @@ var ChartPanel = React.createClass({
 			console.log('init the bar chart');
 			d3.select('#SKETCHPAD').remove();
 
+			// working spot-1: remove the stats and percentage boards of ringGraph.
+			nextProps.ringGraph.removeBoards();
+
 			// Clear the old setting of the previous
 			nextProps.lineGraph.empty();
 			this.initBarChart(nextProps, nextStates);
 
-		// Initial the data when user switches to dataSheet 1
+		// Initial the data when user switches to dataSheet[1] (新入監人數概況)
 		} else if (this.props.dataset !== nextProps.dataset && 
 			nextStates.sheetName === this.state.dataSheets[1].name) {
 			console.log('init a ring chart');
 			d3.select('#SKETCHPAD').remove();
 			
-			// Clear the old setting of the previous
-			nextProps.ringGraph.empty();
+			// Clear the old rings for the new ones.
+			nextProps.ringGraph.resetRings();
 
 			this.initRingChart();
 		}

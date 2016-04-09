@@ -896,6 +896,14 @@ var ringGraphClass = function() {
 				return this
 			},
 
+			// workings spot-1
+			// Empty all the elemets 
+			emptyAll: function() {
+				this.body.remove();
+				this.scale = null
+				this.infoReset();
+			},
+
 			setScale: function() {
 
 				var boardWidth = 
@@ -911,7 +919,7 @@ var ringGraphClass = function() {
 					.rangeRound([0, boardWidth * .5]);
 			},
 
-			// working spot-1: store the info
+			// store the info
 			storeInfo: function(titleName, idName, objs) {
 
 				var l = objs.length,
@@ -937,13 +945,7 @@ var ringGraphClass = function() {
 
 			},
 
-			// working spot-1: Empty the previous info with an empty array.
-			emptyInfo: function() {
-				this.info = [];
-				return this
-			},
-
-			// working spot-1: the the stats board do the animation after the data updated
+			// the the stats board do the animation after the data updated
 			update: function() {
 
 				var 
@@ -1004,8 +1006,13 @@ var ringGraphClass = function() {
 		}, 
 		percentageBoard: { // Use for displaying the percentage of the part.
 			body: null,
-			info: [],
+			// info: [],
 			
+			// Working spot-1
+			emptyAll: function() {
+				this.body.remove();
+			},
+
 			calVal: function(val) {
 				var val = 
 					val * 100 > 0.0999999999 ? 
@@ -1219,7 +1226,6 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 									// Mark the number after the bars
 									.call(function(rectObjs) {
 
-										// Working spot-1: Simplified the code with the board's inner function
 										var 
 											rects = rectObjs[0],
 											rectsNumber = rects.length;
@@ -1423,7 +1429,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 									self._stashOriginPathPos(pathCluster[0]);
 							});
 		}
-		// Working spot-1
+		
 		function __menuAnimation(ringId, evtName) {
 			
 			var 
@@ -1650,7 +1656,7 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
       						d.dx0 = ringObj.pathOriginPos[i-1].dx0;
       					}
 					})
-					// working spot-1: Reset the statsboard for updating.
+					// Reset the statsboard for updating.
 					.call(function(d) {
 
 						if (ringObj.idName == 'RING_0') // Clear the old data when running into the first ring.
@@ -1727,9 +1733,20 @@ ringGraphClass.prototype._stashOriginPathPos = function(paths) {
 	return originPoses
 }
 
-ringGraphClass.prototype.empty = function() {
+// Clear previos ring graph for updating.
+ringGraphClass.prototype.resetRings = function() {
 	this.ringGroup = []
 	return this
+}
+
+// remove the boards if they exist
+ringGraphClass.prototype.removeBoards = function() {
+	var statsBoard = this.ringInfoBoard.statsBoard,
+			percentageBoard = this.ringInfoBoard.percentageBoard;
+	if (statsBoard.body) 
+		statsBoard.emptyAll();
+	if (percentageBoard.body)
+		percentageBoard.emptyAll();
 }
 
 /* A class for tooltip */
