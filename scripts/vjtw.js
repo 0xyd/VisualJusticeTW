@@ -949,7 +949,8 @@ var ringGraphClass = function() {
 				var 
 					board = this,
 					data  = this.info[this.infoIdx],
-					menu  = board.body.select('#'+data.ringId+'-menu');
+					menu  = board.body.select('#'+data.ringId+'-menu'),
+					svg   = menu.select('svg');
 
 				// Reset the scale with new data for a proper view
 				board.setScale();
@@ -963,34 +964,25 @@ var ringGraphClass = function() {
 							this.__data__ = data.values[i];
 						})
 						.call(function() {
-							// Draw the updated results
-							this.transition()
-								.duration(600)
-								.attr('width', function(d, i) {
-									return board.scale(d.value)
-								})
-								.each(function() {
-									
-								});
-								// .call(function(rects) {
-
-								// 	board._markValText.call(
-								// 		board, 
-								// 		{ rects: rects, svg: menu.select('svg') });
-								// });
+							
+								// Draw the updated results
+								this.transition()
+									.duration(600)
+									.attr('width', function(d, i) {
+										return board.scale(d.value)
+									})
+									.each('end', function() {
+										board._markValText.call(
+											this, 
+											{ svg: svg });
+									});
 						});
 				},
 
 				// mark the data value after the bars and shift the text to correct positions.
 				_markValText: function() {
-					
-					var 
-						svg  = arguments[0].svg,
-						rects = arguments[0].rects,
-						rectsNumber = rects.length;
-					
-					rects.each(function(d, i) {
 						var 
+							svg  = arguments[0].svg,
 							rect = d3.select(this),
 							rectD = this.__data__,
 							rectW = parseInt(rect.attr('width').replace('px', '')),
@@ -1004,7 +996,10 @@ var ringGraphClass = function() {
 								.attr('x', rectX + rectW + 5)
 								.attr('y', rectY + 12)
 								.attr('fill', '#fff');
-					});
+
+						// Set the svg size after the last bar is rendered when the board is first rendered.
+						if (arguments[0].isInit && arguments[0].isLast) 
+							svg.attr('default-height', rectY + 30);
 				},
 		}, 
 		percentageBoard: { // Use for displaying the percentage of the part.
@@ -1196,10 +1191,10 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 
 								})(textObjs[0]);
 
-							var svg = textObjs.node().parentNode.parentNode;
+							var svg = statsBoard.body.select('#'+info[index].ringId+'-menu svg');
 
 							// Draw the bars
-							d3.select(svg)
+							svg
 								.selectAll('rect')
 								.data(info[index].values)
 								.enter()
@@ -1223,33 +1218,31 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 									})
 									// Mark the number after the bars
 									.call(function(rectObjs) {
-										console.log('Check here');
-										console.log(rectObjs);
+
+										// Working spot-1: Simplified the code with the board's inner function
 										var 
 											rects = rectObjs[0],
-											svg   = d3.select(rects).node().parentNode,
-											rectsNumber = rects.length,
-											svgHeight   = 0;
-
+											rectsNumber = rects.length;
+										
 										for ( var i = 0; i < rectsNumber; i++ ) {
-											var rect = d3.select(rects[i]),
-												rectD = rects[i].__data__,
-												rectW = parseInt(rect.attr('width').replace('px', '')),
-												rectX = parseInt(rect.attr('x')),
-												rectY = parseInt(rect.attr('y'));
-											
-											d3.select(svg)
-												.append('text')
-													.text(function() {
-														return rectD.value
-													})
-													.style('font-size', '0.8em')
-													.attr('x', rectX + rectW + 5)
-													.attr('y', rectY + 12)
-													.attr('fill', '#fff');
 
 											if (i === rectsNumber-1) 
-												svgHeight = parseInt(rect.attr('y')) + 30;
+												statsBoard._markValText.call(
+													rects[i], 
+													{ 
+														svg: svg, 
+														isInit: true, 
+														isLast: true 
+													}
+											);
+											else
+												statsBoard._markValText.call(
+												rects[i], 
+													{ 
+														svg: svg, 
+														isInit: true,
+													}
+												);
 										}
 
 										// Let the most outer ring's menu be displayed
@@ -1259,40 +1252,30 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 											statsBoard.body
 												.attr('current-ring-data', 'RING_3');
 
-											d3.select(svg)
-												.attr('data-default-height', svgHeight) // Store the resizing result 
-												.attr('height', svgHeight);
+											svg
+												.attr('height', function() {
+													this.getAttribute('default-height');
+													return this.getAttribute('default-height') + 'px'
+												});
 										}
 										else {
 
-											d3.select(svg)
-													.attr('data-default-height', svgHeight)
-													.attr('height', 0);
+											svg.attr('height', 0);
 
 											d3.select('#'+info[index].ringId+'-menu')
 												.style('display', 'none');
 										}
-									});
+								});
 						});
 
-	// Working spot-1
 	// If the dropdown menus are exist, redraw the bars and update the texts.
 	} else {
 		
 		var ringData = statsBoard.info[statsBoard.infoIdx];
 		statsBoard.update();
-		// console.log(
-		// 		statsBoard.body
-		// 			.select('#' + ringData.ringId+ '-menu svg')
-		// 			.select('rect')
-		// 			.each(function(d, i) {
-
-		// 			}));
 	}
 
 	statsBoard.infoIdx += 1;
-	
-
 }
 
 ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
@@ -1552,7 +1535,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 				$v(
 					svg.node(),
-					{ height  : svg.attr('data-default-height')},
+					{ height  : svg.attr('default-height')},
 					{ duration: 400 }
 				);
 
@@ -1702,11 +1685,6 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 								.transition()
 									.duration(1000)
 										.style('opacity', 0.6);
-
-							// Working spot-1: Make the stats bars' animation for data update.
-							// self.ringInfoBoard.statsBoard.update(
-							// 	'#'+ringNode.attr('id'), arcsData
-							// 	);
 
 						})
 						.attrTween(
