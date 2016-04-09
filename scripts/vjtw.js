@@ -1805,11 +1805,11 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 						.style('top', posY + offset.Y + 'px')
 						.style('left', posX +offset.X + 'px')
 						.html(function() {
-
-							info = 
+							
+							var info = 
 								'民國 ' + d['民國'] + '<br>' +
 							   		dOption + ': ' + d[dOption];
-
+							 
 							return '<span id="DOT-INFO">' + info + '</span>'
 
 						})
