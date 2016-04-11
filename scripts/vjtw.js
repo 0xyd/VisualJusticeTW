@@ -321,9 +321,26 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 				})
 				.attr('fill', function(d) {
 					return colorObj.bar[dOption]
+				})
+				.each(function(d, i) {
+					
+					// Calculate value difference between the current and the previous
+					if (i !== 0) {
+						var _this = d3.select(this),
+								pData = this.previousSibling.__data__,
+								diffs = 
+									Object.keys(d).map(function(key, i) {
+										if ( i !== 0 )
+											return { name: key, val: parseInt(d[key])-parseInt(pData[key]) }
+									})
+									.filter(function(d) { if (d) return d });
+
+						// Attach the variance of each data type.
+						for (var j in diffs) 
+							_this.attr('diff-'+diffs[j].name, diffs[j].val);
+					}
 				});
 }
-
 
 /* 
 The bar information is the combined information of other sub elements
@@ -896,7 +913,6 @@ var ringGraphClass = function() {
 				return this
 			},
 
-			// workings spot-1
 			// Empty all the elemets 
 			emptyAll: function() {
 				this.body.remove();
@@ -1006,9 +1022,7 @@ var ringGraphClass = function() {
 		}, 
 		percentageBoard: { // Use for displaying the percentage of the part.
 			body: null,
-			// info: [],
 			
-			// Working spot-1
 			emptyAll: function() {
 				this.body.remove();
 			},
@@ -1115,8 +1129,7 @@ ringGraphClass.prototype.ringConstructor = function(idName, source, innerR, oute
 	return r
 }
 
-// working spot-1: Trying to depart it into several modules.
-// check _createBars method as refference
+// working spot-2: Trying to depart it into several modules.
 ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 	
 	var 
@@ -1838,7 +1851,15 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 			'mouseover', 
 			function(d) {
 
-				var posX = 
+				var 
+					_this = d3.select(this),
+					diff = (function(name){
+						var r = _this.attr('diff-'+name);
+						if(r) return r 
+					})(dOption);
+
+				var 
+					posX = 
 						parseFloat(this.getAttribute('x')) + 
 						parseFloat(this.getAttribute('width')/2),
 					posY = 
@@ -1857,8 +1878,20 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 							'民國 ' + d['民國'] + '<br>' +
 						   		dOption + ': ' + d[dOption];
 
-						return '<span id="BAR-INFO">' + info + '</span>'
-
+						if (diff) {
+							if (diff < 0) 
+								return '<span id="BAR-INFO">' + info + '</span>' + 
+											 '<span>較去年同期：</span>' +
+											 '<span><span class="down-arrow align">' + '</span>' + 
+											 '<span class="align">&nbsp;'+ diff + '</span></span>'
+							else (diff > 0)
+								return '<span id="BAR-INFO">' + info + '</span>' + 
+											 '<span>較去年同期：</span>' +
+											 '<span><span class="up-arrow align">' + '</span>' + 
+											 '<span class="align">&nbsp;'+ diff + '</span></span>'
+						}
+						else
+							return '<span id="BAR-INFO">' + info + '</span>'
 					})
 					.call(function(d) {
 						self._correctPos('BAR-TIP')
@@ -1998,10 +2031,6 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 
 	return this
 }
-
-
-
-
 
 /* Additional Functions */
 function kTick(tick) {
