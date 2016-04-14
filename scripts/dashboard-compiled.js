@@ -305,7 +305,6 @@ var ChartPanel = React.createClass({
 	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
 		var _this = this;
 
-		// working spot-1
 		var self = this;
 
 		// Initial the data when user switches to dataSheet 0
@@ -313,7 +312,7 @@ var ChartPanel = React.createClass({
 			console.log('init the bar chart');
 			d3.select('#SKETCHPAD').remove();
 
-			// working spot-1: remove the stats and percentage boards of ringGraph.
+			// Remove the stats and percentage boards of ringGraph.
 			nextProps.ringGraph.removeBoards();
 
 			// Clear the old setting of the previous
@@ -330,7 +329,7 @@ var ChartPanel = React.createClass({
 
 				this.initRingChart();
 			}
-			// Show the update results of to dataSheet 0
+			// Show the update results of to dataSheet[0] (監獄)
 			else if (nextProps.dataset === this.state.dataSheets[0].name) {
 					(function () {
 						console.log('update the bar chart');
@@ -347,9 +346,12 @@ var ChartPanel = React.createClass({
 								lG.linePath = o.line;
 								lG.lineDots = o.dots;
 								lG.areaUnderLine = o.area;
-								console.log(nextProps.topic);
+
+								// Append new hover listeners.
 								self.tip.appendDotMouseOver(nextProps.topic);
 								self.tip.appendBarMouseOver(nextProps.topic);
+
+								lG.drawDivideLine();
 
 								chartTypeDisplay(nextStates.chartType);
 							});

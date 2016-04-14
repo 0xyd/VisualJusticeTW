@@ -484,7 +484,7 @@ var ChartPanel = React.createClass({
 			console.log('init the bar chart');
 			d3.select('#SKETCHPAD').remove();
 
-			// working spot-1: remove the stats and percentage boards of ringGraph.
+			// Remove the stats and percentage boards of ringGraph.
 			nextProps.ringGraph.removeBoards();
 
 			// Clear the old setting of the previous
@@ -502,7 +502,7 @@ var ChartPanel = React.createClass({
 
 			this.initRingChart();
 		}
-		// Show the update results of to dataSheet 0
+		// Show the update results of to dataSheet[0] (監獄)
 		else if (nextProps.dataset === this.state.dataSheets[0].name) {
 			console.log('update the bar chart');
 			console.log(nextProps);
@@ -535,6 +535,8 @@ var ChartPanel = React.createClass({
 						// Append new hover listeners.
 						self.tip.appendDotMouseOver(nextProps.topic);
 						self.tip.appendBarMouseOver(nextProps.topic);
+
+						lG.drawDivideLine();
 
 						chartTypeDisplay(nextStates.chartType);
 					});

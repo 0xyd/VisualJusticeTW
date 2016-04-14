@@ -864,6 +864,103 @@ lineGraphClass.prototype.empty = function() {
 	return this
 }
 
+// working spot 1: Draw the lines dividing the graph according to the external data.
+lineGraphClass.prototype.drawDivideLine = function() {
+
+	var url   = 'https://spreadsheets.google.com/tq?key=',
+			key   = '1jAMtUHVlw_pqmlnyFrscqwy274CgmQQ9C0Kp3EXmoAY',
+			query = '&tqx=out:csv';
+
+	var self = this,
+			dots = 
+				this.lineDots[0].filter(function(obj) {
+					if (obj.tagName === 'circle')
+						return obj
+				});
+
+	this.readCSV(url+key+query)
+		.row(function(d, i) { if (i !== 0) return d })
+		.get(function(error, rows) {
+
+			// Some special judicial events happens on
+			var years = rows.map(function(d) { return d["民國"] });
+			
+			// Filter the dots with the specific years
+			var dotsData = dots.map(function(dot) { 
+					for ( var j in years ) 
+						if (dot.__data__["民國"] === years[j]) 
+							return dot.__data__
+					}).filter(function(data) {
+						if (data) return data
+					});
+
+			// Working spot-1:
+			
+			(function() {
+
+				for (var i in dots) {
+
+					// Get the rows 
+					var r = rows.find(function(row) { 
+							try {
+								dots[i].__data__['民國'];
+							} catch(e) {
+								if (e instanceof TypeError) return null
+							} 
+							return row['民國'] === dots[i].__data__['民國']
+						});
+
+					if (r) {
+						// Attach the judicial events
+						dots[i].__data__['司法事記'] = r['司法事記'];
+						dots[i].__data__.tag = r['tag'];
+						dots[i].__data__.hasEvent = true;
+
+					} else {
+						dots[i].__data__.hasEvent = false;
+						dots[i].__data__.tag = '';
+					}
+					
+				}
+
+			})();
+
+			// The end point of each lines.
+			var xAxisYPos = self.pad.select('g.x-axis')
+				.attr('transform').match(/\d+\.\d+/g);	
+
+			// working spot-1: attach the line on the dots with the event connection.
+			self.pad.append('g')
+				.attr('class', 'years-line')
+					.selectAll('line')
+						.data(dotsData).enter()
+						.append('line')
+							.attr('x1', function(d) { return d.dotX })
+							.attr('y1', function(d) { return d.dotY })
+							.attr('x2', function(d) { return d.dotX })
+							.attr('y2', function(d) { return parseInt(xAxisYPos)})
+							.attr('stroke', 'black')
+							.attr('stroke-width', 1)
+							.attr('stroke-dasharray', "5, 5, 1, 5")
+							.call(function() {
+
+								// Binding lines to the dots
+								var lines = 
+									this[0].filter(function(o) { 
+										if (o.tagName === 'line') 
+											return o
+									});
+
+								for (var i in dots) {
+									if (dots[i].__data__.hasEvent)
+										dots[i].__data__.line = lines.shift();
+								}
+
+
+							});
+		});
+}
+
 /* A Class for ring chart */
 var ringGraphClass = function() {
 	
@@ -1818,12 +1915,21 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 						.style('top', posY + offset.Y + 'px')
 						.style('left', posX +offset.X + 'px')
 						.html(function() {
-							
+
+							// working spot-1 : Display the specific events on dot chart.
 							var info = 
 								'民國 ' + d['民國'] + '<br>' +
 							   		dOption + ': ' + d[dOption];
-							 
-							return '<span id="DOT-INFO">' + info + '</span>'
+
+							// Bug: Only the last dot does not display correctly, I will fix it later.
+							console.log('I am looking at here');
+							console.log(d);
+							if (d.tag.length == 0) 
+								return '<span id="DOT-INFO">' + info + '</span>'
+							else {
+								return '<span id="DOT-INFO">' + info + '</span>' +
+											 '<span class="tag">' + d.tag + '</span>'
+							}
 
 						})
 						.call(function(d) {
