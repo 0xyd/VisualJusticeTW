@@ -592,6 +592,25 @@ var lineGraphClass = function() {
 
 	this.area = null;
 
+	// working-spot-1: Divided areas are used for tensifying the dots graph's trend display affect.
+	this.dividedAreas = null;
+
+	// working-spot-1
+	// A board of the line graph info
+	this.infoBoard = {
+		// body: ,
+		infoReset: function() {
+			// this.info    = [];
+			// this.infoIdx = 0;
+			// return this
+		},
+
+		// Empty all the elemets 
+		emptyAll: function() {
+			this.body.remove();
+			// this.infoReset();
+		},
+	}
 }
 
 /* Inherit the lineGraphClass from the graph */
@@ -697,8 +716,86 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 						.attr('fill', colorAdjust(hex, 20))
 						.attr('stroke-width', 2)
 						.attr('stroke', '#fff')
-						.attr('r', 7);
+						.attr('r', 7)
+						// working-spot-1: Add the dot mouse enter event to display related info.
+						.on('mouseenter', function(d) {
+							
+							if (d['司法事記']) 
+								self.infoBoard.html(function() {
+									return '<h2 class="board-body-title">' + d['司法事記'] + '</h2>'
+								});
+							else
+								return null
+						})
+						// working-spot-1: Click the dots for drawing the area graph with divide lines.
+						.on('click', function(dot) {
 
+							// If the dividedAreas is not existed
+							
+
+							var tail = self.lineDots[0].length - 1,
+							// Get the divide points with the same tag
+									dotsWithSameTag = 
+										self.lineDots[0]
+											.filter(function(dotObj, i) {
+												if (dotObj.__data__.tag === dot.tag) {
+													dotObj.__data__.slicePointIdx = i;
+													return dotObj 
+												}
+											});
+							
+							// Divide data with several sections by the divide different divide points
+							var dataSections = (function(dots) {
+
+								// Points for sliceing the dots array
+								var 
+										slicePoints = (function() {
+
+											var points = [];
+											for (var i in dots) 
+												points.push(dots[i].__data__.slicePointIdx);
+
+											// 0 and the last elements are also slice points.
+											points.unshift(0);
+											points.push(tail);
+
+											// Dumps the duplicated points
+											points.filter(function(pt, i, array) {
+												if (array.findIndex(function(d) { return d === pt }) < 0) 
+													return pt
+											});
+
+											return points
+										})(),
+
+										sections = [],
+										sectionsLength = slicePoints.length - 1,
+
+										start = 0,
+										end   = self.lineDots.length;
+
+								// Slice the lineDots with the slice points
+								for (var i = 0; i < sectionsLength; i++) {
+									sections.push(
+										self.lineDots[0].slice(slicePoints[i], slicePoints[i+1] + 1)
+									);
+								}
+								
+								return sections
+
+							})(dotsWithSameTag);
+
+							var testColors = ['red', 'green', 'blue'];
+							// console.log(dataSections);
+							for (var i in dataSections) {
+								var _data = dataSections[i].map(
+									function(circle) { return circle.__data__ });	
+								self.fillArea(_data, testColors[i])
+							}
+						});
+
+
+				
 		}
 
 		// Check if the unde line area is existed 
@@ -738,6 +835,16 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 	}
 
 	return p0
+}
+
+// working-spot-1: Init info board for displaying detail info
+lineGraphClass.prototype.initInfoBoard = function() {
+
+	this.infoBoard = 
+		d3.select('#DISPLAY_PANEL')
+			.append('div')
+				.attr('id', 'LINE-INFO-BOARD')
+				.attr('class', 'board');
 }
 
 lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, padPadding) {
@@ -788,6 +895,23 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 		});
 
 }
+
+// working-spot-1: Fill the area between divide lines and dot line
+lineGraphClass.prototype.fillArea = function(data, color) {
+
+	this.area = d3.svg.area()
+		.x(function(d) { return d.dotX })
+		.y0(this.chartHeight)
+		.y1(function(d) { return d.dotY });
+
+	this.pad
+		.append('path')
+			.datum(data)
+				.attr('fill', color)
+				.attr('d', this.area);
+
+}
+
 
 lineGraphClass.prototype.drawUnderArea = function(data, color) {
 
@@ -894,8 +1018,7 @@ lineGraphClass.prototype.drawDivideLine = function() {
 						if (data) return data
 					});
 
-			// Working spot-1:
-			
+			// Working-spot-1:
 			(function() {
 
 				for (var i in dots) {
@@ -929,35 +1052,56 @@ lineGraphClass.prototype.drawDivideLine = function() {
 			var xAxisYPos = self.pad.select('g.x-axis')
 				.attr('transform').match(/\d+\.\d+/g);	
 
-			// working spot-1: attach the line on the dots with the event connection.
+			// working-spot-1: attach the line on the dots with the event connection.
 			self.pad.append('g')
 				.attr('class', 'years-line')
 					.selectAll('line')
 						.data(dotsData).enter()
 						.append('line')
-							.attr('x1', function(d) { return d.dotX })
+							// .attr('x1', function(d) { return d.dotX }) // Default setting
+							// .attr('y1', function(d) { return d.dotY })
+							// .attr('x2', function(d) { return d.dotX })
+							// .attr('y2', function(d) { return parseInt(xAxisYPos)})
+							.attr('x1', function(d) { return d.dotX }) // Default setting
 							.attr('y1', function(d) { return d.dotY })
 							.attr('x2', function(d) { return d.dotX })
-							.attr('y2', function(d) { return parseInt(xAxisYPos)})
-							.attr('stroke', 'black')
+							.attr('y2', function(d) { 
+								if (d.dotY-50 < 30)
+									return d.dotY+50
+								return d.dotY-50
+							})
+							// .attr('stroke', 'black')
+							.attr('stroke', '#333')
 							.attr('stroke-width', 1)
-							.attr('stroke-dasharray', "5, 5, 1, 5")
+							// .attr('stroke-dasharray', "5, 5, 1, 5") // Default style setting
+							.each(function() { // Append the tag info on the line
+								
+								var _this = d3.select(this);
+
+								self.pad.append('text')
+									.attr('x', _this.attr('x2'))
+									.attr('y', _this.attr('y2'))
+										.text(_this.node().__data__.tag)
+											.attr('fill', '#08f');
+							})
 							.call(function() {
 
-								// Binding lines to the dots
 								var lines = 
 									this[0].filter(function(o) { 
 										if (o.tagName === 'line') 
 											return o
 									});
 
+								// Binding lines to the dots
 								for (var i in dots) {
 									if (dots[i].__data__.hasEvent)
 										dots[i].__data__.line = lines.shift();
 								}
 
-
+								 
+								
 							});
+
 		});
 }
 
@@ -995,7 +1139,7 @@ var ringGraphClass = function() {
 		itemNumber: null
 	};
 
-	
+	// ref-working-spot-1
 	// A ring info board for displaying the chart detail.
 	this.ringInfoBoard = { // Use for displaying the quantitive of each parts
 		statsBoard     : {
@@ -1167,6 +1311,7 @@ ringGraphClass.prototype.init = function() {
 			.style('top', '7%')
 			.style('left', '3%');
 
+	// ref-working-spot-1
 	// Initial the board for pecentage
 	this.ringInfoBoard.percentageBoard.body = 
 		d3.select('#DISPLAY_PANEL').append('div')
@@ -1916,14 +2061,12 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 						.style('left', posX +offset.X + 'px')
 						.html(function() {
 
-							// working spot-1 : Display the specific events on dot chart.
+							// working-spot-1 : Display the specific events on dot chart.
 							var info = 
 								'民國 ' + d['民國'] + '<br>' +
 							   		dOption + ': ' + d[dOption];
 
 							// Bug: Only the last dot does not display correctly, I will fix it later.
-							console.log('I am looking at here');
-							console.log(d);
 							if (d.tag.length == 0) 
 								return '<span id="DOT-INFO">' + info + '</span>'
 							else {

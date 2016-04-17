@@ -536,7 +536,9 @@ var ChartPanel = React.createClass({
 						self.tip.appendDotMouseOver(nextProps.topic);
 						self.tip.appendBarMouseOver(nextProps.topic);
 
+						// working-spot-1: Event lines developement.
 						lG.drawDivideLine();
+						lG.initInfoBoard();
 
 						chartTypeDisplay(nextStates.chartType);
 					});
