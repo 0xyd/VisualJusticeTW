@@ -1,7 +1,7 @@
 'use strict';
 
 // working-spot-2: Import data from different sources according to the env.
-window.isLocal = document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+window.isLocal = document.URL.match(/127.0.0.1/) !== null ? true : false;
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
