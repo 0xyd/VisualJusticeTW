@@ -377,7 +377,7 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 }
 
 barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
-
+	console.log(path);
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
