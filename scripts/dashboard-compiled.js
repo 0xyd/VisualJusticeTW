@@ -5,7 +5,7 @@ window.isLocal = document.URL.match(/127.0.0.1/) !== null ? true : false;
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
-window.googleSheet = 'https://spreadsheets.google.com/tq?';
+window.googleSheet = 'https://spreadsheets.google.com/tq?key=';
 
 var DashBoard = React.createClass({
 	displayName: 'DashBoard',
@@ -253,7 +253,7 @@ var ChartPanel = React.createClass({
 				name: '監獄人數概況',
 				// working-spot-2
 				url: function () {
-					if (isLocal) return '/correction/監獄人數概況.csv';else return window.googleSheet + '1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + query;
+					if (isLocal) return '/correction/監獄人數概況.csv';else return window.googleSheet + '1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + window.query;
 				}(),
 				axes: {
 					xAxis: '民國',
