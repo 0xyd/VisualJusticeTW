@@ -1,5 +1,12 @@
 'use strict';
 
+// working-spot-2: Import data from different sources according to the env.
+window.isLocal = document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+
+// To access the remove csv sources.
+window.query = '&tqx=out:csv';
+window.googleSheet = 'https://spreadsheets.google.com/tq?';
+
 var DashBoard = React.createClass({
 	displayName: 'DashBoard',
 
@@ -244,14 +251,62 @@ var ChartPanel = React.createClass({
 
 			dataSheets: [{
 				name: '監獄人數概況',
-				url: '/correction/監獄人數概況.csv',
+				// working-spot-2
+				url: function () {
+					if (isLocal) return '/correction/監獄人數概況.csv';else return window.googleSheet + '1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + query;
+				}(),
 				axes: {
 					xAxis: '民國',
 					yAxis: '人數(仟人)'
 				}
 			}, {
 				name: '新入監資料概覽',
-				urls: ['/correction/新入監前家庭狀況.csv', '/correction/新入監犯罪次數與種類.csv', '/correction/新入監前教育程度.csv', '/correction/歷年新入監年齡歷年統計.csv']
+				keys: ['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg', '17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg', '1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8', '1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],
+				// working-spot-2
+				// urls: [
+				// 	'/correction/新入監前家庭狀況.csv',
+				// 	'/correction/新入監犯罪次數與種類.csv',
+				// 	'/correction/新入監前教育程度.csv',
+				// 	'/correction/歷年新入監年齡歷年統計.csv'
+				// ]
+				urls: function () {
+
+					if (isLocal) return [
+					// working-spot-2
+					{
+						name: '新入監前家庭狀況',
+						url: '/correction/新入監前家庭狀況.csv'
+					}, {
+						name: '新入監犯罪次數與種類',
+						url: '/correction/新入監犯罪次數與種類.csv'
+					}, {
+						name: '新入監前教育程度',
+						url: '/correction/新入監前教育程度.csv'
+					}, {
+						name: '歷年新入監年齡歷年統計',
+						url: '/correction/歷年新入監年齡歷年統計.csv'
+					}
+					// '/correction/新入監前家庭狀況.csv',
+					// '/correction/新入監犯罪次數與種類.csv',
+					// '/correction/新入監前教育程度.csv',
+					// '/correction/歷年新入監年齡歷年統計.csv'
+					];else {
+							var urls = [{
+								name: '新入監前家庭狀況',
+								url: window.googleSheet + '1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + window.query
+							}, {
+								name: '新入監犯罪次數與種類.',
+								url: window.googleSheet + '17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + window.query
+							}, {
+								name: '新入監前教育程度',
+								url: window.googleSheet + '1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + window.query
+							}, {
+								name: '歷年新入監年齡歷年統計',
+								url: window.googleSheet + '1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + window.query
+							}];
+							return urls;
+						}
+				}()
 			}]
 		};
 	},

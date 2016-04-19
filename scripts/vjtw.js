@@ -793,9 +793,6 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 								self.fillArea(_data, testColors[i])
 							}
 						});
-
-
-				
 		}
 
 		// Check if the unde line area is existed 
@@ -1568,9 +1565,9 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 	var self = this,
 		isYrSelected = this.rocYr ? true: false,
-		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/);
-
-	this.readCSV(ringObj.dataSource)
+		keywords = ringObj.dataSource.name;
+	
+	this.readCSV(ringObj.dataSource.url)
 		.row(function(d, i) {
 			if ( isYrSelected ) if ( i === self.selectRow() ) return d
 			else return null
@@ -1638,13 +1635,14 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 							// Store the data and initialize the info board.
 							.call(function(d) {
-								self.ringInfoBoard.statsBoard.storeInfo(keywords[0], ringObj.idName, d[0]); 
+								// working-spot-2
+								self.ringInfoBoard.statsBoard.storeInfo(keywords, ringObj.idName, d[0]);
 								self._infoBoardRender();
 							})
 							.style('fill', function(d, i) {
 								var cIndex = colorObj.rings
 									.findIndex(function(o) {
-										if ( o.name === keywords[0] ) return true
+										if ( o.name === keywords ) return true
 								});
 								return colorObj.rings[cIndex].value[d.name]
 							})
@@ -1886,9 +1884,9 @@ ringGraphClass.prototype.updateRing = function(ringObj) {
 	var self = this,
 		rowNumber = this.selectRow(),
 		isYrSelected = this.rocYr ? true: false,
-		keywords = ringObj.dataSource.match(/[\u4e00-\u9fa5]+/);
+		keywords = ringObj.dataSource.name;
 
-	this.readCSV(ringObj.dataSource)
+	this.readCSV(ringObj.dataSource.url)
 		.row(function(d, i) {
 			if ( isYrSelected ) if ( i === rowNumber ) return d
 			else return null
