@@ -416,7 +416,7 @@ var ChartPanel = React.createClass({
 						if (isLocal)
 							return '/correction/監獄人數概況.csv'
 						else
-							return window.googleSheet+'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28'+query
+							return window.googleSheet+'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28'+window.query
 					})(),
 					axes: {
 						xAxis: '民國',
