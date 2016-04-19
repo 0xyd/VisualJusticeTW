@@ -4,7 +4,7 @@ window.isLocal =
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
-window.googleSheet = 'https://spreadsheets.google.com/tq?';
+window.googleSheet = 'https://spreadsheets.google.com/tq?key=';
 
 
 var DashBoard = React.createClass({
