@@ -21,76 +21,302 @@ var DashBoard = React.createClass({
 	getInitialState: function getInitialState() {
 		return {
 			dataset: null,
-			topic: null,
+			// topic: null,
+			data: null, // new
 			chartType: null,
 
 			indexDB: [{
 				dataset: '監獄人數概況',
 				content: {
-					topics: [{
+					// topics: [
+					// 	{
+					// 		name: '本年執行人數',
+					// 		compos: [
+					// 			'總數'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'年度總量',
+					// 			'走勢',
+					// 			'面積圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '本年入監人數',
+					// 		compos: [
+					// 			'總數'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'年度總量',
+					// 			'走勢',
+					// 			'面積圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '新入監人數',
+					// 		compos: [
+					// 			'總數'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'年度總量',
+					// 			'走勢',
+					// 			'面積圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '本年出獄人數',
+					// 		compos: [
+					// 			'總數'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'年度總量',
+					// 			'走勢',
+					// 			'面積圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '本年年底留監人數',
+					// 		compos: [
+					// 			'總數'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'年度總量',
+					// 			'走勢',
+					// 			'面積圖'
+					// 		]
+					// 	}
+					// ]
+					data: [{
 						name: '本年執行人數',
-						compos: ['總數'],
-						availableChartTypes: ['長條圖', '走勢', '面積圖']
+						topic: ['總數'],
+						availableChartTypes: ['年度總量', '走勢', '面積圖']
 					}, {
 						name: '本年入監人數',
-						compos: ['總數'],
-						availableChartTypes: ['長條圖', '走勢', '面積圖']
+						topic: ['總數'],
+						availableChartTypes: ['年度總量', '走勢', '面積圖']
 					}, {
 						name: '新入監人數',
-						compos: ['總數'],
-						availableChartTypes: ['長條圖', '走勢', '面積圖']
+						topic: ['總數'],
+						availableChartTypes: ['年度總量', '走勢', '面積圖']
 					}, {
 						name: '本年出獄人數',
-						compos: ['總數'],
-						availableChartTypes: ['長條圖', '走勢', '面積圖']
+						topic: ['總數'],
+						availableChartTypes: ['年度總量', '走勢', '面積圖']
 					}, {
 						name: '本年年底留監人數',
-						compos: ['總數'],
-						availableChartTypes: ['長條圖', '走勢', '面積圖']
+						topic: ['總數'],
+						availableChartTypes: ['年度總量', '走勢', '面積圖']
 					}]
 				}
 			}, {
 				dataset: '新入監資料概覽',
 				content: {
-					topics: [{
+					// topics: [
+					// 	{
+					// 		name: '民國75年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國76年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國77年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國78年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國79年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國80年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國81年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國82年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國83年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '民國84年',
+					// 		compos: [
+					// 			'總覽',
+					// 			'新入監前家庭狀況',
+					// 			'新入監前犯罪次數與種類',
+					// 			'新入監前教育程度',
+					// 			'新入監年齡統計'
+					// 		],
+					// 		availableChartTypes: [
+					// 			'圓環圖'
+					// 		]
+					// 	},
+					// 	{
+					// 		name: '85',
+					// 	},
+					// 	{
+					// 		name: '86',
+					// 	},
+					// 	{
+					// 		name: '87',
+					// 	},
+					// 	{
+					// 		name: '88',
+					// 	},
+					// 	{
+					// 		name: '89',
+					// 	},
+					// 	{
+					// 		name: '90',
+					// 	},
+					// 	{
+					// 		name: '91',
+					// 	},
+					// 	{
+					// 		name: '92',
+					// 	},
+					// 	{
+					// 		name: '93',
+					// 	},
+					// 	{
+					// 		name: '94',
+					// 	},
+					// 	{
+					// 		name: '95',
+					// 	},
+					// 	{
+					// 		name: '96',
+					// 	}
+					// ]
+					data: [{
 						name: '民國75年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國76年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國77年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國78年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國79年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國80年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國81年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國82年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國83年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '民國84年',
-						compos: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+						data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
 						availableChartTypes: ['圓環圖']
 					}, {
 						name: '85'
@@ -124,9 +350,12 @@ var DashBoard = React.createClass({
 
 	componentWillMount: function componentWillMount() {
 		this.setState({
+			// dataset: '監獄人數概況',
+			// topic: '本年執行人數',
+			// chartType: '年度總量'
 			dataset: '監獄人數概況',
-			topic: '本年執行人數',
-			chartType: '長條圖'
+			data: '本年執行人數',
+			chartType: '年度總量'
 		});
 	},
 
@@ -139,10 +368,12 @@ var DashBoard = React.createClass({
 			var r = this.state.indexDB.find(function (d) {
 				if (d.dataset === inputStr) return true;
 			});
-
+			console.log(r.content);
 			this.setState({
 				dataset: r.dataset,
-				topic: r.content.topics[0].name
+				// old
+				// topic: r.content.topics[0].name
+				data: r.content.data[0].name
 			});
 		} else if (menuIndex === 1) {
 
@@ -151,21 +382,45 @@ var DashBoard = React.createClass({
 
 			// Find out the index of current selected dataset.
 			cDatasetIdx = findCurrentDatasetIndex(this.state),
-			    r = this.state.indexDB[cDatasetIdx].content.topics.find(function (d) {
+			   
+			//old
+			//   r =
+			// this.state.indexDB[cDatasetIdx].content.topics
+			// 	.find(function(d) {
+			// 		if (d.name === inputStr)
+			// 			return true
+			// });
+			r = this.state.indexDB[cDatasetIdx].content.data.find(function (d) {
 				if (d.name === inputStr) return true;
 			});
 
-			this.setState({ topic: r.name });
-		} else if (menuIndex === 2) {} else if (menuIndex === 3) {
-
+			// old
+			// this.setState({ topic: r.name });
+			this.setState({ data: r.name });
+		} else if (menuIndex === 2) {
+			console.log(this.state.indexDB);
 			var cDatasetIdx = findCurrentDatasetIndex(this.state),
 			    cTopicIdx = findCurrentTopicIndex(this.state, cDatasetIdx),
-			    r = this.state.indexDB[cDatasetIdx].content.topics[cTopicIdx].availableChartTypes.find(function (d) {
+			    r = this.state.indexDB[cDatasetIdx].content.data[cTopicIdx].availableChartTypes.find(function (d) {
 				if (d === inputStr) return true;
 			});
 
 			this.setState({ chartType: r });
-		}
+		} else if (menuIndex === 3) {}
+		// old
+		// let cDatasetIdx =
+		// 		findCurrentDatasetIndex(this.state),
+		// 	cTopicIdx   =
+		// 		findCurrentTopicIndex(this.state, cDatasetIdx),
+
+		// old
+		// r = this.state.indexDB[cDatasetIdx]
+		// 	.content.topics[cTopicIdx].availableChartTypes
+		// 		.find(function(d) {
+		// 			if (d === inputStr) return true
+		// 		});
+
+		// this.setState({ chartType: r });
 
 		// Find out the index of current selected dataset.
 		function findCurrentDatasetIndex(s) {
@@ -176,9 +431,16 @@ var DashBoard = React.createClass({
 		}
 
 		function findCurrentTopicIndex(s, datasetIdx) {
-			var index = s.indexDB[datasetIdx].content.topics.findIndex(function (d) {
-				if (d.name === s.topic) return true;
+			// old
+			// var index =
+			// 	s.indexDB[datasetIdx].content.topics.findIndex(function(d) {
+			// 		if (d.name === s.topic) return true
+			// 	});
+
+			var index = s.indexDB[datasetIdx].content.data.findIndex(function (d) {
+				if (d.name === s.data) return true;
 			});
+
 			return index;
 		}
 	},
@@ -199,8 +461,9 @@ var DashBoard = React.createClass({
 				chartRefresh: this.chartRefresh,
 				indexDB: this.state.indexDB }),
 			React.createElement(ChartPanelWrapper, {
-				dataset: this.state.dataset,
-				topic: this.state.topic,
+				dataset: this.state.dataset
+				// topic={this.state.topic}
+				, data: this.state.data,
 				chartType: this.state.chartType,
 				barGraph: this.graphs.barGraph,
 				lineGraph: this.graphs.lineGraph,
@@ -217,8 +480,9 @@ var ChartPanelWrapper = React.createClass({
 			'div',
 			{ id: 'DISPLAY_PANEL_WRAPPER', className: 'b20-col-md-16' },
 			React.createElement(ChartPanel, {
-				dataset: this.props.dataset,
-				topic: this.props.topic,
+				dataset: this.props.dataset
+				// topic={this.props.topic}
+				, data: this.props.data,
 				chartType: this.props.chartType,
 				barGraph: this.props.barGraph,
 				lineGraph: this.props.lineGraph,
@@ -233,7 +497,7 @@ var ChartPanel = React.createClass({
 	tip: new tipClass(),
 
 	_chartGroup_1: function () {
-		var s = new Set(['長條圖', '走勢', '面積圖']);
+		var s = new Set(['年度總量', '走勢', '面積圖']);
 		return s;
 	}(),
 	_chartGroup_2: function () {
@@ -323,7 +587,10 @@ var ChartPanel = React.createClass({
 			sheetName: currentDataSheet.name,
 			sheetUrl: currentDataSheet.url,
 			chartAxes: currentDataSheet.axes,
-			dataTopic: this.props.topic,
+			// old
+			// dataTopic: this.props.topic,
+			// chartType: this.props.chartType
+			dataTopic: this.props.data,
 			chartType: this.props.chartType
 		});
 	},
@@ -339,18 +606,24 @@ var ChartPanel = React.createClass({
 			if (d.name === nextProps.dataset) return true;
 		});
 
-		// Check the chart types whether it is one of '長條圖', '走勢', '面積圖'
+		// Check the chart types whether it is one of '年度總量', '走勢', '面積圖'
 		if (this._chartGroup_1.has(nextProps.chartType)) {
 			this.setState({
 				sheetName: nextProps.dataset,
-				dataTopic: nextProps.topic,
+				// old
+				// dataTopic: nextProps.topic,
+				// chartType: nextProps.chartType,
+				dataTopic: nextProps.data,
 				chartType: nextProps.chartType,
 				sheetUrl: this.state.dataSheets[i].url
 			});
 		} else if (this._chartGroup_2.has(nextProps.chartType)) {
 			this.setState({
 				sheetName: nextProps.dataset,
-				dataTopic: nextProps.topic,
+				// old
+				// dataTopic: nextProps.topic,
+				// chartType: nextProps.chartType,
+				dataTopic: nextProps.data,
 				chartType: nextProps.chartType,
 				sheetUrl: this.state.dataSheets[i].url
 			});
@@ -391,7 +664,7 @@ var ChartPanel = React.createClass({
 						var lG = _this.props.lineGraph,
 						    chartTypeDisplay = _this.chartTypeDisplay;
 
-						if (nextProps.chartType !== '長條圖') _this.props.barGraph.bePhantom();
+						if (nextProps.chartType !== '年度總量') _this.props.barGraph.bePhantom();
 
 						_this.props.barGraph.update(nextStates.sheetUrl, _this.state.chartAxes.xAxis, _this.state.chartAxes.yAxis, nextStates.dataTopic).then(function (jsonOutput) {
 
@@ -413,7 +686,10 @@ var ChartPanel = React.createClass({
 				} else if (nextProps.dataset === this.state.dataSheets[1].name) {
 						console.log('update the ring chart');
 
-						var yr = parseInt(nextProps.topic.match(/\d+/));
+						// old
+						// let yr = parseInt(nextProps.topic.match(/\d+/));
+
+						var yr = parseInt(nextProps.data.match(/\d+/));
 
 						this.props.ringGraph.selectROCYr(yr).updateRings();
 					}
@@ -458,7 +734,7 @@ var ChartPanel = React.createClass({
 		var b = this.props.barGraph,
 		    l = this.props.lineGraph;
 
-		if (chartType === "長條圖") {
+		if (chartType === "年度總量") {
 			if (b.isInvisible) b.beVisible();
 			l.hide().hideUnderArea();
 		} else if (chartType === "走勢") {
@@ -538,15 +814,23 @@ var StatFilter = React.createClass({
 	initialValues: function () {
 		// Initail the start states when every thime that theme changes.
 		var initialDefaults = [{
+			// dataset  : '監獄人數概況',
+			// topic    : '本年執行人數',
+			// filter   : '總數',
+			// chartType: '年度總量' 
 			dataset: '監獄人數概況',
-			topic: '本年執行人數',
-			filter: '總數',
-			chartType: '長條圖'
+			data: '本年執行人數',
+			chartType: '年度總量',
+			topic: '總數'
 		}, {
+			// dataset  : '新入監資料概覽',
+			// topic    : '民國75年',
+			// filter   : '總覽',
+			// chartType: '圓環圖' 
 			dataset: '新入監資料概覽',
-			topic: '民國75年',
-			filter: '總覽',
-			chartType: '圓環圖'
+			data: '民國75年',
+			chartType: '圓環圖',
+			topic: '總覽'
 		}];
 		return initialDefaults;
 	}(),
@@ -554,13 +838,23 @@ var StatFilter = React.createClass({
 	getInitialState: function getInitialState() {
 		return {
 
-			filterNames: ['選擇主題', '選擇類別', '選擇成分', '選擇圖形'],
+			filterNames: [
+			// '選擇主題',
+			// '選擇類別',
+			// '選擇成分',
+			// '選擇圖形'
+			'資料集', '檢索資料', '視覺化', '專題'],
 
 			filterValues: {
+				// dataset  : null,
+				// topic    : null,
+				// filter   : null,
+				// chartType: null
 				dataset: null,
-				topic: null,
-				filter: null,
-				chartType: null
+				data: null,
+				chartType: null,
+				topic: null
+
 			},
 
 			menuDisplayedStatus: [false, false, false, false]
@@ -609,14 +903,22 @@ var StatFilter = React.createClass({
 		    datasetList = this.props.indexDB.map(function (obj) {
 			return obj.dataset;
 		}),
-		    topicList = this.props.indexDB[index].content.topics.map(function (obj) {
+		   
+
+		// old
+		// topicList =
+		// 	this.props.indexDB[index]
+		// 		.content.topics.map(
+		// 			function(obj) { return obj.name }),
+
+		dataList = this.props.indexDB[index].content.data.map(function (obj) {
 			return obj.name;
 		}),
 		   
 
 		// otherList contains the filters and avialable chart types
-		otherList = this.props.indexDB[index].content.topics.find(function (obj) {
-			if (obj.name === c.topic) return true;
+		otherList = this.props.indexDB[index].content.data.find(function (obj) {
+			if (obj.name === c.data) return true;
 		}),
 		   
 
@@ -627,7 +929,12 @@ var StatFilter = React.createClass({
 		   
 
 		// Mapping the list into the array for generating the menus
-		menus = [datasetList, topicList, otherList.compos, otherList.availableChartTypes];
+		// old
+		// menus =
+		// 	[datasetList, topicList, otherList.compos, otherList.availableChartTypes];
+
+		// new
+		menus = [datasetList, dataList, otherList.availableChartTypes, otherList.topic];
 
 		for (var i = 0; i < l; i++) {
 
