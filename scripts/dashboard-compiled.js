@@ -384,11 +384,10 @@ var ChartPanel = React.createClass({
 
 				this.initRingChart();
 			}
-			// Show the update results of to dataSheet[0] (監獄)
+			// update the current viewing of dataSheet[0] (監獄)
 			else if (nextProps.dataset === this.state.dataSheets[0].name) {
 					(function () {
-						console.log('update the bar chart');
-						console.log(nextProps);
+
 						var lG = _this.props.lineGraph,
 						    chartTypeDisplay = _this.chartTypeDisplay;
 
@@ -405,10 +404,6 @@ var ChartPanel = React.createClass({
 								// Append new hover listeners.
 								self.tip.appendDotMouseOver(nextProps.topic);
 								self.tip.appendBarMouseOver(nextProps.topic);
-
-								// working-spot-1: Event lines developement.
-								lG.drawDivideLine();
-								lG.initInfoBoard();
 
 								chartTypeDisplay(nextStates.chartType);
 							});

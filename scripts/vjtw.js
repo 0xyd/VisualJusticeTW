@@ -716,83 +716,8 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 						.attr('fill', colorAdjust(hex, 20))
 						.attr('stroke-width', 2)
 						.attr('stroke', '#fff')
-						.attr('r', 7)
-						// working-spot-1: Add the dot mouse enter event to display related info.
-						.on('mouseenter', function(d) {
-							
-							if (d['司法事記']) 
-								self.infoBoard.html(function() {
-									return '<h2 class="board-body-title">' + d['司法事記'] + '</h2>'
-								});
-							else
-								return null
-						})
-						// working-spot-1: Click the dots for drawing the area graph with divide lines.
-						.on('click', function(dot) {
-
-							// If the dividedAreas is not existed
-							
-
-							var tail = self.lineDots[0].length - 1,
-							// Get the divide points with the same tag
-									dotsWithSameTag = 
-										self.lineDots[0]
-											.filter(function(dotObj, i) {
-												if (dotObj.__data__.tag === dot.tag) {
-													dotObj.__data__.slicePointIdx = i;
-													return dotObj 
-												}
-											});
-							
-							// Divide data with several sections by the divide different divide points
-							var dataSections = (function(dots) {
-
-								// Points for sliceing the dots array
-								var 
-										slicePoints = (function() {
-
-											var points = [];
-											for (var i in dots) 
-												points.push(dots[i].__data__.slicePointIdx);
-
-											// 0 and the last elements are also slice points.
-											points.unshift(0);
-											points.push(tail);
-
-											// Dumps the duplicated points
-											points.filter(function(pt, i, array) {
-												if (array.findIndex(function(d) { return d === pt }) < 0) 
-													return pt
-											});
-
-											return points
-										})(),
-
-										sections = [],
-										sectionsLength = slicePoints.length - 1,
-
-										start = 0,
-										end   = self.lineDots.length;
-
-								// Slice the lineDots with the slice points
-								for (var i = 0; i < sectionsLength; i++) {
-									sections.push(
-										self.lineDots[0].slice(slicePoints[i], slicePoints[i+1] + 1)
-									);
-								}
-								
-								return sections
-
-							})(dotsWithSameTag);
-
-							var testColors = ['red', 'green', 'blue'];
-							// console.log(dataSections);
-							for (var i in dataSections) {
-								var _data = dataSections[i].map(
-									function(circle) { return circle.__data__ });	
-								self.fillArea(_data, testColors[i])
-							}
-						});
+						.attr('r', 7);
+						
 		}
 
 		// Check if the unde line area is existed 
@@ -985,8 +910,8 @@ lineGraphClass.prototype.empty = function() {
 	return this
 }
 
-// working spot 1: Draw the lines dividing the graph according to the external data.
-lineGraphClass.prototype.drawDivideLine = function() {
+// Draw the markers on the graph.
+lineGraphClass.prototype.drawEvtMarkers = function() {
 
 	var url   = 'https://spreadsheets.google.com/tq?key=',
 			key   = '1jAMtUHVlw_pqmlnyFrscqwy274CgmQQ9C0Kp3EXmoAY',
@@ -1029,20 +954,19 @@ lineGraphClass.prototype.drawDivideLine = function() {
 							} 
 							return row['民國'] === dots[i].__data__['民國']
 						});
-
+					// working-spot-1
 					if (r) {
 						// Attach the judicial events
 						dots[i].__data__['司法事記'] = r['司法事記'];
 						dots[i].__data__.tag = r['tag'];
 						dots[i].__data__.hasEvent = true;
-
 					} else {
 						dots[i].__data__.hasEvent = false;
 						dots[i].__data__.tag = '';
 					}
-					
+						
 				}
-
+			console.log(self.lineDots[0]);
 			})();
 
 			// The end point of each lines.
@@ -1051,7 +975,7 @@ lineGraphClass.prototype.drawDivideLine = function() {
 
 			// working-spot-1: attach the line on the dots with the event connection.
 			self.pad.append('g')
-				.attr('class', 'years-line')
+				.attr('class', 'evt-marker-lines')
 					.selectAll('line')
 						.data(dotsData).enter()
 						.append('line')
@@ -1071,35 +995,87 @@ lineGraphClass.prototype.drawDivideLine = function() {
 							.attr('stroke', '#333')
 							.attr('stroke-width', 1)
 							// .attr('stroke-dasharray', "5, 5, 1, 5") // Default style setting
-							.each(function() { // Append the tag info on the line
+							.each(function(d, i) { // Append the tag info on the line
 								
 								var _this = d3.select(this);
+								
+								if (i === 0)
+									self.pad.append('g').attr('class', 'evt-marker-names');
 
-								self.pad.append('text')
-									.attr('x', _this.attr('x2'))
-									.attr('y', _this.attr('y2'))
-										.text(_this.node().__data__.tag)
-											.attr('fill', '#08f');
+								// Attach the text to the lines as integrating into a marker.
+								this.__data__.text =
+									self.pad.select('g.evt-marker-names')
+										.append('text')
+											.attr('x', _this.attr('x2'))
+											.attr('y', _this.attr('y2'))
+												.text(_this.node().__data__.tag)
+													.attr('fill', '#08f');
 							})
 							.call(function() {
-
+								
 								var lines = 
 									this[0].filter(function(o) { 
 										if (o.tagName === 'line') 
 											return o
 									});
-
-								// Binding lines to the dots
+								
+								// Binding markers to the dots
 								for (var i in dots) {
 									if (dots[i].__data__.hasEvent)
-										dots[i].__data__.line = lines.shift();
+										dots[i].__data__.line = d3.select(lines.shift());
 								}
-
-								 
-								
 							});
 
 		});
+
+}
+
+
+lineGraphClass.prototype.isEvtMarkersExisted = function() {
+	console.log(this.pad.select('g.evt-marker-lines').empty());
+	return this.pad.select('g.evt-marker-lines').empty()
+}
+
+// Remove the event markers
+lineGraphClass.prototype.emptyEvtMarkers = function() {
+	this.pad.select('g.evt-marker-lines').remove();
+	this.pad.select('g.evt-marker-names').remove();
+}
+
+// working-spot-1
+lineGraphClass.prototype.updateEvtMarkers = function() {
+	console.log('update evt marker');
+
+	d3.select('g.evt-marker-lines').selectAll('line')
+		.transition()
+			.duration(200)
+				.attr('x1', function(d) { return d.dotX }) 
+				.attr('y1', function(d) { return d.dotY })
+				.attr('x2', function(d) { return d.dotX })
+				.attr('y2', function(d) { 
+					if (d.dotY-50 < 30)
+						return d.dotY+50
+					return d.dotY-50
+				});
+
+	// d3.select('.dots-cluster').selectAll('.dots').each(function(d) {
+	// 	console.log(d);
+	// 	// var line = this.__data__.line;
+		
+	// 	// if (!line) {
+	// 	// 	line.transition()
+	// 	// 		.duration(200)
+	// 	// 			.attr('x1', function(d) { return d.dotX }) 
+	// 	// 			.attr('y1', function(d) { return d.dotY })
+	// 	// 			.attr('x2', function(d) { return d.dotX })
+	// 	// 			.attr('y2', function(d) { 
+	// 	// 				if (d.dotY-50 < 30)
+	// 	// 					return d.dotY+50
+	// 	// 				return d.dotY-50
+	// 	// 			});
+	// 	// }
+	// });
+	
 }
 
 /* A Class for ring chart */
@@ -1136,7 +1112,6 @@ var ringGraphClass = function() {
 		itemNumber: null
 	};
 
-	// ref-working-spot-1
 	// A ring info board for displaying the chart detail.
 	this.ringInfoBoard = { // Use for displaying the quantitive of each parts
 		statsBoard     : {
@@ -1308,7 +1283,6 @@ ringGraphClass.prototype.init = function() {
 			.style('top', '7%')
 			.style('left', '3%');
 
-	// ref-working-spot-1
 	// Initial the board for pecentage
 	this.ringInfoBoard.percentageBoard.body = 
 		d3.select('#DISPLAY_PANEL').append('div')
@@ -2059,18 +2033,19 @@ tipClass.prototype.appendDotMouseOver = function(dOption) {
 						.style('left', posX +offset.X + 'px')
 						.html(function() {
 
-							// working-spot-1 : Display the specific events on dot chart.
+							// Display the specific events on dot chart.
 							var info = 
 								'民國 ' + d['民國'] + '<br>' +
 							   		dOption + ': ' + d[dOption];
-
+							// working-spot-1
 							// Bug: Only the last dot does not display correctly, I will fix it later.
-							if (d.tag.length == 0) 
-								return '<span id="DOT-INFO">' + info + '</span>'
-							else {
-								return '<span id="DOT-INFO">' + info + '</span>' +
-											 '<span class="tag">' + d.tag + '</span>'
-							}
+							// if (d.tag.length == 0) 
+							// 	return '<span id="DOT-INFO">' + info + '</span>'
+							// else {
+							// 	return '<span id="DOT-INFO">' + info + '</span>' +
+							// 				 '<span class="tag">' + d.tag + '</span>'
+							// }
+							return '<span id="DOT-INFO">' + info + '</span>'
 
 						})
 						.call(function(d) {
