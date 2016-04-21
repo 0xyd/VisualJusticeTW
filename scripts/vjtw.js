@@ -536,9 +536,8 @@ barGraphClass.prototype.beDisplayed = function() {
 
 barGraphClass.prototype.isBarHidden = function() {
 
-	var displayStatus = 
-			this.bars.style('display');
-
+	var displayStatus = this.bars.style('display');
+	console.log(displayStatus);
 	if ( displayStatus === 'none') return true
 	else return false
 }
@@ -680,6 +679,8 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 			self.linePath = 
 				self.pad
 					.append('g')
+						// working-spot-3
+						.attr('class', 'line-group')
 					.append('path')
 						.attr('class', 'dotted-path')
 					.datum(data)
@@ -807,6 +808,7 @@ lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, 
 			
 			d3.select("#SKETCHPAD")
 				.append('g')
+					.classed('line-group', true)
 				.append('path')
 				.datum(rows)
 				.attr('class', 'line')
