@@ -537,7 +537,6 @@ barGraphClass.prototype.beDisplayed = function() {
 barGraphClass.prototype.isBarHidden = function() {
 
 	var displayStatus = this.bars.style('display');
-	console.log(displayStatus);
 	if ( displayStatus === 'none') return true
 	else return false
 }
