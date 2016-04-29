@@ -2290,8 +2290,10 @@ function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
 
 	for ( var i=0 ; i<_txt.length; i++ ) {
 
-		var bWMidPt = _txt[i].offsetWidth/2,
-				bHMidPt = _txt[i].offsetHeight/2,
+		var _txtBox = _txt[i].getBBox(),
+
+				bWMidPt = _txtBox.width/2,
+				bHMidPt = _txtBox.height/2,
 				// Displacement in X direction
 				xd = parseInt(_txt[i].getAttribute('x')),
 				// Displacement in Y direction
@@ -2300,7 +2302,7 @@ function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
 
 		_txt[i].setAttribute(
 			'transform', 
-			'rotate(90, ' + xd + ', ' + yd+ ')' +
+			'rotate(90, ' + xd + ', ' + yd + ')' +
 			'translate(' + d + ',' + (-1 * delta) + ')'); 
 	}
 }
