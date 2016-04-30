@@ -127,18 +127,155 @@ var ThemeBtn = React.createClass({
 	}
 });
 
-/* ***** Databoard components: The components render the visualized data  ***** */
+/* ***** DataBoard components: The components render the visualized data  ***** */
 var DataBoard = React.createClass({
 	displayName: 'DataBoard',
 
+	/* Customized Methods */
+	// Graph unit for drawing.
 	gpu: function () {
 		return {
 			barGraph: new barGraphClass(),
 			lineGraph: new lineGraphClass(),
-			RingGraph: new ringGraphClass()
+			ringGraph: new ringGraphClass()
 		};
 	}(),
 
+	tip: new tipClass(),
+
+	// working-spot-5: Find the index of datasheet.
+	findDataSheetIndex: function findDataSheetIndex(props) {
+		var dSheet = this.state.dataSheets.find(function (dataSheet) {
+			return dataSheet.name === props.dataset;
+		});
+		return dSheet;
+	},
+
+	// working-spot-5: Visualizing data with bar chart
+	vizDataWithBarChart: function vizDataWithBarChart(props, dataSheet) {
+		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+		var bG = this.gpu.barGraph,
+		    lG = this.gpu.lineGraph,
+		    t = this.tip;
+
+		if (update) {
+
+			bG.update(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
+		} else {
+
+			bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data).then(function (jsonOutput) {
+
+				// Check if bar chart is hidden or not.
+				// console.log(bG.isBarHidden());
+				// if (bG.isBarHidden())
+				// 	bG.beDisplayed();
+
+				// Initialize the tips
+				t.initTips();
+
+				// lG.inheritPad(
+				// 	bG.pad,
+				// 	bG.padHeight,
+				// 	bG.padWidth,
+				// 	bG.padPadding
+				// 	)
+				// 	.setChartSize()
+				// 		.plotBars(
+				// 			jsonOutput.data,
+				// 			jsonOutput.pad,
+				// 			null,
+				// 			jsonOutput.barWidth/2
+				// 		)
+				// 		.then(function(o) {
+
+				// 			lG.linePath = o.line;
+				// 			lG.lineDots = o.dots;
+				// 			lG.areaUnderLine = o.area;
+
+				// 			chartTypeDisplay(self.props.chartType);
+
+				// 			t.appendDotMouseOver('本年執行人數');
+				// 			t.appendBarMouseOver('本年執行人數');
+
+				// });
+			});
+			// },
+		}
+	},
+
+	/* React Native methods */
+	getInitialState: function getInitialState() {
+		return {
+			dataSheets: [{
+				name: '監獄人數概況',
+				url: function () {
+					if (isLocal) return '/correction/監獄人數概況.csv';else return window.googleSheet + '1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + query;
+				}(),
+				axes: {
+					xAxis: '民國',
+					yAxis: '人數(仟人)'
+				}
+			}, {
+				name: '新入監資料概覽',
+				keys: ['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg', '17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg', '1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8', '1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],
+				urls: function () {
+
+					if (isLocal) return [
+					// working-spot-2
+					{
+						name: '新入監前家庭狀況',
+						url: '/correction/新入監前家庭狀況.csv'
+					}, {
+						name: '新入監犯罪次數與種類',
+						url: '/correction/新入監犯罪次數與種類.csv'
+					}, {
+						name: '新入監前教育程度',
+						url: '/correction/新入監前教育程度.csv'
+					}, {
+						name: '歷年新入監年齡歷年統計',
+						url: '/correction/歷年新入監年齡歷年統計.csv'
+					}];else {
+						var urls = [{
+							name: '新入監前家庭狀況',
+							url: window.googleSheet + '1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + window.query
+						}, {
+							name: '新入監犯罪次數與種類.',
+							url: window.googleSheet + '17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + window.query
+						}, {
+							name: '新入監前教育程度',
+							url: window.googleSheet + '1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + window.query
+						}, {
+							name: '歷年新入監年齡歷年統計',
+							url: window.googleSheet + '1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + window.query
+						}];
+						return urls;
+					}
+				}()
+			}]
+		};
+	},
+
+	// working-spot-5: Initial Data Visualizing
+	componentDidMount: function componentDidMount() {
+
+		if (this.props.chartType === '長條圖') {
+			console.log('this props:');
+			console.log(this.props);
+			var dataSheet = this.findDataSheetIndex(this.props);
+
+			this.vizDataWithBarChart(this.props, dataSheet);
+		} else if (this.props.chartType === '趨勢') {} else if (this.props.chartType === '圓餅圖') {}
+	},
+
+	// working-spot-5: The DataBoard component will renew the visualized data.
+	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
+		console.log('componentWillUpdate');
+		console.log(nextProps);
+		var dataSheet = this.findDataSheetIndex(nextProps);
+
+		this.vizDataWithBarChart(nextProps, dataSheet, true);
+	},
 	render: function render() {
 
 		return React.createElement(
@@ -451,7 +588,7 @@ function expandDropdownAC(dropdownIndex) {
 
 // working-spot-5
 function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex) {
-	console.log(dIndex);
+
 	return {
 		type: 'SELECT_DROPDOWN_OPTION',
 		theme: theme,
@@ -644,13 +781,6 @@ var DataFilterStateTree = {
 
 		var state = this.selectState(key);
 
-		// let chartIndex =
-		// 	chartTypeName ?
-		// 		state.get(datasetIdx)
-		// 			.availableChartTypes.findIndex(
-		// 				(chartType) => {
-		// 					return chartType === chartTypeName }) : 0;
-
 		var topics = state.get(datasetIdx).content.data[dataIdx].topics[chartIndex];
 
 		return topics;
@@ -772,7 +902,7 @@ function setAppMainThemes(state) {
 function selectAppTheme(state, theme) {
 
 	var navComponents = [React.createElement(Logo, { key: '0' }), React.createElement(StatTitle, { key: '1' }), React.createElement(StatFilter, { key: '2' }), React.createElement(HomeLink, { key: '3' })],
-	    mainComponents = [React.createElement(DataBoard, { key: '0' })];
+	    mainComponents = [React.createElement(StatDataBoard, { key: '0' })];
 
 	var navState = Map().set('Nav', navComponents);
 	var mainState = Map().set('Main', mainComponents);
@@ -864,7 +994,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 		var currentState = store.getState();
 
 		// Create an initial collpased state for all menus.
-		newDropdownMenuStates = setState('filterDropdownMenus', setAllDropdownCollapsed(currentState));
+		var collapsedAllDropdownMenuStates = setState('filterDropdownMenus', setAllDropdownCollapsed(currentState));
 
 		if (fieldsetIndex === 0) {
 
@@ -890,8 +1020,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 				Map().set('Options', List(DataFilterStateTree.listTopic('correction', datasetIndex, 0, 0))).set('isDisplayed', false)]));
 				return state.merge(newDataset, newData, newChartType, newTopic, newDropdownMenuStates);
 			}
-			return state.merge(newDropdownMenuStates);
+			return state.merge(collapsedAllDropdownMenuStates);
 		}
+
 		// Selecting data
 		else if (fieldsetIndex === 1) {
 
@@ -905,19 +1036,35 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 					return state.merge(newData, newDropdownMenuStates);
 				}
 
-				return state.merge(newDropdownMenuStates);
+				return state.merge(collapsedAllDropdownMenuStates);
 			}
+
 			// Selecting the charttype which will affect the topics.
 			else if (fieldsetIndex === 2) {
+
 					if (currentState.get('currentChartType') !== optionName) {
 
 						newChartType = setState('currentChartType', optionName);
 						newDropdownMenuStates = setState('filterDropdownMenus', updateTopicDropdownOption(state, null, optionName));
 
-						return state.merge(newDropdownMenuStates, newChartType);
+						// Update current topic
+						newTopic = setState('currentTopic', newDropdownMenuStates.get('filterDropdownMenus').get(fieldsetIndex + 1).get('Options')[0]);
+
+						return state.merge(newDropdownMenuStates, newChartType, newTopic);
 					}
-					return state.merge(newDropdownMenuStates);
+					return state.merge(collapsedAllDropdownMenuStates);
 				}
+				// working-spot-5
+				// Selection the topic
+				else if (fieldsetIndex === 3) {
+						if (currentState.get('currentTopic') !== optionName) {
+							newTopic = setState('currentTopic', optionName);
+
+							return state.merge(newTopic, collapsedAllDropdownMenuStates);
+						}
+						return state.merge(collapsedAllDropdownMenuStates);
+					}
+
 		return state;
 	}
 }
@@ -939,55 +1086,34 @@ function setAllDropdownCollapsed(state) {
 	return newState;
 }
 
-/* Related function of selecting option: Collapse all dropdown menu
+/* 
+	 Related function of selecting option: Collapse all dropdown menu
 	 Data and charttype have relation with topics
  */
-
 function updateTopicDropdownOption(state, dataName, chartName) {
 
 	var key = state.get('theme');
 	var currentDataset = state.get('currentDataset');
 
+	// If user is operating data selector.
 	var currentData = dataName ? dataName : state.get('currentData');
 
+	// If user is operating chart selector.
 	var currentChartType = chartName ? chartName : state.get('currentChartType');
 
-	// working-spot-5
 	var newState = state.get('filterDropdownMenus').update(function (Menus) {
 
 		var datasetIndex = DataFilterStateTree.findDatasetIndex(key, currentDataset);
 		var dataIndex = DataFilterStateTree.findDataIndex(key, currentDataset, currentData);
 		var chartIndex = DataFilterStateTree.findChartTypeIndex(key, currentDataset, currentChartType);
 
-		// key, datasetIdx, dataIdx, chartTypeName
 		var topics = DataFilterStateTree.listTopic(key, datasetIndex, dataIndex, chartIndex);
-
-		console.log(currentData);
-		console.log(topics);
 
 		return Menus.set(1, Map().set('isDisplayed', false).set('Options', Menus.get(1).get('Options'))).set(2, Map().set('isDisplayed', false).set('Options', Menus.get(2).get('Options'))).set(3, Map().set('isDisplayed', false).set('Options', topics));
 	});
 
 	return newState;
 }
-
-// working-spot-5
-// function updateDropdownMenuState(state, fieldsetIndex, optionName) {
-
-// 	const key = state.get('theme');
-
-// 	let newDropdownMenuStates = null;
-
-// 	if (fieldsetIndex === 0) {
-
-// 	} else if (fieldsetIndex === 1) {
-
-// 	} else if (fieldsetIndex === 2) {
-
-// 	} else if (fieldsetIndex === 3) {
-
-// 	}
-// }
 
 // Create a immutable Map object as state
 function setState(key, value) {
@@ -1087,6 +1213,18 @@ var mapStateToFilterProps = function mapStateToFilterProps(state) {
 };
 
 var StatFilter = RRd.connect(mapStateToFilterProps, null)(Filter);
+
+/* Connect DataBoard */
+var mapStateToDataBoardProps = function mapStateToDataBoardProps(state) {
+	return {
+		dataset: state.get('currentDataset'),
+		data: state.get('currentData'),
+		chartType: state.get('currentChartType'),
+		topic: state.get('currentTopic')
+	};
+};
+
+var StatDataBoard = RRd.connect(mapStateToDataBoardProps, null)(DataBoard);
 
 /* ***** Store: For handling the states of the App.***** */
 var store = Re.createStore(AppReducer);
