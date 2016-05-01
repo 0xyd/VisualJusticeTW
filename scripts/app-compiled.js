@@ -156,8 +156,9 @@ var DataBoard = React.createClass({
 		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
 		var bG = this.gpu.barGraph,
-		    lG = this.gpu.lineGraph,
-		    t = this.tip;
+		   
+		// lG = this.gpu.lineGraph,
+		t = this.tip;
 
 		if (update) {
 
@@ -201,6 +202,20 @@ var DataBoard = React.createClass({
 				// });
 			});
 			// },
+		}
+	},
+
+	//
+	vizDataWithLineChart: function vizDataWithLineChart(props, dataSheet) {
+		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+		var lG = this.gpu.lineGraph;
+
+		if (update) {
+			lG.update(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
+		} else {
+			lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
+			console.log(lG.xAxis);
 		}
 	},
 
@@ -259,22 +274,35 @@ var DataBoard = React.createClass({
 	// working-spot-5: Initial Data Visualizing
 	componentDidMount: function componentDidMount() {
 
+		var dataSheet = this.findDataSheetIndex(this.props);
+
 		if (this.props.chartType === '長條圖') {
 			console.log('this props:');
 			console.log(this.props);
-			var dataSheet = this.findDataSheetIndex(this.props);
 
 			this.vizDataWithBarChart(this.props, dataSheet);
-		} else if (this.props.chartType === '趨勢') {} else if (this.props.chartType === '圓餅圖') {}
+		} else if (this.props.chartType === '趨勢') {
+			this.vizDataWithLineChart(this.props, dataSheet);
+		} else if (this.props.chartType === '圓餅圖') {}
 	},
 
-	// working-spot-5: The DataBoard component will renew the visualized data.
+	// working-spot-5: The DataBoard component will renew the visualized data or change a different type.
 	componentWillUpdate: function componentWillUpdate(nextProps, nextStates) {
-		console.log('componentWillUpdate');
-		console.log(nextProps);
+
 		var dataSheet = this.findDataSheetIndex(nextProps);
 
-		this.vizDataWithBarChart(nextProps, dataSheet, true);
+		if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖') {
+			this.vizDataWithBarChart(nextProps, dataSheet, true);
+		}
+		// Init the line bar once the user switch with different one.
+		else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') {
+				d3.select('#SKETCHPAD').remove();
+				this.vizDataWithLineChart(nextProps, dataSheet, false);
+			}
+			// Update the line bar when user switch the data.
+			else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
+					this.vizDataWithLineChart(nextProps, dataSheet, true);
+				}
 	},
 	render: function render() {
 
@@ -605,7 +633,7 @@ var INITIAL_STATE = Map();
 var DataFilterStateTree = {
 	state: Map().set('correction', List([{
 		dataset: '監獄人數概況',
-		availableChartTypes: ['長條圖', '走勢', '面積圖'],
+		availableChartTypes: ['長條圖', '趨勢', '面積圖'],
 		content: {
 			data: [{
 				name: '本年執行人數',

@@ -137,6 +137,11 @@ var graphClass = function() {
 	this.padHeight = null;
 	this.padWidth = null;
 	this.padPadding = null;
+
+	// Axes
+	this.xAxis = null;
+	this.yAxis = null;
+
 }
 
 graphClass.prototype.initializeAPad = function() {
@@ -173,6 +178,94 @@ graphClass.prototype.initializeAPad = function() {
 
 graphClass.prototype.readCSV = function(path) {
 	return d3.csv(path)
+}
+
+graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
+
+	this.xScale = d3.scale.ordinal()
+		.domain(
+			dataset.map(
+				function(d){ return xLabel? d[xLabel]: d }))
+		.rangeBands([0, this.chartWidth]);
+}
+
+graphClass.prototype._setXAxis = function(pos) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		this.xAxis = d3.svg.axis()
+			.scale(this.xScale).orient(pos);		
+	} 
+}
+
+graphClass.prototype._setLinearYScale = function(dataset, dOption) {
+
+	this.yScale = d3.scale.linear()
+		.domain(
+			[0, d3.max(
+					dataset, 
+					function(d) { return dOption? parseInt(d[dOption]): d})
+			])
+		.rangeRound([this.chartHeight, 0]);
+
+}
+
+graphClass.prototype._setYAxis = function(pos, tickFormater) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		this.yAxis = d3.svg.axis()
+			.scale(this.yScale).orient(pos).tickFormat(tickFormater).ticks(10);
+
+	} 
+}
+
+graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, outPadding) {
+
+	var self = this;
+
+	this.pad
+		.append('g')
+			.attr('class', 'x-axis')
+			.attr('transform', 'translate(0,' + this.chartHeight + ')')
+			.call(this.xAxis)
+			.call(c_pinLbl2XAxisMidPt, horSpace, step, outPadding)
+		.append('text')
+			.attr('class', 'axis-name')
+			.attr('x', function() {
+				return dataset.length*(horSpace+step)+outPadding
+			})
+			.attr('y', '25')
+		.text(xLabel);
+}
+
+graphClass.prototype._createYAxis = function(dataset, yLabel) {
+	this.pad
+		.append('g')
+			.attr('class', 'y-axis')
+			.call(this.yAxis)
+		.append('text')
+			.attr('class', 'axis-name')
+			.attr('transform', 'rotate(90) translate(0, -10)')
+			.text(yLabel);
+}
+
+graphClass.prototype.setOutPadding = function(val) { 
+	this.outPadding = val; 
+	return this
+}
+
+graphClass.prototype.setStep = function(val) { 
+	this.step = val;
+	return this
+}
+
+// Left the horizontal space for each element
+graphClass.prototype._setHorSpace = function(dataset, step, outPadding) {
+	
+	return parseInt((this.chartWidth-outPadding-step*dataset.length) / dataset.length);
 }
 
 /* A class for Bar chart */
@@ -275,7 +368,7 @@ barGraphClass.prototype._createXAxis = function(dataset, xLabel) {
 			.attr('class', 'x-axis')
 			.attr('transform', 'translate(0,' + this.chartHeight + ')')
 			.call(this.xAxis)
-			.call(c_pinLbl2XAxisBarMidPt, this.barWidth, this.step, this.outPadding)
+			.call(c_pinLbl2XAxisMidPt, this.barWidth, this.step, this.outPadding)
 		.append('text')
 			.attr('class', 'axis-name')
 			.attr('x', function() {
@@ -417,6 +510,7 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 	return p
 }
 
+// ref-working-spot-6
 barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 	var self = this;
@@ -450,22 +544,23 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 				_bars
 					.transition()
-						.attr('y', function(d, i) { 
-
-							// get current positions of 
-							c_Pos.push(
-								{
-									x: this.getAttribute('x'),
-									y: self.yScale(d[dOption])
-								}
-							);
-						return c_Pos[i].y })
-						.attr('height', 
-							function(d) { 
+						.attr({
+							y: function(d, i) {
+								// get current positions of 
+								c_Pos.push(
+									{
+										x: this.getAttribute('x'),
+										y: self.yScale(d[dOption])
+									}
+								);
+								return c_Pos[i].y
+							}, 
+							height: function(d) {
 								return self.chartHeight - self.yScale(parseInt(d[dOption])) 
-						})
-						.attr('fill', function() {
-							return colorObj.bar[dOption]
+							},
+							fill :function(d, i) {
+								return colorObj.bar[dOption]
+							}
 						})
 					.each(
 						'end', 
@@ -578,9 +673,17 @@ var lineGraphClass = function() {
 	this.chartHeight = null;
 	this.chartWidth = null;
 
+	this.step = 0;
+
 	this.linePath = null;
 	this.lineDots = null;
 	this.areaUnderLine = null;
+
+	this.dottedLine = d3.svg.line()
+		.x(function(d, i) { return d.cx })
+		.y(function(d, i) { return d.cy });
+
+	this.dotSpace = null;
 
 	this.xScale = null;
 	this.xAxis = null;
@@ -678,7 +781,6 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 			self.linePath = 
 				self.pad
 					.append('g')
-						// working-spot-3
 						.attr('class', 'line-group')
 					.append('path')
 						.attr('class', 'dotted-path')
@@ -739,27 +841,11 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 	});
 
-	function colorAdjust(hex, colorDelta) {
-
-		// Make the stroke color slightly different from the bars.
-		var rgb = colorObj.hexToRgb(hex);
-
-		// Abjust one of the color.
-		if ( 255 - rgb.r > colorDelta ) rgb.r += colorDelta
-		else {
-			if ( 255 - rgb.g > colorDelta ) rgb.g += colorDelta
-			else {
-				if ( 255 - rgb.b > colorDelta) rgb.b += colorDelta
-				}
-			}
-
-		return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
-	}
 
 	return p0
 }
 
-// working-spot-1: Init info board for displaying detail info
+// Init info board for displaying detail info
 lineGraphClass.prototype.initInfoBoard = function() {
 
 	this.infoBoard = 
@@ -778,48 +864,156 @@ lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, p
 	return this
 }
 
-lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, yLabel, dOption) {
+// Drawing data.
+lineGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
+	
+	var self = this;
+	
+	// var p = new Promise(function(resolve, reject) {
+	self.readCSV(path)
+		.row(function(d) { return d })
+		.get(function(errors, rows) {
 
+			self.dotSpace = self._setHorSpace(rows, self.step, self.outPadding);
+			
+			self._setOrdinalXScale(rows, xLabel);
+			self._setLinearYScale(rows, dOption);
+
+			// Set the axes
+			self._setYAxis('left', kTick);
+			self._setXAxis('bottom');
+
+			// Draw the axes
+			self._createXAxis(rows, xLabel, self.dotSpace, self.step, self.outPadding); 
+			self._createYAxis(rows, yLabel);
+
+			self.lineDots = self.pad
+				.append('g')
+					.attr('class', 'dots-cluster')
+				.selectAll('circle')
+				.data(rows)
+					.enter()
+					.append('circle')
+						.attr('cx', function(d, i) { 
+							return self.outPadding+(2*i+1)*self.dotSpace/2+i*self.step 
+						})
+						.attr('cy', function(d, i) { 
+							return self.yScale(d[dOption]) 
+						})
+						.attr({
+							r: 7,
+							class: 'dots',
+							fill: colorAdjust(colorObj.line[dOption], 20),
+							stroke: '#fff',
+							'stroke-width': 2
+						})
+						.call(function() {
+
+							var circlePoses = (function(circles) {
+								var poses = [];
+								for (var i = 0; i < circles[0].length; i++) 
+									poses.push({
+										cx : parseInt(d3.select(circles[0][i]).attr('cx')),
+										cy : parseInt(d3.select(circles[0][i]).attr('cy'))
+									});
+								return poses
+							})(this);
+
+							self.linePath = self.pad.append('g')
+								.classed('line-group', true)
+									.append('path')
+										.datum(circlePoses)
+												.attr({
+													d: self.dottedLine,
+													fill : 'none',
+													class: 'line',
+													stroke: colorObj.line[dOption]
+												});
+						});
+		});
+}
+
+// working-spot-6
+// Line graph update
+lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
+	
 	var self = this;
 	
 	this.readCSV(path)
-		.row(function(d) { return d })
-		.get(function(errors, rows) {
-			
-			self.xScale = !this.xScale ? 
-				d3.scale.ordinal()
-					.domain(rows.map(function(d){ return d[xLabel] }))
-						.rangeBands([0, self.chartWidth])
-				: self.xScale;
-			
-			self.yScale = !this.yScale ?
-				d3.scale.linear()
-					.domain([0, d3.max(rows, 
-									function(d) { return parseInt(d[dOption]) })
-							])
-					.rangeRound([self.chartHeight, 0])
-				: self.yScale;
+			.row(function(d) { return d })
+			.get(function(error, rows) {
 
-			self.line = d3.svg.line()
-				.x(function(d) { return self.xScale(d[xLabel]) + offsetX })
-				.y(function(d) { return self.yScale(d[dOption]) });
+				var p = new Promise(function(resolve, reject) {
 
-			
-			d3.select("#SKETCHPAD")
-				.append('g')
-					.classed('line-group', true)
-				.append('path')
-				.datum(rows)
-				.attr('class', 'line')
-				.attr('d', self.line)
-				.attr('fill', 'none')
-				.attr('stroke', colorObj.line[dOption]);
+					self._setLinearYScale(rows, dOption);
+					self._setYAxis('left', kTick);
 
-		});
+					var circles = 
+						self.pad.select('.dots-cluster')
+							.selectAll('circle');
 
+					function binding(data) {
+						if (data.length >= circles[0].length)
+							circles.data(data).enter().append('circle');
+						else
+							circles.data(data).exit()
+					}
+
+					function render(time) {
+						circles
+							.transition().duration(time)
+								.attr({
+									cy: function(d, i) {
+										return self.yScale(d[dOption]) 
+									},
+									fill: function() {
+										return colorObj.line[dOption]
+									}
+								})
+								.each(
+									'end', 
+									function(d, i) {
+										if (i === circles[0].length - 1)
+											resolve({
+												circles: circles[0]
+											});
+								});
+					}
+
+					// Update Y axis
+					self.pad
+						.selectAll('.y-axis')
+						.call(self.yAxis);
+
+					binding(rows);
+					render(1000);
+				});	
+
+				p.then(function(r) {
+						
+						var circlePoses = (function(circles) {
+								var poses = [];
+								for (var i = 0; i < circles.length; i++) 
+									poses.push({
+										cx : parseInt(d3.select(circles[i]).attr('cx')),
+										cy : parseInt(d3.select(circles[i]).attr('cy'))
+									});
+								return poses
+							})(r.circles); 
+
+						self.pad.select('g.line-group').select('path')
+							.datum(circlePoses)
+								.transition()
+								.duration(600)
+									.attr({
+										d: self.dottedLine,
+										stroke: colorObj.line[dOption]
+									});
+					});			
+			});
 }
 
-// working-spot-1: Fill the area between divide lines and dot line
+// Fill the area between divide lines and dot line
 lineGraphClass.prototype.fillArea = function(data, color) {
 
 	this.area = d3.svg.area()
@@ -2261,8 +2455,8 @@ function kTick(tick) {
 }
 
 /* 
-	A function for pinnig label at the middle bottom of the bar 
-	barW: The width of bar
+	A function for pinnig label at the middle bottom of the element space.
+	eleSpace: The width left for each element.
 	inPad: 
 		The abbreviation about "innerPadding", 
 		The padding between each bar
@@ -2270,10 +2464,10 @@ function kTick(tick) {
 		The abbreviation about "outPadding"
 		meaning the padding space between the first bar and the y axis.
 */
-function c_pinLbl2XAxisBarMidPt(xAxis, barW, inPad, outPad) {
+function c_pinLbl2XAxisMidPt(xAxis, eleSpace, inPad, outPad) {
 	// xAxis is the same as "this" 
 	xAxis.selectAll('.tick').attr('transform', function(d, i) {
-		return 'translate(' + (outPad+(2*i+1)*barW/2+i*inPad) + ',0)'
+		return 'translate(' + (outPad+(2*i+1)*eleSpace/2+i*inPad) + ',0)'
 	});
 }
 
@@ -2284,7 +2478,7 @@ function c_pinLbl2XAxisBarMidPt(xAxis, barW, inPad, outPad) {
 	d:
 		displacement from the head position
 */
-function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
+function c_placeValOnBarHdV(txt, d, eleSpace, inPad, outPad) {
 
 	var _txt = txt[0];
 
@@ -2298,7 +2492,8 @@ function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
 				xd = parseInt(_txt[i].getAttribute('x')),
 				// Displacement in Y direction
 				yd = parseInt(_txt[i].getAttribute('y')),
-				delta = ( barW/2 < 2*bHMidPt ) ? (barW/2-0.5*bHMidPt*2): (barW/2-bHMidPt/2);
+				delta = ( eleSpace/2 < 2*bHMidPt ) ? 
+					(eleSpace/2-0.5*bHMidPt*2) : (eleSpace/2-bHMidPt/2);
 
 		_txt[i].setAttribute(
 			'transform', 
@@ -2397,3 +2592,20 @@ function transtoPartitonFormat(obj, popKey) {
 	}
 }
 
+
+function colorAdjust(hex, colorDelta) {
+
+	// Make the stroke color slightly different from the bars.
+	var rgb = colorObj.hexToRgb(hex);
+	
+	// Abjust one of the color.
+	if ( 255 - rgb.r > colorDelta ) rgb.r += colorDelta
+	else {
+		if ( 255 - rgb.g > colorDelta ) rgb.g += colorDelta
+		else {
+			if ( 255 - rgb.b > colorDelta) rgb.b += colorDelta
+			}
+		}
+
+	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
+}
