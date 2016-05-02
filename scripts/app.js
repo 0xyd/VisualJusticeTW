@@ -15,599 +15,6 @@ window.isLocal =
 window.query = '&tqx=out:csv';
 window.googleSheet = 'https://spreadsheets.google.com/tq?';
 
-/* ***** Elements for the Index Page ***** */
-var IndexNavList = React.createClass({
-
-	getInitialState: function() {
-
-		return {
-			nav: [
-				<RR.Link to='/about_us'><img src="./src/aboutus.png" /></RR.Link>,
-				<RR.Link to='/main'><img src="./src/see.png" /></RR.Link>,
-				<RR.Link to='/special'><img src="./src/issue.png" /></RR.Link>,
-				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>
-			]
-		}
-	},
-
-	render: function() {
-
-		var listItems = [],
-			l = this.state.nav.length;
-
-		for ( var i=0; i<l; i++ ) 
-			listItems.push(
-				<IndexNavListItem 
-					key={i}
-					link={this.state.nav[i]} />
-				);
-
-		return (
-			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
-				<ul className="b12-col-md-12 b15-row-md-15">
-					{ listItems }
-				</ul>
-			</nav>
-		)
-
-	}
-});
-
-var IndexNavListItem = React.createClass({
-
-	render: function() {
-		return (
-			<li className="nav-option b12-col-md-12 b12-row-md-2">
-				{ this.props.link }
-			</li>
-		)
-	}
-});
-
-/* Major Themes are displaying on the index page. */
-var Theme = React.createClass({
-
-	render: function() {
-
-		return (
-			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
-				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
-					<img className="sect-part-img" src={this.props.themeImg} />
-				</div>
-				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
-					<span className="ver-helper"></span>
-					<ThemeButton path={this.props.path} btnTxtSrc={this.props.btnTxt}/>
-				</div>
-				<div className="b12-col-md-12 b12-row-md-3 sect-part-imgwrapper">
-					<span className="ver-helper"></span>
-					<div className="imgtxt-wrapper">
-						<img className="imgtxt" src={this.props.info} />
-					</div>
-				</div>
-			</div>
-		)
-	}
-});
-
-var ThemeBtn = React.createClass({
-
-	render: function() {
-
-		return (
-			<div className="sect-part-btn"  >
-				<RR.Link to={this.props.path} onClick={ this.props.selectTheme } >
-					<img className="sect-part-btn-img" src={this.props.btnTxtSrc}/> 
-				</RR.Link>
-			</div>
-		)
-	}
-});
-
-/* ***** DataBoard components: The components render the visualized data  ***** */
-const DataBoard = React.createClass({
-
-	/* Customized Methods */
-	// Graph unit for drawing.
-	gpu: (() => {
-		return {
-			barGraph  : new barGraphClass(),
-			lineGraph : new lineGraphClass(),
-			ringGraph : new ringGraphClass()
-		}
-	})(),
-
-	tip: new tipClass(),
-
-	// working-spot-5: Find the index of datasheet.
-	findDataSheetIndex(props) {
-		let dSheet = this.state.dataSheets
-			.find((dataSheet) => {
-				return dataSheet.name === props.dataset
-			});
-		return dSheet
-	},
-
-
-	// working-spot-5: Visualizing data with bar chart
-	vizDataWithBarChart(props, dataSheet, update = false) {
-
-		let bG = this.gpu.barGraph,
-				// lG = this.gpu.lineGraph,
-				t  = this.tip;
-
-		if (update) {
-
-			bG.update(
-				dataSheet.url, 
-				dataSheet.axes.xAxis,
-				dataSheet.axes.yAxis,
-				props.data
-			);
-			
-		} else {
-			
-			bG.initializeAPad()
-			.setChartSize().setOutPadding(10).setStep(10)
-			.drawingData(
-				dataSheet.url, 
-				dataSheet.axes.xAxis,
-				dataSheet.axes.yAxis,
-				props.data
-				)
-					.then(function(jsonOutput) {
-
-						// Check if bar chart is hidden or not.
-						// console.log(bG.isBarHidden());
-						// if (bG.isBarHidden())
-						// 	bG.beDisplayed();
-
-						// Initialize the tips 
-						t.initTips();
-
-						// lG.inheritPad(
-						// 	bG.pad, 
-						// 	bG.padHeight, 
-						// 	bG.padWidth, 
-						// 	bG.padPadding
-						// 	)
-						// 	.setChartSize()
-						// 		.plotBars(
-						// 			jsonOutput.data,
-						// 			jsonOutput.pad, 
-						// 			null,
-						// 			jsonOutput.barWidth/2
-						// 		)
-						// 		.then(function(o) {
-
-						// 			lG.linePath = o.line;
-						// 			lG.lineDots = o.dots; 
-						// 			lG.areaUnderLine = o.area;
-
-						// 			chartTypeDisplay(self.props.chartType);
-
-						// 			t.appendDotMouseOver('本年執行人數');
-						// 			t.appendBarMouseOver('本年執行人數');
-									
-								// });
-			});
-	// },
-		}
-	},
-
-	// 
-	vizDataWithLineChart(props, dataSheet, update = false) {
-
-		let lG = this.gpu.lineGraph;
-
-		if (update) {
-			lG.update(
-				dataSheet.url, 
-				dataSheet.axes.xAxis,
-				dataSheet.axes.yAxis,
-				props.data
-			);
-		} else {
-			lG.initializeAPad()
-				.setChartSize().setOutPadding(10).setStep(10)
-					.drawingData(
-						dataSheet.url, 
-						dataSheet.axes.xAxis,
-						dataSheet.axes.yAxis,
-						props.data
-					);
-			console.log(lG.xAxis);
-		}
-	},
-
-	/* React Native methods */
-	getInitialState() {
-		return {
-			dataSheets: [
-				{
-					name: '監獄人數概況',
-					url: (function() {
-						if (isLocal)
-							return '/correction/監獄人數概況.csv'
-						else
-							return window.googleSheet + 
-						  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
-						  		query
-					})(),
-					axes: {
-						xAxis: '民國',
-						yAxis: '人數(仟人)'
-					},
-				},
-				{
-					name: '新入監資料概覽',
-					keys: [
-						'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg',
-						'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg',
-						'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8',
-						'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'
-					],
-							urls: (function() {
-
-								if (isLocal) 
-									return ([
-										// working-spot-2
-										{
-											name: '新入監前家庭狀況',
-											url : '/correction/新入監前家庭狀況.csv'
-										},
-										{
-											name: '新入監犯罪次數與種類',
-											url : '/correction/新入監犯罪次數與種類.csv'
-										},
-										{
-											name: '新入監前教育程度',
-											url : '/correction/新入監前教育程度.csv'
-										},
-										{
-											name: '歷年新入監年齡歷年統計',
-											url : '/correction/歷年新入監年齡歷年統計.csv'
-										}
-									])
-								else {
-									let urls = [
-										{
-											name: '新入監前家庭狀況',
-											url : 
-												window.googleSheet +
-													'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
-														window.query
-										},
-										{
-											name: '新入監犯罪次數與種類.',
-											url : 
-												window.googleSheet +
-													'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
-														window.query
-										},
-										{
-											name: '新入監前教育程度',
-											url : 
-												window.googleSheet +
-													'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
-														window.query
-										},
-										{
-											name: '歷年新入監年齡歷年統計',
-											url : 
-												window.googleSheet +
-													'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
-														window.query
-										}
-									];
-									return urls
-								}
-							})()
-						}
-					] 
-				}
-	},
-
-
-
-	// working-spot-5: Initial Data Visualizing
-	componentDidMount() {
-
-		let dataSheet = this.findDataSheetIndex(this.props);
-		
-		if (this.props.chartType === '長條圖') {
-			console.log('this props:');
-			console.log(this.props);
-			
-			this.vizDataWithBarChart(this.props, dataSheet);
-			
-		} else if (this.props.chartType === '趨勢') {
-			this.vizDataWithLineChart(this.props, dataSheet);
-
-		} else if (this.props.chartType === '圓餅圖') {
-
-		}
-	},
-
-	// working-spot-5: The DataBoard component will renew the visualized data or change a different type.
-	componentWillUpdate (nextProps, nextStates) {
-		
-		let dataSheet = this.findDataSheetIndex(nextProps);
-
-		if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖'){
-				this.vizDataWithBarChart(nextProps, dataSheet, true);
-		}
-		// Init the line bar once the user switch with different one.
-		else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') { 
-			d3.select('#SKETCHPAD').remove();
-			this.vizDataWithLineChart(nextProps, dataSheet, false);
-		}
-		// Update the line bar when user switch the data.
-		else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
-			this.vizDataWithLineChart(nextProps, dataSheet, true);
-		}
-	},
-
-	render() {
-
-		return (
-			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
-				<div id='DATABOARD'></div>
-			</div>
-		)
-	}
-});
-
-const Filter = React.createClass({
-
-	generateFilterFields: function() {
-
-		const FilterNames = this.props.filterNames;
-		const FilterDropdownMenus = this.props.currentFilterDropdownMenus;
-		
-		let FilterFields = [],
-				FilterDefaultField = [
-					this.props.currentDataset,
-					this.props.currentData,
-					this.props.currentChartType,
-					this.props.currentTopic
-				];
-
-		for (let i = 0; i < FilterNames.size; i++) {
-
-			FilterFields.push(
-				<FilterField key={i} 
-										 index={i}
-										 filterName={FilterNames.get(i)} 
-										 selectedOption={FilterDefaultField[i]}
-										 options={FilterDropdownMenus.get(i).get('Options')}/>
-				);
-		}
-		return FilterFields
-	},
-
-	render: function() {
-
-		const FilterFields = this.generateFilterFields();
-
-		return (
-			<nav id="FILTER_WRAPPER" className="b12-col-md-12 b15-row-md-8 hdr-div">
-				<form id="FILTER" className="b15-row-md-15">
-					<div id="FILTER-TITLE" className="b15-row-md-1">
-						<span className="ver-helper"></span>
-					<span style={{verticalAlign: 'middle'}}>資料選擇</span>
-					</div>
-					<div className="b12-col-md-12 b15-row-md-14">
-						{FilterFields}
-					</div>
-				</form>
-			</nav>
-		)
-	}
-});
-
-// FilterField Components make a way for user to select the data or the data expression they want.
-const FilterField = React.createClass({
-
-	render: function() {
-		return (
-			<fieldset className="b12-col-md-12 b12-row-md-3 formblock-fieldset">
-				<div className="b12-col-md-12 b12-row-md-12">
-					<span className="ver-helper"></span>
-					<div className="dropdown-group">
-						<legend className="dropdown-title">
-							<span>{ this.props.filterName }</span>
-						</legend>
-						<div className="dropdown">
-							<StatFilterDropdownToggle 
-								menuIndex={ this.props.index }
-								name={ this.props.selectedOption } />
-							<StatFilterDropdownMenu 
-								menuIndex={ this.props.index }
-								options={ this.props.options } />
-						</div>
-					</div>
-				</div>
-			</fieldset>
-		)
-	}
-});
-
-const DropdownToggle = React.createClass({
-
-	render: function() {
-		return (
-			// working-spot-5
-			<button className="dropdown-btn" type="button" 
-							onClick={ this.props.expandDropdown }>
-				<span className="dropdown-txt">{ this.props.name }</span>
-				<span className="dropdown-caret"></span>
-			</button>
-		)
-	}
-});
-
-const DropdownMenu = React.createClass({
-
-	render: function() {
-
-		let key = 0,
-				menuItems = [];
-		
-		for (let option of this.props.options) 
-			menuItems.push(<StatFilterDropdownMenuItem
-				key={++key} optionIdx={++key} name={option} menuIndex={this.props.menuIndex}/>)
-
-		return (
-			<ul className={this.props.isDisplayed ? 
-				'dropdown-menu displayed' : 'dropdown-menu'}>
-					{ menuItems }
-			</ul>
-		)
-	}
-});
-
-// working-spot-5
-const DropdownMenuItem = React.createClass({
-	render: function() {
-		return (
-			// working-spot-5: Click for selecting the option
-			<li onClick={ this.props.selectOption }>
-				{ this.props.name }
-			</li>
-		)
-	}
-});
-
-/* ***** Basic components: The components that are used almost everywhere. ***** */
-const Logo = React.createClass({
-	render: function() {
-		return (
-			<div id="LOGO-WRAPPER" className="b12-col-md-12 b15-row-md-5">
-				<div id="LOGO" className="b12-col-md-12 b12-row-md-12"></div>
-			</div>
-		)
-	}
-});
-
-// Title components for rendering the theme image.
-const Title = React.createClass({
-	render: function() {
-		return (
-			<div className="b12-col-md-12 b15-row-md-1 hdr-div">
-				<img id="TITLE" src={ this.props.imageSource } />
-			</div>
-		)
-	}
-});
-
-const Sign = React.createClass({
-	render: function() {
-		return (
-			<div id="SIGN">
-				<img src="./src/sign.png" />
-			</div>
-		)
-	}
-});
-
-const HomeLink = React.createClass({
-	render: function() {
-		return (
-			<div id="HDR-FOOTER" className="b12-col-md-12 b15-row-md-1">
-				<a id="HOME-LINK" href="">vizjust.tw</a>
-			</div>
-		)
-	}
-});
-
-
-/* ***** App are the main components of all web pages  ***** */
-var App = React.createClass({
-
-	render: function() {
-		return (
-			<div id="APP">
-				<AppNav />
-				<AppMain />
-			</div>
-		)
-	}
-});
-
-var Nav = React.createClass({
-	render: function() {
-		return (
-			<header id="HDR" className="b20-col-md-4 b12-row-md-12 bd-right">
-				{this.props.childrenComponents}
-			</header>
-		)
-	}
-});
-
-
-var Main = React.createClass({
-
-	render: function() {
-		return (
-			<section id="BODY" className="b20-col-md-16 b12-row-md-12">
-				{ this.props.childrenComponents }
-			</section>
-		)
-	}
-});
-
-/* ***** Action Creators ***** */
-/* "AC" is the postfix for action creators */
-
-function setAppNavAC(components) {
-	return {
-		type: 'SET_NAV',
-		components: components
-	}
-}
-
-function setAppMainAC(components) {
-	return {
-		type: 'SET_MAIN',
-		components: components
-	}
-}
-
-function setThemesAC() {
-	return {
-		type: 'SET_THEMES'
-	}
-}
-
-function selectThemeAC(name) {
-	return {
-		type: 'SELECT_THEME',
-		themeName: name
-	}
-}
-
-function expandDropdownAC(dropdownIndex) {
-	return {
-		type: 'EXPAND_DROPDOWN',
-		dropdownIndex: dropdownIndex
-	}
-}
-
-// working-spot-5
-function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex) {
-	
-	return {
-		type : 'SELECT_DROPDOWN_OPTION',
-		theme: theme,
-		fieldsetIndex: fieldsetIndex,
-		dataIndex: dIndex,
-		option: optionName
-	}
-}
-
-/* ***** Reducers ***** */
-const INITIAL_STATE = Map();
-
 // States for different topic
 const DataFilterStateTree = {
 	state:
@@ -666,7 +73,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '新入監資料概覽',
 						availableChartTypes: [
-										'圓環圖'
+										'圓環比例圖'
 						],
 						content: {
 							data: [
@@ -939,6 +346,622 @@ const DataFilterStateTree = {
 	}
 }
 
+
+
+
+/* ***** Elements for the Index Page ***** */
+var IndexNavList = React.createClass({
+
+	getInitialState: function() {
+
+		return {
+			nav: [
+				<RR.Link to='/about_us'><img src="./src/aboutus.png" /></RR.Link>,
+				<RR.Link to='/main'><img src="./src/see.png" /></RR.Link>,
+				<RR.Link to='/special'><img src="./src/issue.png" /></RR.Link>,
+				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>
+			]
+		}
+	},
+
+	render: function() {
+
+		var listItems = [],
+			l = this.state.nav.length;
+
+		for ( var i=0; i<l; i++ ) 
+			listItems.push(
+				<IndexNavListItem 
+					key={i}
+					link={this.state.nav[i]} />
+				);
+
+		return (
+			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
+				<ul className="b12-col-md-12 b15-row-md-15">
+					{ listItems }
+				</ul>
+			</nav>
+		)
+
+	}
+});
+
+var IndexNavListItem = React.createClass({
+
+	render: function() {
+		return (
+			<li className="nav-option b12-col-md-12 b12-row-md-2">
+				{ this.props.link }
+			</li>
+		)
+	}
+});
+
+/* Major Themes are displaying on the index page. */
+var Theme = React.createClass({
+
+	render: function() {
+
+		return (
+			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
+				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
+					<img className="sect-part-img" src={this.props.themeImg} />
+				</div>
+				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
+					<span className="ver-helper"></span>
+					<ThemeButton path={this.props.path} btnTxtSrc={this.props.btnTxt}/>
+				</div>
+				<div className="b12-col-md-12 b12-row-md-3 sect-part-imgwrapper">
+					<span className="ver-helper"></span>
+					<div className="imgtxt-wrapper">
+						<img className="imgtxt" src={this.props.info} />
+					</div>
+				</div>
+			</div>
+		)
+	}
+});
+
+var ThemeBtn = React.createClass({
+
+	render: function() {
+
+		return (
+			<div className="sect-part-btn"  >
+				<RR.Link to={this.props.path} onClick={ this.props.selectTheme } >
+					<img className="sect-part-btn-img" src={this.props.btnTxtSrc}/> 
+				</RR.Link>
+			</div>
+		)
+	}
+});
+
+/* ***** DataBoard components: The components render the visualized data  ***** */
+const DataBoard = React.createClass({
+
+	/* Customized Methods */
+	// Graph unit for drawing.
+	gpu: (() => {
+		return {
+			barGraph  : new barGraphClass(),
+			lineGraph : new lineGraphClass(),
+			ringGraph : new ringGraphClass()
+		}
+	})(),
+
+	tip: new tipClass(),
+
+	// working-spot-5: Find the index of datasheet.
+	findDataSheetIndex(props) {
+		let dSheet = this.state.dataSheets
+			.find((dataSheet) => {
+				return dataSheet.name === props.dataset
+			});
+		return dSheet
+	},
+
+
+	// Visualizing data with bar chart
+	vizDataWithBarChart(props, dataSheet, update = false) {
+
+		let bG = this.gpu.barGraph,
+				// lG = this.gpu.lineGraph,
+				t  = this.tip;
+
+		if (update) {
+			bG.update(
+				dataSheet.url, 
+				dataSheet.axes.xAxis,
+				dataSheet.axes.yAxis,
+				props.data
+				);
+		} else {
+			
+			bG.initializeAPad()
+				.setChartSize().setOutPadding(10).setStep(10)
+				.drawingData(
+					dataSheet.url, 
+					dataSheet.axes.xAxis,
+					dataSheet.axes.yAxis,
+					props.data
+				)
+				.then(function() {
+					t.initTips().appendBarMouseOver(props.data);
+				});
+		}
+	},
+
+	// Visualizing data with bar chart
+	vizDataWithLineChart(props, dataSheet, update = false) {
+
+		let lG = this.gpu.lineGraph,
+				t = this.tip;
+
+		if (update) {
+			lG.update(
+				dataSheet.url, 
+				dataSheet.axes.xAxis,
+				dataSheet.axes.yAxis,
+				props.data
+			);
+		} else {
+			lG.initializeAPad()
+				.setChartSize().setOutPadding(10).setStep(10)
+					.drawingData(
+						dataSheet.url, 
+						dataSheet.axes.xAxis,
+						dataSheet.axes.yAxis,
+						props.data
+					)
+					.then(function() {
+						t.initTips().appendDotMouseOver(props.data);
+					});
+		}
+	},
+
+	// Visualizing data with ring chart
+	vizDataWithRingChart(props, dataSheet, update = false) {
+		let rG = this.gpu.ringGraph;
+
+		if (update) {
+
+			let yr = parseInt(props.data.match(/\d+/));
+
+			rG.selectROCYr(yr)
+				.updateRings();
+
+		} else {
+			rG.resetRings()
+				.initializeAPad()
+				.init()
+					.selectROCYr(75)
+						.drawMultiRings(
+							dataSheet.urls);
+		}
+	},
+
+	/* React Native methods */
+	getInitialState() {
+		return {
+			dataSheets: [
+				{
+					name: '監獄人數概況',
+					url: (function() {
+						if (isLocal)
+							return '/correction/監獄人數概況.csv'
+						else
+							return window.googleSheet + 
+						  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
+						  		query
+					})(),
+					axes: {
+						xAxis: '民國',
+						yAxis: '人數(仟人)'
+					},
+				},
+				{
+					name: '新入監資料概覽',
+					keys: [
+						'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg',
+						'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg',
+						'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8',
+						'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'
+					],
+							urls: (function() {
+
+								if (isLocal) 
+									return ([
+										// working-spot-2
+										{
+											name: '新入監前家庭狀況',
+											url : '/correction/新入監前家庭狀況.csv'
+										},
+										{
+											name: '新入監犯罪次數與種類',
+											url : '/correction/新入監犯罪次數與種類.csv'
+										},
+										{
+											name: '新入監前教育程度',
+											url : '/correction/新入監前教育程度.csv'
+										},
+										{
+											name: '歷年新入監年齡歷年統計',
+											url : '/correction/歷年新入監年齡歷年統計.csv'
+										}
+									])
+								else {
+									let urls = [
+										{
+											name: '新入監前家庭狀況',
+											url : 
+												window.googleSheet +
+													'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+														window.query
+										},
+										{
+											name: '新入監犯罪次數與種類.',
+											url : 
+												window.googleSheet +
+													'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+														window.query
+										},
+										{
+											name: '新入監前教育程度',
+											url : 
+												window.googleSheet +
+													'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+														window.query
+										},
+										{
+											name: '歷年新入監年齡歷年統計',
+											url : 
+												window.googleSheet +
+													'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+														window.query
+										}
+									];
+									return urls
+								}
+							})()
+						}
+					] 
+				}
+	},
+
+
+
+	// working-spot-5: Initial Data Visualizing
+	componentDidMount() {
+
+		let dataSheet = this.findDataSheetIndex(this.props);
+		
+		if (this.props.chartType === '長條圖') {
+			this.vizDataWithBarChart(this.props, dataSheet);
+			
+		} else if (this.props.chartType === '趨勢') {
+			this.vizDataWithLineChart(this.props, dataSheet);
+
+		} else if (this.props.chartType === '圓環比例圖') {
+
+		}
+	},
+
+	// working-spot-5: The DataBoard component will renew the visualized data or change a different type.
+	componentWillUpdate (nextProps, nextStates) {
+		
+		let dataSheet = this.findDataSheetIndex(nextProps);
+
+		if (dataSheet.name === '監獄人數概況') {
+			if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖') {
+				this.vizDataWithBarChart(nextProps, dataSheet, true);
+			}
+			else if (nextProps.chartType === '長條圖' && this.props.chartType !== '長條圖') {
+				d3.select('#SKETCHPAD').remove();
+				this.vizDataWithBarChart(nextProps, dataSheet);
+			}
+			// Init the line bar once the user switch with different one.
+			else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') { 
+				d3.select('#SKETCHPAD').remove();
+				this.vizDataWithLineChart(nextProps, dataSheet);
+			}
+			// Update the line bar when user switch the data.
+			else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
+				this.vizDataWithLineChart(nextProps, dataSheet, true);
+			}
+		}
+
+		else if (dataSheet.name === '新入監資料概覽') {
+			// Update the 圓環比例圖 (chart's name)
+			console.log('should switch to 新入監資料概覽');
+			if (nextProps.chartType === '圓環比例圖' && this.props.chartType === '圓環比例圖') {
+				this.vizDataWithRingChart(nextProps, dataSheet, true);
+			}
+			// Initialize the 圓環比例圖 (chart's name)
+			else if (nextProps.chartType === '圓環比例圖' && this.props.chartType !== '圓環比例圖') {
+				d3.select('#SKETCHPAD').remove();
+				this.vizDataWithRingChart(nextProps, dataSheet);
+			}
+		}
+	},
+
+	render() {
+
+		return (
+			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
+				<div id='DATABOARD'></div>
+			</div>
+		)
+	}
+});
+
+const Filter = React.createClass({
+
+	generateFilterFields: function() {
+
+		const FilterNames = this.props.filterNames;
+		const FilterDropdownMenus = this.props.currentFilterDropdownMenus;
+		
+		let FilterFields = [],
+				FilterDefaultField = [
+					this.props.currentDataset,
+					this.props.currentData,
+					this.props.currentChartType,
+					this.props.currentTopic
+				];
+
+		for (let i = 0; i < FilterNames.size; i++) {
+
+			FilterFields.push(
+				<FilterField key={i} 
+										 index={i}
+										 filterName={FilterNames.get(i)} 
+										 selectedOption={FilterDefaultField[i]}
+										 options={FilterDropdownMenus.get(i).get('Options')}/>
+				);
+		}
+		return FilterFields
+	},
+
+	render: function() {
+
+		const FilterFields = this.generateFilterFields();
+
+		return (
+			<nav id="FILTER_WRAPPER" className="b12-col-md-12 b15-row-md-8 hdr-div">
+				<form id="FILTER" className="b15-row-md-15">
+					<div id="FILTER-TITLE" className="b15-row-md-1">
+						<span className="ver-helper"></span>
+					<span style={{verticalAlign: 'middle'}}>資料選擇</span>
+					</div>
+					<div className="b12-col-md-12 b15-row-md-14">
+						{FilterFields}
+					</div>
+				</form>
+			</nav>
+		)
+	}
+});
+
+// FilterField Components make a way for user to select the data or the data expression they want.
+const FilterField = React.createClass({
+
+	render: function() {
+		return (
+			<fieldset className="b12-col-md-12 b12-row-md-3 formblock-fieldset">
+				<div className="b12-col-md-12 b12-row-md-12">
+					<span className="ver-helper"></span>
+					<div className="dropdown-group">
+						<legend className="dropdown-title">
+							<span>{ this.props.filterName }</span>
+						</legend>
+						<div className="dropdown">
+							<StatFilterDropdownToggle 
+								menuIndex={ this.props.index }
+								name={ this.props.selectedOption } />
+							<StatFilterDropdownMenu 
+								menuIndex={ this.props.index }
+								options={ this.props.options } />
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		)
+	}
+});
+
+const DropdownToggle = React.createClass({
+
+	render: function() {
+		return (
+			// working-spot-5
+			<button className="dropdown-btn" type="button" 
+							onClick={ this.props.expandDropdown }>
+				<span className="dropdown-txt">{ this.props.name }</span>
+				<span className="dropdown-caret"></span>
+			</button>
+		)
+	}
+});
+
+const DropdownMenu = React.createClass({
+
+	render: function() {
+
+		let key = 0,
+				menuItems = [];
+		
+		for (let option of this.props.options) 
+			menuItems.push(<StatFilterDropdownMenuItem
+				key={++key} optionIdx={++key} name={option} menuIndex={this.props.menuIndex}/>)
+
+		return (
+			<ul className={this.props.isDisplayed ? 
+				'dropdown-menu displayed' : 'dropdown-menu'}>
+					{ menuItems }
+			</ul>
+		)
+	}
+});
+
+// working-spot-5
+const DropdownMenuItem = React.createClass({
+	render: function() {
+		return (
+			// working-spot-5: Click for selecting the option
+			<li onClick={ this.props.selectOption }>
+				{ this.props.name }
+			</li>
+		)
+	}
+});
+
+/* ***** Basic components: The components that are used almost everywhere. ***** */
+const Logo = React.createClass({
+	render: function() {
+		return (
+			<div id="LOGO-WRAPPER" className="b12-col-md-12 b15-row-md-5">
+				<div id="LOGO" className="b12-col-md-12 b12-row-md-12"></div>
+			</div>
+		)
+	}
+});
+
+// Title components for rendering the theme image.
+const Title = React.createClass({
+	render: function() {
+		return (
+			<div className="b12-col-md-12 b15-row-md-1 hdr-div">
+				<img id="TITLE" src={ this.props.imageSource } />
+			</div>
+		)
+	}
+});
+
+const Sign = React.createClass({
+	render: function() {
+		return (
+			<div id="SIGN">
+				<img src="./src/sign.png" />
+			</div>
+		)
+	}
+});
+
+const HomeLink = React.createClass({
+	render: function() {
+		return (
+			<div id="HDR-FOOTER" className="b12-col-md-12 b15-row-md-1">
+				<a id="HOME-LINK" href="">vizjust.tw</a>
+			</div>
+		)
+	}
+});
+
+
+/* ***** App are the main components of all web pages  ***** */
+var App = React.createClass({
+
+	componentWillUpdate() {
+		console.log('testing');
+	},
+
+	render: function() {
+		const { nav, main } = this.props
+		console.log(nav);
+		console.log(main);
+		return (
+			<div id="APP">
+				{/*<AppNav />
+				<AppMain />*/}
+				{ nav }
+				{ main }
+			</div>
+		)
+	}
+});
+
+var Nav = React.createClass({
+	render: function() {
+		console.log('Nav rendering');
+		console.log(this.props.childrenComponents);
+		return (
+			<header id="HDR" className="b20-col-md-4 b12-row-md-12 bd-right">
+				{this.props.childrenComponents}
+			</header>
+		)
+	}
+});
+
+
+var Main = React.createClass({
+
+	render: function() {
+		console.log('Main rendering');
+		console.log(this.props.childrenComponents);
+		return (
+			<section id="BODY" className="b20-col-md-16 b12-row-md-12">
+				{ this.props.childrenComponents }
+			</section>
+		)
+	}
+});
+
+/* ***** Action Creators ***** */
+/* "AC" is the postfix for action creators */
+
+function setAppNavAC(components) {
+	return {
+		type: 'SET_NAV',
+		components: components
+	}
+}
+
+function setAppMainAC(components) {
+	return {
+		type: 'SET_MAIN',
+		components: components
+	}
+}
+
+function setThemesAC() {
+	return {
+		type: 'SET_THEMES'
+	}
+}
+
+function selectThemeAC(name) {
+	console.log(name);
+	return {
+		type: 'SELECT_THEME',
+		themeName: name
+	}
+}
+
+function expandDropdownAC(dropdownIndex) {
+	return {
+		type: 'EXPAND_DROPDOWN',
+		dropdownIndex: dropdownIndex
+	}
+}
+
+// working-spot-5
+function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex) {
+	
+	return {
+		type : 'SELECT_DROPDOWN_OPTION',
+		theme: theme,
+		fieldsetIndex: fieldsetIndex,
+		dataIndex: dIndex,
+		option: optionName
+	}
+}
+
+/* ***** Reducers ***** */
+const INITIAL_STATE = Map();
+
+
+
 function AppReducer(state = INITIAL_STATE, action) {
 	
 	switch(action.type) {
@@ -1042,7 +1065,7 @@ function setAppMainThemes(state) {
 
 
 function selectAppTheme(state, theme) {
-	
+	console.log(theme);
 	let navComponents  = [
 			<Logo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
 		mainComponents = [<StatDataBoard key='0' />];
@@ -1422,6 +1445,7 @@ const mapDispatchToThemeBtnProps = (dispatch) => {
 				e.target.parentNode.href
 					.match(re)[0].slice(2)
 						.toUpperCase();
+			console.log(theme);
 
 			dispatch(selectThemeAC(theme));
 		}
@@ -1534,25 +1558,44 @@ const StatDataBoard = RRd.connect(
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
 
-/*Set up the initial index page for nav side.*/
-store.dispatch(setAppNavAC([
-		<Logo key='0'/>,
-		<IndexNavList key='1'/>,
-		<Sign key='2'/>,
-		<HomeLink key='3'/>
-]));
 
-store.dispatch(setThemesAC());
+
+
+
 
 
 ReactDOM.render(
 	<RRd.Provider store={store}>
 		<RR.Router history={RR.hashHistory} >
-			<RR.Route path='/' component={App}>
+			{/*<RR.Route path='/' component={App}>*/}
+			<RR.Route component={App} >
+				<RR.Route path='/' 
+					getComponents={(nextState, cb) => {
+
+						/*Set up the initial index page for nav side.*/
+						store.dispatch(setAppNavAC([
+							<Logo key='0'/>,
+							<IndexNavList key='1'/>,
+							<Sign key='2'/>,
+							<HomeLink key='3'/>
+						]));
+
+						store.dispatch(setThemesAC());
+
+						cb(null, { nav: AppNav, main: AppMain });
+				}} />
 				<RR.Route path='/police_stat' />
 				<RR.Route path='/prosecute_stat' />
 				<RR.Route path='/judicial_stat' />
-				<RR.Route path='/correction_stat' />
+				<RR.Route 
+					path='/correction_stat' 
+					getComponents={(nextState, cb) => {
+
+						/* Routes to the correction statistic page when the url match. */
+						store.dispatch(selectThemeAC('CORRECTION_STAT'));
+
+						cb(null, { nav: AppNav, main: AppMain });
+					}}/>
 			</RR.Route>
 		</RR.Router>
 	</RRd.Provider>, 

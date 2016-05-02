@@ -16,6 +16,192 @@ window.isLocal = document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : fal
 window.query = '&tqx=out:csv';
 window.googleSheet = 'https://spreadsheets.google.com/tq?';
 
+// States for different topic
+var DataFilterStateTree = {
+	state: Map().set('correction', List([{
+		dataset: '監獄人數概況',
+		availableChartTypes: ['長條圖', '趨勢', '面積圖'],
+		content: {
+			data: [{
+				name: '本年執行人數',
+				topics: [['總數'], ['減刑']]
+
+			}, {
+				name: '本年入監人數',
+				topics: [['總數', '入監原因分類'], ['減刑']]
+
+			}, {
+				name: '新入監人數',
+				topics: [['總數', '犯次分類'], ['減刑']]
+			}, {
+				name: '本年出獄人數',
+				topics: [['總數', '出獄原因分類'], ['減刑']]
+			}, {
+				name: '本年年底留監人數',
+				topics: [['總數'], ['減刑']]
+			}]
+		}
+	}, {
+		dataset: '新入監資料概覽',
+		availableChartTypes: ['圓環比例圖'],
+		content: {
+			data: [{
+				name: '民國75年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國76年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國77年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國78年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國79年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國80年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+
+			}, {
+				name: '民國81年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國82年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國83年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '民國84年',
+				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
+				topics: [['總數']]
+			}, {
+				name: '85'
+			}, {
+				name: '86'
+			}, {
+				name: '87'
+			}, {
+				name: '88'
+			}, {
+				name: '89'
+			}, {
+				name: '90'
+			}, {
+				name: '91'
+			}, {
+				name: '92'
+			}, {
+				name: '93'
+			}, {
+				name: '94'
+			}, {
+				name: '95'
+			}, {
+				name: '96'
+			}]
+		}
+	}])),
+
+	selectState: function selectState(key) {
+		return this.state.get(key);
+	},
+
+	// Find the index of the specific dataset
+	findDatasetIndex: function findDatasetIndex(key, datasetName) {
+
+		var state = this.selectState(key);
+
+		// Transform the List to js array
+		var list = state.toArray();
+
+		return list.findIndex(function (d) {
+			return d.dataset === datasetName;
+		});
+	},
+
+	// Find the index of the data in the chosen dataset.
+	findDataIndex: function findDataIndex(key, datasetName, dataName) {
+
+		var state = this.selectState(key);
+
+		var index = this.findDatasetIndex(key, datasetName),
+		    dataList = state.get(index).content.data;
+
+		return dataList.findIndex(function (data) {
+			return data.name === dataName;
+		});
+	},
+
+	// Find the index of the chart type in the chosen dataset.
+	findChartTypeIndex: function findChartTypeIndex(key, datasetName, chartName) {
+
+		var state = this.selectState(key);
+
+		var index = this.findDatasetIndex(key, datasetName),
+		    chartList = state.get(index).availableChartTypes;
+
+		return chartList.findIndex(function (chart) {
+			return chart === chartName;
+		});
+	},
+
+	// List the dataset
+	listDataset: function listDataset(key) {
+
+		var state = this.selectState(key);
+
+		var datasets = [];
+
+		for (var i = 0; i < state.size; ++i) {
+			datasets.push(state.get(i).dataset);
+		}
+
+		return datasets;
+	},
+
+	// List the available data
+	listData: function listData(key, datasetIdx) {
+
+		var state = this.selectState(key);
+
+		var datas = state.get(datasetIdx).content.data.map(function (d) {
+			return d.name;
+		});
+
+		return datas;
+	},
+
+	listCharttype: function listCharttype(key, datasetIdx) {
+
+		var state = this.selectState(key);
+
+		var charttypes = state.get(datasetIdx).availableChartTypes;
+
+		return charttypes;
+	},
+
+	listTopic: function listTopic(key, datasetIdx, dataIdx, chartIndex) {
+
+		var state = this.selectState(key);
+
+		var topics = state.get(datasetIdx).content.data[dataIdx].topics[chartIndex];
+
+		return topics;
+	}
+};
+
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
 	displayName: 'IndexNavList',
@@ -151,7 +337,7 @@ var DataBoard = React.createClass({
 		return dSheet;
 	},
 
-	// working-spot-5: Visualizing data with bar chart
+	// Visualizing data with bar chart
 	vizDataWithBarChart: function vizDataWithBarChart(props, dataSheet) {
 		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
@@ -161,61 +347,44 @@ var DataBoard = React.createClass({
 		t = this.tip;
 
 		if (update) {
-
 			bG.update(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
 		} else {
 
-			bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data).then(function (jsonOutput) {
-
-				// Check if bar chart is hidden or not.
-				// console.log(bG.isBarHidden());
-				// if (bG.isBarHidden())
-				// 	bG.beDisplayed();
-
-				// Initialize the tips
-				t.initTips();
-
-				// lG.inheritPad(
-				// 	bG.pad,
-				// 	bG.padHeight,
-				// 	bG.padWidth,
-				// 	bG.padPadding
-				// 	)
-				// 	.setChartSize()
-				// 		.plotBars(
-				// 			jsonOutput.data,
-				// 			jsonOutput.pad,
-				// 			null,
-				// 			jsonOutput.barWidth/2
-				// 		)
-				// 		.then(function(o) {
-
-				// 			lG.linePath = o.line;
-				// 			lG.lineDots = o.dots;
-				// 			lG.areaUnderLine = o.area;
-
-				// 			chartTypeDisplay(self.props.chartType);
-
-				// 			t.appendDotMouseOver('本年執行人數');
-				// 			t.appendBarMouseOver('本年執行人數');
-
-				// });
+			bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data).then(function () {
+				t.initTips().appendBarMouseOver(props.data);
 			});
-			// },
 		}
 	},
 
-	//
+	// Visualizing data with bar chart
 	vizDataWithLineChart: function vizDataWithLineChart(props, dataSheet) {
 		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
 
-		var lG = this.gpu.lineGraph;
+		var lG = this.gpu.lineGraph,
+		    t = this.tip;
 
 		if (update) {
 			lG.update(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
 		} else {
-			lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data);
-			console.log(lG.xAxis);
+			lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).drawingData(dataSheet.url, dataSheet.axes.xAxis, dataSheet.axes.yAxis, props.data).then(function () {
+				t.initTips().appendDotMouseOver(props.data);
+			});
+		}
+	},
+
+	// Visualizing data with ring chart
+	vizDataWithRingChart: function vizDataWithRingChart(props, dataSheet) {
+		var update = arguments.length <= 2 || arguments[2] === undefined ? false : arguments[2];
+
+		var rG = this.gpu.ringGraph;
+
+		if (update) {
+
+			var yr = parseInt(props.data.match(/\d+/));
+
+			rG.selectROCYr(yr).updateRings();
+		} else {
+			rG.resetRings().initializeAPad().init().selectROCYr(75).drawMultiRings(dataSheet.urls);
 		}
 	},
 
@@ -277,13 +446,10 @@ var DataBoard = React.createClass({
 		var dataSheet = this.findDataSheetIndex(this.props);
 
 		if (this.props.chartType === '長條圖') {
-			console.log('this props:');
-			console.log(this.props);
-
 			this.vizDataWithBarChart(this.props, dataSheet);
 		} else if (this.props.chartType === '趨勢') {
 			this.vizDataWithLineChart(this.props, dataSheet);
-		} else if (this.props.chartType === '圓餅圖') {}
+		} else if (this.props.chartType === '圓環比例圖') {}
 	},
 
 	// working-spot-5: The DataBoard component will renew the visualized data or change a different type.
@@ -291,18 +457,34 @@ var DataBoard = React.createClass({
 
 		var dataSheet = this.findDataSheetIndex(nextProps);
 
-		if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖') {
-			this.vizDataWithBarChart(nextProps, dataSheet, true);
-		}
-		// Init the line bar once the user switch with different one.
-		else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') {
+		if (dataSheet.name === '監獄人數概況') {
+			if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖') {
+				this.vizDataWithBarChart(nextProps, dataSheet, true);
+			} else if (nextProps.chartType === '長條圖' && this.props.chartType !== '長條圖') {
 				d3.select('#SKETCHPAD').remove();
-				this.vizDataWithLineChart(nextProps, dataSheet, false);
+				this.vizDataWithBarChart(nextProps, dataSheet);
 			}
-			// Update the line bar when user switch the data.
-			else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
-					this.vizDataWithLineChart(nextProps, dataSheet, true);
+			// Init the line bar once the user switch with different one.
+			else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') {
+					d3.select('#SKETCHPAD').remove();
+					this.vizDataWithLineChart(nextProps, dataSheet);
 				}
+				// Update the line bar when user switch the data.
+				else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
+						this.vizDataWithLineChart(nextProps, dataSheet, true);
+					}
+		} else if (dataSheet.name === '新入監資料概覽') {
+			// Update the 圓環比例圖 (chart's name)
+			console.log('should switch to 新入監資料概覽');
+			if (nextProps.chartType === '圓環比例圖' && this.props.chartType === '圓環比例圖') {
+				this.vizDataWithRingChart(nextProps, dataSheet, true);
+			}
+			// Initialize the 圓環比例圖 (chart's name)
+			else if (nextProps.chartType === '圓環比例圖' && this.props.chartType !== '圓環比例圖') {
+					d3.select('#SKETCHPAD').remove();
+					this.vizDataWithRingChart(nextProps, dataSheet);
+				}
+		}
 	},
 	render: function render() {
 
@@ -542,13 +724,22 @@ var HomeLink = React.createClass({
 /* ***** App are the main components of all web pages  ***** */
 var App = React.createClass({
 	displayName: 'App',
+	componentWillUpdate: function componentWillUpdate() {
+		console.log('testing');
+	},
 
 	render: function render() {
+		var _props = this.props;
+		var nav = _props.nav;
+		var main = _props.main;
+
+		console.log(nav);
+		console.log(main);
 		return React.createElement(
 			'div',
 			{ id: 'APP' },
-			React.createElement(AppNav, null),
-			React.createElement(AppMain, null)
+			nav,
+			main
 		);
 	}
 });
@@ -557,6 +748,8 @@ var Nav = React.createClass({
 	displayName: 'Nav',
 
 	render: function render() {
+		console.log('Nav rendering');
+		console.log(this.props.childrenComponents);
 		return React.createElement(
 			'header',
 			{ id: 'HDR', className: 'b20-col-md-4 b12-row-md-12 bd-right' },
@@ -569,6 +762,8 @@ var Main = React.createClass({
 	displayName: 'Main',
 
 	render: function render() {
+		console.log('Main rendering');
+		console.log(this.props.childrenComponents);
 		return React.createElement(
 			'section',
 			{ id: 'BODY', className: 'b20-col-md-16 b12-row-md-12' },
@@ -601,6 +796,7 @@ function setThemesAC() {
 }
 
 function selectThemeAC(name) {
+	console.log(name);
 	return {
 		type: 'SELECT_THEME',
 		themeName: name
@@ -628,192 +824,6 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex) {
 
 /* ***** Reducers ***** */
 var INITIAL_STATE = Map();
-
-// States for different topic
-var DataFilterStateTree = {
-	state: Map().set('correction', List([{
-		dataset: '監獄人數概況',
-		availableChartTypes: ['長條圖', '趨勢', '面積圖'],
-		content: {
-			data: [{
-				name: '本年執行人數',
-				topics: [['總數'], ['減刑']]
-
-			}, {
-				name: '本年入監人數',
-				topics: [['總數', '入監原因分類'], ['減刑']]
-
-			}, {
-				name: '新入監人數',
-				topics: [['總數', '犯次分類'], ['減刑']]
-			}, {
-				name: '本年出獄人數',
-				topics: [['總數', '出獄原因分類'], ['減刑']]
-			}, {
-				name: '本年年底留監人數',
-				topics: [['總數'], ['減刑']]
-			}]
-		}
-	}, {
-		dataset: '新入監資料概覽',
-		availableChartTypes: ['圓環圖'],
-		content: {
-			data: [{
-				name: '民國75年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國76年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國77年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國78年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國79年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國80年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-
-			}, {
-				name: '民國81年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國82年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國83年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '民國84年',
-				data: ['總覽', '新入監前家庭狀況', '新入監前犯罪次數與種類', '新入監前教育程度', '新入監年齡統計'],
-				topics: [['總數']]
-			}, {
-				name: '85'
-			}, {
-				name: '86'
-			}, {
-				name: '87'
-			}, {
-				name: '88'
-			}, {
-				name: '89'
-			}, {
-				name: '90'
-			}, {
-				name: '91'
-			}, {
-				name: '92'
-			}, {
-				name: '93'
-			}, {
-				name: '94'
-			}, {
-				name: '95'
-			}, {
-				name: '96'
-			}]
-		}
-	}])),
-
-	selectState: function selectState(key) {
-		return this.state.get(key);
-	},
-
-	// Find the index of the specific dataset
-	findDatasetIndex: function findDatasetIndex(key, datasetName) {
-
-		var state = this.selectState(key);
-
-		// Transform the List to js array
-		var list = state.toArray();
-
-		return list.findIndex(function (d) {
-			return d.dataset === datasetName;
-		});
-	},
-
-	// Find the index of the data in the chosen dataset.
-	findDataIndex: function findDataIndex(key, datasetName, dataName) {
-
-		var state = this.selectState(key);
-
-		var index = this.findDatasetIndex(key, datasetName),
-		    dataList = state.get(index).content.data;
-
-		return dataList.findIndex(function (data) {
-			return data.name === dataName;
-		});
-	},
-
-	// Find the index of the chart type in the chosen dataset.
-	findChartTypeIndex: function findChartTypeIndex(key, datasetName, chartName) {
-
-		var state = this.selectState(key);
-
-		var index = this.findDatasetIndex(key, datasetName),
-		    chartList = state.get(index).availableChartTypes;
-
-		return chartList.findIndex(function (chart) {
-			return chart === chartName;
-		});
-	},
-
-	// List the dataset
-	listDataset: function listDataset(key) {
-
-		var state = this.selectState(key);
-
-		var datasets = [];
-
-		for (var i = 0; i < state.size; ++i) {
-			datasets.push(state.get(i).dataset);
-		}
-
-		return datasets;
-	},
-
-	// List the available data
-	listData: function listData(key, datasetIdx) {
-
-		var state = this.selectState(key);
-
-		var datas = state.get(datasetIdx).content.data.map(function (d) {
-			return d.name;
-		});
-
-		return datas;
-	},
-
-	listCharttype: function listCharttype(key, datasetIdx) {
-
-		var state = this.selectState(key);
-
-		var charttypes = state.get(datasetIdx).availableChartTypes;
-
-		return charttypes;
-	},
-
-	listTopic: function listTopic(key, datasetIdx, dataIdx, chartIndex) {
-
-		var state = this.selectState(key);
-
-		var topics = state.get(datasetIdx).content.data[dataIdx].topics[chartIndex];
-
-		return topics;
-	}
-};
 
 function AppReducer() {
 	var state = arguments.length <= 0 || arguments[0] === undefined ? INITIAL_STATE : arguments[0];
@@ -928,7 +938,7 @@ function setAppMainThemes(state) {
 }
 
 function selectAppTheme(state, theme) {
-
+	console.log(theme);
 	var navComponents = [React.createElement(Logo, { key: '0' }), React.createElement(StatTitle, { key: '1' }), React.createElement(StatFilter, { key: '2' }), React.createElement(HomeLink, { key: '3' })],
 	    mainComponents = [React.createElement(StatDataBoard, { key: '0' })];
 
@@ -1172,6 +1182,7 @@ var mapDispatchToThemeBtnProps = function mapDispatchToThemeBtnProps(dispatch) {
 			// Select the theme.
 			var re = /#\/\w+_stat/;
 			var theme = e.target.parentNode.href.match(re)[0].slice(2).toUpperCase();
+			console.log(theme);
 
 			dispatch(selectThemeAC(theme));
 		}
@@ -1258,9 +1269,14 @@ var StatDataBoard = RRd.connect(mapStateToDataBoardProps, null)(DataBoard);
 var store = Re.createStore(AppReducer);
 
 /*Set up the initial index page for nav side.*/
-store.dispatch(setAppNavAC([React.createElement(Logo, { key: '0' }), React.createElement(IndexNavList, { key: '1' }), React.createElement(Sign, { key: '2' }), React.createElement(HomeLink, { key: '3' })]));
+// store.dispatch(setAppNavAC([ // Origin
+// 		<Logo key='0'/>,
+// 		<IndexNavList key='1'/>,
+// 		<Sign key='2'/>,
+// 		<HomeLink key='3'/>
+// ]));
 
-store.dispatch(setThemesAC());
+// store.dispatch(setThemesAC());
 
 ReactDOM.render(React.createElement(
 	RRd.Provider,
@@ -1270,11 +1286,27 @@ ReactDOM.render(React.createElement(
 		{ history: RR.hashHistory },
 		React.createElement(
 			RR.Route,
-			{ path: '/', component: App },
+			{ component: App },
+			React.createElement(RR.Route, { path: '/',
+				getComponents: function getComponents(nextState, cb) {
+
+					store.dispatch(setAppNavAC([React.createElement(Logo, { key: '0' }), React.createElement(IndexNavList, { key: '1' }), React.createElement(Sign, { key: '2' }), React.createElement(HomeLink, { key: '3' })]));
+
+					store.dispatch(setThemesAC());
+
+					cb(null, { nav: AppNav, main: AppMain });
+				} }),
 			React.createElement(RR.Route, { path: '/police_stat' }),
 			React.createElement(RR.Route, { path: '/prosecute_stat' }),
 			React.createElement(RR.Route, { path: '/judicial_stat' }),
-			React.createElement(RR.Route, { path: '/correction_stat' })
+			React.createElement(RR.Route, {
+				path: '/correction_stat',
+				getComponents: function getComponents(nextState, cb) {
+					console.log('start test');
+					store.dispatch(selectThemeAC('CORRECTION_STAT'));
+
+					cb(null, { nav: AppNav, main: AppMain });
+				} })
 		)
 	)
 ), document.getElementById('CONTAINER'));

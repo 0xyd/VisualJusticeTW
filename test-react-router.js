@@ -76,7 +76,9 @@ rd.render((
 	<rr.Router history={rr.hashHistory}>
 		<rr.Route path="/" component={App}>
 
-			{/* Decouple the Home element from App and make it become one of the child route. */}
+			{/* Decouple the Home element from App and make it become a child route 
+				which starts as initial state. 
+			*/}
 			<rr.IndexRoute component={Home} />
 
 			{/* The parent route will exist even the child route starts running. */}
