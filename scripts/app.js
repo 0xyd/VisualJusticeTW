@@ -429,7 +429,7 @@ var ThemeBtn = React.createClass({
 
 		return (
 			<div className="sect-part-btn"  >
-				<RR.Link to={this.props.path} onClick={ this.props.selectTheme } >
+				<RR.Link to={this.props.path}>
 					<img className="sect-part-btn-img" src={this.props.btnTxtSrc}/> 
 				</RR.Link>
 			</div>
@@ -1436,25 +1436,26 @@ const AppMain = RRd.connect(
 
 
 /* Connect the redux's app state to ThemeBtn. */
-const mapDispatchToThemeBtnProps = (dispatch) => {
-	return {
-		selectTheme: (e) => {
-			// Select the theme.
-			const re = /#\/\w+_stat/;
-			const theme = 
-				e.target.parentNode.href
-					.match(re)[0].slice(2)
-						.toUpperCase();
-			console.log(theme);
+// const mapDispatchToThemeBtnProps = (dispatch) => {
+// 	return {
+// 		selectTheme: (e) => {
+// 			// Select the theme.
+// 			const re = /#\/\w+_stat/;
+// 			const theme = 
+// 				e.target.parentNode.href
+// 					.match(re)[0].slice(2)
+// 						.toUpperCase();
+// 			console.log(theme);
 
-			dispatch(selectThemeAC(theme));
-		}
-	}
-}
+// 			dispatch(selectThemeAC(theme));
+// 		}
+// 	}
+// }
 
 const ThemeButton = RRd.connect(
 	null,
-	mapDispatchToThemeBtnProps
+	// mapDispatchToThemeBtnProps
+	null
 )(ThemeBtn);
 
 /* Connect Title Component with redux app state */
@@ -1557,11 +1558,6 @@ const StatDataBoard = RRd.connect(
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
-
-
-
-
-
 
 
 ReactDOM.render(

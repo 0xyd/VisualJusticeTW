@@ -306,7 +306,7 @@ var ThemeBtn = React.createClass({
 			{ className: 'sect-part-btn' },
 			React.createElement(
 				RR.Link,
-				{ to: this.props.path, onClick: this.props.selectTheme },
+				{ to: this.props.path },
 				React.createElement('img', { className: 'sect-part-btn-img', src: this.props.btnTxtSrc })
 			)
 		);
@@ -1176,20 +1176,25 @@ var mapStateToAppMainProps = function mapStateToAppMainProps(state) {
 var AppMain = RRd.connect(mapStateToAppMainProps, null)(Main);
 
 /* Connect the redux's app state to ThemeBtn. */
-var mapDispatchToThemeBtnProps = function mapDispatchToThemeBtnProps(dispatch) {
-	return {
-		selectTheme: function selectTheme(e) {
-			// Select the theme.
-			var re = /#\/\w+_stat/;
-			var theme = e.target.parentNode.href.match(re)[0].slice(2).toUpperCase();
-			console.log(theme);
+// const mapDispatchToThemeBtnProps = (dispatch) => {
+// 	return {
+// 		selectTheme: (e) => {
+// 			// Select the theme.
+// 			const re = /#\/\w+_stat/;
+// 			const theme =
+// 				e.target.parentNode.href
+// 					.match(re)[0].slice(2)
+// 						.toUpperCase();
+// 			console.log(theme);
 
-			dispatch(selectThemeAC(theme));
-		}
-	};
-};
+// 			dispatch(selectThemeAC(theme));
+// 		}
+// 	}
+// }
 
-var ThemeButton = RRd.connect(null, mapDispatchToThemeBtnProps)(ThemeBtn);
+var ThemeButton = RRd.connect(null,
+// mapDispatchToThemeBtnProps
+null)(ThemeBtn);
 
 /* Connect Title Component with redux app state */
 var mapStateToTitleProps = function mapStateToTitleProps(state) {
@@ -1268,16 +1273,6 @@ var StatDataBoard = RRd.connect(mapStateToDataBoardProps, null)(DataBoard);
 /* ***** Store: For handling the states of the App.***** */
 var store = Re.createStore(AppReducer);
 
-/*Set up the initial index page for nav side.*/
-// store.dispatch(setAppNavAC([ // Origin
-// 		<Logo key='0'/>,
-// 		<IndexNavList key='1'/>,
-// 		<Sign key='2'/>,
-// 		<HomeLink key='3'/>
-// ]));
-
-// store.dispatch(setThemesAC());
-
 ReactDOM.render(React.createElement(
 	RRd.Provider,
 	{ store: store },
@@ -1290,6 +1285,7 @@ ReactDOM.render(React.createElement(
 			React.createElement(RR.Route, { path: '/',
 				getComponents: function getComponents(nextState, cb) {
 
+					/*Set up the initial index page for nav side.*/
 					store.dispatch(setAppNavAC([React.createElement(Logo, { key: '0' }), React.createElement(IndexNavList, { key: '1' }), React.createElement(Sign, { key: '2' }), React.createElement(HomeLink, { key: '3' })]));
 
 					store.dispatch(setThemesAC());
@@ -1302,7 +1298,8 @@ ReactDOM.render(React.createElement(
 			React.createElement(RR.Route, {
 				path: '/correction_stat',
 				getComponents: function getComponents(nextState, cb) {
-					console.log('start test');
+
+					/* Routes to the correction statistic page when the url match. */
 					store.dispatch(selectThemeAC('CORRECTION_STAT'));
 
 					cb(null, { nav: AppNav, main: AppMain });
