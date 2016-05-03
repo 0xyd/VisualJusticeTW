@@ -50,14 +50,36 @@ queue.prototype.queuing = function(complete) {
 var colorClass = function() {
 
 	this.bar = {
+
+		// For 殺人罪 (Prosecution)
+
+
+		// For 兒童及少年性交易防制條例 (Prosecution),
+		'死刑': '#C20446',
+		'無期徒刑': '#E5404C',
+		'有期徒刑': '#FD9C3C',
+		'拘役': '#FFB14A',
+		'罰金': '#F68989',
+		'緩刑人數': '#9F89F4',
+		'免刑': '#53B4C4',
+		'無罪': '#2BA608',
+		'不受理': '#646561',
+		'累犯人數': '#D13F37',
+		'保安處分人數': '#809176',
+
+		// For 監獄人數概況 (Correction)
 		'本年執行人數': '#BA0F30',
 		'本年入監人數': '#C41F3A',
 		'新入監人數': '#61B045',
 		'上年底留監人數': '#E9C247',
 		'本年出獄人數': '#F16B23',
-		'本年年底留監人數': '#55B5DF'
+		'本年年底留監人數': '#55B5DF',
+
+
+		
 	},
 	this.line = {
+		// For 監獄人數概況 (Correction)
 		'本年執行人數': '#BA0F30',
 		'本年入監人數': '#C41F3A',
 		'新入監人數': '#61B045',
@@ -180,6 +202,16 @@ graphClass.prototype.readCSV = function(path) {
 	return d3.csv(path)
 }
 
+// To filter the data which are inproper for visualizing.
+graphClass.prototype._dataFiltering = function(d) {
+
+	// Iterate d's object. Once the value is "", deperciate the d.
+	for ( var key in d )
+		if ( d[key] === "" ) return null
+	
+	return d
+}
+
 graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
 
 	this.xScale = d3.scale.ordinal()
@@ -211,15 +243,56 @@ graphClass.prototype._setLinearYScale = function(dataset, dOption) {
 
 }
 
-graphClass.prototype._setYAxis = function(pos, tickFormater) {
+// working-spot-5: Make the ticks more smart and flexible.
+// graphClass.prototype._setYAxis = function(pos, tickFormater) {
+graphClass.prototype._setYAxis = function(pos, values, specKey) {
 
 	if ( typeof pos === 'string' && 
 		pos === 'right' || 'left' || 'bottom' || 'top' ) {
 
-		this.yAxis = d3.svg.axis()
-			.scale(this.yScale).orient(pos).tickFormat(tickFormater).ticks(10);
+		// this.yAxis = 
+		// 	d3.svg.axis()
+		// 		.scale(this.yScale).orient(pos);
 
+		// Tick divs are used for section the data with tick.
+		var tickDiv = null,
+				// Transform the tick format
+				tickFormater = null;
+
+
+		var dmax = d3.max(values, function(value) {
+			if (specKey)
+				return parseInt(value[specKey])
+			return parseInt(value)
+		});
+		
+		if (dmax > 10000) {
+			tickDiv = 10000;
+			tickFormater = kTick;
+		}
+		else if (dmax < 10000 && dmax > 2000) {
+			tickDiv = 1000;
+		}
+		else if (dmax < 2000 && dmax > 1000) {
+			tickDiv = 500;
+		}
+		else if (dmax < 1000) {
+			tickDiv = 200;
+		}
+		else if (dmax < 100){
+			tickDiv = 20;
+		}
+		
+		this.yAxis = d3.svg.axis()
+			.scale(this.yScale).orient(pos)
+				.tickValues(d3.range(0, dmax, tickDiv)).tickFormat(tickFormater);
+	}
+
+	// Transfer ,000 to K
+	function kTick(tick) {
+		return Math.round(tick/1e3) + 'K'
 	} 
+	
 }
 
 graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, outPadding) {
@@ -404,8 +477,9 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 
 	var p = new Promise(function(resolve, reject) {
 
+		
 		self.readCSV(path)
-			.row(function(d) { return d })
+			.row(self._dataFiltering)
 			.get(function(errors, rows) {
 
 				self._setBarWidth(rows);
@@ -414,8 +488,13 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 				self._setOrdinalXScale(rows, xLabel);
 				self._setLinearYScale(rows, dOption);
 
+				// working-spot-5: The y tick format selction
+				var isKTick = true;
+				if (d3.min(rows, function(row) { return row[dOption] }) < 1000) 
+					isKTick = false;
+
 				// Set the axes
-				self._setYAxis('left', kTick);
+				self._setYAxis('left', rows, dOption);
 				self._setXAxis('bottom');
 
 				// Draw the axes
@@ -470,7 +549,7 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 				c_Pos = [];
 
 				self._setLinearYScale(rows, dOption);
-				self._setYAxis('left', kTick);
+				self._setYAxis('left', rows, dOption);
 
 				_bars
 					.transition()
@@ -799,7 +878,7 @@ lineGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 	
 	var p = new Promise(function(resolve, reject) {
 		self.readCSV(path)
-			.row(function(d) { return d })
+			.row(self._dataFiltering)
 			.get(function(errors, rows) {
 	
 				self.dotSpace = self._setHorSpace(rows, self.step, self.outPadding);
@@ -808,7 +887,7 @@ lineGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 				self._setLinearYScale(rows, dOption);
 	
 				// Set the axes
-				self._setYAxis('left', kTick);
+				self._setYAxis('left', rows, dOption);
 				self._setXAxis('bottom');
 
 				// Draw the axes
@@ -872,14 +951,13 @@ lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
 	
 	var self = this;
 	
-	this.readCSV(path)
+	var p = new Promise(function(resolve, reject) {
+		self.readCSV(path)
 			.row(function(d) { return d })
 			.get(function(error, rows) {
 
-				var p = new Promise(function(resolve, reject) {
-
 					self._setLinearYScale(rows, dOption);
-					self._setYAxis('left', kTick);
+					self._setYAxis('left', rows, dOption);
 
 					var circles = 
 						self.pad.select('.dots-cluster')
@@ -926,29 +1004,30 @@ lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
 					binding(rows);
 					render(1000);
 				});	
-
-				p.then(function(r) {
-						
-						var circlePoses = (function(circles) {
-								var poses = [];
-								for (var i = 0; i < circles.length; i++) 
-									poses.push({
-										cx : parseInt(d3.select(circles[i]).attr('cx')),
-										cy : parseInt(d3.select(circles[i]).attr('cy'))
-									});
-								return poses
-							})(r.circles); 
-
-						self.pad.select('g.line-group').select('path')
-							.datum(circlePoses)
-								.transition()
-								.duration(600)
-									.attr({
-										d: self.dottedLine,
-										stroke: colorObj.line[dOption]
-									});
-					});			
 			});
+
+	p.then(function(r) {
+						
+		var circlePoses = (function(circles) {
+				var poses = [];
+				for (var i = 0; i < circles.length; i++) 
+					poses.push({
+						cx : parseInt(d3.select(circles[i]).attr('cx')),
+						cy : parseInt(d3.select(circles[i]).attr('cy'))
+					});
+				return poses
+			})(r.circles); 
+
+		self.pad.select('g.line-group').select('path')
+			.datum(circlePoses)
+				.transition()
+				.duration(600)
+					.attr({
+						d: self.dottedLine,
+						stroke: colorObj.line[dOption]
+					});
+		});
+	return p
 }
 
 // Fill the area between divide lines and dot line
@@ -1083,7 +1162,7 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 							} 
 							return row['民國'] === dots[i].__data__['民國']
 						});
-					// working-spot-1
+					
 					if (r) {
 						// Attach the judicial events
 						dots[i].__data__['司法事記'] = r['司法事記'];
@@ -2385,9 +2464,13 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 }
 
 /* Additional Functions */
+// Define the Tick text format.
 function kTick(tick) {
+	console.log(tick);
 	return Math.round(tick/1e3) + 'K'
 }
+
+
 
 /* 
 	A function for pinnig label at the middle bottom of the element space.

@@ -19,14 +19,192 @@ window.googleSheet = 'https://spreadsheets.google.com/tq?';
 const DataFilterStateTree = {
 	state:
 		Map()
+			.set('prosecution', 
+				List([
+					{
+						dataset: '殺人罪',
+						availableChartTypes: [
+							'長條圖',
+							'趨勢圖',
+						],
+						content: {
+							data: [
+								{
+									name: '死刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									],
+								},
+								{
+									name: '無期徒刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									],
+								},
+								{
+									name: '有期徒刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									],
+								},
+								{
+									name: '拘役',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '罰金',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '免刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '不受理',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '其他',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '保安處分人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '罰金',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '緩刑人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '累犯人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								}
+							]
+						}
+					},
+					{
+						dataset: '兒童及少年性交易防制條例',
+						availableChartTypes: [
+							'長條圖',
+							'趨勢圖',
+						],
+						content: {
+							data: [
+								{
+									name: '有期徒刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									],
+								},
+								{
+									name: '拘役',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '罰金',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '免刑',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '不受理',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '其他',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '保安處分人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '罰金',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '緩刑人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								},
+								{
+									name: '累犯人數',
+									topics: [
+										['總數'],
+										['趨勢']
+									]
+								}
+							]
+						}
+					}
+				]))
 			.set('correction',	
 				List([
 					{
 						dataset: '監獄人數概況',
 						availableChartTypes: [
 							'長條圖',
-							'趨勢',
-							'面積圖'
+							'趨勢圖',
 						],
 						content: {
 							data: [
@@ -73,7 +251,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '新入監資料概覽',
 						availableChartTypes: [
-										'圓環比例圖'
+							'圓環比例圖'
 						],
 						content: {
 							data: [
@@ -346,9 +524,6 @@ const DataFilterStateTree = {
 	}
 }
 
-
-
-
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
 
@@ -466,7 +641,6 @@ const DataBoard = React.createClass({
 	vizDataWithBarChart(props, dataSheet, update = false) {
 
 		let bG = this.gpu.barGraph,
-				// lG = this.gpu.lineGraph,
 				t  = this.tip;
 
 		if (update) {
@@ -475,7 +649,10 @@ const DataBoard = React.createClass({
 				dataSheet.axes.xAxis,
 				dataSheet.axes.yAxis,
 				props.data
-				);
+				)
+				.then(function() {
+					t.appendBarMouseOver(props.data);
+				});
 		} else {
 			
 			bG.initializeAPad()
@@ -504,7 +681,10 @@ const DataBoard = React.createClass({
 				dataSheet.axes.xAxis,
 				dataSheet.axes.yAxis,
 				props.data
-			);
+				)
+				.then(function() {
+					t.appendDotMouseOver(props.data);
+				});
 		} else {
 			lG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
@@ -545,6 +725,40 @@ const DataBoard = React.createClass({
 	getInitialState() {
 		return {
 			dataSheets: [
+				// Prosecution Data
+				{
+					name: '殺人罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/殺人罪.csv'
+						else 
+							return window.googleSheet + 
+								'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
+									+ query
+					})(),
+					axes: {
+						xAxis: '民國',
+						yAxis: '人數'
+					},
+				},
+				{
+					
+					name: '兒童及少年性交易防制條例',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/兒童及少年性交易防制條例.csv'
+						else 
+							return window.googleSheet + 
+								'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
+									+ query
+					})(),
+					axes: {
+						xAxis: '民國',
+						yAxis: '人數'
+					},
+				},
+
+				// Correction Data
 				{
 					name: '監獄人數概況',
 					url: (function() {
@@ -629,8 +843,6 @@ const DataBoard = React.createClass({
 				}
 	},
 
-
-
 	// working-spot-5: Initial Data Visualizing
 	componentDidMount() {
 
@@ -639,7 +851,7 @@ const DataBoard = React.createClass({
 		if (this.props.chartType === '長條圖') {
 			this.vizDataWithBarChart(this.props, dataSheet);
 			
-		} else if (this.props.chartType === '趨勢') {
+		} else if (this.props.chartType === '趨勢圖') {
 			this.vizDataWithLineChart(this.props, dataSheet);
 
 		} else if (this.props.chartType === '圓環比例圖') {
@@ -652,36 +864,35 @@ const DataBoard = React.createClass({
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
-		if (dataSheet.name === '監獄人數概況') {
-			if (nextProps.chartType === '長條圖' && this.props.chartType === '長條圖') {
-				this.vizDataWithBarChart(nextProps, dataSheet, true);
+		var 
+			shouldRenew = 
+				(this.props.dataset !== nextProps.dataset ||
+				 this.props.chartType !== nextProps.chartType) 
+						? true : false ,
+			shouldUpdate = 
+				(this.props.chartType === nextProps.chartType) ? true : false;
+		
+		if (shouldRenew) { 
+			d3.select('#SKETCHPAD').remove();
+			if (nextProps.chartType === '長條圖') { 
+				if (this.props.chartType === '圓環比例圖') 
+					this.gpu.ringGraph.removeBoards();
+				this.vizDataWithBarChart(nextProps, dataSheet)
 			}
-			else if (nextProps.chartType === '長條圖' && this.props.chartType !== '長條圖') {
-				d3.select('#SKETCHPAD').remove();
-				this.vizDataWithBarChart(nextProps, dataSheet);
-			}
-			// Init the line bar once the user switch with different one.
-			else if (nextProps.chartType === '趨勢' && this.props.chartType !== '趨勢') { 
-				d3.select('#SKETCHPAD').remove();
-				this.vizDataWithLineChart(nextProps, dataSheet);
-			}
-			// Update the line bar when user switch the data.
-			else if (nextProps.chartType === '趨勢' && this.props.chartType === '趨勢') {
-				this.vizDataWithLineChart(nextProps, dataSheet, true);
-			}
-		}
+			else if (nextProps.chartType === '趨勢圖')
+				this.vizDataWithLineChart(nextProps, dataSheet)
+			else if (nextProps.chartType === '圓環比例圖')
+				this.vizDataWithRingChart(nextProps, dataSheet)
 
-		else if (dataSheet.name === '新入監資料概覽') {
-			// Update the 圓環比例圖 (chart's name)
-			console.log('should switch to 新入監資料概覽');
-			if (nextProps.chartType === '圓環比例圖' && this.props.chartType === '圓環比例圖') {
-				this.vizDataWithRingChart(nextProps, dataSheet, true);
+		} else if (shouldUpdate) {
+			if (nextProps.chartType === '長條圖') 
+				this.vizDataWithBarChart(nextProps, dataSheet, true)
+			else if (nextProps.chartType === '趨勢圖') {
+				console.log('testing');
+				this.vizDataWithLineChart(nextProps, dataSheet, true)
 			}
-			// Initialize the 圓環比例圖 (chart's name)
-			else if (nextProps.chartType === '圓環比例圖' && this.props.chartType !== '圓環比例圖') {
-				d3.select('#SKETCHPAD').remove();
-				this.vizDataWithRingChart(nextProps, dataSheet);
-			}
+			else if (nextProps.chartType === '圓環比例圖')
+				this.vizDataWithRingChart(nextProps, dataSheet, true)
 		}
 	},
 
@@ -774,7 +985,6 @@ const DropdownToggle = React.createClass({
 
 	render: function() {
 		return (
-			// working-spot-5
 			<button className="dropdown-btn" type="button" 
 							onClick={ this.props.expandDropdown }>
 				<span className="dropdown-txt">{ this.props.name }</span>
@@ -862,18 +1072,12 @@ const HomeLink = React.createClass({
 /* ***** App are the main components of all web pages  ***** */
 var App = React.createClass({
 
-	componentWillUpdate() {
-		console.log('testing');
-	},
-
 	render: function() {
 		const { nav, main } = this.props
 		console.log(nav);
 		console.log(main);
 		return (
 			<div id="APP">
-				{/*<AppNav />
-				<AppMain />*/}
 				{ nav }
 				{ main }
 			</div>
@@ -931,7 +1135,6 @@ function setThemesAC() {
 }
 
 function selectThemeAC(name) {
-	console.log(name);
 	return {
 		type: 'SELECT_THEME',
 		themeName: name
@@ -1084,27 +1287,87 @@ function selectAppTheme(state, theme) {
 	let defaultChartType = null;
 	let defaultTopic = null;
 
+	let defaultFilterDropdownMenus = null;
+
 	switch(theme) {
 		case 'POLICE_STAT':
+
 			themeState = setState('theme', 'police');
-			return state
+			statTitle = setState('statTitleImageSrc', './src/policeStatTitle-160px.png');
+			defaultDataset = setState('currentDataset', 'testDataset');
+			defaultData = setState('currentData', 'testData');
+			defaultChartType = setState('currentChartType', 'testChartType');
+			defaultTopic = setState('currentTopic', 'testTopic');
+
+			return state.merge(
+				navState, mainState,
+				themeState, statTitle, filterNames, 
+				defaultDataset, defaultData, defaultChartType, defaultTopic)
+
 		case 'PROSECUTION_STAT':
+
 			themeState = setState('theme', 'prosecution');
-			return state
+			statTitle = setState('statTitleImageSrc', './src/prosecuteStatTitle-160px.png');
+			defaultDataset = setState('currentDataset', '兒童及少年性交易防制條例');
+			defaultData = setState('currentData', '有期徒刑');
+			defaultChartType = setState('currentChartType', '長條圖');
+			defaultTopic = setState('currentTopic', '總數');
+
+			defaultFilterDropdownMenus = 
+				setState(
+					'filterDropdownMenus',
+					List([
+						Map().set(
+							'Options', 
+							DataFilterStateTree.listDataset('prosecution'))
+								.set('isDisplayed', false),
+						Map().set(
+							'Options', 
+							DataFilterStateTree.listData('prosecution', 0))
+								.set('isDisplayed', false),
+						Map().set(
+							'Options', 
+							DataFilterStateTree.listCharttype('prosecution', 0))
+								.set('isDisplayed', false),
+						Map().set(
+							'Options', 
+							DataFilterStateTree.listTopic('prosecution', 0, 0, 0))
+								.set('isDisplayed', false)
+						])
+					);
+
+			return state.merge(
+				navState, mainState,
+				themeState, statTitle, filterNames,
+				defaultDataset, defaultData, defaultChartType, defaultTopic, defaultFilterDropdownMenus
+				)
+
 		case 'JUDICIAL_STAT':
+
 			themeState = setState('theme', 'judicial');
-			return state
+			statTitle = setState('statTitleImageSrc', './src/judgeStatTitle-160px.png');
+			defaultDataset = setState('currentDataset', 'testDataset');
+			defaultData = setState('currentData', 'testData');
+			defaultChartType = setState('currentChartType', 'testChartType');
+			defaultTopic = setState('currentTopic', 'testTopic');
+
+			return state.merge(
+				navState, mainState,
+				themeState, statTitle, filterNames, 
+				defaultDataset, defaultData, defaultChartType, defaultTopic
+				)
+
 		case 'CORRECTION_STAT':
 			
 			themeState = setState('theme', 'correction');
-			statTitle = setState('statTitleImageSrc', './src/correctStatTitle.png');
+			statTitle = setState('statTitleImageSrc', './src/correctStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '監獄人數概況');
 			defaultData = setState('currentData', '本年執行人數');
 			defaultChartType = setState('currentChartType', '長條圖');
 			defaultTopic = setState('currentTopic', '總數');
 
 			// working-spot-5: Applied the below function with states tree
-			const defaultFilterDropdownMenus = 
+			defaultFilterDropdownMenus = 
 				setState('filterDropdownMenus', List([
 					// Options for the dataset
 					Map().set(
@@ -1182,13 +1445,23 @@ function setDropdownMenuStates(state, index) {
 		}
 		return Menus
 	});
-	
 	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
 }
 
 // working-spot-5
 /* Option selecting reducser and its related function. */
-/* Basic selecting option reducer */
+/* Basic selecting option reducer:
+		state:
+		theme: 
+		optionName: 
+		fieldsetIndex: The index of the selector. 
+			0: dataset
+			1: data
+			2: chartType
+			3: topic
+			
+		dataIdx:
+ */
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) {
 	
 	let newDataset = null;
@@ -1197,100 +1470,58 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 	let newTopic = null;
 	let newDropdownMenuStates = null;
 
-	if (theme === '') {
+	const currentState = store.getState();
 
-	} else if (theme === '') {
+	// Create an initial collpased state for all menus.
+	const collapsedAllDropdownMenuStates = setState(
+			'filterDropdownMenus',
+			setAllDropdownCollapsed(currentState));
 
-	} else if (theme === '') {
+	// Fetch the prepared states 
+	const stateTree = DataFilterStateTree.state.get(theme);
+	const datasetIndex = DataFilterStateTree.findDatasetIndex(theme, optionName);
+	
+	if (theme === 'police') 
+		return _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex);
+	else if (theme === 'prosecution') 
+		return _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex);
+	else if (theme === 'judicial') 
+		return _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex);
+	else if (theme === 'correction')
+		return _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex);
+		
+	// The process of how filter reacts when user click any of its options.
+	function _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex) {
 
-	} else if (theme === 'correction') {
-
-		const currentState = store.getState();
-
-		// Create an initial collpased state for all menus.
-		const collapsedAllDropdownMenuStates = setState(
-				'filterDropdownMenus',
-				setAllDropdownCollapsed(currentState));
-
+		// Select the dataset
 		if (fieldsetIndex === 0 ) {
 
-			// Fetch the prepared states 
-			const stateTree = DataFilterStateTree.state.get(theme);
-			const datasetIndex = DataFilterStateTree.findDatasetIndex(theme, optionName);
-
-			// Create new states
 			if (currentState.get('currentDataset') !== optionName) {
-				newDataset = setState('currentDataset', optionName);
-				newData = setState(
-					'currentData', 
-					stateTree.get(datasetIndex).content.data[0].name
-				);
-				newChartType = setState(
-					'currentChartType', 
-					stateTree.get(datasetIndex).availableChartTypes[0]
-					);
-				newTopic = setState(
-					'currentTopic', 
-					stateTree.get(datasetIndex).content.data[0].topics[0]
-					);
-				// Set up the states for the dropdowns.
-				newDropdownMenuStates = 
-					setState('filterDropdownMenus', List([
-						// Options for the dataset
-						Map().set(
-							'Options', 
-							List(DataFilterStateTree.listDataset('correction'))
-						).set(
-							'isDisplayed',
-							false
-						),
-						// Options for the data
-						Map().set(
-							'Options', 
-							List(DataFilterStateTree.listData('correction', datasetIndex))
-						).set(
-							'isDisplayed',
-							false
-						),
-						// Options for the graph
-						Map().set(
-							'Options', 
-							List(DataFilterStateTree.listCharttype('correction', datasetIndex))
-						).set(
-							'isDisplayed',
-							false
-						),
-						// Options for the topics
-						Map().set(
-							'Options', 
-							List(DataFilterStateTree.listTopic('correction', datasetIndex, 0, 0))
-						).set(
-							'isDisplayed',
-							false
-						)
-					])); 
-					return state.merge(newDataset, newData, newChartType, newTopic, newDropdownMenuStates)
+
+				const newState = __datasetSwitchRendering(theme, optionName, datasetIndex);
+
+				return state.merge(
+						newState.dataset, 
+						newState.data, 
+						newState.chartType, 
+						newState.topic, 
+						newState.dropdownMenuStates)
 				}
 			return state.merge(collapsedAllDropdownMenuStates)
 		} 
 
-		// Selecting data 
+		// Selecting data
 		else if (fieldsetIndex === 1) {
 
 			if (currentState.get('currentData') !== optionName) {
 
-				newData = setState('currentData', optionName);
+				const newState = __dataSwitchRendering(state, optionName);
 
-				// Switch data will change the available topics
-				newDropdownMenuStates = setState(
-					'filterDropdownMenus', 
-					updateTopicDropdownOption(
-						state, optionName, null
-						));
-
-				return state.merge(newData, newDropdownMenuStates)
+				return state.merge(
+						newState.data,
+						newState.dropdownMenuStates
+					)
 			}
-
 			return state.merge(collapsedAllDropdownMenuStates)
 		}
 
@@ -1299,27 +1530,21 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 
 			if (currentState.get('currentChartType') !== optionName) {
 
-				newChartType = setState('currentChartType', optionName);
-				newDropdownMenuStates = setState(
-					'filterDropdownMenus', 
-					updateTopicDropdownOption(state, null, optionName));
+				const newState = __chartTypeSwitchRendering(state, optionName, fieldsetIndex);
 
-				// Update current topic
-				newTopic = setState(
-					'currentTopic', 
-					newDropdownMenuStates
-						.get('filterDropdownMenus')
-							.get(fieldsetIndex+1)
-								.get('Options')[0]);
-							
-				return state.merge(newDropdownMenuStates, newChartType, newTopic) 
+				return state.merge(
+					newState.chartType,
+					newState.topic,
+					newState.dropdownMenuStates
+					)
 			}
 			return state.merge(collapsedAllDropdownMenuStates)
 		} 
-		// working-spot-5
+
 		// Selection the topic
 		else if (fieldsetIndex === 3) {
 			if (currentState.get('currentTopic') !== optionName) {
+
 				newTopic = setState('currentTopic', optionName);
 
 				return state.merge(newTopic, collapsedAllDropdownMenuStates)
@@ -1328,6 +1553,117 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 		}
 
 		return state
+
+	}
+
+	// Rerender the dataset and its related options of different fields
+	function __datasetSwitchRendering(theme, optionName, datasetIndex) {
+
+		// Update the current dataset state to the chosen one
+		let newDataset = setState('currentDataset', optionName);
+
+		// Render the first available data beneath the dataset.
+		let newData = setState(
+			'currentData', 
+			stateTree.get(datasetIndex).content.data[0].name
+			);
+
+		// Render the first available chartType beneath the dataset.
+		let newChartType = setState(
+			'currentChartType', 
+			stateTree.get(datasetIndex).availableChartTypes[0]
+			);
+
+		// Render the first available topic beneath the dataset and chartType.
+		let newTopic = setState(
+			'currentTopic', 
+			stateTree.get(datasetIndex).content.data[0].topics[0]
+			);
+
+		// Set up the states for the dropdowns.
+		let newDropdownMenuStates = 
+			setState('filterDropdownMenus', List([
+				// Options for the dataset
+				Map().set(
+					'Options', 
+					List(DataFilterStateTree.listDataset(theme))
+				).set(
+					'isDisplayed',
+					false
+				),
+				// Options for the data
+				Map().set(
+					'Options', 
+					List(DataFilterStateTree.listData(theme, datasetIndex))
+				).set(
+					'isDisplayed',
+					false
+				),
+				// Options for the graph
+				Map().set(
+					'Options', 
+						List(DataFilterStateTree.listCharttype(theme, datasetIndex))
+					).set(
+						'isDisplayed',
+						false
+					),
+				// Options for the topics
+				Map().set(
+						'Options', 
+						List(DataFilterStateTree.listTopic(theme, datasetIndex, 0, 0))
+					).set(
+						'isDisplayed',
+						false
+						)
+					]));
+
+		return {
+			dataset: newDataset,
+			data: newData,
+			chartType: newChartType,
+			topic: newTopic,
+			dropdownMenuStates: newDropdownMenuStates
+		}
+	}
+
+	function __dataSwitchRendering(state, dataName) {
+
+		const newData = setState('currentData', dataName);
+
+		// Switch data will change the available topics
+		const	newDropdownMenuStates = 
+			setState(
+				'filterDropdownMenus', 
+				updateTopicDropdownOption(state, dataName, null));
+
+		return {
+			data: newData,
+			dropdownMenuStates: newDropdownMenuStates
+		}
+	}
+
+	function __chartTypeSwitchRendering(state, chartType, fieldsetIndex) {
+
+		const newChartType = setState('currentChartType', optionName);
+
+		const newDropdownMenuStates = setState(
+					'filterDropdownMenus', 
+					updateTopicDropdownOption(state, null, chartType));
+
+		// Update current topic
+		const newTopic = setState(
+					'currentTopic', 
+					newDropdownMenuStates
+						.get('filterDropdownMenus')
+							.get(fieldsetIndex+1)
+								.get('Options')[0]);
+
+		return {
+			chartType: newChartType,
+			topic: newTopic,
+			dropdownMenuStates: newDropdownMenuStates
+		}
+
 	}
 }
 
@@ -1436,21 +1772,7 @@ const AppMain = RRd.connect(
 
 
 /* Connect the redux's app state to ThemeBtn. */
-// const mapDispatchToThemeBtnProps = (dispatch) => {
-// 	return {
-// 		selectTheme: (e) => {
-// 			// Select the theme.
-// 			const re = /#\/\w+_stat/;
-// 			const theme = 
-// 				e.target.parentNode.href
-// 					.match(re)[0].slice(2)
-// 						.toUpperCase();
-// 			console.log(theme);
 
-// 			dispatch(selectThemeAC(theme));
-// 		}
-// 	}
-// }
 
 const ThemeButton = RRd.connect(
 	null,
@@ -1563,9 +1885,9 @@ let store = Re.createStore(AppReducer);
 ReactDOM.render(
 	<RRd.Provider store={store}>
 		<RR.Router history={RR.hashHistory} >
-			{/*<RR.Route path='/' component={App}>*/}
 			<RR.Route component={App} >
-				<RR.Route path='/' 
+				<RR.Route 
+					path='/' 
 					getComponents={(nextState, cb) => {
 
 						/*Set up the initial index page for nav side.*/
@@ -1580,9 +1902,24 @@ ReactDOM.render(
 
 						cb(null, { nav: AppNav, main: AppMain });
 				}} />
-				<RR.Route path='/police_stat' />
-				<RR.Route path='/prosecute_stat' />
-				<RR.Route path='/judicial_stat' />
+				<RR.Route 
+					path='/police_stat' 
+					getComponents={(nextState, cb) => {
+						store.dispatch(selectThemeAC('POLICE_STAT'));
+						cb(null, { nav: AppNav, main: AppMain });
+					}}/>
+				<RR.Route 
+					path='/prosecute_stat' 
+					getComponents={(nextState, cb) => {
+						store.dispatch(selectThemeAC('PROSECUTION_STAT'));
+						cb(null, { nav: AppNav, main: AppMain });
+					}}/>
+				<RR.Route 
+					path='/judicial_stat' 
+					getComponents={(nextState, cb) => {
+						store.dispatch(selectThemeAC('JUDICIAL_STAT'));
+						cb(null, { nav: AppNav, main: AppMain });
+					}}/>
 				<RR.Route 
 					path='/correction_stat' 
 					getComponents={(nextState, cb) => {
