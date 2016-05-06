@@ -203,13 +203,16 @@ graphClass.prototype.readCSV = function(path) {
 }
 
 // To filter the data which are inproper for visualizing.
-graphClass.prototype._dataFiltering = function(d) {
+graphClass.prototype._dataFiltering = function(d, i) {
 
 	// Iterate d's object. Once the value is "", deperciate the d.
 	for ( var key in d )
 		if ( d[key] === "" ) return null
-	
 	return d
+	// Suspend.
+	// for ( var key in d )
+		// if ( d[key] === "" ) d[key] = null
+	// return d
 }
 
 graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
@@ -237,7 +240,7 @@ graphClass.prototype._setLinearYScale = function(dataset, dOption) {
 		.domain(
 			[0, d3.max(
 					dataset, 
-					function(d) { return dOption? parseInt(d[dOption]): d})
+					function(d) { return dOption? parseFloat(d[dOption]): d})
 			])
 		.rangeRound([this.chartHeight, 0]);
 
@@ -250,23 +253,23 @@ graphClass.prototype._setYAxis = function(pos, values, specKey) {
 	if ( typeof pos === 'string' && 
 		pos === 'right' || 'left' || 'bottom' || 'top' ) {
 
-		// this.yAxis = 
-		// 	d3.svg.axis()
-		// 		.scale(this.yScale).orient(pos);
-
 		// Tick divs are used for section the data with tick.
 		var tickDiv = null,
 				// Transform the tick format
 				tickFormater = null;
-
 
 		var dmax = d3.max(values, function(value) {
 			if (specKey)
 				return parseInt(value[specKey])
 			return parseInt(value)
 		});
-		
-		if (dmax > 10000) {
+
+		// The maximum defines the tick format and the number of ticks.
+		if (dmax > 100000) {
+			tickDiv = 100000;
+			tickFormater = kTick;
+		}
+		else if (dmax > 10000) {
 			tickDiv = 10000;
 			tickFormater = kTick;
 		}
@@ -280,7 +283,7 @@ graphClass.prototype._setYAxis = function(pos, values, specKey) {
 			tickDiv = 200;
 		}
 		else if (dmax < 100){
-			tickDiv = 20;
+			tickDiv = 10;
 		}
 		
 		this.yAxis = d3.svg.axis()
@@ -325,6 +328,63 @@ graphClass.prototype._createYAxis = function(dataset, yLabel) {
 			.text(yLabel);
 }
 
+// update the x label
+graphClass.prototype._updateXAxisLabel = function(xLabel) {
+
+	var xAxis = 
+		this.pad.select('g.x-axis');
+
+	var xPrevLabel = 
+		xAxis.select('text.axis-name');
+
+	if (xPrevLabel.html() !== xLabel) {
+
+		// Store the previous x label's position
+		var xLabelAttrs = {
+			x: xPrevLabel.attr('x'),
+			y: xPrevLabel.attr('y'),
+			class: xPrevLabel.attr('class')
+		};
+
+		xPrevLabel.remove();
+
+		xAxis.append('text')
+			.text(xLabel)
+				.attr({
+					x: xLabelAttrs.x,
+					y: xLabelAttrs.y,
+					class: xLabelAttrs.class
+				});
+	}
+}
+
+// update the y label
+graphClass.prototype._updateYAxisLabel = function(yLabel) {
+
+	var yAxis = 
+		this.pad
+			.select('g.y-axis');
+
+	var yPrevLabel =
+		yAxis.select('text.axis-name');
+
+	if (yPrevLabel.html() !== yLabel) {
+		var yLabelAttrs = {
+			transform: yPrevLabel.attr('transform'),
+			class: yPrevLabel.attr('class')
+		}
+	
+		yPrevLabel.remove();
+	
+		yAxis.append('text')
+			.text(yLabel)
+				.attr({
+					transform: yLabelAttrs.transform,
+					class: yLabelAttrs.class
+				});
+	}
+}
+
 graphClass.prototype.setOutPadding = function(val) { 
 	this.outPadding = val; 
 	return this
@@ -365,7 +425,6 @@ var barGraphClass = function() {
 
 }
 
-
 /* Inherit the barGraphClass from the graph */
 barGraphClass.prototype = Object.create(graphClass.prototype);
 barGraphClass.prototype.constructor = barGraphClass;
@@ -392,7 +451,7 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 }
 
 barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
-	console.log(dOption);
+	
 	var self = this;
 
 	this.bars = 
@@ -402,21 +461,39 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 			.data(dataset)
 			.enter()
 			.append('rect')
-				.attr('class', 'bar')
-				.attr('x', function(d, i) {
-					return self.outPadding + 
-						i * (self.barWidth + self.step)
+				.classed('bar', true)
+				.attr({
+					x: function(d, i) {
+						return self.outPadding + i * (self.barWidth + self.step)
+					},
+					y: function(d, i) {
+						return self.yScale(d[dOption])
+					},
+					width: function(d, i) {
+						return self.barWidth
+					},
+					height: function(d, i) {
+						return self.chartHeight - self.yScale(parseFloat(d[dOption]))
+					},
+					fill: function(d, i) {
+						return colorObj.bar[dOption]
+					}
 				})
-				.attr('y', function(d) {
-					return self.yScale(d[dOption])
-				})
-				.attr('width', self.barWidth)
-				.attr('height', function(d) {
-					return self.chartHeight - self.yScale(parseInt(d[dOption]))
-				})
-				.attr('fill', function(d) {
-					return colorObj.bar[dOption]
-				})
+				// .attr('class', 'bar')
+				// .attr('x', function(d, i) {
+				// 	return self.outPadding + 
+				// 		i * (self.barWidth + self.step)
+				// })
+				// .attr('y', function(d) {
+				// 	return self.yScale(d[dOption])
+				// })
+				// .attr('width', self.barWidth)
+				// .attr('height', function(d) {
+				// 	return self.chartHeight - self.yScale(parseFloat(d[dOption]))
+				// })
+				// .attr('fill', function(d) {
+				// 	return colorObj.bar[dOption]
+				// })
 				.each(function(d, i) {
 					
 					// Calculate value difference between the current and the previous
@@ -426,7 +503,17 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 								diffs = 
 									Object.keys(d).map(function(key, i) {
 										if ( i !== 0 )
-											return { name: key, val: parseInt(d[key])-parseInt(pData[key]) }
+											return { 
+												name: key, 
+
+												val: 
+													(function() {
+														// Check the value is float or integer
+														return (d[key] - Math.ceil(d[key]) < 0) ?
+															(parseFloat(d[key]) - parseFloat(pData[key])).toFixed(2) :
+																parseInt(d[key]) - parseInt(pData[key])
+													})()
+												}
 									})
 									.filter(function(d) { if (d) return d });
 
@@ -481,24 +568,18 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-
+				
 				self._setBarWidth(rows);
 	
 				// Set the scale
 				self._setOrdinalXScale(rows, xLabel);
 				self._setLinearYScale(rows, dOption);
 
-				// working-spot-5: The y tick format selction
-				var isKTick = true;
-				if (d3.min(rows, function(row) { return row[dOption] }) < 1000) 
-					isKTick = false;
-
 				// Set the axes
 				self._setYAxis('left', rows, dOption);
 				self._setXAxis('bottom');
 
 				// Draw the axes
-				// self._createXAxis(rows, xLabel);
 				self._createXAxis(rows, xLabel, self.barWidth, self.step, self.outPadding); 
 				self._createYAxis(rows, yLabel);
 
@@ -533,14 +614,15 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 				var _bars = self.pad.selectAll('rect'),
 					_txts = self.pad.selectAll('.mark'),
 
-					// Former x value of bars
+					// Former x value of bars for text marker transition.
 					f_Pos = (function() {
 						var posAry = [];
 						for ( var i = 0; i < _bars[0].length; i++ ) {
-							posAry.push({
-							x: _bars[0][i].getAttribute('x'),
-							y: _bars[0][i].getAttribute('y')
-						});
+							posAry.push(
+							{
+								x: _bars[0][i].getAttribute('x'),
+								y: _bars[0][i].getAttribute('y')
+							});
 					};
 					return posAry
 				})(),
@@ -551,22 +633,30 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 				self._setLinearYScale(rows, dOption);
 				self._setYAxis('left', rows, dOption);
 
+				// set xy axes' labels.
+				self._updateXAxisLabel(xLabel);
+				self._updateYAxisLabel(yLabel);
+
 				_bars
 					.transition()
 						.attr({
 							y: function(d, i) {
-								// get current positions of 
+
+								// get current positions of bars which will use for bar transition animations.
 								c_Pos.push(
 									{
 										x: this.getAttribute('x'),
-										y: self.yScale(d[dOption])
+										y: self.yScale(parseFloat(d[dOption]))
 									}
 								);
 								return c_Pos[i].y
 							}, 
+
 							height: function(d) {
-								return self.chartHeight - self.yScale(parseInt(d[dOption])) 
+								
+								return self.chartHeight - self.yScale(parseFloat(d[dOption])) 
 							},
+
 							fill :function(d, i) {
 								return colorObj.bar[dOption]
 							}
@@ -589,7 +679,10 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 				_txts
 					.transition()
-					// The text has been rotated about 90 degree
+					/* 
+						The text has been rotated about 90 degrees,
+						so the text x direction would be vertical.
+					*/
 					.attr('x', function(d, i) {
 						var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
 						return parseInt(this.getAttribute('x')) + deltaX })
@@ -845,7 +938,6 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 			dots: self.lineDots,
 			area: self.areaUnderLine
 		});
-
 	});
 
 
@@ -2469,7 +2561,6 @@ function kTick(tick) {
 	console.log(tick);
 	return Math.round(tick/1e3) + 'K'
 }
-
 
 
 /* 
