@@ -4042,7 +4042,7 @@ const DataBoard = React.createClass({
 			
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
-				.drawingData(
+				.mappingData(
 					dataSheet.url, 
 					axes.x,
 					axes.y,
@@ -4075,7 +4075,7 @@ const DataBoard = React.createClass({
 		} else {
 			lG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
-					.drawingData(
+					.mappingData(
 						dataSheet.url, 
 						axes.x,
 						axes.y,

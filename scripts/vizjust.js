@@ -413,6 +413,10 @@ var barGraphClass = function() {
 	this.bars = null;
 	this.barWidth = null;
 
+	// Stack Bars
+	this.stack  = null;
+	this.stackGroup = null;
+
 	this.outPadding = null;
 
 	this.step = null;
@@ -450,10 +454,10 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 		parseInt((this.chartWidth-this.outPadding-this.step*dataset.length) / dataset.length);
 }
 
-barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
+barGraphClass.prototype._createBars = function(dataset, dOption) {
 	
 	var self = this;
-
+	
 	this.bars = 
 		this.pad.append('g')
 			.attr('class', 'bar-group')
@@ -479,21 +483,6 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 						return colorObj.bar[dOption]
 					}
 				})
-				// .attr('class', 'bar')
-				// .attr('x', function(d, i) {
-				// 	return self.outPadding + 
-				// 		i * (self.barWidth + self.step)
-				// })
-				// .attr('y', function(d) {
-				// 	return self.yScale(d[dOption])
-				// })
-				// .attr('width', self.barWidth)
-				// .attr('height', function(d) {
-				// 	return self.chartHeight - self.yScale(parseFloat(d[dOption]))
-				// })
-				// .attr('fill', function(d) {
-				// 	return colorObj.bar[dOption]
-				// })
 				.each(function(d, i) {
 					
 					// Calculate value difference between the current and the previous
@@ -524,15 +513,159 @@ barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
 				});
 }
 
+// working-spot-3
 /* 
 The bar information is the combined information of other sub elements
 Stack bars display the users about what the bars are composed of.
 */
-barGraphClass.prototype._makeStackBars = function() {
+/* <Stack Bars> */
+/*
+	dataset: The data imported from dataset.
+	isFullStack : All data in the dataset are used for stack bars creating.
+	stackOptions: The data options selected.
+*/
+barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackOptions) {
 
+	this.stackGroup = 
+		this.pad.append('g')
+			.classed('stack-bars-group', true);
 
+	var stacks = this.pad.select('g.stack-bars-group').selectAll('g');
+			
+	// Binding the dataset to stack bars.
+	function bindingStack(data) {
+		
+		if (stacks[0].length < data.length)
+			stacks = stacks.data(data).enter();
+		else
+			stacks = stacks.data(data).exit().remove();
+		
+	}
 
+	function renderStack(data, time) {
+		if (stacks[0].length === data.length)
+			stacks.append('g')
+				.classed('stack', true);
+	}
+
+	bindingStack(dataset);
+	renderStack(dataset, null);
+
+	// Assign the stacks to barGraph 
+	this.stacks = stacks;
+
+	// Create the stack bars.
+	this._stackBarProducer(stackOptions);
 }
+
+// Graph tranform from bar to stack bars.
+barGraphClass.prototype._tranformBarToStack = function(stackOptions) {
+
+	this.stackGroup = this.pad.append('g').classed('stack-bars-group', true);
+
+	this.stacks = this.stackGroup.selectAll('g');
+	
+	// Fetch the data from the existed bars.
+	var barsData = (function(bars) {
+		var data = [];
+		bars.each(function(d, i) {
+			data.push(d);
+		});
+		return data
+	})(this.bars);
+
+	var stacks = this.stacks;
+
+	function bindingStack(data) {
+		
+		if (stacks[0].length < data.length)
+			stacks = stacks.data(data).enter();
+		else
+			stacks = stacks.data(data).exit().remove();
+	}
+
+	function renderStack(data) {
+		if (stacks[0].length === data.length)
+			stacks.append('g')
+				.classed('stack', true);
+	}
+
+	bindingStack(barsData);
+	renderStack(barsData);
+
+	// Assigned the stacks after the data binding.
+	this.stacks = stacks;
+	this._stackBarProducer(stackOptions);
+}
+
+
+barGraphClass.prototype._stackBarProducer = function(options) {
+
+	var self = this;
+
+	d3.selectAll('g.stack').each(function(d, stackIndex) {
+
+		var barData = [],
+
+			// Calculate the total stacks height
+			sumStacksHeight = (function() {
+
+				var sum = 0
+
+				for (var i in options) 
+					sum += parseFloat(d[options[i]])
+							
+				return self.chartHeight - self.yScale(sum)
+			})();
+
+			for (var i in options) {
+
+				var temp = {};
+
+				// Set up the name of option
+				temp.name = options[i]
+
+				temp.value = parseFloat(d[options[i]]);
+
+				// Calculate the stacks' height
+				temp.dy = 
+					self.chartHeight - self.yScale(temp.value);
+
+				// Define the start y for the first stack element
+				if (parseInt(i) === 0) 
+					temp.y0 = self.chartHeight - sumStacksHeight;
+				else 
+					temp.y0 = barData[parseInt(i) - 1].y0 + barData[parseInt(i) - 1].dy
+
+				barData.push(temp);
+			}
+
+			d3.select(this).selectAll('rect')
+				.data(barData)
+				.enter()
+					.append('rect')
+						.classed('stackbar', true)
+						.attr({
+							x: function() {
+								return self.outPadding + stackIndex * (self.barWidth + self.step)
+							},
+							y: function(d, i) {
+								return d.y0
+							},
+							height: function(d) {
+								return d.dy
+							},
+							width: function() {
+								return self.barWidth
+							},
+							fill: function(d) {
+								return colorObj.bar[d.name]
+							}
+					});
+		});
+}
+
+/* </Stack Bars> */
 
 barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 
@@ -558,13 +691,12 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
+barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, isStacked, isGrouped) {
 
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
 
-		
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
@@ -600,7 +732,6 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 	return p
 }
 
-// ref-working-spot-6
 barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 	var self = this;
@@ -964,7 +1095,7 @@ lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, p
 }
 
 // Drawing data.
-lineGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
+lineGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption) {
 	
 	var self = this;
 	
