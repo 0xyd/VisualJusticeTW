@@ -3442,10 +3442,26 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
-												}
-										}
-									]
-										,
+												},
+												ext: ['本年執行人數']
+											},
+											{
+												name: '組成',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												ext: ['上年底留監人數', '本年入監人數']
+											},
+											{
+												name: '組成百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												ext: ['上年底留監人數', '本年入監人數']
+											}
+										],
 										[
 											{
 												name: '減刑',
@@ -3456,7 +3472,6 @@ const DataFilterStateTree = {
 											}
 										]
 									]
-									
 								},
 								{
 									name: '本年入監人數',
@@ -3493,7 +3508,9 @@ const DataFilterStateTree = {
 													y: '人數'
 												}
 										}, 
-										'犯次分類'],
+										'犯次分類'
+
+										],
 										[
 											{
 												name: '減刑',
@@ -3538,8 +3555,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '減刑',
@@ -3872,7 +3889,7 @@ const DataFilterStateTree = {
 			return topics
 	},
 
-	// working-spot-5: Find the topic's axes.
+	// Find the topic's axes.
 	findTopicAxes: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
 
 		const state = this.selectState(key);
@@ -3886,6 +3903,21 @@ const DataFilterStateTree = {
 
 		return topic.axes
 
+	},
+
+	// Find topic's external
+	findTopicExt: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
+
+		const state = this.selectState(key);
+
+		const topic = 
+			state.get(datasetIdx)
+				.content.data[dataIdx].topics[chartIndex]
+					.find((topic) => {
+						return topic.name === topicName
+					});
+
+		return topic.ext
 	}
 }	
 
@@ -4002,7 +4034,7 @@ const DataBoard = React.createClass({
 	},
 
 
-	// working-spot-5: Find the axes name for the data 
+	// Find the axes name for the data 
 	findDataTopicAxes(props) {
 
 		const themeKey = store.getState().get('theme');
@@ -4019,6 +4051,21 @@ const DataBoard = React.createClass({
 
 	},
 
+	findDataTopicExt(props) {
+
+		const themeKey = store.getState().get('theme');
+
+		let datasetIndex = 
+					DataFilterStateTree.findDatasetIndex(themeKey, props.dataset),
+				dataIndex = 
+					DataFilterStateTree.findDataIndex(themeKey, props.dataset, props.data),
+				chartTypeIndex = 
+					DataFilterStateTree.findChartTypeIndex(themeKey, props.dataset, props.chartType);
+
+		return DataFilterStateTree.findTopicExt(
+			themeKey, datasetIndex, dataIndex, chartTypeIndex, props.topic)
+
+	},
 
 	// Visualizing data with bar chart
 	vizDataWithBarChart(props, dataSheet, update = false) {
@@ -4107,6 +4154,46 @@ const DataBoard = React.createClass({
 							dataSheet.urls);
 		}
 	},
+
+	
+	// Transform from bar to stack bars.
+	transBarToStackBar(props) {
+
+		let bG = this.gpu.barGraph,
+				t = this.tip;
+
+		const ext = this.findDataTopicExt(props);
+
+		bG.transitBarToStack(ext).then(function() {
+			// Set up the tip for displaying the stack bar info
+			t.appendStackBarMouseOver();
+		});
+	},
+
+	// Transform from bar to stack bars.
+	transStackBarToBar(props) {
+
+		let bG = this.gpu.barGraph,
+				t = this.tip;
+
+		const ext = this.findDataTopicExt(props);
+
+		bG.transitStackBarToBar(ext[0]).then(function() {
+			t.appendBarMouseOver(ext[0]);
+		});
+	},
+
+	// working-spot-3
+	// Transform the stack bar into stack bar with percent unit
+	transStackBarToPCT(props) {
+		let bG = this.gpu.barGraph;
+
+		const axes = this.findDataTopicAxes(props);
+
+		bG.transitPCTStackBar(axes.y);
+
+	},
+
 
 	/* React Native methods */
 	getInitialState() {
@@ -4389,20 +4476,28 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	// working-spot-5: The DataBoard component will renew the visualized data or change a different type.
+	// The DataBoard component will renew the visualized data or change a different type.
 	componentWillUpdate (nextProps, nextStates) {
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
 		var 
+			// Renew the board when user switch dataset or chartTypes
 			shouldRenew = 
 				(this.props.dataset !== nextProps.dataset ||
 				 this.props.chartType !== nextProps.chartType) 
-						? true : false ,
+						? true : false,
+
+			// Update the chart when user switch data viewing
 			shouldUpdate = 
-				(this.props.chartType === nextProps.chartType) ? true : false;
+				(this.props.data !== nextProps.data) ? true : false,
+
+			// Extend the chart when topic update.
+			shouldExtend = 
+				(this.props.topic !== nextProps.topic) ? true : false;
 		
 		if (shouldRenew) { 
+
 			d3.select('#SKETCHPAD').remove();
 			if (nextProps.chartType === '長條圖') { 
 				if (this.props.chartType === '圓環比例圖') 
@@ -4415,13 +4510,32 @@ const DataBoard = React.createClass({
 				this.vizDataWithRingChart(nextProps, dataSheet)
 
 		} else if (shouldUpdate) {
+			// Update for chart type changing
 			if (nextProps.chartType === '長條圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '趨勢圖') {
+			else if (nextProps.chartType === '趨勢圖') 
 				this.vizDataWithLineChart(nextProps, dataSheet, true)
-			}
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
+
+		} else if (shouldExtend) { // Update when topic changing.
+				
+				if (this.props.chartType === '長條圖' && nextProps.topic === '組成'){
+					
+					this.transBarToStackBar(nextProps);
+				}
+				else if (
+					this.props.chartType === '長條圖' && 
+					this.props.topic === '組成' && 
+					nextProps.topic === '總數'
+					) 
+					this.transStackBarToBar(nextProps);
+				// working-spot-3
+				else if (
+					this.props.chartType === '長條圖' && 
+					this.props.topic === '組成' && 
+					nextProps.topic === '組成百分比')
+					this.transStackBarToPCT(nextProps);
 		}
 	},
 
@@ -4619,8 +4733,6 @@ var App = React.createClass({
 
 var Nav = React.createClass({
 	render: function() {
-		console.log('Nav rendering');
-		console.log(this.props.childrenComponents);
 		return (
 			<header id="HDR" className="b20-col-md-4 b12-row-md-12 bd-right">
 				{this.props.childrenComponents}
@@ -4633,8 +4745,6 @@ var Nav = React.createClass({
 var Main = React.createClass({
 
 	render: function() {
-		console.log('Main rendering');
-		console.log(this.props.childrenComponents);
 		return (
 			<section id="BODY" className="b20-col-md-16 b12-row-md-12">
 				{ this.props.childrenComponents }
@@ -5340,11 +5450,11 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 
 			const key = store.getState().get('theme');
 
-			// Data is bounding with topics
+			// Data is bounding with topics so th
 			if (props.menuIndex === 1) 
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx));
-			else 
-				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, null));
+			else  
+				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx));
 		}
 	}
 }

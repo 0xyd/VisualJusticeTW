@@ -246,8 +246,12 @@ graphClass.prototype._setLinearYScale = function(dataset, dOption) {
 
 }
 
-// working-spot-5: Make the ticks more smart and flexible.
-// graphClass.prototype._setYAxis = function(pos, tickFormater) {
+// Set the y scale in percentage
+graphClass.prototype._setYPctScale = function(dataset, dOption) {
+	this.yScale = d3.scale.linear()
+		.domain([0, 100]).rangeRound([this.chartHeight, 0]);
+}
+
 graphClass.prototype._setYAxis = function(pos, values, specKey) {
 
 	if ( typeof pos === 'string' && 
@@ -295,7 +299,21 @@ graphClass.prototype._setYAxis = function(pos, values, specKey) {
 	function kTick(tick) {
 		return Math.round(tick/1e3) + 'K'
 	} 
-	
+}
+
+// The y axis in percentage.
+graphClass.prototype._setYPctAxis = function(pos) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		this.yAxis = d3.svg.axis()
+			.scale(this.yScale).orient(pos)
+				.tickValues(d3.range(0, 100, 20))
+					.tickFormat(function(tick) {
+						return tick + '%'
+					});
+	}
 }
 
 graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, outPadding) {
@@ -326,6 +344,11 @@ graphClass.prototype._createYAxis = function(dataset, yLabel) {
 			.attr('class', 'axis-name')
 			.attr('transform', 'rotate(90) translate(0, -10)')
 			.text(yLabel);
+}
+
+
+graphClass.prototype._removeYAxis = function() {
+	this.pad.select('g.y-axis').remove();
 }
 
 // update the x label
@@ -409,13 +432,17 @@ var barGraphClass = function() {
 	this.chartHeight = null;
 		
 	this.chartWidth = null;
-		
+	
+	// Normal Bars
 	this.bars = null;
+	this.barsGroup = null;
 	this.barWidth = null;
+	this.barTxtGroup = null;
 
 	// Stack Bars
-	this.stack  = null;
+	this.stacks  = null;
 	this.stackGroup = null;
+
 
 	this.outPadding = null;
 
@@ -457,10 +484,12 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 barGraphClass.prototype._createBars = function(dataset, dOption) {
 	
 	var self = this;
-	
-	this.bars = 
+
+	this.barsGroup = 
 		this.pad.append('g')
-			.attr('class', 'bar-group')
+			.attr('class', 'bar-group');
+	
+	this.bars	= this.barsGroup
 			.selectAll('rect')
 			.data(dataset)
 			.enter()
@@ -470,6 +499,13 @@ barGraphClass.prototype._createBars = function(dataset, dOption) {
 					x: function(d, i) {
 						return self.outPadding + i * (self.barWidth + self.step)
 					},
+					y: self.chartHeight,
+					height: 0,
+					width :0
+				})
+				.transition()
+					.duration(1000)
+				.attr({
 					y: function(d, i) {
 						return self.yScale(d[dOption])
 					},
@@ -483,7 +519,7 @@ barGraphClass.prototype._createBars = function(dataset, dOption) {
 						return colorObj.bar[dOption]
 					}
 				})
-				.each(function(d, i) {
+				.each('end', function(d, i) {
 					
 					// Calculate value difference between the current and the previous
 					if (i !== 0) {
@@ -511,9 +547,10 @@ barGraphClass.prototype._createBars = function(dataset, dOption) {
 							_this.attr('diff-'+diffs[j].name, diffs[j].val);
 					}
 				});
+
+	return this
 }
 
-// working-spot-3
 /* 
 The bar information is the combined information of other sub elements
 Stack bars display the users about what the bars are composed of.
@@ -539,7 +576,6 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 			stacks = stacks.data(data).enter();
 		else
 			stacks = stacks.data(data).exit().remove();
-		
 	}
 
 	function renderStack(data, time) {
@@ -559,12 +595,15 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 }
 
 // Graph tranform from bar to stack bars.
-barGraphClass.prototype._tranformBarToStack = function(stackOptions) {
+barGraphClass.prototype.transitBarToStack = function(stackOptions) {
 
-	this.stackGroup = this.pad.append('g').classed('stack-bars-group', true);
-
-	this.stacks = this.stackGroup.selectAll('g');
+	// Reselect the origin bar
+	this.bars = this.barsGroup.selectAll('rect.bar');
 	
+	this.stackGroup = 
+		this.pad.append('g')
+			.classed('stack-bars-group', true);
+
 	// Fetch the data from the existed bars.
 	var barsData = (function(bars) {
 		var data = [];
@@ -573,11 +612,11 @@ barGraphClass.prototype._tranformBarToStack = function(stackOptions) {
 		});
 		return data
 	})(this.bars);
+	
+	var stacks = this.stackGroup.selectAll('g');;
 
-	var stacks = this.stacks;
-
+	// g.stack are used for storing the row data from origin 
 	function bindingStack(data) {
-		
 		if (stacks[0].length < data.length)
 			stacks = stacks.data(data).enter();
 		else
@@ -593,26 +632,36 @@ barGraphClass.prototype._tranformBarToStack = function(stackOptions) {
 	bindingStack(barsData);
 	renderStack(barsData);
 
-	// Assigned the stacks after the data binding.
-	this.stacks = stacks;
-	this._stackBarProducer(stackOptions);
-}
+	// Remove the bars group and the text group following it.
+	this.barsGroup.remove();
+	this.barTxtGroup.remove();
 
+	// Assigned the stacks after the data binding.
+	this.stacks = this.stackGroup.selectAll('g.stack');
+
+	return this._stackBarProducer(stackOptions).then(function(stackbars) {
+		stackbars.each(function(d, i) {
+			// Reappend the year to the stack bar
+			this.__data__.year = this.parentNode.__data__['民國']
+		});
+	})
+}
 
 barGraphClass.prototype._stackBarProducer = function(options) {
 
 	var self = this;
 
-	d3.selectAll('g.stack').each(function(d, stackIndex) {
+	var p = new Promise(function(resolve, reject) {
 
+		d3.selectAll('g.stack').each(function(d, stackIndex) {
+		
 		var barData = [],
 
 			// Calculate the total stacks height
 			sumStacksHeight = (function() {
 
 				var sum = 0
-
-				for (var i in options) 
+				for (var i in options)
 					sum += parseFloat(d[options[i]])
 							
 				return self.chartHeight - self.yScale(sum)
@@ -621,17 +670,16 @@ barGraphClass.prototype._stackBarProducer = function(options) {
 			for (var i in options) {
 
 				var temp = {};
-
-				// Set up the name of option
+				
+				// Set up the name and value of the option
 				temp.name = options[i]
-
 				temp.value = parseFloat(d[options[i]]);
 
 				// Calculate the stacks' height
 				temp.dy = 
 					self.chartHeight - self.yScale(temp.value);
 
-				// Define the start y for the first stack element
+				// Define the start y for the first stack bar element
 				if (parseInt(i) === 0) 
 					temp.y0 = self.chartHeight - sumStacksHeight;
 				else 
@@ -646,23 +694,142 @@ barGraphClass.prototype._stackBarProducer = function(options) {
 					.append('rect')
 						.classed('stackbar', true)
 						.attr({
-							x: function() {
-								return self.outPadding + stackIndex * (self.barWidth + self.step)
-							},
+							x: self.outPadding + stackIndex * (self.barWidth + self.step),
 							y: function(d, i) {
 								return d.y0
 							},
-							height: function(d) {
-								return d.dy
-							},
-							width: function() {
-								return self.barWidth
-							},
 							fill: function(d) {
 								return colorObj.bar[d.name]
+							},
+							width: self.barWidth,
+							height: 0
+						})
+						.transition()
+							.duration(500)
+						.attr({
+							height: function(d) {
+								return d.dy
 							}
 					});
+
+			if (stackIndex === d3.selectAll('g.stack')[0].length - 1) 
+				resolve(d3.selectAll('rect.stackbar'));
+			});
+	});
+
+	return p
+}
+
+// working-spot-3
+// Transit the stack bar in percentage unit. (PCT = Percent abbr)
+barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
+
+	var self = this;
+
+	// Remove the old y axis.
+	this._removeYAxis();
+
+	// Create the percentage y scale.
+	this._setYPctScale();
+	this._setYPctAxis('left');
+	this._createYAxis(null, yLabel);
+
+	// Collect the data from stack bars, the index is the stack
+	var dataPairs = [];
+
+	this.stacks.each(function(d, i) {
+
+		dataPairs[i] = [];
+		
+		d3.select(this).selectAll('rect').each(function(d, j) {
+			dataPairs[i].push({
+				year : d.year,
+				name : d.name,
+				value: d.value
+			});
 		});
+	});
+	
+	// Update the data pairs with percent value
+	dataPairs = dataPairs.map(function(pair) {
+
+		var sum = (function(pair) {
+			var temp = 0
+			for (var i in pair)
+				temp += pair[i].value;
+			return temp
+		})(pair);
+
+		// Calculate the percentage for each
+		for (var j in pair) {
+
+			var pct = (pair[j].value / sum).toFixed(2);
+			
+			pair[j].pct = pct;
+			pair[j].dy_pct = self.chartHeight - self.yScale(parseFloat(pct) * 100);
+
+			if ( parseInt(j) === 0 )
+				pair[j].y0_pct = 0;
+			else 
+				pair[j].y0_pct = pair[parseInt(j)-1].dy_pct
+		}
+
+		return pair
+	});
+
+	// Update the rect size
+	this.stacks.each(function(d, i) {
+		d3.select(this).selectAll('rect')
+			.data(dataPairs[i])
+				.transition()
+					.duration(1000)
+					.attr({
+						y: function(d, i) {
+							return d.y0_pct
+						},
+						height: function(d, i){
+							return self.chartHeight - self.yScale(parseFloat(d.pct) * 100)
+						}
+					});
+	});
+}
+
+// Transit the stack bar to origin bar.
+barGraphClass.prototype.transitStackBarToBar = function(option) {
+
+	var self = this;
+
+	// Grape the data from stack.
+	var data = [];
+
+	var p = new Promise(function(resolve, reject) {
+
+		self.stacks.each(function(d, i) {
+
+			data.push(this.__data__);
+		
+			// Collpase the stack bars inside the stack group.
+			d3.select(this).selectAll('rect.stackbar')
+				.transition().duration(2000)
+					.attr({
+						y: self.chartHeight,
+						height: 0,
+						width : 0
+					});
+
+			if (this === this.parentNode.lastChild ) {
+				self.stackGroup.remove();
+				resolve();
+			}
+		});
+	});
+
+	p.then(function() {
+		self._createBars(data, option);
+		self._markValOnBar(data, option);
+	})
+	
+	return p
 }
 
 /* </Stack Bars> */
@@ -671,8 +838,11 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
 
 	var self = this;
 
-	this.pad.append('g')
-		.attr('id', 'TXTGROUP')
+	this.barTxtGroup = 
+		this.pad.append('g')
+			.attr('id', 'BAR-TXTGROUP')
+
+	this.barTxtGroup
 		.selectAll('text')
 		.data(dataset)
 		.enter()
@@ -2561,6 +2731,55 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		);
 }
 
+tipClass.prototype.appendStackBarMouseOver = function() {
+
+	var self = this,
+			offset = this._setOffset('BAR-TIP');
+
+	d3.select('#SKETCHPAD').selectAll('rect.stackbar')
+		.on('mouseenter', function(d) {
+			var 
+					posX = 
+						parseFloat(this.getAttribute('x')) + 
+						parseFloat(this.getAttribute('width')/2),
+					posY = 
+						parseFloat(this.getAttribute('y'));
+
+				self.barTip
+					.classed('display', true)
+
+					// Make the tip's origin fixed at center of circles
+					.style('top' , posY + offset.Y + 'px')
+					.style('left', posX + offset.X + 'px')
+
+					.html(function() {
+						
+						var info = 
+							'民國 ' + d.year + '<br>' +
+						   		d.name + ': ' + d.value;
+
+						// If the percentage value is available.
+						if (d.pct) 
+							info += '<br>' + (parseFloat(d.pct) * 100).toFixed(2) + '%'
+
+						return '<span id="BAR-INFO">' + info + '</span>'
+					})
+					.call(function(d) {
+						self._correctPos('BAR-TIP')
+							._nodeSizeCorrect('BAR-TIP');
+					});
+		})
+		.on(
+			'mouseout',
+			function(d) {
+				self.barTip
+					.classed('display', false);
+			}
+		);;
+}
+
+
+
 tipClass.prototype._setOffset = function(nodeId) {
 
 	// The origin of tip has to be the same as the origin of the sketchpad.
@@ -2692,7 +2911,6 @@ function kTick(tick) {
 	console.log(tick);
 	return Math.round(tick/1e3) + 'K'
 }
-
 
 /* 
 	A function for pinnig label at the middle bottom of the element space.
