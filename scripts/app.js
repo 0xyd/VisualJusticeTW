@@ -15,7 +15,16 @@ window.isLocal =
 window.query = '&tqx=out:csv';
 window.googleSheet = 'https://spreadsheets.google.com/tq?';
 
-// States for different topic
+/* States for different topic */
+/*
+	Properties:
+		dataset: the name of the dataset
+		extl: 
+			the data is not included in the original dataset which
+			should be called externally.
+		intl: 
+			the data chosen from the dataset for further explanation or operations.
+*/
 const DataFilterStateTree = {
 	state:
 		Map()
@@ -3287,8 +3296,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '案件數'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -3310,8 +3319,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '案件數'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -3334,8 +3343,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '案件數'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -3443,7 +3452,12 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												},
-												ext: ['本年執行人數']
+												intl: {
+													headers: ['本年執行人數']
+												},
+												extl: {
+													url: null
+												}
 											},
 											{
 												name: '組成',
@@ -3451,7 +3465,12 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												},
-												ext: ['上年底留監人數', '本年入監人數']
+												intl: {
+													headers: ['上年底留監人數', '本年入監人數']
+												},
+												extl: {
+													url: null
+												}
 											},
 											{
 												name: '組成百分比',
@@ -3459,7 +3478,12 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '百分比'
 												},
-												ext: ['上年底留監人數', '本年入監人數']
+												intl: {
+													headers: ['上年底留監人數', '本年入監人數']
+												},
+												extl: {
+													url: null
+												}
 											}
 										],
 										[
@@ -3507,9 +3531,42 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												}
-										}, 
-										'犯次分類'
-
+											}, 
+											{
+												name: '犯次分類',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												// working-spot-3
+												extl: {
+													url: (function() {
+														if (isLocal) 
+															return './correction/新入監犯罪次數與種類.csv'
+														else
+															return window.googleSheet +
+																'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+																	window.query
+													})(),
+													headers: ['初犯', '再犯', '累犯']
+												},
+												intl: {
+													headers: null,
+												}
+											},
+											{
+												name: '犯次分類比例',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													headers: ['初犯', '再犯', '累犯']
+												},
+												intl: {
+													headers: null,
+												}
+											}
 										],
 										[
 											{
@@ -3905,8 +3962,8 @@ const DataFilterStateTree = {
 
 	},
 
-	// Find topic's external
-	findTopicExt: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
+	// Find topic's external source for futher analysis.
+	findTopicExtl: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
 
 		const state = this.selectState(key);
 
@@ -3917,8 +3974,23 @@ const DataFilterStateTree = {
 						return topic.name === topicName
 					});
 
-		return topic.ext
-	}
+		return topic.extl
+	},
+
+	// Find topic's internal data for futher analysis.
+	findTopicIntl: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
+
+		const state = this.selectState(key);
+
+		const topic = 
+			state.get(datasetIdx)
+				.content.data[dataIdx].topics[chartIndex]
+					.find((topic) => {
+						return topic.name === topicName
+					});
+
+		return topic.intl
+	},
 }	
 
 /* ***** Elements for the Index Page ***** */
@@ -4051,7 +4123,8 @@ const DataBoard = React.createClass({
 
 	},
 
-	findDataTopicExt(props) {
+	// Find the external soruces for the specific topic
+	findDataTopicExtl(props) {
 
 		const themeKey = store.getState().get('theme');
 
@@ -4062,7 +4135,24 @@ const DataBoard = React.createClass({
 				chartTypeIndex = 
 					DataFilterStateTree.findChartTypeIndex(themeKey, props.dataset, props.chartType);
 
-		return DataFilterStateTree.findTopicExt(
+		return DataFilterStateTree.findTopicExtl(
+			themeKey, datasetIndex, dataIndex, chartTypeIndex, props.topic)
+
+	},
+
+	// Find the external soruces for the specific topic
+	findDataTopicIntl(props) {
+
+		const themeKey = store.getState().get('theme');
+
+		let datasetIndex = 
+					DataFilterStateTree.findDatasetIndex(themeKey, props.dataset),
+				dataIndex = 
+					DataFilterStateTree.findDataIndex(themeKey, props.dataset, props.data),
+				chartTypeIndex = 
+					DataFilterStateTree.findChartTypeIndex(themeKey, props.dataset, props.chartType);
+
+		return DataFilterStateTree.findTopicIntl(
 			themeKey, datasetIndex, dataIndex, chartTypeIndex, props.topic)
 
 	},
@@ -4155,19 +4245,16 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	
 	// Transform from bar to stack bars.
 	transBarToStackBar(props) {
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
-		const ext = this.findDataTopicExt(props);
-
-		bG.transitBarToStack(ext).then(function() {
-			// Set up the tip for displaying the stack bar info
-			t.appendStackBarMouseOver();
-		});
+		const intl = this.findDataTopicIntl(props);
+		const extl = this.findDataTopicExtl(props);
+		
+		bG.transitBarToStack(intl, extl);
 	},
 
 	// Transform from bar to stack bars.
@@ -4176,24 +4263,31 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
-		const ext = this.findDataTopicExt(props);
-
-		bG.transitStackBarToBar(ext[0]).then(function() {
-			t.appendBarMouseOver(ext[0]);
+		// const intl = this.findDataTopicIntl(props);
+		// const extl = this.findDataTopicExtl(props);
+		
+		// bG.transitStackBarToBar(intl[0], extl).then(function() {
+		// 	t.appendBarMouseOver(intl[0], extl);
+		// });
+		bG.transitStackBarToBar(props.data).then(function() {
+			t.appendBarMouseOver(props.data);
 		});
 	},
 
-	// working-spot-3
 	// Transform the stack bar into stack bar with percent unit
 	transStackBarToPCT(props) {
 		let bG = this.gpu.barGraph;
-
 		const axes = this.findDataTopicAxes(props);
-
 		bG.transitPCTStackBar(axes.y);
-
 	},
 
+	// working-spot-3
+	transPCTToStackBar(props) {
+		let bG = this.gpu.barGraph;
+		const axes = this.findDataTopicAxes(props);
+
+		bG.transitPCTSBarToSBar(axes.y);
+	},
 
 	/* React Native methods */
 	getInitialState() {
@@ -4530,12 +4624,46 @@ const DataBoard = React.createClass({
 					nextProps.topic === '總數'
 					) 
 					this.transStackBarToBar(nextProps);
-				// working-spot-3
+				
 				else if (
 					this.props.chartType === '長條圖' && 
 					this.props.topic === '組成' && 
 					nextProps.topic === '組成百分比')
 					this.transStackBarToPCT(nextProps);
+
+				// working-spot-3
+				else if (
+					this.props.data === '新入監人數' &&
+					this.props.topic === '總數' &&
+					nextProps.topic  === '犯次分類'
+				) {
+					this.transBarToStackBar(nextProps);
+				}
+				// working-spot-3
+				else if (
+					this.props.data === '新入監人數' &&
+					this.props.topic === '犯次分類' &&
+					nextProps.topic  === '犯次分類比例'
+				) {
+					this.transStackBarToPCT(nextProps);
+				}
+				// working-spot-3
+				else if (
+					this.props.data === '新入監人數' &&
+					this.props.topic === '犯次分類比例' &&
+					nextProps.topic  === '犯次分類'
+				) {
+					this.transPCTToStackBar(nextProps);
+				}
+				// working-spot-3
+				else if (
+					this.props.data === '新入監人數' &&
+					this.props.topic === '犯次分類' &&
+					nextProps.topic  === '總數'
+				) {
+					console.log('testing');
+					this.transStackBarToBar(nextProps);
+				}
 		}
 	},
 

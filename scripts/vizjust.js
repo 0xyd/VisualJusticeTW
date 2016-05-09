@@ -53,7 +53,6 @@ var colorClass = function() {
 
 		// For 殺人罪 (Prosecution)
 
-
 		// For 兒童及少年性交易防制條例 (Prosecution),
 		'死刑': '#C20446',
 		'無期徒刑': '#E5404C',
@@ -75,6 +74,10 @@ var colorClass = function() {
 		'本年出獄人數': '#F16B23',
 		'本年年底留監人數': '#55B5DF',
 
+		// For 犯次分類 (Correction)
+		'累犯': '#E5404C',
+		'再犯': '#F16B23',
+		'初犯': '#F68989'
 
 		
 	},
@@ -594,9 +597,10 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 	this._stackBarProducer(stackOptions);
 }
 
+// working-spot-3
 // Graph tranform from bar to stack bars.
-barGraphClass.prototype.transitBarToStack = function(stackOptions) {
-
+barGraphClass.prototype.transitBarToStack = function(intl, extl) {
+	
 	// Reselect the origin bar
 	this.bars = this.barsGroup.selectAll('rect.bar');
 	
@@ -604,16 +608,9 @@ barGraphClass.prototype.transitBarToStack = function(stackOptions) {
 		this.pad.append('g')
 			.classed('stack-bars-group', true);
 
-	// Fetch the data from the existed bars.
-	var barsData = (function(bars) {
-		var data = [];
-		bars.each(function(d, i) {
-			data.push(d);
-		});
-		return data
-	})(this.bars);
-	
-	var stacks = this.stackGroup.selectAll('g');;
+	var self = this,
+			stacks = this.stackGroup.selectAll('g'),
+			promised = null;
 
 	// g.stack are used for storing the row data from origin 
 	function bindingStack(data) {
@@ -622,58 +619,127 @@ barGraphClass.prototype.transitBarToStack = function(stackOptions) {
 		else
 			stacks = stacks.data(data).exit().remove();
 	}
-
 	function renderStack(data) {
 		if (stacks[0].length === data.length)
 			stacks.append('g')
 				.classed('stack', true);
 	}
 
-	bindingStack(barsData);
-	renderStack(barsData);
+	// working-spot-3: Import the data from external data sheet.
+	if (extl.url) {
 
-	// Remove the bars group and the text group following it.
-	this.barsGroup.remove();
-	this.barTxtGroup.remove();
+		// Once the data loading is succeed, return the rows.
+		var p_extl = new Promise(function(resolve, reject) {
 
-	// Assigned the stacks after the data binding.
-	this.stacks = this.stackGroup.selectAll('g.stack');
-
-	return this._stackBarProducer(stackOptions).then(function(stackbars) {
-		stackbars.each(function(d, i) {
-			// Reappend the year to the stack bar
-			this.__data__.year = this.parentNode.__data__['民國']
+			self.readCSV(extl.url)
+				.row(self._dataFiltering)
+				.get(function(errors, rows) {
+					resolve(rows);
+				});
 		});
-	})
+	}
+
+
+	var p_intl = new Promise(function(resolve, reject) {
+
+		// Fetch the data from the existed bars.
+		var barsData = (function(bars) {
+
+			var data = [];
+			
+			bars.each(function(d, i) {
+				data.push(d);
+				if (i === bars[0].length - 1)
+					resolve(data)
+			});
+			return data
+		})(self.bars);
+
+	});
+
+	
+	Promise.all([p_extl, p_intl]).then(function(dataHub) {
+		
+		var stackData = [];
+
+		// Find the longest data array.
+		var len = 0;
+
+		for (var i = 0; i < 2; ++i) {
+			if (dataHub[i] && len < dataHub[i].length)
+				len = dataHub[i].length;
+		}
+
+		// Tranverse the data array according to the longest data length and
+		// merge the two results as the data the stack bar needs.
+		for (var j = 0; j < len ; ++j) {
+
+			var temp = {};
+
+			for (var k = 0; k < 2; ++k) 
+				if (dataHub[k]) Object.assign(temp, dataHub[k][j])
+
+			stackData.push(temp); 
+		}
+
+		bindingStack(stackData);
+		renderStack(stackData);
+		
+		// Remove the bars group and the text group following it.
+		self.barsGroup.remove();
+		self.barTxtGroup.remove();
+
+		self._stackBarProducer(intl, extl)
+			.then(function(stackbars) {
+				stackbars.each(function(d, i) {
+					// Reappend the year to the stack bar
+					this.__data__.year = this.parentNode.__data__['民國'];
+				});
+				return new tipClass()
+			})
+			.then(function(tip){ 
+				tip.appendStackBarMouseOver() });
+	});
 }
 
-barGraphClass.prototype._stackBarProducer = function(options) {
+// working-spot-3
+barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 
-	var self = this;
-
+	this.stacks = this.stackGroup.selectAll('g.stack');
+	
+	var self = this,
+			headers = 
+				[].concat(intl.headers, extl.headers)
+					.filter(function(d) { 
+						return (d !== null && d !== undefined )
+					});
+	
 	var p = new Promise(function(resolve, reject) {
 
 		d3.selectAll('g.stack').each(function(d, stackIndex) {
 		
-		var barData = [],
+		// Select the headers chosen for specific purpose.
+		if (headers) {
 
-			// Calculate the total stacks height
-			sumStacksHeight = (function() {
+			var barData = [],
 
-				var sum = 0
-				for (var i in options)
-					sum += parseFloat(d[options[i]])
-							
-				return self.chartHeight - self.yScale(sum)
-			})();
+				// Calculate the total stacks height
+				sumStacksHeight = (function() {
+	
+					var sum = 0
+					for (var i in headers)
+						sum += parseFloat(d[headers[i]])
+								
+					return self.chartHeight - self.yScale(sum)
+				})();
 
-			for (var i in options) {
+			for (var i in headers) {
 
 				var temp = {};
 				
 				// Set up the name and value of the option
-				temp.name = options[i]
-				temp.value = parseFloat(d[options[i]]);
+				temp.name = headers[i]
+				temp.value = parseFloat(d[headers[i]]);
 
 				// Calculate the stacks' height
 				temp.dy = 
@@ -686,7 +752,9 @@ barGraphClass.prototype._stackBarProducer = function(options) {
 					temp.y0 = barData[parseInt(i) - 1].y0 + barData[parseInt(i) - 1].dy
 
 				barData.push(temp);
+
 			}
+		}
 
 			d3.select(this).selectAll('rect')
 				.data(barData)
@@ -720,7 +788,7 @@ barGraphClass.prototype._stackBarProducer = function(options) {
 	return p
 }
 
-// working-spot-3
+
 // Transit the stack bar in percentage unit. (PCT = Percent abbr)
 barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 
@@ -739,20 +807,25 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 
 	this.stacks.each(function(d, i) {
 
+		// Each pair has several array which contain the data of each stack bar.
 		dataPairs[i] = [];
 		
 		d3.select(this).selectAll('rect').each(function(d, j) {
 			dataPairs[i].push({
 				year : d.year,
 				name : d.name,
-				value: d.value
+				value: d.value,
+
+				// For returning to the quantitive stack bar
+				y0: d.y0,
+				dy: d.dy
 			});
 		});
 	});
 	
 	// Update the data pairs with percent value
 	dataPairs = dataPairs.map(function(pair) {
-
+		console.log(pair);
 		var sum = (function(pair) {
 			var temp = 0
 			for (var i in pair)
@@ -761,17 +834,32 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 		})(pair);
 
 		// Calculate the percentage for each
-		for (var j in pair) {
+		for (var j = 0; j < pair.length; j++) {
 
 			var pct = (pair[j].value / sum).toFixed(2);
 			
 			pair[j].pct = pct;
-			pair[j].dy_pct = self.chartHeight - self.yScale(parseFloat(pct) * 100);
-
-			if ( parseInt(j) === 0 )
+			
+			// The first stack bar starts from y0
+			if ( j === 0 )
 				pair[j].y0_pct = 0;
+			// The begining point for the element are the combined y0 and dy results of the previous 
 			else 
-				pair[j].y0_pct = pair[parseInt(j)-1].dy_pct
+				pair[j].y0_pct = pair[j-1].dy_pct + pair[j-1].y0_pct
+
+			// The last stack bar should fill out the left space.
+			if ( j === pair.length - 1) {
+
+				pair[j].dy_pct = 
+					(function(pairNumber) {
+						var sum_dy = 0  
+						for (var i = 0; i < pairNumber; i++) 
+							sum_dy += pair[i].dy_pct
+						return self.chartHeight - sum_dy
+						})(j);
+			}
+			else
+				pair[j].dy_pct = self.chartHeight - self.yScale(parseFloat(pct) * 100);
 		}
 
 		return pair
@@ -788,14 +876,16 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 							return d.y0_pct
 						},
 						height: function(d, i){
-							return self.chartHeight - self.yScale(parseFloat(d.pct) * 100)
+							return d.dy_pct
 						}
 					});
 	});
 }
 
+// working-spot-3
 // Transit the stack bar to origin bar.
-barGraphClass.prototype.transitStackBarToBar = function(option) {
+// barGraphClass.prototype.transitStackBarToBar = function(option) {
+barGraphClass.prototype.transitStackBarToBar = function(header) {
 
 	var self = this;
 
@@ -825,11 +915,66 @@ barGraphClass.prototype.transitStackBarToBar = function(option) {
 	});
 
 	p.then(function() {
-		self._createBars(data, option);
-		self._markValOnBar(data, option);
+		// self._createBars(data, option);
+		// self._markValOnBar(data, option);
+		self._createBars(data, header);
+		self._markValOnBar(data, header);
 	})
 	
 	return p
+}
+
+// Switch from percent stack bar to origin stack bar which counts the quantity.
+barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel) {
+
+	var self = this;
+
+	// Store the dataset from the stack bars.
+	var dataset = [];
+
+	this.stacks.each(function(d, i) {
+		dataset[i] = [];
+		d3.select(this).selectAll('rect')
+			.each(function(d, j) {
+				dataset[i].push(d);
+			});
+	});
+
+	// Sum up the value of each stack bar.
+	var _dataSum = 
+		dataset.map(function(d) {
+			var t = 0;
+			for ( var i = 0; i < d.length; ++i )
+				t += d[i].value
+			return t
+		});
+
+	
+	// Remove the previous y axis.
+	this._removeYAxis();
+
+	// Create the linear y scale.
+	this._setLinearYScale(_dataSum, null);
+	this._setYAxis('left', _dataSum, null); 
+	this._createYAxis(null, yLabel);
+
+	// Resize the stack bars.
+	this.stacks.each(function(d, i) {
+		d3.select(this).selectAll('rect')
+			.transition()
+				.duration(2000)
+					// working-spot-3
+					.attr({
+						y: function(d, i) {
+							return d.y0
+						},
+						height: function(d, i) {
+							return d.dy
+						}
+					});
+	});
+
+
 }
 
 /* </Stack Bars> */
@@ -895,7 +1040,6 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, is
 					barWidth: self.barWidth,
 					outPadding: self.outPadding
 				});
-
 			});
 	});
 
