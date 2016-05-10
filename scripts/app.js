@@ -34,7 +34,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '竊盜案件',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -235,7 +235,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '暴力犯罪案件',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -407,7 +407,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '毒品案件',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -552,7 +552,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '殺人罪',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -839,7 +839,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '兒童及少年性交易防制條例',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -1103,7 +1103,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '竊盜罪',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -1367,7 +1367,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '擄人勒贖罪',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1631,7 +1631,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '恐嚇罪',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1895,7 +1895,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '槍砲彈藥刀械管制條例',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -2159,7 +2159,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '公共危險罪',
 						availableChartTypes: [
-							'長條圖',
+							'直方圖',
 							'趨勢圖'
 						],
 						content: {
@@ -2400,7 +2400,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '貪污罪',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖',
 						],
 						content: {
@@ -2641,7 +2641,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '瀆職罪',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -2886,7 +2886,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '地方法院刑事案件收結情形',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -3085,7 +3085,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '高等法院刑事案件收結情形',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -3281,7 +3281,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '最高法院刑事案件收結情形',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -3437,7 +3437,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '監獄人數概況',
 						availableChartTypes: [
-								'長條圖',
+								'直方圖',
 								'趨勢圖'
 						],
 						content: {
@@ -3991,7 +3991,143 @@ const DataFilterStateTree = {
 
 		return topic.intl
 	},
-}	
+};
+
+/* Story Telleller */
+class StoryTeller {
+
+	constructor() {
+		// working-spot-3
+		/* * Story Chains define how the animations work each time user switch a topic. * */
+		/*
+			Story Chains make animation on step at a time and never do flying or jumping.
+			When user read the first topic and he choose the final one directly,
+			the App starts to interate each step until reaching the destination in a proper time,
+			not just swift to the result.
+
+			dataset <String>: The current dataset
+			data    <String>: The current data
+			vizType <String>: The current chartTpye operating transition animation.
+			fwdSteps <Array>: The step animation when user increases their depth of topic reading.
+				goto <String>: the next topic,
+				transit <Function>: the way move to the destination
+				end: <Object Promise>: 
+						 Store the Promise object for ascychrnous control. 
+						 However, its default value is null.
+			bwdSteps <Array>: The step animation when user decreases their depth of topic reading.
+				*The properties are the same as fwdSteps.*
+
+		*/
+		this.storyChains = [
+			{
+				dataset: '監獄人數概況',
+				data: '本年執行人數',
+				vizType: '直方圖',
+
+				// working-spot-3
+				fwdSteps: [
+					{ 
+						goto: '組成', 
+						transit : (_this, params) => {
+							return _this.transBarToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{ 
+						goto: '組成百分比', 
+						transit : (_this, params) => {
+							return _this.transStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+				],
+
+				bwdSteps: [
+					{ 
+						goto: '總數', 
+						transit : (_this, params) => {
+							console.log('test 1');
+							return _this.transStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{ 
+						goto: '組成', 
+						transit : (_this, params) => {
+							console.log('test 2');
+							return _this.transPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					}
+				]
+			}
+		];
+
+		// Store the current story chain.
+		this._story = null
+	}
+
+	// Decide which story chain should be applied.
+	decideChain(datasetName, dataName, vizTypeName) {
+		this._story = this.storyChains.find((chain) => {
+			return chain.dataset === datasetName && 
+				chain.data === dataName && 
+				chain.vizType === vizTypeName
+		})
+	}
+
+	
+	// toTell interates through the animation processes.
+	/*
+		startDepth: The current depth the user reads on
+		endDepth  : The destination depth the user wants to
+		opParams  : The parameters each step needs to apply
+	*/
+	toTell(startDepth, endDepth, fwdOpParams, bwdOpParams) {
+
+		// For deeper exploration
+		if (endDepth - startDepth > 0) {
+
+			for (let s = startDepth; s < endDepth; ++s)
+				// The pending promise object will be assigned to the end property. 
+				if ( s === startDepth ) 
+					this._story.fwdSteps[s].end = 
+						this._story.fwdSteps[s]
+							.transit(fwdOpParams[s]._, fwdOpParams[s].params);
+				else
+					this._story.fwdSteps[s].end = 
+						this._story.fwdSteps[s-1].end
+							.then(this._story.fwdSteps[s]
+								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
+		}
+		// working-spot-3
+		// For returning back from the deep.
+		else if (endDepth - startDepth < 0) {
+
+			for (let s = startDepth - 1; s >= endDepth; --s) {
+
+				if ( s === startDepth - 1 ) {
+					this._story.bwdSteps[s].end = 
+						this._story.bwdSteps[s]
+							.transit(bwdOpParams[s]._, bwdOpParams[s].params);
+				}
+				
+				else {
+					this._story.bwdSteps[s].end = 
+						this._story.bwdSteps[s+1].end
+							.then(this._story.bwdSteps[s]
+								.transit.bind(null, bwdOpParams[s]._, bwdOpParams[s].params));
+				}
+			}
+		}
+	}
+
+}
+// Write for testing purpose.
+// const storyTeller = new StoryTeller();
+
+// storyTeller.decideChain('監獄人數概況', '本年執行人數', '直方圖');
+// storyTeller.toTell(0,1);
 
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
@@ -4096,6 +4232,9 @@ const DataBoard = React.createClass({
 
 	tip: new tipClass(),
 
+	// Story teller is an explainer for deeper topic tranverse.
+	storyTeller: new StoryTeller(),
+
 	// Find the index of datasheet.
 	findDataSheetIndex(props) {
 		let dSheet = this.state.dataSheets
@@ -4104,7 +4243,6 @@ const DataBoard = React.createClass({
 			});
 		return dSheet
 	},
-
 
 	// Find the axes name for the data 
 	findDataTopicAxes(props) {
@@ -4254,7 +4392,7 @@ const DataBoard = React.createClass({
 		const intl = this.findDataTopicIntl(props);
 		const extl = this.findDataTopicExtl(props);
 		
-		bG.transitBarToStack(intl, extl);
+		return bG.transitBarToStack(intl, extl);
 	},
 
 	// Transform from bar to stack bars.
@@ -4269,7 +4407,8 @@ const DataBoard = React.createClass({
 		// bG.transitStackBarToBar(intl[0], extl).then(function() {
 		// 	t.appendBarMouseOver(intl[0], extl);
 		// });
-		bG.transitStackBarToBar(props.data).then(function() {
+		return bG.transitStackBarToBar(props.data).then(function() {
+			console.log('haha is here!');
 			t.appendBarMouseOver(props.data);
 		});
 	},
@@ -4281,12 +4420,12 @@ const DataBoard = React.createClass({
 		bG.transitPCTStackBar(axes.y);
 	},
 
-	// working-spot-3
+	// Transform the percentage stack bar into quantative stack bar
 	transPCTToStackBar(props) {
 		let bG = this.gpu.barGraph;
 		const axes = this.findDataTopicAxes(props);
 
-		bG.transitPCTSBarToSBar(axes.y);
+		return bG.transitPCTSBarToSBar(axes.y);
 	},
 
 	/* React Native methods */
@@ -4559,7 +4698,7 @@ const DataBoard = React.createClass({
 
 		let dataSheet = this.findDataSheetIndex(this.props);
 		
-		if (this.props.chartType === '長條圖') {
+		if (this.props.chartType === '直方圖') {
 			this.vizDataWithBarChart(this.props, dataSheet);
 			
 		} else if (this.props.chartType === '趨勢圖') {
@@ -4586,14 +4725,17 @@ const DataBoard = React.createClass({
 			shouldUpdate = 
 				(this.props.data !== nextProps.data) ? true : false,
 
+			// working-spot-3
 			// Extend the chart when topic update.
-			shouldExtend = 
-				(this.props.topic !== nextProps.topic) ? true : false;
+			shouldDive = 
+				(this.props.topic !== nextProps.topic && 
+				 this.props.dataset === nextProps.dataset &&
+				 this.props.data === nextProps.data) ? true : false;
 		
 		if (shouldRenew) { 
 
 			d3.select('#SKETCHPAD').remove();
-			if (nextProps.chartType === '長條圖') { 
+			if (nextProps.chartType === '直方圖') { 
 				if (this.props.chartType === '圓環比例圖') 
 					this.gpu.ringGraph.removeBoards();
 				this.vizDataWithBarChart(nextProps, dataSheet)
@@ -4605,65 +4747,88 @@ const DataBoard = React.createClass({
 
 		} else if (shouldUpdate) {
 			// Update for chart type changing
-			if (nextProps.chartType === '長條圖') 
+			if (nextProps.chartType === '直方圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
 			else if (nextProps.chartType === '趨勢圖') 
 				this.vizDataWithLineChart(nextProps, dataSheet, true)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
-		} else if (shouldExtend) { // Update when topic changing.
-				
-				if (this.props.chartType === '長條圖' && nextProps.topic === '組成'){
-					
-					this.transBarToStackBar(nextProps);
-				}
-				else if (
-					this.props.chartType === '長條圖' && 
-					this.props.topic === '組成' && 
-					nextProps.topic === '總數'
-					) 
-					this.transStackBarToBar(nextProps);
-				
-				else if (
-					this.props.chartType === '長條圖' && 
-					this.props.topic === '組成' && 
-					nextProps.topic === '組成百分比')
-					this.transStackBarToPCT(nextProps);
+		} else if (shouldDive) { // Update when topic changing.
 
-				// working-spot-3
-				else if (
-					this.props.data === '新入監人數' &&
-					this.props.topic === '總數' &&
-					nextProps.topic  === '犯次分類'
-				) {
-					this.transBarToStackBar(nextProps);
-				}
-				// working-spot-3
-				else if (
-					this.props.data === '新入監人數' &&
-					this.props.topic === '犯次分類' &&
-					nextProps.topic  === '犯次分類比例'
-				) {
-					this.transStackBarToPCT(nextProps);
-				}
-				// working-spot-3
-				else if (
-					this.props.data === '新入監人數' &&
-					this.props.topic === '犯次分類比例' &&
-					nextProps.topic  === '犯次分類'
-				) {
-					this.transPCTToStackBar(nextProps);
-				}
-				// working-spot-3
-				else if (
-					this.props.data === '新入監人數' &&
-					this.props.topic === '犯次分類' &&
-					nextProps.topic  === '總數'
-				) {
-					console.log('testing');
-					this.transStackBarToBar(nextProps);
-				}
+			// working-spot-3
+			this.storyTeller.decideChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+			if (nextProps.dataset === '監獄人數概況' && 
+					nextProps.data === '本年執行人數' && 
+					nextProps.chartType === '直方圖')
+				this.storyTeller.toTell(
+					this.props.topicDepth, 
+					nextProps.topicDepth, 
+					[
+						{ _: this, params: [nextProps]}, 
+						{ _: this, params: [nextProps]}
+					],
+					[
+						{ _: this, params: [nextProps]}, 
+						{ _: this, params: [nextProps]}
+					]
+				);
+
+				// console.log('topic update here!');
+				// console.log(nextProps);
+				// console.log(this.props);
+
+				// if (this.props.chartType === '直方圖' && nextProps.topic === '組成'){
+					
+				// 	this.transBarToStackBar(nextProps);
+				// }
+				// else if (
+				// 	this.props.chartType === '直方圖' && 
+				// 	this.props.topic === '組成' && 
+				// 	nextProps.topic === '總數'
+				// 	) 
+				// 	// this.transStackBarToBar(nextProps);
+				// 	// working-spot-3
+				// 	this.storyChains[0].fwdSteps[0].transit(this, [nextProps]);
+				// else if (
+				// 	this.props.chartType === '直方圖' && 
+				// 	this.props.topic === '組成' && 
+				// 	nextProps.topic === '組成百分比')
+				// 	this.transStackBarToPCT(nextProps);
+
+				// // working-spot-3
+				// else if (
+				// 	this.props.data === '新入監人數' &&
+				// 	this.props.topic === '總數' &&
+				// 	nextProps.topic  === '犯次分類'
+				// ) {
+				// 	this.transBarToStackBar(nextProps);
+				// }
+				// // working-spot-3
+				// else if (
+				// 	this.props.data === '新入監人數' &&
+				// 	this.props.topic === '犯次分類' &&
+				// 	nextProps.topic  === '犯次分類比例'
+				// ) {
+				// 	this.transStackBarToPCT(nextProps);
+				// }
+				// // working-spot-3
+				// else if (
+				// 	this.props.data === '新入監人數' &&
+				// 	this.props.topic === '犯次分類比例' &&
+				// 	nextProps.topic  === '犯次分類'
+				// ) {
+				// 	this.transPCTToStackBar(nextProps);
+				// }
+				// // working-spot-3
+				// else if (
+				// 	this.props.data === '新入監人數' &&
+				// 	this.props.topic === '犯次分類' &&
+				// 	nextProps.topic  === '總數'
+				// ) {
+				// 	this.transStackBarToBar(nextProps);
+				// }
 		}
 	},
 
@@ -4776,11 +4941,13 @@ const DropdownMenu = React.createClass({
 	render: function() {
 
 		let key = 0,
+				optionIdx = 0,
 				menuItems = [];
 		
 		for (let option of this.props.options) 
 			menuItems.push(<StatFilterDropdownMenuItem
-				key={++key} optionIdx={++key} name={option} menuIndex={this.props.menuIndex}/>)
+				key={++key} optionIdx={optionIdx++} name={option} menuIndex={this.props.menuIndex}/>)
+		
 
 		return (
 			<ul className={this.props.isDisplayed ? 
@@ -4918,14 +5085,15 @@ function expandDropdownAC(dropdownIndex) {
 	}
 }
 
-function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex) {
+function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicDepth) {
 	
 	return {
 		type : 'SELECT_DROPDOWN_OPTION',
 		theme: theme,
 		fieldsetIndex: fieldsetIndex,
 		dataIndex: dIndex,
-		option: optionName
+		option: optionName,
+		topicDepth: topicDepth
 	}
 }
 
@@ -4955,7 +5123,7 @@ function AppReducer(state = INITIAL_STATE, action) {
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
 				state, 
-				action.theme, action.option, action.fieldsetIndex, action.dataIndex)
+				action.theme, action.option, action.fieldsetIndex, action.dataIndex, action.topicDepth)
 
 		default: 
 			return state
@@ -5036,7 +5204,7 @@ function setAppMainThemes(state) {
 
 
 function selectAppTheme(state, theme) {
-	console.log(theme);
+	
 	let navComponents  = [
 			<Logo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
 		mainComponents = [<StatDataBoard key='0' />];
@@ -5055,6 +5223,10 @@ function selectAppTheme(state, theme) {
 	let defaultChartType = null;
 	let defaultTopic = null;
 
+	// working-spot-3
+	// Topic depth defines how deep the user drilling into the data.
+	let defaultTopicDepth = null;
+
 	let defaultFilterDropdownMenus = null;
 
 	switch(theme) {
@@ -5064,8 +5236,9 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/policeStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '竊盜案件');
 			defaultData = setState('currentData', '合計發生件數');
-			defaultChartType = setState('currentChartType', '長條圖');
+			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '案件總數');
+			defaultTopicDepth = setState('currentTopicDepth', 0);
 
 			// Set the default dropdown menu and its option.
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('police');
@@ -5073,7 +5246,8 @@ function selectAppTheme(state, theme) {
 			return state.merge(
 				navState, mainState,
 				themeState, statTitle, filterNames, 
-				defaultDataset, defaultData, defaultChartType, defaultTopic, defaultFilterDropdownMenus)
+				defaultDataset, defaultData, defaultChartType, 
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
 
 		case 'PROSECUTION_STAT':
 
@@ -5081,15 +5255,17 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/prosecuteStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '兒童及少年性交易防制條例');
 			defaultData = setState('currentData', '有期徒刑');
-			defaultChartType = setState('currentChartType', '長條圖');
+			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
+			defaultTopicDepth = setState('currentTopicDepth', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('prosecution');
 				
 			return state.merge(
 				navState, mainState,
 				themeState, statTitle, filterNames,
-				defaultDataset, defaultData, defaultChartType, defaultTopic, defaultFilterDropdownMenus
+				defaultDataset, defaultData, defaultChartType, 
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus
 				)
 
 		case 'JUDICIAL_STAT':
@@ -5098,15 +5274,17 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/judgeStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '地方法院刑事案件收結情形');
 			defaultData = setState('currentData', '新受');
-			defaultChartType = setState('currentChartType', '長條圖');
+			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
+			defaultTopicDepth = setState('currentTopicDepth', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('judicial');
 
 			return state.merge(
 				navState, mainState,
 				themeState, statTitle, filterNames, 
-				defaultDataset, defaultData, defaultChartType, defaultTopic, defaultFilterDropdownMenus)
+				defaultDataset, defaultData, defaultChartType, 
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
 
 		case 'CORRECTION_STAT':
 			
@@ -5114,8 +5292,9 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/correctStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '監獄人數概況');
 			defaultData = setState('currentData', '本年執行人數');
-			defaultChartType = setState('currentChartType', '長條圖');
+			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
+			defaultTopicDepth = setState('currentTopicDepth', 0);
 
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('correction');
@@ -5124,7 +5303,7 @@ function selectAppTheme(state, theme) {
 				navState, mainState, 
 				statTitle, filterNames, themeState,
 				defaultDataset, defaultData, defaultChartType,
-				defaultTopic, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
 
 		default:
 			return state
@@ -5207,13 +5386,18 @@ function setDropdownMenuStates(state, index) {
 			
 		dataIdx:
  */
-function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) {
+
+// Update the dropdown menu. 
+function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
 	
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
+
+	// working-spot-3: Topic depth define how much info for users to read.
+	let newTopicDepth = null;
 
 	const currentState = store.getState();
 
@@ -5249,7 +5433,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 						newState.dataset, 
 						newState.data, 
 						newState.chartType, 
-						newState.topic, 
+						newState.topic,
+						// working-spot-3
+						newState.topicDepth,
 						newState.dropdownMenuStates)
 				}
 			return state.merge(collapsedAllDropdownMenuStates)
@@ -5292,7 +5478,10 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 
 				newTopic = setState('currentTopic', optionName);
 
-				return state.merge(newTopic, collapsedAllDropdownMenuStates)
+				// working-spot-3
+				newTopicDepth = setState('currentTopicDepth', topicDepth);
+
+				return state.merge(newTopic, newTopicDepth, collapsedAllDropdownMenuStates)
 			}
 			return state.merge(collapsedAllDropdownMenuStates);
 		}
@@ -5324,6 +5513,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 			'currentTopic', 
 			stateTree.get(datasetIndex).content.data[0].topics[0][0].name
 			);
+
+		// Set the new topic depth to 0
+		let newTopicDepth = setState('currentTopicDepth', 0);
 
 		// Set up the states for the dropdowns.
 		let newDropdownMenuStates = 
@@ -5367,6 +5559,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 			data: newData,
 			chartType: newChartType,
 			topic: newTopic,
+			topicDepth: newTopicDepth,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -5374,6 +5567,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 	function __dataSwitchRendering(state, dataName) {
 
 		const newData = setState('currentData', dataName);
+
+		const newTopicDepth = setState('currentTopicDepth', 0);
 
 		// Switch data will change the available topics
 		const	newDropdownMenuStates = 
@@ -5390,6 +5585,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 	function __chartTypeSwitchRendering(state, chartType, fieldsetIndex) {
 
 		const newChartType = setState('currentChartType', optionName);
+
+		const newTopicDepth = setState('currentTopicDepth', 0);
 
 		const newDropdownMenuStates = setState(
 					'filterDropdownMenus', 
@@ -5408,7 +5605,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx) 
 			topic: newTopic,
 			dropdownMenuStates: newDropdownMenuStates
 		}
-
 	}
 }
 
@@ -5517,11 +5713,8 @@ const AppMain = RRd.connect(
 
 
 /* Connect the redux's app state to ThemeBtn. */
-
-
 const ThemeButton = RRd.connect(
 	null,
-	// mapDispatchToThemeBtnProps
 	null
 )(ThemeBtn);
 
@@ -5573,19 +5766,24 @@ const StatFilterDropdownMenu = RRd.connect(
 const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 	return {
 						
-		// working-spot-5
 		selectOption: (e) => {
 
 			const key = store.getState().get('theme');
-
+			
 			// Data is bounding with topics so th
 			if (props.menuIndex === 1) 
-				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx));
+				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
+			// working-spot-3
+			// The topic user clicks on determines the depth.
+			else if (props.menuIndex === 3) 
+				dispatch(selectDropdownOptionAC(
+					key, props.name, props.menuIndex, props.optionIdx, props.optionIdx));
 			else  
-				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx));
+				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
 		}
 	}
 }
+
 const StatFilterDropdownMenuItem = RRd.connect(
 	null,
 	mapDispatchToDropdownMenuItemBtnProps
@@ -5614,7 +5812,9 @@ const mapStateToDataBoardProps = (state) => {
 		dataset  : state.get('currentDataset'), 
 		data     : state.get('currentData'), 
 		chartType: state.get('currentChartType'),
-		topic    : state.get('currentTopic')
+		topic    : state.get('currentTopic'),
+		// working-spot-3
+		topicDepth: state.get('currentTopicDepth')
 	}
 }
 

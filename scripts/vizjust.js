@@ -650,15 +650,17 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 			bars.each(function(d, i) {
 				data.push(d);
 				if (i === bars[0].length - 1)
-					resolve(data)
+					resolve(data);
 			});
 			return data
 		})(self.bars);
 
 	});
 
-	
-	Promise.all([p_extl, p_intl]).then(function(dataHub) {
+	// working-spot-3
+	var p_final = new Promise(function(resolve, reject) {
+
+		Promise.all([p_extl, p_intl]).then(function(dataHub) {
 		
 		var stackData = [];
 
@@ -698,8 +700,15 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 				return new tipClass()
 			})
 			.then(function(tip){ 
-				tip.appendStackBarMouseOver() });
+				tip.appendStackBarMouseOver();
+				resolve();
+			});
 	});
+
+	});
+
+	return p_final
+	
 }
 
 // working-spot-3
@@ -825,7 +834,7 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 	
 	// Update the data pairs with percent value
 	dataPairs = dataPairs.map(function(pair) {
-		console.log(pair);
+
 		var sum = (function(pair) {
 			var temp = 0
 			for (var i in pair)
@@ -927,54 +936,62 @@ barGraphClass.prototype.transitStackBarToBar = function(header) {
 // Switch from percent stack bar to origin stack bar which counts the quantity.
 barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel) {
 
+
 	var self = this;
 
-	// Store the dataset from the stack bars.
-	var dataset = [];
+	var p = new Promise(function(resolve, reject) {
 
-	this.stacks.each(function(d, i) {
-		dataset[i] = [];
-		d3.select(this).selectAll('rect')
-			.each(function(d, j) {
+		// Store the dataset from the stack bars.
+		var dataset = [];
+
+		self.stacks.each(function(d, i) {
+			dataset[i] = [];
+			d3.select(this).selectAll('rect')
+				.each(function(d, j) {
 				dataset[i].push(d);
 			});
-	});
-
-	// Sum up the value of each stack bar.
-	var _dataSum = 
-		dataset.map(function(d) {
-			var t = 0;
-			for ( var i = 0; i < d.length; ++i )
-				t += d[i].value
-			return t
 		});
 
+		// Sum up the value of each stack bar.
+		var _dataSum = 
+			dataset.map(function(d) {
+				var t = 0;
+				for ( var i = 0; i < d.length; ++i )
+					t += d[i].value
+				return t
+			});
+
+		// Remove the previous y axis.
+		self._removeYAxis();
+
+		// Create the linear y scale.
+		self._setLinearYScale(_dataSum, null);
+		self._setYAxis('left', _dataSum, null); 
+		self._createYAxis(null, yLabel);
 	
-	// Remove the previous y axis.
-	this._removeYAxis();
-
-	// Create the linear y scale.
-	this._setLinearYScale(_dataSum, null);
-	this._setYAxis('left', _dataSum, null); 
-	this._createYAxis(null, yLabel);
-
-	// Resize the stack bars.
-	this.stacks.each(function(d, i) {
-		d3.select(this).selectAll('rect')
-			.transition()
-				.duration(2000)
-					// working-spot-3
-					.attr({
-						y: function(d, i) {
-							return d.y0
-						},
-						height: function(d, i) {
-							return d.dy
-						}
-					});
+		// Resize the stack bars.
+		self.stacks.each(function(d, i) {
+			d3.select(this).selectAll('rect')
+				.transition()
+					.duration(2000)
+						// working-spot-3
+						.attr({
+							y: function(d, i) {
+								return d.y0
+							},
+							height: function(d, i) {
+								return d.dy
+							}
+						})
+						// working-spot-3
+						.each('end', function(d, i) {
+							if ( this === this.parentNode.lastChild )
+								resolve(new tipClass());
+						});
+		});
 	});
 
-
+	return p
 }
 
 /* </Stack Bars> */
