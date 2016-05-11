@@ -3538,7 +3538,7 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												},
-												// working-spot-3
+												// Debugging
 												extl: {
 													url: (function() {
 														if (isLocal) 
@@ -3548,6 +3548,7 @@ const DataFilterStateTree = {
 																'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
 																	window.query
 													})(),
+													// url: './correction/新入監犯罪次數與種類.csv',
 													headers: ['初犯', '再犯', '累犯']
 												},
 												intl: {
@@ -3973,7 +3974,8 @@ const DataFilterStateTree = {
 					.find((topic) => {
 						return topic.name === topicName
 					});
-
+		// Debugging
+		console.log(topic);
 		return topic.extl
 	},
 
@@ -3997,7 +3999,6 @@ const DataFilterStateTree = {
 class StoryTeller {
 
 	constructor() {
-		// working-spot-3
 		/* * Story Chains define how the animations work each time user switch a topic. * */
 		/*
 			Story Chains make animation on step at a time and never do flying or jumping.
@@ -4067,6 +4068,8 @@ class StoryTeller {
 					{
 						goto: '犯次分類',
 						transit: function(_this, params) {
+							console.log('check the step 1');
+
 							return _this.transBarToStackBar.apply(_this, params);
 						},
 						end: null
@@ -4074,6 +4077,7 @@ class StoryTeller {
 					{
 						goto: '犯次分類比例',
 						transit: function(_this, params) {
+							console.log('check the step 2');
 							return _this.transStackBarToPCT.apply(_this, params);
 						},
 						end: null
@@ -4123,7 +4127,9 @@ class StoryTeller {
 		// For deeper exploration
 		if (endDepth - startDepth > 0) {
 
-			for (let s = startDepth; s < endDepth; ++s)
+			for (let s = startDepth; s < endDepth; ++s) {
+				// Debugging
+				console.log('s: ', s);
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
 					this._story.fwdSteps[s].end = 
@@ -4134,6 +4140,8 @@ class StoryTeller {
 						this._story.fwdSteps[s-1].end
 							.then(this._story.fwdSteps[s]
 								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
+			}
+				
 		}
 		// working-spot-3
 		// For returning back from the deep.
@@ -4424,9 +4432,11 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
+		console.log(props);
 		const intl = this.findDataTopicIntl(props);
 		const extl = this.findDataTopicExtl(props);
-		
+		console.log('intl: ', intl);
+		console.log('extl: ', extl);
 		return bG.transitBarToStack(intl, extl);
 	},
 
@@ -4437,7 +4447,6 @@ const DataBoard = React.createClass({
 				t = this.tip;
 
 		return bG.transitStackBarToBar(props.data).then(function() {
-			console.log('haha is here!');
 			t.appendBarMouseOver(props.data);
 		});
 	},
@@ -4795,16 +4804,56 @@ const DataBoard = React.createClass({
 					this.props.topicDepth, 
 					nextProps.topicDepth, 
 					[
-						{ _: this, params: [nextProps]}, 
-						{ _: this, params: [nextProps]}
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+								 	data: nextProps.data,
+								 	chartType: nextProps.chartType,
+								 	topic: '組成'
+								 }
+								]
+							}, 
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+								 	data: nextProps.data,
+								 	chartType: nextProps.chartType,
+								 	topic: '組成百分比'
+								 }
+								]
+							}
 					],
 					[
-						{ _: this, params: [nextProps]}, 
-						{ _: this, params: [nextProps]}
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+								 	data: nextProps.data,
+								 	chartType: nextProps.chartType,
+								 	topic: '總數'
+								 }
+								]
+							}, 
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+								 	data: nextProps.data,
+								 	chartType: nextProps.chartType,
+								 	topic: '組成'
+								 }
+								]
+							}
 					]
 				);
 				
-			// working-spot-3
+			// Debugging: Can not render the third topic successfully.
 			else if (
 				nextProps.dataset === '監獄人數概況' &&
 				nextProps.data === '新入監人數' &&
@@ -4814,14 +4863,54 @@ const DataBoard = React.createClass({
 					this.props.topicDepth,
 					nextProps.topicDepth,
 					[
-						{ _: this, params: [nextProps] },
-						{ _: this, params: [nextProps] }
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+									data   : nextProps.data,
+									chartType: nextProps.chartType,
+									topic: '犯次分類' 
+								}
+							] 
+						},
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+									data   : nextProps.data,
+									chartType: nextProps.chartType,
+									topic: '犯次分類比例' 
+								}
+							] 
+						}
 					],
 					[
-						{ _: this, params: [nextProps] },
-						{ _: this, params: [nextProps] }
+						{ 
+							_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+									data   : nextProps.data,
+									chartType: nextProps.chartType,
+									topic: '總數' 
+								}
+							] 
+						},
+						{
+						 	_: this, 
+							params: [
+								{
+									dataset: nextProps.dataset,
+									data   : nextProps.data,
+									chartType: nextProps.chartType,
+									topic: '犯次分類' 
+								}
+							] 
+						}
 					]
-					);
+				);
 			}
 		}
 	},
@@ -5217,7 +5306,6 @@ function selectAppTheme(state, theme) {
 	let defaultChartType = null;
 	let defaultTopic = null;
 
-	// working-spot-3
 	// Topic depth defines how deep the user drilling into the data.
 	let defaultTopicDepth = null;
 
@@ -5390,7 +5478,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 	let newTopic = null;
 	let newDropdownMenuStates = null;
 
-	// working-spot-3: Topic depth define how much info for users to read.
+	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
 
 	const currentState = store.getState();

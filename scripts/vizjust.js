@@ -597,10 +597,9 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 	this._stackBarProducer(stackOptions);
 }
 
-// working-spot-3
 // Graph tranform from bar to stack bars.
 barGraphClass.prototype.transitBarToStack = function(intl, extl) {
-	
+	console.log(extl.url);
 	// Reselect the origin bar
 	this.bars = this.barsGroup.selectAll('rect.bar');
 	
@@ -625,7 +624,7 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 				.classed('stack', true);
 	}
 
-	// working-spot-3: Import the data from external data sheet.
+	// Import the data from external data sheet.
 	if (extl.url) {
 
 		// Once the data loading is succeed, return the rows.
@@ -638,7 +637,6 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 				});
 		});
 	}
-
 
 	var p_intl = new Promise(function(resolve, reject) {
 
@@ -657,7 +655,6 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 
 	});
 
-	// working-spot-3
 	var p_final = new Promise(function(resolve, reject) {
 
 		Promise.all([p_extl, p_intl]).then(function(dataHub) {
@@ -711,7 +708,6 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 	
 }
 
-// working-spot-3
 barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 
 	this.stacks = this.stackGroup.selectAll('g.stack');
@@ -891,7 +887,6 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 	});
 }
 
-// working-spot-3
 // Transit the stack bar to origin bar.
 // barGraphClass.prototype.transitStackBarToBar = function(option) {
 barGraphClass.prototype.transitStackBarToBar = function(header) {
@@ -974,7 +969,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel) {
 			d3.select(this).selectAll('rect')
 				.transition()
 					.duration(2000)
-						// working-spot-3
 						.attr({
 							y: function(d, i) {
 								return d.y0
@@ -983,7 +977,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel) {
 								return d.dy
 							}
 						})
-						// working-spot-3
 						.each('end', function(d, i) {
 							if ( this === this.parentNode.lastChild )
 								resolve(new tipClass());
