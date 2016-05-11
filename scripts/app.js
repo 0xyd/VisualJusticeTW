@@ -4046,7 +4046,6 @@ class StoryTeller {
 					{ 
 						goto: '總數', 
 						transit : (_this, params) => {
-							console.log('test 1');
 							return _this.transStackBarToBar.apply(_this, params);
 						},
 						end: null
@@ -4054,7 +4053,43 @@ class StoryTeller {
 					{ 
 						goto: '組成', 
 						transit : (_this, params) => {
-							console.log('test 2');
+							return _this.transPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					}
+				]
+			},
+			{
+				dataset: '監獄人數概況',
+				data: '新入監人數',
+				vizType: '直方圖',
+				fwdSteps: [
+					{
+						goto: '犯次分類',
+						transit: function(_this, params) {
+							return _this.transBarToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '犯次分類比例',
+						transit: function(_this, params) {
+							return _this.transStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					}
+				],
+				bwdSteps: [
+					{
+						goto: '總數',
+						transit: function(_this, params) {
+							return _this.transStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '犯次分類',
+						transit: function(_this, params) {
 							return _this.transPCTToStackBar.apply(_this, params);
 						},
 						end: null
@@ -4111,7 +4146,7 @@ class StoryTeller {
 						this._story.bwdSteps[s]
 							.transit(bwdOpParams[s]._, bwdOpParams[s].params);
 				}
-				
+
 				else {
 					this._story.bwdSteps[s].end = 
 						this._story.bwdSteps[s+1].end
@@ -4401,12 +4436,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
-		// const intl = this.findDataTopicIntl(props);
-		// const extl = this.findDataTopicExtl(props);
-		
-		// bG.transitStackBarToBar(intl[0], extl).then(function() {
-		// 	t.appendBarMouseOver(intl[0], extl);
-		// });
 		return bG.transitStackBarToBar(props.data).then(function() {
 			console.log('haha is here!');
 			t.appendBarMouseOver(props.data);
@@ -4725,7 +4754,6 @@ const DataBoard = React.createClass({
 			shouldUpdate = 
 				(this.props.data !== nextProps.data) ? true : false,
 
-			// working-spot-3
 			// Extend the chart when topic update.
 			shouldDive = 
 				(this.props.topic !== nextProps.topic && 
@@ -4756,9 +4784,10 @@ const DataBoard = React.createClass({
 
 		} else if (shouldDive) { // Update when topic changing.
 
-			// working-spot-3
+			// Select the chain 
 			this.storyTeller.decideChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
+
 			if (nextProps.dataset === '監獄人數概況' && 
 					nextProps.data === '本年執行人數' && 
 					nextProps.chartType === '直方圖')
@@ -4774,61 +4803,26 @@ const DataBoard = React.createClass({
 						{ _: this, params: [nextProps]}
 					]
 				);
+				
+			// working-spot-3
+			else if (
+				nextProps.dataset === '監獄人數概況' &&
+				nextProps.data === '新入監人數' &&
+				nextProps.chartType === '直方圖') {
 
-				// console.log('topic update here!');
-				// console.log(nextProps);
-				// console.log(this.props);
-
-				// if (this.props.chartType === '直方圖' && nextProps.topic === '組成'){
-					
-				// 	this.transBarToStackBar(nextProps);
-				// }
-				// else if (
-				// 	this.props.chartType === '直方圖' && 
-				// 	this.props.topic === '組成' && 
-				// 	nextProps.topic === '總數'
-				// 	) 
-				// 	// this.transStackBarToBar(nextProps);
-				// 	// working-spot-3
-				// 	this.storyChains[0].fwdSteps[0].transit(this, [nextProps]);
-				// else if (
-				// 	this.props.chartType === '直方圖' && 
-				// 	this.props.topic === '組成' && 
-				// 	nextProps.topic === '組成百分比')
-				// 	this.transStackBarToPCT(nextProps);
-
-				// // working-spot-3
-				// else if (
-				// 	this.props.data === '新入監人數' &&
-				// 	this.props.topic === '總數' &&
-				// 	nextProps.topic  === '犯次分類'
-				// ) {
-				// 	this.transBarToStackBar(nextProps);
-				// }
-				// // working-spot-3
-				// else if (
-				// 	this.props.data === '新入監人數' &&
-				// 	this.props.topic === '犯次分類' &&
-				// 	nextProps.topic  === '犯次分類比例'
-				// ) {
-				// 	this.transStackBarToPCT(nextProps);
-				// }
-				// // working-spot-3
-				// else if (
-				// 	this.props.data === '新入監人數' &&
-				// 	this.props.topic === '犯次分類比例' &&
-				// 	nextProps.topic  === '犯次分類'
-				// ) {
-				// 	this.transPCTToStackBar(nextProps);
-				// }
-				// // working-spot-3
-				// else if (
-				// 	this.props.data === '新入監人數' &&
-				// 	this.props.topic === '犯次分類' &&
-				// 	nextProps.topic  === '總數'
-				// ) {
-				// 	this.transStackBarToBar(nextProps);
-				// }
+				this.storyTeller.toTell(
+					this.props.topicDepth,
+					nextProps.topicDepth,
+					[
+						{ _: this, params: [nextProps] },
+						{ _: this, params: [nextProps] }
+					],
+					[
+						{ _: this, params: [nextProps] },
+						{ _: this, params: [nextProps] }
+					]
+					);
+			}
 		}
 	},
 

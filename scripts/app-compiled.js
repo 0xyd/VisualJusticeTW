@@ -42,7 +42,7 @@ findTopicIntl:function findTopicIntl(key,datasetIdx,dataIdx,chartIndex,topicName
 				*The properties are the same as fwdSteps.*
 
 		*/this.storyChains=[{dataset:'監獄人數概況',data:'本年執行人數',vizType:'直方圖', // working-spot-3
-fwdSteps:[{goto:'組成',transit:function transit(_this,params){return _this.transBarToStackBar.apply(_this,params);},end:null},{goto:'組成百分比',transit:function transit(_this,params){return _this.transStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){console.log('test 1');return _this.transStackBarToBar.apply(_this,params);},end:null},{goto:'組成',transit:function transit(_this,params){console.log('test 2');return _this.transPCTToStackBar.apply(_this,params);},end:null}]}]; // Store the current story chain.
+fwdSteps:[{goto:'組成',transit:function transit(_this,params){return _this.transBarToStackBar.apply(_this,params);},end:null},{goto:'組成百分比',transit:function transit(_this,params){return _this.transStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){return _this.transStackBarToBar.apply(_this,params);},end:null},{goto:'組成',transit:function transit(_this,params){return _this.transPCTToStackBar.apply(_this,params);},end:null}]},{dataset:'監獄人數概況',data:'新入監人數',vizType:'直方圖',fwdSteps:[{goto:'犯次分類',transit:function transit(_this,params){return _this.transBarToStackBar.apply(_this,params);},end:null},{goto:'犯次分類比例',transit:function transit(_this,params){return _this.transStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){return _this.transStackBarToBar.apply(_this,params);},end:null},{goto:'犯次分類',transit:function transit(_this,params){return _this.transPCTToStackBar.apply(_this,params);},end:null}]}]; // Store the current story chain.
 this._story=null;} // Decide which story chain should be applied.
 _createClass(StoryTeller,[{key:'decideChain',value:function decideChain(datasetName,dataName,vizTypeName){this._story=this.storyChains.find(function(chain){return chain.dataset===datasetName&&chain.data===dataName&&chain.vizType===vizTypeName;});} // toTell interates through the animation processes.
 /*
@@ -53,7 +53,7 @@ _createClass(StoryTeller,[{key:'decideChain',value:function decideChain(datasetN
 if(endDepth-startDepth>0){for(var s=startDepth;s<endDepth;++s){ // The pending promise object will be assigned to the end property. 
 if(s===startDepth)this._story.fwdSteps[s].end=this._story.fwdSteps[s].transit(fwdOpParams[s]._,fwdOpParams[s].params);else this._story.fwdSteps[s].end=this._story.fwdSteps[s-1].end.then(this._story.fwdSteps[s].transit.bind(null,fwdOpParams[s]._,fwdOpParams[s].params));}} // working-spot-3
 // For returning back from the deep.
-else if(endDepth-startDepth<0){console.log('startDepth: ',startDepth);console.log('endDepth: ',endDepth);for(var s=startDepth-1;s>=endDepth;--s){console.log('s: ',s);if(s===startDepth-1){console.log(this._story.bwdSteps[s]);this._story.bwdSteps[s].end=this._story.bwdSteps[s].transit(bwdOpParams[s]._,bwdOpParams[s].params);}else {console.log(this._story.bwdSteps[s]);this._story.bwdSteps[s].end=this._story.bwdSteps[s+1].end.then(this._story.bwdSteps[s].transit.bind(null,bwdOpParams[s]._,bwdOpParams[s].params));}}}}}]);return StoryTeller;}(); // Write for testing purpose.
+else if(endDepth-startDepth<0){for(var s=startDepth-1;s>=endDepth;--s){if(s===startDepth-1){this._story.bwdSteps[s].end=this._story.bwdSteps[s].transit(bwdOpParams[s]._,bwdOpParams[s].params);}else {this._story.bwdSteps[s].end=this._story.bwdSteps[s+1].end.then(this._story.bwdSteps[s].transit.bind(null,bwdOpParams[s]._,bwdOpParams[s].params));}}}}}]);return StoryTeller;}(); // Write for testing purpose.
 // const storyTeller = new StoryTeller();
 // storyTeller.decideChain('監獄人數概況', '本年執行人數', '直方圖');
 // storyTeller.toTell(0,1);
@@ -68,12 +68,7 @@ vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arg
 vizDataWithLineChart:function vizDataWithLineChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var lG=this.gpu.lineGraph,t=this.tip;var axes=this.findDataTopicAxes(props);if(update){lG.update(dataSheet.url,axes.x,axes.y,props.data).then(function(){t.appendDotMouseOver(props.data);});}else {lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,axes.x,axes.y,props.data).then(function(){t.initTips().appendDotMouseOver(props.data);});}}, // Visualizing data with ring chart
 vizDataWithRingChart:function vizDataWithRingChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var rG=this.gpu.ringGraph;if(update){var yr=parseInt(props.data.match(/\d+/));rG.selectROCYr(yr).updateRings();}else {rG.resetRings().initializeAPad().init().selectROCYr(75).drawMultiRings(dataSheet.urls);}}, // Transform from bar to stack bars.
 transBarToStackBar:function transBarToStackBar(props){var bG=this.gpu.barGraph,t=this.tip;var intl=this.findDataTopicIntl(props);var extl=this.findDataTopicExtl(props);return bG.transitBarToStack(intl,extl);}, // Transform from bar to stack bars.
-transStackBarToBar:function transStackBarToBar(props){var bG=this.gpu.barGraph,t=this.tip; // const intl = this.findDataTopicIntl(props);
-// const extl = this.findDataTopicExtl(props);
-// bG.transitStackBarToBar(intl[0], extl).then(function() {
-// 	t.appendBarMouseOver(intl[0], extl);
-// });
-return bG.transitStackBarToBar(props.data).then(function(){console.log('haha is here!');t.appendBarMouseOver(props.data);});}, // Transform the stack bar into stack bar with percent unit
+transStackBarToBar:function transStackBarToBar(props){var bG=this.gpu.barGraph,t=this.tip;return bG.transitStackBarToBar(props.data).then(function(){console.log('haha is here!');t.appendBarMouseOver(props.data);});}, // Transform the stack bar into stack bar with percent unit
 transStackBarToPCT:function transStackBarToPCT(props){var bG=this.gpu.barGraph;var axes=this.findDataTopicAxes(props);bG.transitPCTStackBar(axes.y);}, // Transform the percentage stack bar into quantative stack bar
 transPCTToStackBar:function transPCTToStackBar(props){var bG=this.gpu.barGraph;var axes=this.findDataTopicAxes(props);return bG.transitPCTSBarToSBar(axes.y);}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
 {name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return window.googleSheet+'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'+query;}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return window.googleSheet+'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'+query;}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return window.googleSheet+'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'+query;}()}, // Prosecution Data
@@ -83,63 +78,12 @@ transPCTToStackBar:function transPCTToStackBar(props){var bG=this.gpu.barGraph;v
 componentDidMount:function componentDidMount(){var dataSheet=this.findDataSheetIndex(this.props);if(this.props.chartType==='直方圖'){this.vizDataWithBarChart(this.props,dataSheet);}else if(this.props.chartType==='趨勢圖'){this.vizDataWithLineChart(this.props,dataSheet);}else if(this.props.chartType==='圓環比例圖'){}}, // The DataBoard component will renew the visualized data or change a different type.
 componentWillUpdate:function componentWillUpdate(nextProps,nextStates){var dataSheet=this.findDataSheetIndex(nextProps);var  // Renew the board when user switch dataset or chartTypes
 shouldRenew=this.props.dataset!==nextProps.dataset||this.props.chartType!==nextProps.chartType?true:false, // Update the chart when user switch data viewing
-shouldUpdate=this.props.data!==nextProps.data?true:false, // working-spot-3
-// Extend the chart when topic update.
+shouldUpdate=this.props.data!==nextProps.data?true:false, // Extend the chart when topic update.
 shouldDive=this.props.topic!==nextProps.topic&&this.props.dataset===nextProps.dataset&&this.props.data===nextProps.data?true:false;if(shouldRenew){d3.select('#SKETCHPAD').remove();if(nextProps.chartType==='直方圖'){if(this.props.chartType==='圓環比例圖')this.gpu.ringGraph.removeBoards();this.vizDataWithBarChart(nextProps,dataSheet);}else if(nextProps.chartType==='趨勢圖')this.vizDataWithLineChart(nextProps,dataSheet);else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet);}else if(shouldUpdate){ // Update for chart type changing
 if(nextProps.chartType==='直方圖')this.vizDataWithBarChart(nextProps,dataSheet,true);else if(nextProps.chartType==='趨勢圖')this.vizDataWithLineChart(nextProps,dataSheet,true);else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet,true);}else if(shouldDive){ // Update when topic changing.
-// working-spot-3
-this.storyTeller.decideChain(nextProps.dataset,nextProps.data,nextProps.chartType);if(nextProps.dataset==='監獄人數概況'&&nextProps.data==='本年執行人數'&&nextProps.chartType==='直方圖')this.storyTeller.toTell(this.props.topicDepth,nextProps.topicDepth,[{_:this,params:[nextProps]},{_:this,params:[nextProps]}],[{_:this,params:[nextProps]},{_:this,params:[nextProps]}]); // console.log('topic update here!');
-// console.log(nextProps);
-// console.log(this.props);
-// if (this.props.chartType === '直方圖' && nextProps.topic === '組成'){
-// 	this.transBarToStackBar(nextProps);
-// }
-// else if (
-// 	this.props.chartType === '直方圖' && 
-// 	this.props.topic === '組成' && 
-// 	nextProps.topic === '總數'
-// 	) 
-// 	// this.transStackBarToBar(nextProps);
-// 	// working-spot-3
-// 	this.storyChains[0].fwdSteps[0].transit(this, [nextProps]);
-// else if (
-// 	this.props.chartType === '直方圖' && 
-// 	this.props.topic === '組成' && 
-// 	nextProps.topic === '組成百分比')
-// 	this.transStackBarToPCT(nextProps);
-// // working-spot-3
-// else if (
-// 	this.props.data === '新入監人數' &&
-// 	this.props.topic === '總數' &&
-// 	nextProps.topic  === '犯次分類'
-// ) {
-// 	this.transBarToStackBar(nextProps);
-// }
-// // working-spot-3
-// else if (
-// 	this.props.data === '新入監人數' &&
-// 	this.props.topic === '犯次分類' &&
-// 	nextProps.topic  === '犯次分類比例'
-// ) {
-// 	this.transStackBarToPCT(nextProps);
-// }
-// // working-spot-3
-// else if (
-// 	this.props.data === '新入監人數' &&
-// 	this.props.topic === '犯次分類比例' &&
-// 	nextProps.topic  === '犯次分類'
-// ) {
-// 	this.transPCTToStackBar(nextProps);
-// }
-// // working-spot-3
-// else if (
-// 	this.props.data === '新入監人數' &&
-// 	this.props.topic === '犯次分類' &&
-// 	nextProps.topic  === '總數'
-// ) {
-// 	this.transStackBarToBar(nextProps);
-// }
-}},render:function render(){return React.createElement('div',{id:'DATABOARD_WRAPPER',className:'b20-col-md-20'},React.createElement('div',{id:'DATABOARD'}));}});var Filter=React.createClass({displayName:'Filter',generateFilterFields:function generateFilterFields(){var FilterNames=this.props.filterNames;var FilterDropdownMenus=this.props.currentFilterDropdownMenus;var FilterFields=[],FilterDefaultField=[this.props.currentDataset,this.props.currentData,this.props.currentChartType,this.props.currentTopic];for(var i=0;i<FilterNames.size;i++){FilterFields.push(React.createElement(FilterField,{key:i,index:i,filterName:FilterNames.get(i),selectedOption:FilterDefaultField[i],options:FilterDropdownMenus.get(i).get('Options')}));}return FilterFields;},render:function render(){var FilterFields=this.generateFilterFields();return React.createElement('nav',{id:'FILTER_WRAPPER',className:'b12-col-md-12 b15-row-md-8 hdr-div'},React.createElement('form',{id:'FILTER',className:'b15-row-md-15'},React.createElement('div',{id:'FILTER-TITLE',className:'b15-row-md-1'},React.createElement('span',{className:'ver-helper'}),React.createElement('span',{style:{verticalAlign:'middle'}},'資料選擇')),React.createElement('div',{className:'b12-col-md-12 b15-row-md-14'},FilterFields)));}}); // FilterField Components make a way for user to select the data or the data expression they want.
+// Select the chain 
+this.storyTeller.decideChain(nextProps.dataset,nextProps.data,nextProps.chartType);if(nextProps.dataset==='監獄人數概況'&&nextProps.data==='本年執行人數'&&nextProps.chartType==='直方圖')this.storyTeller.toTell(this.props.topicDepth,nextProps.topicDepth,[{_:this,params:[nextProps]},{_:this,params:[nextProps]}],[{_:this,params:[nextProps]},{_:this,params:[nextProps]}]); // working-spot-3
+else if(nextProps.dataset==='監獄人數概況'&&nextProps.data==='新入監人數'&&nextProps.chartType==='直方圖'){this.storyTeller.toTell(this.props.topicDepth,nextProps.topicDepth,[{_:this,params:[nextProps]},{_:this,params:[nextProps]}],[{_:this,params:[nextProps]},{_:this,params:[nextProps]}]);}}},render:function render(){return React.createElement('div',{id:'DATABOARD_WRAPPER',className:'b20-col-md-20'},React.createElement('div',{id:'DATABOARD'}));}});var Filter=React.createClass({displayName:'Filter',generateFilterFields:function generateFilterFields(){var FilterNames=this.props.filterNames;var FilterDropdownMenus=this.props.currentFilterDropdownMenus;var FilterFields=[],FilterDefaultField=[this.props.currentDataset,this.props.currentData,this.props.currentChartType,this.props.currentTopic];for(var i=0;i<FilterNames.size;i++){FilterFields.push(React.createElement(FilterField,{key:i,index:i,filterName:FilterNames.get(i),selectedOption:FilterDefaultField[i],options:FilterDropdownMenus.get(i).get('Options')}));}return FilterFields;},render:function render(){var FilterFields=this.generateFilterFields();return React.createElement('nav',{id:'FILTER_WRAPPER',className:'b12-col-md-12 b15-row-md-8 hdr-div'},React.createElement('form',{id:'FILTER',className:'b15-row-md-15'},React.createElement('div',{id:'FILTER-TITLE',className:'b15-row-md-1'},React.createElement('span',{className:'ver-helper'}),React.createElement('span',{style:{verticalAlign:'middle'}},'資料選擇')),React.createElement('div',{className:'b12-col-md-12 b15-row-md-14'},FilterFields)));}}); // FilterField Components make a way for user to select the data or the data expression they want.
 var FilterField=React.createClass({displayName:'FilterField',render:function render(){return React.createElement('fieldset',{className:'b12-col-md-12 b12-row-md-3 formblock-fieldset'},React.createElement('div',{className:'b12-col-md-12 b12-row-md-12'},React.createElement('span',{className:'ver-helper'}),React.createElement('div',{className:'dropdown-group'},React.createElement('legend',{className:'dropdown-title'},React.createElement('span',null,this.props.filterName)),React.createElement('div',{className:'dropdown'},React.createElement(StatFilterDropdownToggle,{menuIndex:this.props.index,name:this.props.selectedOption}),React.createElement(StatFilterDropdownMenu,{menuIndex:this.props.index,options:this.props.options})))));}});var DropdownToggle=React.createClass({displayName:'DropdownToggle',render:function render(){return React.createElement('button',{className:'dropdown-btn',type:'button',onClick:this.props.expandDropdown},React.createElement('span',{className:this.props.name.length<=11?"dropdown-txt dropdown-txt--ft-size-12":"dropdown-txt dropdown-txt--ft-size-10"},this.props.name),React.createElement('span',{className:'dropdown-caret'}));}});var DropdownMenu=React.createClass({displayName:'DropdownMenu',render:function render(){var key=0,optionIdx=0,menuItems=[];var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=this.props.options[Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var option=_step.value;menuItems.push(React.createElement(StatFilterDropdownMenuItem,{key:++key,optionIdx:optionIdx++,name:option,menuIndex:this.props.menuIndex}));}}catch(err){_didIteratorError=true;_iteratorError=err;}finally {try{if(!_iteratorNormalCompletion&&_iterator.return){_iterator.return();}}finally {if(_didIteratorError){throw _iteratorError;}}}return React.createElement('ul',{className:this.props.isDisplayed?'dropdown-menu displayed':'dropdown-menu'},menuItems);}});var DropdownMenuItem=React.createClass({displayName:'DropdownMenuItem',render:function render(){return  (// Click for selecting the option
 React.createElement('li',{onClick:this.props.selectOption},this.props.name));}}); /* ***** Basic components: The components that are used almost everywhere. ***** */var Logo=React.createClass({displayName:'Logo',render:function render(){return React.createElement('div',{id:'LOGO-WRAPPER',className:'b12-col-md-12 b15-row-md-5'},React.createElement('div',{id:'LOGO',className:'b12-col-md-12 b12-row-md-12'}));}}); // Title components for rendering the theme image.
 var Title=React.createClass({displayName:'Title',render:function render(){return React.createElement('div',{className:'b12-col-md-12 b15-row-md-1 hdr-div'},React.createElement('img',{id:'TITLE',src:this.props.imageSource}));}});var Sign=React.createClass({displayName:'Sign',render:function render(){return React.createElement('div',{id:'SIGN'},React.createElement('img',{src:'./src/sign.png'}));}});var HomeLink=React.createClass({displayName:'HomeLink',render:function render(){return React.createElement('div',{id:'HDR-FOOTER',className:'b12-col-md-12 b15-row-md-1'},React.createElement('a',{id:'HOME-LINK',href:''},'vizjust.tw'));}}); /* ***** App are the main components of all web pages  ***** */var App=React.createClass({displayName:'App',render:function render(){var _props=this.props;var nav=_props.nav;var main=_props.main;return React.createElement('div',{id:'APP'},nav,main);}});var Nav=React.createClass({displayName:'Nav',render:function render(){return React.createElement('header',{id:'HDR',className:'b20-col-md-4 b12-row-md-12 bd-right'},this.props.childrenComponents);}});var Main=React.createClass({displayName:'Main',render:function render(){return React.createElement('section',{id:'BODY',className:'b20-col-md-16 b12-row-md-12'},this.props.childrenComponents);}}); /* ***** Action Creators ***** */ /* "AC" is the postfix for action creators */function setAppNavAC(components){return {type:'SET_NAV',components:components};}function setAppMainAC(components){return {type:'SET_MAIN',components:components};}function setThemesAC(){return {type:'SET_THEMES'};}function selectThemeAC(name){return {type:'SELECT_THEME',themeName:name};}function expandDropdownAC(dropdownIndex){return {type:'EXPAND_DROPDOWN',dropdownIndex:dropdownIndex};}function selectDropdownOptionAC(theme,optionName,fieldsetIndex,dIndex,topicDepth){return {type:'SELECT_DROPDOWN_OPTION',theme:theme,fieldsetIndex:fieldsetIndex,dataIndex:dIndex,option:optionName,topicDepth:topicDepth};} /* ***** Reducers ***** */var INITIAL_STATE=Map();function AppReducer(){var state=arguments.length<=0||arguments[0]===undefined?INITIAL_STATE:arguments[0];var action=arguments[1];switch(action.type){case 'SET_NAV':return setAppNavIndex(state,action.components);case 'SET_MAIN':return setAppMainIndex(state,action.components);case 'SET_THEMES':return setAppMainThemes(state);case 'SELECT_THEME':return selectAppTheme(state,action.themeName);case 'EXPAND_DROPDOWN':return setDropdownMenuStates(state,action.dropdownIndex);case 'SELECT_DROPDOWN_OPTION':return selectDropdownOption(state,action.theme,action.option,action.fieldsetIndex,action.dataIndex,action.topicDepth);default:return state;}}function setAppNavIndex(state,components){var navState=Map().set('Nav',components);return state.merge(navState);}function setAppMainThemes(state){ // The 4 major themes on the Index page.
