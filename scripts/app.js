@@ -3538,7 +3538,7 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												},
-												// Debugging
+												
 												extl: {
 													url: (function() {
 														if (isLocal) 
@@ -3548,7 +3548,6 @@ const DataFilterStateTree = {
 																'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
 																	window.query
 													})(),
-													// url: './correction/新入監犯罪次數與種類.csv',
 													headers: ['初犯', '再犯', '累犯']
 												},
 												intl: {
@@ -3947,6 +3946,9 @@ const DataFilterStateTree = {
 			return topics
 	},
 
+	// working-spot-2: Find the topic
+
+
 	// Find the topic's axes.
 	findTopicAxes: function(key, datasetIdx, dataIdx, chartIndex, topicName) {
 
@@ -3974,8 +3976,7 @@ const DataFilterStateTree = {
 					.find((topic) => {
 						return topic.name === topicName
 					});
-		// Debugging
-		console.log(topic);
+		
 		return topic.extl
 	},
 
@@ -4128,8 +4129,7 @@ class StoryTeller {
 		if (endDepth - startDepth > 0) {
 
 			for (let s = startDepth; s < endDepth; ++s) {
-				// Debugging
-				console.log('s: ', s);
+				
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
 					this._story.fwdSteps[s].end = 
@@ -4143,7 +4143,7 @@ class StoryTeller {
 			}
 				
 		}
-		// working-spot-3
+		
 		// For returning back from the deep.
 		else if (endDepth - startDepth < 0) {
 
@@ -4166,11 +4166,6 @@ class StoryTeller {
 	}
 
 }
-// Write for testing purpose.
-// const storyTeller = new StoryTeller();
-
-// storyTeller.decideChain('監獄人數概況', '本年執行人數', '直方圖');
-// storyTeller.toTell(0,1);
 
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
@@ -4432,11 +4427,9 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
-		console.log(props);
 		const intl = this.findDataTopicIntl(props);
 		const extl = this.findDataTopicExtl(props);
-		console.log('intl: ', intl);
-		console.log('extl: ', extl);
+		
 		return bG.transitBarToStack(intl, extl);
 	},
 
@@ -4753,15 +4746,19 @@ const DataBoard = React.createClass({
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
 		var 
-			// Renew the board when user switch dataset or chartTypes
+			// Renew the board when user switch dataset, chartTypes or 
+			// switch to the new data when reading in the detail story.
 			shouldRenew = 
 				(this.props.dataset !== nextProps.dataset ||
-				 this.props.chartType !== nextProps.chartType) 
+				 this.props.chartType !== nextProps.chartType ||
+				 (this.props.data !== nextProps.data &&
+				 	this.props.topic !== nextProps.topic)) 
 						? true : false,
 
 			// Update the chart when user switch data viewing
 			shouldUpdate = 
-				(this.props.data !== nextProps.data) ? true : false,
+				(this.props.data !== nextProps.data &&
+				 this.props.topic === nextProps.topic ) ? true : false,
 
 			// Extend the chart when topic update.
 			shouldDive = 
@@ -4784,6 +4781,7 @@ const DataBoard = React.createClass({
 
 		} else if (shouldUpdate) {
 			// Update for chart type changing
+			
 			if (nextProps.chartType === '直方圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
 			else if (nextProps.chartType === '趨勢圖') 
@@ -4853,7 +4851,6 @@ const DataBoard = React.createClass({
 					]
 				);
 				
-			// Debugging: Can not render the third topic successfully.
 			else if (
 				nextProps.dataset === '監獄人數概況' &&
 				nextProps.data === '新入監人數' &&
@@ -5168,22 +5165,34 @@ function expandDropdownAC(dropdownIndex) {
 	}
 }
 
+
 function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicDepth) {
-	
 	return {
 		type : 'SELECT_DROPDOWN_OPTION',
 		theme: theme,
 		fieldsetIndex: fieldsetIndex,
 		dataIndex: dIndex,
-		option: optionName,
+		option: optionName, // Option maybe the name of the dataset, data, chartType or topic.
 		topicDepth: topicDepth
 	}
 }
+// function selectDropdownOptionAC(theme, optionName, topicName, fieldsetIndex, dIndex, topicDepth) {
+// 	return {
+// 		type : 'SELECT_DROPDOWN_OPTION',
+// 		theme: theme,
+// 		datasetName: fieldsetIndex === 0 ? optionName: null,
+// 		dataName: fieldsetIndex === 1 ? optionName: null,
+// 		chartTypeName: fieldsetIndex === 2 ? optionName: null,
+// 		topicName: fieldsetIndex === 3 ? optionName: null,
+// 		fieldsetIndex: fieldsetIndex,
+// 		dataIndex: dIndex,
+// 		// option: optionName,
+// 		topicDepth: topicDepth
+// 	}
+// }
 
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
-
-
 
 function AppReducer(state = INITIAL_STATE, action) {
 	
@@ -5471,7 +5480,6 @@ function setDropdownMenuStates(state, index) {
 
 // Update the dropdown menu. 
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
-	
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
@@ -5490,6 +5498,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 	// Fetch the prepared states 
 	const stateTree = DataFilterStateTree.state.get(theme);
+
+	// working-spot-2: When datasetName is available, we find its index
+	// if (datasetName)
 	const datasetIndex = DataFilterStateTree.findDatasetIndex(theme, optionName);
 	
 	if (theme === 'police') 
@@ -5528,10 +5539,12 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 			if (currentState.get('currentData') !== optionName) {
 
-				const newState = __dataSwitchRendering(state, optionName);
+				const newState = __dataSwitchRendering(state, theme, optionName);
 
 				return state.merge(
 						newState.data,
+						newState.topic,
+						newState.topicDepth,
 						newState.dropdownMenuStates
 					)
 			}
@@ -5560,7 +5573,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 				newTopic = setState('currentTopic', optionName);
 
-				// working-spot-3
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
 				return state.merge(newTopic, newTopicDepth, collapsedAllDropdownMenuStates)
@@ -5646,9 +5658,19 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		}
 	}
 
-	function __dataSwitchRendering(state, dataName) {
+	function __dataSwitchRendering(state, theme, dataName) {
+
+
+		const datasetIndex = 
+			DataFilterStateTree.findDatasetIndex(
+				theme, state.get('currentDataset'));
 
 		const newData = setState('currentData', dataName);
+
+		const newTopic = setState(
+			'currentTopic', 
+			stateTree.get(datasetIndex).content.data[0].topics[0][0].name
+			);
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
@@ -5660,6 +5682,10 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		return {
 			data: newData,
+
+			topic: newTopic,
+			topicDepth: newTopicDepth,
+
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -5851,7 +5877,7 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 		selectOption: (e) => {
 
 			const key = store.getState().get('theme');
-			
+				
 			// Data is bounding with topics so th
 			if (props.menuIndex === 1) 
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
