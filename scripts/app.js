@@ -2399,7 +2399,16 @@ var IndexNavList = React.createClass({
 				<RR.Link to='/about_us'><img src="./src/aboutus.png" /></RR.Link>,
 				<RR.Link to='/main'><img src="./src/see.png" /></RR.Link>,
 				<RR.Link to='/special'><img src="./src/issue.png" /></RR.Link>,
-				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>
+				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>,
+				<div>
+					<iframe id='githubStar' className='social-btn'
+						src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" 
+						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+					<div id='FBLike' className="fb-like" 
+						data-href="https://developers.facebook.com/docs/plugins/" 
+						data-layout="button_count" data-action="like" 
+						data-show-faces="true" data-share="true"></div>
+				</div>
 			]
 		}
 	},
@@ -4256,7 +4265,7 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 			// Data is bounding with topics so th
 			if (props.menuIndex === 1) 
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
-			// working-spot-3
+			
 			// The topic user clicks on determines the depth.
 			else if (props.menuIndex === 3) 
 				dispatch(selectDropdownOptionAC(
@@ -4296,7 +4305,6 @@ const mapStateToDataBoardProps = (state) => {
 		data     : state.get('currentData'), 
 		chartType: state.get('currentChartType'),
 		topic    : state.get('currentTopic'),
-		// working-spot-3
 		topicDepth: state.get('currentTopicDepth')
 	}
 }

@@ -1679,6 +1679,16 @@ var IndexNavList = React.createClass({
 				RR.Link,
 				{ to: '/work_together' },
 				React.createElement('img', { src: './src/work.png' })
+			), React.createElement(
+				'div',
+				null,
+				React.createElement('iframe', { id: 'githubStar', className: 'social-btn',
+					src: 'https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true',
+					frameborder: '0', scrolling: '0', width: '170px', height: '20px' }),
+				React.createElement('div', { id: 'FBLike', className: 'fb-like',
+					'data-href': 'https://developers.facebook.com/docs/plugins/',
+					'data-layout': 'button_count', 'data-action': 'like',
+					'data-show-faces': 'true', 'data-share': 'true' })
 			)]
 		};
 	},
@@ -2982,7 +2992,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		var dataIndex = DataFilterStateTree.findDataIndex(theme, datasetName, dataName);
 
-		// working-spot-2
 		var chartTypeIndex = DataFilterStateTree.findChartTypeIndex(theme, datasetName, state.get('currentChartType'));
 
 		var newData = setState('currentData', dataName);
@@ -2998,10 +3007,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		return {
 			data: newData,
-
 			topic: newTopic,
 			topicDepth: newTopicDepth,
-
 			dropdownMenuStates: newDropdownMenuStates
 		};
 	}
@@ -3138,7 +3145,7 @@ var mapDispatchToDropdownMenuItemBtnProps = function mapDispatchToDropdownMenuIt
 
 			// Data is bounding with topics so th
 			if (props.menuIndex === 1) dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
-			// working-spot-3
+
 			// The topic user clicks on determines the depth.
 			else if (props.menuIndex === 3) dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, props.optionIdx));else dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
 		}
@@ -3168,7 +3175,6 @@ var mapStateToDataBoardProps = function mapStateToDataBoardProps(state) {
 		data: state.get('currentData'),
 		chartType: state.get('currentChartType'),
 		topic: state.get('currentTopic'),
-		// working-spot-3
 		topicDepth: state.get('currentTopicDepth')
 	};
 };
