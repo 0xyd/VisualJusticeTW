@@ -1005,7 +1005,6 @@ const DataFilterStateTree = {
 			.set('judicial',
 				List([
 					{
-						// working-spot-2
 						dataset: '地方法院刑事案件收結情形',
 						availableChartTypes: [
 								'直方圖',
@@ -1015,10 +1014,6 @@ const DataFilterStateTree = {
 							data: [
 								{
 									name: '案件數',
-									// axes: {
-									// 	x: '民國',
-									// 	y: '案件數',
-									// },
 									exceptHeaders: [
 										'民國', '終結', '未結', '終結案件中平均一件所需日數', 
 										'平均每法官每月辦結件數', '上訴案件維持率', '抗告案件維持率'
@@ -1204,98 +1199,86 @@ const DataFilterStateTree = {
 						content: {
 							data: [
 								{
-									name: '舊受',
+									name: '案件數',
+									exceptHeaders: [
+										'民國', '終結', '未結', '終結案件中平均一件所需日數', 
+										'平均每法官每月辦結件數', '上訴案件維持率', '抗告案件維持率'
+									],
 									topics: [
 										[
 											{
-												name: '總數',
+												name: '受理件數',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: null
 												}
-										}]
-										,
-										[
+											},
 											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '新受',
-									topics: [
-										[
-											{
-												name: '總數',
+												name: '新收與舊受',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['舊受', '新受'] 
 												}
-										}]
-										,
-										[
+											},
 											{
-												name: '趨勢',
+												name: '新收與舊受百分比',
 												axes: {
 													x: '民國',
-													y: '人數'
+													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['舊受', '新受'] 
 												}
-											}
-										]
-									]
-								},
-								{
-									name: '終結',
-									topics: [
-										[
+											},
 											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												}
-										}]
-										,
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '未結',
-									topics: [
-										[
-											{
-												name: '總數',
+												name: '終結與未結',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
-										}]
-										,
-										[
+											},
 											{
-												name: '趨勢',
+												name: '終結與未結百分比',
 												axes: {
 													x: '民國',
-													y: '人數'
+													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
+										],
+										[
+
 										]
 									]
 								},
-								{
+								{	
+									// working-spot-2
 									name: '終結案件中平均一件所需日數',
 									topics: [
 										[
@@ -1305,8 +1288,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '天數'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -1329,7 +1312,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '案件數'
 												}
-										}]
+											}
+										]
 										,
 										[
 											{
@@ -1352,8 +1336,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '百分比'
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -1375,7 +1359,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '百分比'
 												}
-										}]
+											}
+										]
 										,
 										[
 											{
@@ -1389,6 +1374,193 @@ const DataFilterStateTree = {
 									]
 								}
 							]
+							// data: [
+							// 	{
+							// 		name: '舊受',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '案件數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '新受',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '案件數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '終結',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '案件數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '未結',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '案件數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '終結案件中平均一件所需日數',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '天數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+									
+							// 	},
+							// 	{
+							// 		name: '平均每法官每月辦結件數',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '案件數'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '上訴案件維持率',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '百分比'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	},
+							// 	{
+							// 		name: '抗告案件維持率',
+							// 		topics: [
+							// 			[
+							// 				{
+							// 					name: '總數',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '百分比'
+							// 					}
+							// 			}]
+							// 			,
+							// 			[
+							// 				{
+							// 					name: '趨勢',
+							// 					axes: {
+							// 						x: '民國',
+							// 						y: '人數'
+							// 					}
+							// 				}
+							// 			]
+							// 		]
+							// 	}
+							// ]
 						}
 					},
 					{
@@ -2164,7 +2336,7 @@ class StoryTeller {
 			},
 			// For judicial stories
 			{
-				dataset: '地方法院刑事案件收結情形',
+				datasets: ['地方法院刑事案件收結情形', '高等法院刑事案件收結情形'],
 				data: '案件數',
 				vizType: '直方圖',
 				fwdSteps: [
@@ -2178,7 +2350,6 @@ class StoryTeller {
 					{
 						goto: '新收與舊受百分比',
 						transit: (_this, params) => {
-							// working-spot-2
 							return _this.transStackBarToPCT.apply(_this, params)
 						},
 						end: null
@@ -2186,7 +2357,6 @@ class StoryTeller {
 					{
 						goto: '終結與未結',
 						transit: (_this, params) => {
-							// working-spot-2
 							return _this.transPCTToStackBar.apply(_this, params)
 						},
 						end: null
@@ -2194,7 +2364,6 @@ class StoryTeller {
 					{
 						goto: '終結與未結百分比',
 						transit: (_this, params) => {
-							// working-spot-2
 							return _this.transStackBarToPCT.apply(_this, params)
 						},
 						end: null
@@ -2218,7 +2387,6 @@ class StoryTeller {
 					{
 						goto: '新收與舊受百分比',
 						transit: (_this, params) => {
-							// working-spot-2
 							return _this.transStackBarToPCT.apply(_this, params)
 						},
 						end: null
@@ -2226,7 +2394,6 @@ class StoryTeller {
 					{
 						goto: '終結與未結',
 						transit: (_this, params) => {
-							// working-spot-2
 							return _this.transPCTToStackBar.apply(_this, params)
 						},
 						end: null
@@ -2651,7 +2818,7 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// working-spot-2: Add the except headers.
+		// Add the except headers.
 		return bG.transitPCTStackBar(_topic.axes.y, _data.exceptHeaders);
 	},
 
@@ -3129,7 +3296,8 @@ const DataBoard = React.createClass({
 				);
 
 			else if (
-				nextProps.dataset === '地方法院刑事案件收結情形' &&
+				nextProps.dataset === 
+					'地方法院刑事案件收結情形' || '高等法院刑事案件收結情形' &&
 				nextProps.data === '案件數' &&
 				nextProps.chartType === '直方圖'
 				)
@@ -3465,6 +3633,7 @@ const HomeLink = React.createClass({
 	render: function() {
 		return (
 			<div id="HDR-FOOTER" className="b12-col-md-12 b15-row-md-1">
+				<span className='ver-helper'></span>
 				<a id="HOME-LINK" href="">vizjust.tw</a>
 			</div>
 		)
@@ -3556,20 +3725,6 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicD
 		topicDepth: topicDepth
 	}
 }
-// function selectDropdownOptionAC(theme, optionName, topicName, fieldsetIndex, dIndex, topicDepth) {
-// 	return {
-// 		type : 'SELECT_DROPDOWN_OPTION',
-// 		theme: theme,
-// 		datasetName: fieldsetIndex === 0 ? optionName: null,
-// 		dataName: fieldsetIndex === 1 ? optionName: null,
-// 		chartTypeName: fieldsetIndex === 2 ? optionName: null,
-// 		topicName: fieldsetIndex === 3 ? optionName: null,
-// 		fieldsetIndex: fieldsetIndex,
-// 		dataIndex: dIndex,
-// 		// option: optionName,
-// 		topicDepth: topicDepth
-// 	}
-// }
 
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
@@ -3843,12 +3998,14 @@ function setDropdownMenuStates(state, index) {
 	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
 }
 
-// working-spot-5
 /* Option selecting reducser and its related function. */
 /* Basic selecting option reducer:
 		state:
+			state of the current app
 		theme: 
+			Name of the theme, like police, prosecution, judicial and corrrection.
 		optionName: 
+			the option that user chosen on
 		fieldsetIndex: The index of the selector. 
 			0: dataset
 			1: data
@@ -3856,6 +4013,7 @@ function setDropdownMenuStates(state, index) {
 			3: topic
 			
 		dataIdx:
+			Index of the data
  */
 
 // Update the dropdown menu. 
@@ -3905,7 +4063,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data, 
 						newState.chartType, 
 						newState.topic,
-						// working-spot-3
 						newState.topicDepth,
 						newState.dropdownMenuStates)
 				}
@@ -4055,8 +4212,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			'currentTopic', 
 			stateTree.get(datasetIndex).content.data[dataIndex].topics[chartTypeIndex][0].name
 			);
-
-		console.log(newTopic.get('currentTopic'));
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
