@@ -51,6 +51,26 @@ var colorClass = function() {
 
 	this.bar = {
 
+		// For 竊盜案件 (Police)
+		'合計發生件數': '#70C1B3',
+		'重大竊盜發生件數': '#F25F5C',
+		'普通竊盜發生件數': '#FFE066',
+		'汽車竊盜發生件數': '#247BA0',	
+		'機車竊盜發生件數': '#2C5B26',
+
+		'重大竊盜破獲件數': '#9BC53D',
+		'重大竊盜尚未破獲件數': '#E55934',
+
+		'普通竊盜破獲件數': '#5BC0EB',
+		'普通竊盜尚未破獲件數': '#FA7921',
+
+		'汽車竊盜破獲件數': '#EF233C',
+		'汽車竊盜尚未破獲件數': '#EDF2F4',
+		'汽車竊盜破獲率': '#0CCA4A',
+
+		'機車竊盜破獲件數': '#35C3D6',
+		'機車竊盜尚未破獲件數': '#FF1654',
+
 		// For 殺人罪 (Prosecution)
 
 		// For 兒童及少年性交易防制條例 (Prosecution),
@@ -269,7 +289,6 @@ graphClass.prototype._setYPctScale = function(dataset, dOption) {
 		.domain([0, 100]).rangeRound([this.chartHeight, 0]);
 }
 
-// working-spot-2
 graphClass.prototype._setYAxis = function(pos, values, specKey) {
 
 	if ( typeof pos === 'string' && 
@@ -630,11 +649,10 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 	this._stackBarProducer(stackOptions);
 }
 
-// working-spot-2
 // Update the stack bars if more data features are coming in.
 barGraphClass.prototype.updateStackBars = function(intl, extl) {
 
-	this._stackBarProducer(intl, extl, true)
+	this._stackBarProducer(intl, extl)
 		.then(function(stackbars) {
 				stackbars.each(function(d, i) {
 					// Reappend the year to the stack bar
@@ -644,7 +662,7 @@ barGraphClass.prototype.updateStackBars = function(intl, extl) {
 			})
 			.then(function(tip){ 
 				tip.appendStackBarMouseOver();
-				resolve();
+				// resolve();
 			});
 }
 
@@ -757,14 +775,12 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 	return p_final
 }
 
-// working-spot-2
 // Create the stack bars
-barGraphClass.prototype._stackBarProducer = function(intl, extl, isUpdate) {
+barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 	
 	this.stacks = this.stackGroup.selectAll('g.stack');
 	
 	var self = this,
-			isUpdate = isUpdate ? true : false,
 			headers = 
 				[].concat(intl.headers, extl.headers)
 					.filter(function(d) { 
@@ -801,7 +817,7 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl, isUpdate) {
 				// Calculate the stacks' height
 				temp.dy = 
 					self.chartHeight - self.yScale(temp.value);
-				console.log(temp.dy);
+				
 				// Define the start y for the first stack bar element
 				if (parseInt(i) === 0) 
 					temp.y0 = self.chartHeight - sumStacksHeight;
@@ -811,14 +827,20 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl, isUpdate) {
 				barData.push(temp);
 			}
 		}
-		
-		var updatedRects = d3.select(this).selectAll('rect');
 
+		// rects store the original rects before transition.
+		var rects = d3.select(this).selectAll('rect'),
+				updatedRects = null,
+				shouldAppendRects = false;
+		
 		function binding(data) {
-			if (data.length > updatedRects[0].length)
-				updatedRects = updatedRects.data(data).enter();
-			else if (data.length <= data.length )
-				updatedRects.data(data).exit().remove();
+			// if (data.length > updatedRects[0].length) {
+			if (data.length > rects[0].length) {
+				shouldAppendRects = true;
+				updatedRects = rects.data(data).enter();
+			}
+			else rects.data(data).exit().remove();
+			
 		}
 
 		function render(time) {
@@ -834,21 +856,29 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl, isUpdate) {
 				height: 0
 			};
 
-			// if stack producer initialize the stack bars.
-			if (!isUpdate) {
+			if (shouldAppendRects) {
+				rects
+					.attr(initAttrs)
+						.transition()
+							.duration(time)
+								.attr({
+									height: function(d, i) {
+										return d.dy >= 0 ? d.dy : 0
+									}
+								});
 				updatedRects
 					.append('rect').classed('stackbar', true)
 						.attr(initAttrs)
 						.transition()
 							.duration(time)
 								.attr({
-									height: function(d) {
+									height: function(d, i) {
 										return d.dy >= 0 ? d.dy : 0
 									}
 								});
 			} 
 			else {
-				updatedRects
+				rects
 					.attr(initAttrs).transition()
 						.duration(time)
 							.attr({
@@ -871,7 +901,17 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl, isUpdate) {
 	return p
 }
 
-// working-spot-2: Add the exceptHds as one of the params.
+// Transit the bar to percentage stack bar
+barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, exceptHds) {
+
+	var self = this;
+
+	return this.transitBarToStack(intl, extl).then(function() {
+		self.transitPCTStackBar(yLabel, exceptHds);
+	})
+
+}
+
 // Transit the stack bar in percentage unit. (PCT = Percent abbr)
 barGraphClass.prototype.transitPCTStackBar = function(yLabel, exceptHds) {
 
@@ -947,21 +987,46 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, exceptHds) {
 		return pair
 	});
 
+	
+	var p = new Promise(function(resolve, reject) {
+
+		// Update the rect size
+		self.stacks.each(function(d, i) {
+			d3.select(this).selectAll('rect')
+				.data(dataPairs[i])
+					.transition()
+						.duration(1000)
+						.attr({
+							y: function(d, i) {
+								return d.y0_pct
+							},	
+							height: function(d, i){
+								return d.dy_pct >= 0 ? d.dy_pct : 0
+							}
+						})
+						.each('end', function(d, i) {
+							if (this === this.parentNode.lastChild)
+								resolve();
+						});
+		});
+
 	// Update the rect size
-	this.stacks.each(function(d, i) {
-		d3.select(this).selectAll('rect')
-			.data(dataPairs[i])
-				.transition()
-					.duration(1000)
-					.attr({
-						y: function(d, i) {
-							return d.y0_pct
-						},
-						height: function(d, i){
-							return d.dy_pct >= 0 ? d.dy_pct : 0
-						}
-					});
+	// this.stacks.each(function(d, i) {
+	// 	d3.select(this).selectAll('rect')
+	// 		.data(dataPairs[i])
+	// 			.transition()
+	// 				.duration(1000)
+	// 				.attr({
+	// 					y: function(d, i) {
+	// 						return d.y0_pct
+	// 					},
+	// 					height: function(d, i){
+	// 						return d.dy_pct >= 0 ? d.dy_pct : 0
+	// 					}
+	// 				});
 	});
+
+	return p
 }
 
 // Transit the stack bar to origin bar.
@@ -1114,7 +1179,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 			self._setLinearYScale(_dataSum, null);
 			self._setYAxis('left', _dataSum, null); 
 			self._createYAxis(yLabel);
-			self._stackBarProducer(intl, extl, true).then(function(stackbars) {
+			self._stackBarProducer(intl, extl).then(function(stackbars) {
 				stackbars.each(function(d, i) {
 					// Reappend the year to the stack bar
 					this.__data__.year = this.parentNode.__data__['民國'];
@@ -1179,7 +1244,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, is
 				
 				// The option maybe the combined columns of data.
 				var isdOptionMerged = self.isMergedCol(rows, dOption);
-				console.log(isdOptionMerged);
+				
 				// Get the available headers in specific. 
 				var avlHeaders = isdOptionMerged ? self._avlHeaders(rows, exceptHds) : [],
 					_rows = isdOptionMerged ? self._mergedColVal(rows, avlHeaders) : [];
@@ -1255,18 +1320,21 @@ barGraphClass.prototype._avlHeaders = function(rowData, exceptHds) {
 		});
 }
 
-barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
+
+// working-spot-2: There is no need to reload the data when updating the displaying data in the same dataset
+// barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
+barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
 
-		self.readCSV(path)
-			.row(function(d) { return d })
-			.get(function(error, rows) {
+		// self.readCSV(path)
+		// 	.row(function(d) { return d })
+		// 	.get(function(error, rows) {
 
 				var _bars = self.pad.selectAll('rect'),
-					_txts = self.pad.selectAll('.mark'),
+						_txts = self.pad.selectAll('.mark'),
 
 					// Former x value of bars for text marker transition.
 					f_Pos = (function() {
@@ -1281,11 +1349,18 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 					return posAry
 				})(),
 
-				// The positions of bars after update
-				c_Pos = [];
+					// The positions of bars after update
+					c_Pos = [];
 
-				self._setLinearYScale(rows, dOption);
-				self._setYAxis('left', rows, dOption);
+				// working-spot-2: store the data from the bars
+				var data = []; 
+
+				_bars.each(function(d, i) {
+					data.push(d);
+				});
+
+				self._setLinearYScale(data, dOption);
+				self._setYAxis('left', data, dOption);
 
 				// set xy axes' labels.
 				self._updateXAxisLabel(xLabel);
@@ -1322,7 +1397,7 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 							// When the last bar is transited, resolve to the next animation.
 							if ( i === _bars[0].length - 1) {
 								resolve({
-									data: rows,
+									data: data,
 									pad: self.pad,
 									step: self.step,
 									barWidth: self.barWidth,
@@ -1346,9 +1421,11 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 				self.pad
 					.selectAll('.y-axis')
 					.call(self.yAxis);
-			});
+			// });
 
 		});
+
+
 	
 	return p
 }
@@ -1522,7 +1599,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check if line is existed or not
 		if ( self.linePath ) {
-			console.log('Line is existed');
+			
 			self.linePath
 				.datum(data)
 				.transition()
@@ -1531,7 +1608,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create a line once it is not existed
 		} else {
-			console.log('Line is not existed');
+			
 			self.linePath = 
 				self.pad
 					.append('g')
@@ -1548,7 +1625,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check the dots on line are existed or not
 		if ( self.lineDots ) {
-			console.log('Dots are existed');
+			
 			self.lineDots
 				.data(data)
 				.transition()
@@ -1558,7 +1635,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create the dots once they aren't existed
 		} else {
-			console.log('Dots did not exist');
+			
 			self.lineDots = self.pad
 				.append('g')
 					.attr('class', 'dots-cluster')
@@ -1919,7 +1996,6 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 					}
 						
 				}
-			console.log(self.lineDots[0]);
 			})();
 
 			// The end point of each lines.
@@ -1985,7 +2061,6 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 
 
 lineGraphClass.prototype.isEvtMarkersExisted = function() {
-	console.log(this.pad.select('g.evt-marker-lines').empty());
 	return this.pad.select('g.evt-marker-lines').empty()
 }
 
@@ -1997,7 +2072,6 @@ lineGraphClass.prototype.emptyEvtMarkers = function() {
 
 // working-spot-1
 lineGraphClass.prototype.updateEvtMarkers = function() {
-	console.log('update evt marker');
 
 	d3.select('g.evt-marker-lines').selectAll('line')
 		.transition()

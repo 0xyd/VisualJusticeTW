@@ -40,7 +40,7 @@ const DataFilterStateTree = {
 						content: {
 							data: [
 								{
-									name: '合計發生件數',
+									name: '竊盜案件概覽',
 									topics: [
 										[
 											{
@@ -49,13 +49,187 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '案件數'
 												}
-											}
-											, 
+											},
 											{
-												name: '破獲與尚未破獲',
+												name: '案件種類',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+												}
+											},
+											{
+												name: '案件種類百分比',
+												axes: {
+													x: '民國',
+													y: '案件百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+												}
+											},
+											{
+												name: '重大竊盜案件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜發生件數']
+												}
+											},
+											{
+												name: '重大竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '重大竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜破獲率']
+												}
+											},
+											{
+												name: '普通竊盜案件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜發生件數']
+												}
+											},
+											{
+												name: '普通竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '普通竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜破獲率']
+												}
+											},
+											{
+												name: '汽車竊盜案件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜發生件數']
+												}
+											},
+											{
+												name: '汽車竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '汽車竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '機車竊盜案件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜發生件數']
+												}
+											},
+											{
+												name: '機車竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '機車竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜破獲率']
 												}
 											}
 										], 
@@ -78,157 +252,324 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '重大竊盜發生件數',
+									name: '汽機車竊盜發生件數',
 									topics: [
-										[
-											{
-												name: '案件總數',
+										{
+												name: '汽車竊盜案件數',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜發生件數']
 												}
-											}
-											, 
+											},
 											{
-												name: '破獲與尚未破獲',
+												name: '汽車竊盜破獲與否件數',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
 												}
-											}
-										], 
-										[
+											},
 											{
-												name: '趨勢',
+												name: '汽車竊盜案破獲率',
 												axes: {
 													x: '民國',
-													y: '人數'
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
 												}
-											}
-										, {
-												name: '破獲率',
+											},
+											{
+												name: '機車竊盜案件數',
 												axes: {
 													x: '民國',
-													y: '百分比'
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜發生件數']
+												}
+											},
+											{
+												name: '機車竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '機車竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['機車竊盜破獲率']
 												}
 											}
-										]
-									]
+									],
 								},
 								{
-									name: '普通竊盜發生件數',
+									name: '非汽機車竊盜發生件數',
 									topics: [
-										[
-											{
-												name: '案件總數',
+										{
+												name: '重大竊盜案件數',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜發生件數']
 												}
-											}
-											, 
+											},
 											{
-												name: '破獲與尚未破獲',
+												name: '重大竊盜破獲與否件數',
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
 												}
-											}
-										], 
-										[
+											},
 											{
-												name: '趨勢',
+												name: '重大竊盜案破獲率',
 												axes: {
 													x: '民國',
-													y: '人數'
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['重大竊盜破獲率']
 												}
-											}
-										, {
-												name: '破獲率',
+											},
+											{
+												name: '普通竊盜案件數',
 												axes: {
 													x: '民國',
-													y: '百分比'
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜發生件數']
+												}
+											},
+											{
+												name: '普通竊盜破獲與否件數',
+												axes: {
+													x: '民國',
+													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
+												}
+											},
+											{
+												name: '普通竊盜案破獲率',
+												axes: {
+													x: '民國',
+													y: '破獲率'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['普通竊盜破獲率']
 												}
 											}
-										]
-									]
+									],
 								},
-								{
-									name: '汽車竊盜發生件數',
-									topics: [
-										[
-											{
-												name: '案件總數',
-												axes: {
-													x: '民國',
-													y: 	'案件數'
-												}
-											}
-											, 
-											{
-												name: '破獲與尚未破獲',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												}
-											}
-										], 
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-											,{
-												name: '破獲率',
-												axes: {
-													x: '民國',
-													y: '百分比'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '機車竊盜發生輛數',
-									topics: [
-										[
-											{
-												name: '案件總數',
-												axes: {
-													x: '民國',
-													y: 	'車輛數'
-												}
-											}
-											, 
-											{
-												name: '破獲與尚未破獲',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												}
-											}
-										], 
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										, {
-												name: '破獲率',
-												axes: {
-													x: '民國',
-													y: '百分比'
-												}
-											}
-										]
-									]
-								}
+
+								// {
+								// 	name: '重大竊盜發生件數',
+								// 	topics: [
+								// 		[
+								// 			{
+								// 				name: '案件總數',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 			, 
+								// 			{
+								// 				name: '破獲與尚未破獲',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 		], 
+								// 		[
+								// 			{
+								// 				name: '趨勢',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '人數'
+								// 				}
+								// 			}
+								// 		, {
+								// 				name: '破獲率',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '百分比'
+								// 				}
+								// 			}
+								// 		]
+								// 	]
+								// },
+								// {
+								// 	name: '普通竊盜發生件數',
+								// 	topics: [
+								// 		[
+								// 			{
+								// 				name: '案件總數',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 			, 
+								// 			{
+								// 				name: '破獲與尚未破獲',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 		], 
+								// 		[
+								// 			{
+								// 				name: '趨勢',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '人數'
+								// 				}
+								// 			}
+								// 		, {
+								// 				name: '破獲率',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '百分比'
+								// 				}
+								// 			}
+								// 		]
+								// 	]
+								// },
+								// {
+								// 	name: '汽車竊盜發生件數',
+								// 	topics: [
+								// 		[
+								// 			{
+								// 				name: '案件總數',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: 	'案件數'
+								// 				}
+								// 			}
+								// 			, 
+								// 			{
+								// 				name: '破獲與尚未破獲',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 		], 
+								// 		[
+								// 			{
+								// 				name: '趨勢',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '人數'
+								// 				}
+								// 			}
+								// 			,{
+								// 				name: '破獲率',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '百分比'
+								// 				}
+								// 			}
+								// 		]
+								// 	]
+								// },
+								// {
+								// 	name: '機車竊盜發生件數',
+								// 	topics: [
+								// 		[
+								// 			{
+								// 				name: '案件總數',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: 	'車輛數'
+								// 				}
+								// 			}
+								// 			, 
+								// 			{
+								// 				name: '破獲與尚未破獲',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '案件數'
+								// 				}
+								// 			}
+								// 		], 
+								// 		[
+								// 			{
+								// 				name: '趨勢',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '人數'
+								// 				}
+								// 			}
+								// 		, {
+								// 				name: '破獲率',
+								// 				axes: {
+								// 					x: '民國',
+								// 					y: '百分比'
+								// 				}
+								// 			}
+								// 		]
+								// 	]
+								// }
 							]
 						}
 					},
@@ -445,8 +786,8 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '毒品數'
 												}
-											}
-										, {
+											}, 
+											{
 												name: '相較他級毒品'
 											}
 										],
@@ -1092,7 +1433,6 @@ const DataFilterStateTree = {
 									]
 								},
 								{	
-									// working-spot-2
 									name: '終結案件中平均一件所需日數',
 									topics: [
 										[
@@ -1278,7 +1618,6 @@ const DataFilterStateTree = {
 									]
 								},
 								{	
-									// working-spot-2
 									name: '終結案件中平均一件所需日數',
 									topics: [
 										[
@@ -1374,193 +1713,6 @@ const DataFilterStateTree = {
 									]
 								}
 							]
-							// data: [
-							// 	{
-							// 		name: '舊受',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '案件數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '新受',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '案件數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '終結',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '案件數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '未結',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '案件數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '終結案件中平均一件所需日數',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '天數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-									
-							// 	},
-							// 	{
-							// 		name: '平均每法官每月辦結件數',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '案件數'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '上訴案件維持率',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '百分比'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	},
-							// 	{
-							// 		name: '抗告案件維持率',
-							// 		topics: [
-							// 			[
-							// 				{
-							// 					name: '總數',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '百分比'
-							// 					}
-							// 			}]
-							// 			,
-							// 			[
-							// 				{
-							// 					name: '趨勢',
-							// 					axes: {
-							// 						x: '民國',
-							// 						y: '人數'
-							// 					}
-							// 				}
-							// 			]
-							// 		]
-							// 	}
-							// ]
 						}
 					},
 					{
@@ -2291,6 +2443,216 @@ class StoryTeller {
 
 		*/
 		this.storyChains = [
+			{
+				dataset: '竊盜案件',
+				data: '竊盜案件概覽',
+				vizType: '直方圖',
+				fwdSteps: [
+					{
+						goto: '案件種類',
+						transit: (_this, params) => {
+							return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '案件種類百分比',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					
+					{
+						goto: '重大竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '汽車竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '汽車竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '汽車竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '機車竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '機車竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '機車竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+				],
+				bwdSteps: [
+					{
+						goto: '案件總數',
+						transit: (_this, params) => {
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '案件種類',
+						transit: (_this, params) => {
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '案件種類百分比',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					
+					{
+						goto: '重大竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBupdateStackBars.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜案破獲率',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToPCT.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						// working-spot-2
+						goto: '汽車竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '汽車竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '汽車竊盜案破獲率',
+						transit: (_this, params) => {	
+							// I should create a function to transit bar to pct stack bar.
+							return _this.DBtransBarToPCTStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '機車竊盜發生件數',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '機車竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
+						},
+						end: null
+					},
+
+				]
+			},
 			// For prosecution stories
 			{
 				datasets: [
@@ -2304,14 +2666,14 @@ class StoryTeller {
 					{ 
 						goto: '各刑名統計', 
 						transit : (_this, params) => {
-							return _this.transBarToStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{ 
 						goto: '各刑名百分比', 
 						transit : (_this, params) => {
-							return _this.transStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToPCT.apply(_this, params);
 						},
 						end: null
 					},
@@ -2321,14 +2683,14 @@ class StoryTeller {
 					{ 
 						goto: '總數', 
 						transit : (_this, params) => {
-							return _this.transStackBarToBar.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{ 
 						goto: '各刑名統計', 
 						transit : (_this, params) => {
-							return _this.transPCTToOriginStackBar.apply(_this, params);
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
 					}
@@ -2343,28 +2705,28 @@ class StoryTeller {
 					{
 						goto: '新收與舊受',
 						transit: (_this, params) => {
-							return _this.transBarToStackBar.apply(_this, params)
+							return _this.DBtransBarToStackBar.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '新收與舊受百分比',
 						transit: (_this, params) => {
-							return _this.transStackBarToPCT.apply(_this, params)
+							return _this.DBtransStackBarToPCT.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '終結與未結',
 						transit: (_this, params) => {
-							return _this.transPCTToStackBar.apply(_this, params)
+							return _this.DBtransPCTToStackBar.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '終結與未結百分比',
 						transit: (_this, params) => {
-							return _this.transStackBarToPCT.apply(_this, params)
+							return _this.DBtransStackBarToPCT.apply(_this, params)
 						},
 						end: null
 					},
@@ -2373,28 +2735,28 @@ class StoryTeller {
 					{
 						goto: '受理件數',
 						transit: (_this, params) => {
-							return _this.transStackBarToBar.apply(_this, params)
+							return _this.DBtransStackBarToBar.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '新收與舊受',
 						transit: (_this, params) => {
-							return _this.transPCTToOriginStackBar.apply(_this, params)
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '新收與舊受百分比',
 						transit: (_this, params) => {
-							return _this.transStackBarToPCT.apply(_this, params)
+							return _this.DBtransStackBarToPCT.apply(_this, params)
 						},
 						end: null
 					},
 					{
 						goto: '終結與未結',
 						transit: (_this, params) => {
-							return _this.transPCTToStackBar.apply(_this, params)
+							return _this.DBtransPCTToStackBar.apply(_this, params)
 						},
 						end: null
 					},
@@ -2410,31 +2772,30 @@ class StoryTeller {
 					{ 
 						goto: '組成', 
 						transit : (_this, params) => {
-							return _this.transBarToStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{ 
 						goto: '組成百分比', 
 						transit : (_this, params) => {
-							return _this.transStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToPCT.apply(_this, params);
 						},
 						end: null
 					},
 				],
-
 				bwdSteps: [
 					{ 
 						goto: '總數', 
 						transit : (_this, params) => {
-							return _this.transStackBarToBar.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{ 
 						goto: '組成', 
 						transit : (_this, params) => {
-							return _this.transPCTToOriginStackBar.apply(_this, params);
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
 					}
@@ -2448,14 +2809,14 @@ class StoryTeller {
 					{
 						goto: '犯次分類',
 						transit: function(_this, params) {
-							return _this.transBarToStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '犯次分類比例',
 						transit: function(_this, params) {
-							return _this.transStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToPCT.apply(_this, params);
 						},
 						end: null
 					}
@@ -2464,14 +2825,14 @@ class StoryTeller {
 					{
 						goto: '總數',
 						transit: function(_this, params) {
-							return _this.transStackBarToBar.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '犯次分類',
 						transit: function(_this, params) {
-							return _this.transPCTToOriginStackBar.apply(_this, params);
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
 					}
@@ -2682,7 +3043,7 @@ const DataBoard = React.createClass({
 
 	DBfindTopic(props) {
 		const themeKey = store.getState().get('theme');
-
+		
 		return DataFilterStateTree.findTopic(
 			themeKey, props.dataset, props.data, props.chartType, props.topic)
 	},
@@ -2704,8 +3065,17 @@ const DataBoard = React.createClass({
 		const _data = this.DBfindData(props);
 
 		if (update) {
+			// bG.update(
+			// 	dataSheet.url, 
+			// 	_topic.axes.x,
+			// 	_topic.axes.y,
+			// 	props.data
+			// 	)
+			// 	.then(function() {
+			// 		t.appendBarMouseOver(props.data);
+			// 	});
 			bG.update(
-				dataSheet.url, 
+				// dataSheet.url, 
 				_topic.axes.x,
 				_topic.axes.y,
 				props.data
@@ -2750,7 +3120,9 @@ const DataBoard = React.createClass({
 				.then(function() {
 					t.appendDotMouseOver(props.data);
 				});
+
 		} else {
+
 			lG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 					.mappingData(
@@ -2764,6 +3136,7 @@ const DataBoard = React.createClass({
 					.then(function() {
 						t.initTips().appendDotMouseOver(props.data);
 					});
+
 		}
 	},
 
@@ -2788,8 +3161,28 @@ const DataBoard = React.createClass({
 		}
 	},
 
+	// working-spot-2
+	// DBUpdateBar allows bar graph display different data in the same dataset.
+	DBUpdateBar(props, header) {
+		
+		let bG = this.gpu.barGraph,
+				t  = this.tip;
+		
+		const _topic = this.DBfindTopic(props);
+
+		return bG.update(
+			_topic.axes.x,
+			_topic.axes.y,
+			props.data === header ? props.data : header
+			)
+			.then(function() {
+				t.appendBarMouseOver(props.data);
+			});
+
+	},
+
 	// Transform from bar to stack bars.
-	transBarToStackBar(props) {
+	DBtransBarToStackBar(props) {
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
@@ -2797,24 +3190,37 @@ const DataBoard = React.createClass({
 		return bG.transitBarToStack(_topic.intl, _topic.extl);
 	},
 
+	// working-spot-2: Transform from bar to stack bars.
+	DBtransBarToPCTStackBar(props) {
+
+		let bG = this.gpu.barGraph,
+				t = this.tip;
+
+		const _topic = this.DBfindTopic(props);
+		const _data = this.DBfindData(props);
+
+		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _data.exceptHeaders);
+
+	},
+
 	// Transform from bar to stack bars.
-	transStackBarToBar(props) {
+	DBtransStackBarToBar(props) {
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
 
-		return bG.transitStackBarToBar(props.data, _data.exceptHeaders, _topic.axes.y).then(function() {
-			t.appendBarMouseOver(props.data);
-		});
+		return bG.transitStackBarToBar(props.data, _data.exceptHeaders, _topic.axes.y)
+			.then(function() {
+				t.appendBarMouseOver(props.data);
+			});
 	},
 
 	// Transform the stack bar into stack bar with percent unit
-	transStackBarToPCT(props) {
+	DBtransStackBarToPCT(props) {
 		let bG = this.gpu.barGraph;
 
-		// working-spot-2
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
@@ -2823,7 +3229,7 @@ const DataBoard = React.createClass({
 	},
 
 	// Transform the percentage stack bar into origin quantative stack bar
-	transPCTToOriginStackBar(props) {
+	DBtransPCTToOriginStackBar(props) {
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
@@ -2832,7 +3238,7 @@ const DataBoard = React.createClass({
 	},
 
 	// Transform the percentage stack to general bar stack
-	transPCTToStackBar(props) {
+	DBtransPCTToStackBar(props) {
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
@@ -2845,6 +3251,58 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props)
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
+	},
+
+	// Produce the params for forward steps and backward steps.
+	DBTopicStepsProducer(props) {
+
+		let theme = store.getState().get('theme'),
+				datasetIdx = DataFilterStateTree.findDatasetIndex(theme, props.dataset),
+				dataIdx = DataFilterStateTree.findDataIndex(theme, props.dataset, props.data),
+				chartIdx = DataFilterStateTree.findChartTypeIndex(theme, props.dataset, props.chartType);
+
+		const topics = DataFilterStateTree.listTopic(theme, datasetIdx, dataIdx, chartIdx),
+					fwdTopics = topics.filter((d, i) => { return i !== 0 }),
+					bwdTopics = topics.filter((d, i) => { return i !== topics.length });
+
+		// Forward steps
+		let fwd = [];
+
+		for (let topic of fwdTopics) {
+			
+			fwd.push({
+				_: this,
+				params: [
+					{
+						dataset: props.dataset,
+						data: props.data,
+						chartType: props.chartType,
+						topic: topic
+					}
+				]
+			});
+		}
+		
+		let bwd = [];
+
+		for (let topic of bwdTopics) {
+			bwd.push({
+				_: this,
+				params: [
+					{
+						dataset: props.dataset,
+						data: props.data,
+						chartType: props.chartType,
+						topic: topic
+					}
+				]
+			});
+		}
+
+		return {
+			fwd: fwd,
+			bwd: bwd
+		}
 	},
 
 	/* React Native methods */
@@ -3179,284 +3637,14 @@ const DataBoard = React.createClass({
 
 		} else if (shouldDive) { // Update when topic changing.
 
+			// Produce the steps for topic explanation.
+			let steps = this.DBTopicStepsProducer(nextProps);
+
 			// Select the chain 
 			this.storyTeller.decideChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
-			
-			if (nextProps.dataset === '殺人罪' || '兒童及少年性交易防制條例' && 
-					nextProps.data === '被告人數' && 
-					nextProps.chartType === '直方圖')
-				this.storyTeller.toTell(
-					this.props.topicDepth, 
-					nextProps.topicDepth, 
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '各刑名統計'
-								 }
-								]
-							}, 
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '各刑名百分比'
-								 }
-								]
-							}
-					],
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '總數'
-								 }
-								]
-							}, 
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '各刑名統計'
-								 }
-								]
-							}
-					]
-				);
 
-			if (nextProps.dataset === '監獄人數概況' && 
-					nextProps.data === '本年執行人數' && 
-					nextProps.chartType === '直方圖')
-				this.storyTeller.toTell(
-					this.props.topicDepth, 
-					nextProps.topicDepth, 
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '組成'
-								 }
-								]
-							}, 
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '組成百分比'
-								 }
-								]
-							}
-					],
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '總數'
-								 }
-								]
-							}, 
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-								 	data: nextProps.data,
-								 	chartType: nextProps.chartType,
-								 	topic: '組成'
-								 }
-								]
-							}
-					]
-				);
-
-			else if (
-				nextProps.dataset === 
-					'地方法院刑事案件收結情形' || '高等法院刑事案件收結情形' &&
-				nextProps.data === '案件數' &&
-				nextProps.chartType === '直方圖'
-				)
-
-				this.storyTeller.toTell(
-					this.props.topicDepth,
-					nextProps.topicDepth,
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '新收與舊受' 
-								}
-							] 
-						},
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '新收與舊受百分比' 
-								}
-							] 
-						},
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '終結與未結' 
-								}
-							] 
-						},
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '終結與未結百分比' 
-								}
-							] 
-						},
-					],
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '受理件數' 
-								}
-							] 
-						},
-						{
-						 	_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '新收與舊受' 
-								}
-							] 
-						},
-						{
-						 	_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '新收與舊受百分比' 
-								}
-							] 
-						},
-						{
-						 	_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '終結與未結' 
-								}
-							] 
-						}
-					]
-					);
-				
-			else if (
-				nextProps.dataset === '監獄人數概況' &&
-				nextProps.data === '新入監人數' &&
-				nextProps.chartType === '直方圖') {
-
-				this.storyTeller.toTell(
-					this.props.topicDepth,
-					nextProps.topicDepth,
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '犯次分類' 
-								}
-							] 
-						},
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '犯次分類比例' 
-								}
-							] 
-						}
-					],
-					[
-						{ 
-							_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '總數' 
-								}
-							] 
-						},
-						{
-						 	_: this, 
-							params: [
-								{
-									dataset: nextProps.dataset,
-									data   : nextProps.data,
-									chartType: nextProps.chartType,
-									topic: '犯次分類' 
-								}
-							] 
-						}
-					]
-				);
-			}
+			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 		}
 	},
 
@@ -3861,7 +4049,7 @@ function selectAppTheme(state, theme) {
 			themeState = setState('theme', 'police');
 			statTitle = setState('statTitleImageSrc', './src/policeStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '竊盜案件');
-			defaultData = setState('currentData', '合計發生件數');
+			defaultData = setState('currentData', '竊盜案件概覽');
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '案件總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
