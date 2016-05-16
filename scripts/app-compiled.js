@@ -8,7 +8,19 @@ window.query='&tqx=out:csv';window.googleSheet='https://spreadsheets.google.com/
 		intl: 
 			the data chosen from the dataset for further explanation or operations.
 */var DataFilterStateTree={state:Map() // State of Police Data Selector 
-.set('police',List([{dataset:'竊盜案件',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'合計發生件數',topics:[[{name:'案件總數',axes:{x:'民國',y:'案件數'}},{name:'案件種類',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜發生件數','普通竊盜發生件數','汽車竊盜發生件數','機車竊盜發生件數']}},{name:'案件種類百分比',axes:{x:'民國',y:'案件百分比'},extl:{headers:null},intl:{headers:['重大竊盜發生件數','普通竊盜發生件數','汽車竊盜發生件數','機車竊盜發生件數']}},{name:'重大竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜發生件數']}},{name:'重大竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜破獲件數','重大竊盜尚未破獲件數']}},{name:'重大竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['重大竊盜破獲率']}},{name:'普通竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['普通竊盜發生件數']}},{name:'普通竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['普通竊盜破獲件數','普通竊盜尚未破獲件數']}},{name:'普通竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['普通竊盜破獲率']}},{name:'汽車竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜發生件數']}},{name:'汽車竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜破獲件數','汽車竊盜尚未破獲件數']}},{name:'汽車竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['汽車竊盜破獲件數','汽車竊盜尚未破獲件數']}},{name:'機車竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['機車竊盜發生件數']}},{name:'機車竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['機車竊盜破獲件數','機車竊盜尚未破獲件數']}},{name:'機車竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['機車竊盜破獲率']}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}},{name:'破獲率',axes:{x:'民國',y:'百分比'}}]]}]}}, // {
+.set('police',List([{dataset:'竊盜案件',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'合計發生件數',topics:[[{name:'案件總數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['合計發生件數']}},{name:'案件種類',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜發生件數','普通竊盜發生件數','汽車竊盜發生件數','機車竊盜發生件數']}},{name:'案件種類百分比',axes:{x:'民國',y:'案件百分比'},extl:{headers:null},intl:{headers:['重大竊盜發生件數','普通竊盜發生件數','汽車竊盜發生件數','機車竊盜發生件數']}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}},{name:'破獲率',axes:{x:'民國',y:'百分比'}}]]},{name:'汽機車竊盜案件', // exceptHeaders: [
+// 	'民國',	'合計發生件數',	'合計破獲件數',	'合計破獲率',	'合計嫌疑犯人數',	
+// 	'合計犯罪率',	'重大竊盜發生件數',	'重大竊盜破獲件數',	'重大竊盜尚未破獲件數',	
+// 	'重大竊盜破獲率',	'重大竊盜嫌疑犯人數',	'普通竊盜發生件數', '普通竊盜破獲件數',	
+// 	'普通竊盜尚未破獲件數',	'普通竊盜破獲率',	'普通竊盜嫌疑犯人數', '汽車竊盜破獲件數',	
+// 	'汽車竊盜尚未破獲件數',	 '汽車竊盜破獲率', '汽車竊盜嫌疑犯人數', '機車竊盜破獲件數',
+// 	'機車竊盜尚未破獲件數',	 '機車竊盜破獲率', '機車竊盜嫌疑犯人數'
+// 	],
+topics:[[{ // working-spot-2
+name:'總數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜發生件數','機車竊盜發生件數'],mHeaders:['汽車竊盜發生件數','機車竊盜發生件數']}},{name:'汽機車案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜發生件數','機車竊盜發生件數']}},{name:'汽機車案件數百分比',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜發生件數','機車竊盜發生件數']}},{ // working-spot-2
+name:'汽車竊盜發生件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{ // headers: ['汽車竊盜發生件數'],
+mHeaders:['汽車竊盜發生件數']}},{name:'汽車竊盜案嫌疑犯人數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜嫌疑犯人數']}},{name:'汽車竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['汽車竊盜破獲件數','汽車竊盜尚未破獲件數']}},{name:'汽車竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['汽車竊盜破獲件數','汽車竊盜尚未破獲件數']}},{name:'機車竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['機車竊盜發生件數']}},{name:'機車竊盜嫌疑犯人數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['機車竊盜嫌疑犯人數']}},{name:'機車竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['機車竊盜破獲件數','機車竊盜尚未破獲件數']}},{name:'機車竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['機車竊盜破獲率']}}],[]]},{ // working-spot-2
+name:'非汽機車竊盜發生件數',topics:[{name:'總數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{mHeaders:['重大竊盜發生件數','普通竊盜發生件數']}},{name:'重大竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜發生件數']}},{name:'重大竊盜嫌疑犯人數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜嫌疑犯人數']}},{name:'重大竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['重大竊盜破獲件數','重大竊盜尚未破獲件數']}},{name:'重大竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['重大竊盜破獲率']}},{name:'普通竊盜案件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['普通竊盜發生件數']}},{name:'普通竊盜嫌疑犯人數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['普通竊盜嫌疑犯人數']}},{name:'普通竊盜破獲與否件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['普通竊盜破獲件數','普通竊盜尚未破獲件數']}},{name:'普通竊盜案破獲率',axes:{x:'民國',y:'破獲率'},extl:{headers:null},intl:{headers:['普通竊盜破獲率']}}]}]}}, // {
 // 	name: '重大竊盜發生件數',
 // 	topics: [
 // 		[
@@ -161,195 +173,16 @@ window.query='&tqx=out:csv';window.googleSheet='https://spreadsheets.google.com/
 // 	]
 // }
 {dataset:'暴力犯罪案件',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'故意殺人發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'擄人勒贖發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'強盜發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'搶奪發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'重傷害發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'恐嚇取財發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'強制性交發生件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}},{dataset:'毒品案件',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'嫌疑犯人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'查獲第一級毒品數',topics:[[{name:'總數',axes:{x:'民國',y:'毒品數'}},{name:'相較他級毒品'}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'查獲第二級毒品數',topics:[[{name:'總數',axes:{x:'民國',y:'毒品數'}},{name:'相較他級毒品'}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'查獲第三級毒品數',topics:[[{name:'總數',axes:{x:'民國',y:'毒品數'}},{name:'相較他級毒品'}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'查獲第四級毒品數',topics:[[{name:'總數',axes:{x:'民國',y:'毒品數'}},{name:'相較他級毒品'}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}}])) // State of Prosecution Data Selector 
-.set('prosecution',List([{dataset:'殺人罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數', // exceptHeaders are excluded from the current data statistic.
-exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'兒童及少年性交易防制條例',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'竊盜罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'擄人勒贖罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'恐嚇罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'槍砲彈藥刀械管制條例',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'公共危險罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'貪污罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'瀆職罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',exceptHeaders:['保安處分人數','緩刑人數','累犯人數','民國'],topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}}])) // State of judicial data selector
-.set('judicial',List([{dataset:'地方法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'案件數',exceptHeaders:['民國','終結','未結','終結案件中平均一件所需日數','平均每法官每月辦結件數','上訴案件維持率','抗告案件維持率'],topics:[[{name:'受理件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:null}},{name:'新收與舊受',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'新收與舊受百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'終結與未結',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['終結','未結']}},{name:'終結與未結百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['終結','未結']}}],[]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'上訴案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'抗告案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}},{dataset:'高等法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'案件數',exceptHeaders:['民國','終結','未結','終結案件中平均一件所需日數','平均每法官每月辦結件數','上訴案件維持率','抗告案件維持率'],topics:[[{name:'受理件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:null}},{name:'新收與舊受',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'新收與舊受百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'終結與未結',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['終結','未結']}},{name:'終結與未結百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['終結','未結']}}],[]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'上訴案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'抗告案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}] // data: [
-// 	{
-// 		name: '舊受',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '案件數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '新受',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '案件數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '終結',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '案件數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '未結',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '案件數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '終結案件中平均一件所需日數',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '天數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '平均每法官每月辦結件數',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '案件數'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '上訴案件維持率',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '百分比'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	},
-// 	{
-// 		name: '抗告案件維持率',
-// 		topics: [
-// 			[
-// 				{
-// 					name: '總數',
-// 					axes: {
-// 						x: '民國',
-// 						y: '百分比'
-// 					}
-// 			}]
-// 			,
-// 			[
-// 				{
-// 					name: '趨勢',
-// 					axes: {
-// 						x: '民國',
-// 						y: '人數'
-// 					}
-// 				}
-// 			]
-// 		]
-// 	}
-// ]
-}},{dataset:'最高法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'舊受',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'新受',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'終結',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'未結',topics:[[{name:'總數',axes:{x:'民國',y:'數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}}])) // State of correction data selector
+.set('prosecution',List([{dataset:'殺人罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{ // mHeaders: Headers for mergining into 1 new column.
+mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'兒童及少年性交易防制條例',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'竊盜罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'擄人勒贖罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'恐嚇罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'槍砲彈藥刀械管制條例',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數', // exceptHeaders: [
+// 	'保安處分人數', '緩刑人數', '累犯人數', '民國'
+// ],
+topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'公共危險罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'貪污罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}},{dataset:'瀆職罪',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'被告人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},extl:{},intl:{mHeaders:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名統計',axes:{x:'民國',y:'人數'},extl:{headers:null},intl:{headers:['死刑','無期徒刑','有期徒刑','拘役','罰金','免刑','無罪','不受理','其他']}},{name:'各刑名百分比',axes:{x:'民國',y:'百分比'}}],[]]}]}}])) // State of judicial data selector
+.set('judicial',List([{dataset:'地方法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'案件數', // exceptHeaders: [
+// 	'民國', '終結', '未結', '終結案件中平均一件所需日數', 
+// 	'平均每法官每月辦結件數', '上訴案件維持率', '抗告案件維持率'
+// ],
+topics:[[{name:'受理件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:null,mHeaders:['舊受','新受']}},{name:'新收與舊受',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'新收與舊受百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'終結與未結',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['終結','未結']}},{name:'終結與未結百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['終結','未結']}}],[]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'上訴案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'抗告案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}},{dataset:'高等法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'案件數',topics:[[{name:'受理件數',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:null,mHeaders:['舊受','新受']}},{name:'新收與舊受',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'新收與舊受百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['舊受','新受']}},{name:'終結與未結',axes:{x:'民國',y:'案件數'},extl:{headers:null},intl:{headers:['終結','未結']}},{name:'終結與未結百分比',axes:{x:'民國',y:'百分比'},extl:{headers:null},intl:{headers:['終結','未結']}}],[]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'上訴案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'抗告案件維持率',topics:[[{name:'總數',axes:{x:'民國',y:'百分比'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}},{dataset:'最高法院刑事案件收結情形',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'舊受',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'新受',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'終結',topics:[[{name:'總數',axes:{x:'民國',y:'案件數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'未結',topics:[[{name:'總數',axes:{x:'民國',y:'數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'終結案件中平均一件所需日數',topics:[[{name:'總數',axes:{x:'民國',y:'天數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]},{name:'平均每法官每月辦結件數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}}],[{name:'趨勢',axes:{x:'民國',y:'人數'}}]]}]}}])) // State of correction data selector
 .set('correction',List([{dataset:'監獄人數概況',availableChartTypes:['直方圖','趨勢圖'],content:{data:[{name:'本年執行人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'},intl:{headers:['本年執行人數']},extl:{url:null}},{name:'組成',axes:{x:'民國',y:'人數'},intl:{headers:['上年底留監人數','本年入監人數']},extl:{url:null}},{name:'組成百分比',axes:{x:'民國',y:'百分比'},intl:{headers:['上年底留監人數','本年入監人數']},extl:{url:null}}],[{name:'減刑',axes:{x:'民國',y:'人數'}}]]},{name:'本年入監人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},'入監原因分類'],[{name:'減刑',axes:{x:'民國',y:'人數'}}]]},{name:'新入監人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},{name:'犯次分類',axes:{x:'民國',y:'人數'},extl:{url:function(){if(isLocal)return './correction/新入監犯罪次數與種類.csv';else return window.googleSheet+'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg'+window.query;}(),headers:['初犯','再犯','累犯']},intl:{headers:null}},{name:'犯次分類比例',axes:{x:'民國',y:'百分比'},extl:{headers:['初犯','再犯','累犯']},intl:{headers:null}}],[{name:'減刑',axes:{x:'民國',y:'人數'}}]]},{name:'本年出獄人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}},'出獄原因分類'],[{name:'減刑',axes:{x:'民國',y:'人數'}}]]},{name:'本年年底留監人數',topics:[[{name:'總數',axes:{x:'民國',y:'人數'}}],[{name:'減刑',axes:{x:'民國',y:'人數'}}]]}]}},{dataset:'新入監資料概覽',availableChartTypes:['圓環比例圖'],content:{data:[{name:'民國75年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國76年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國77年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國78年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國79年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國80年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國81年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國82年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國83年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'民國84年',data:['總覽','新入監前家庭狀況','新入監前犯罪次數與種類','新入監前教育程度','新入監年齡統計'],topics:[[{name:'總數'}]]},{name:'85'},{name:'86'},{name:'87'},{name:'88'},{name:'89'},{name:'90'},{name:'91'},{name:'92'},{name:'93'},{name:'94'},{name:'95'},{name:'96'}]}}])), // key: the name of the theme.
 selectState:function selectState(key){return this.state.get(key);}, // Find the index of the specific dataset
 findDatasetIndex:function findDatasetIndex(key,datasetName){var state=this.selectState(key); // Transform the List to js array
@@ -381,11 +214,95 @@ findTopic:function findTopic(key,datasetName,dataName,chartTypeName,topicName){v
 			bwdSteps <Array>: The step animation when user decreases their depth of topic reading.
 				*The properties are the same as fwdSteps.*
 
-		*/this.storyChains=[{dataset:'竊盜案件',data:'合計發生件數',vizType:'直方圖',fwdSteps:[{goto:'案件種類',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'案件種類百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'重大竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'重大竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'重大竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'普通竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'普通竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'普通竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'汽車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'汽車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'汽車竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'機車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'機車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'機車竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'案件總數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'案件種類',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null},{goto:'案件種類百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'重大竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'重大竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'重大竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'普通竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'普通竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'普通竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{ // working-spot-2
-goto:'汽車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'汽車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'汽車竊盜案破獲率',transit:function transit(_this,params){ // I should create a function to transit bar to pct stack bar.
-return _this.DBtransBarToPCTStackBar.apply(_this,params);},end:null},{goto:'機車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'機車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null}]}, // For prosecution stories
+		*/this.storyChains=[ // Stories for police.
+{dataset:'竊盜案件',data:'合計發生件數',vizType:'直方圖',fwdSteps:[{goto:'案件種類',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'案件種類百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null} // {
+// 	goto: '重大竊盜發生件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransPCTToStackBar.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '重大竊盜破獲與否件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBupdateStackBars.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '重大竊盜案破獲率',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransStackBarToPCT.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '普通竊盜發生件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransPCTToStackBar.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '普通竊盜破獲與否件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBupdateStackBars.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '普通竊盜案破獲率',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransStackBarToPCT.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '汽車竊盜發生件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransPCTToStackBar.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '汽車竊盜破獲與否件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBupdateStackBars.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '汽車竊盜案破獲率',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransStackBarToPCT.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '機車竊盜發生件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransPCTToStackBar.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '機車竊盜破獲與否件數',
+// 	transit: (_this, params) => {	
+// 		return _this.DBupdateStackBars.apply(_this, params);
+// 	},
+// 	end: null
+// },
+// {
+// 	goto: '機車竊盜案破獲率',
+// 	transit: (_this, params) => {	
+// 		return _this.DBtransStackBarToPCT.apply(_this, params);
+// 	},
+// 	end: null
+// },
+],bwdSteps:[{goto:'案件總數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'案件種類',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null}]},{dataset:'竊盜案件',data:'非汽機車竊盜發生件數',vizType:'直方圖',fwdSteps:[{goto:'重大竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'重大竊盜嫌疑人數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'重大竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'重大竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'普通竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'普通竊盜嫌疑犯人數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'普通竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'普通竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[]},{dataset:'竊盜案件',data:'汽機車竊盜案件',vizType:'直方圖',fwdSteps:[{goto:'汽機車案件數',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'汽機車案件數百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'汽車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTStackBarToBar.apply(_this,params);},end:null},{ // working-spot-2
+goto:'汽車竊盜嫌疑犯人數',transit:function transit(_this,params){params.push('汽車竊盜嫌疑犯人數');return _this.DBUpdateBar.apply(_this,params);},end:null},{goto:'汽車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'汽車竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'機車竊盜發生件數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'機車竊盜嫌疑犯人數',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'機車竊盜破獲與否件數',transit:function transit(_this,params){return _this.DBupdateStackBars.apply(_this,params);},end:null},{goto:'機車竊盜案破獲率',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[]}, // For prosecution stories
 {datasets:['殺人罪','兒童及少年性交易防制條例','竊盜罪','擄人勒贖罪','恐嚇罪','槍砲彈藥刀械管制條例','公共危險罪','貪污罪','瀆職罪'],data:'被告人數',vizType:'直方圖',fwdSteps:[{goto:'各刑名統計',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'各刑名百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'各刑名統計',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null}]}, // For judicial stories
-{datasets:['地方法院刑事案件收結情形','高等法院刑事案件收結情形'],data:'案件數',vizType:'直方圖',fwdSteps:[{goto:'新收與舊受',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'新收與舊受百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'終結與未結',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'終結與未結百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'受理件數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'新收與舊受',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null},{goto:'新收與舊受百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'終結與未結',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null}]}, // For correction stories
+{datasets:['地方法院刑事案件收結情形','高等法院刑事案件收結情形'],data:'案件數',vizType:'直方圖',fwdSteps:[{goto:'新受與舊受',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'新受與舊受百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'終結與未結',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null},{goto:'終結與未結百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'受理件數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'新收與舊受',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null},{goto:'新收與舊受百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null},{goto:'終結與未結',transit:function transit(_this,params){return _this.DBtransPCTToStackBar.apply(_this,params);},end:null}]}, // For correction stories
 {dataset:'監獄人數概況',data:'本年執行人數',vizType:'直方圖',fwdSteps:[{goto:'組成',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'組成百分比',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'組成',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null}]},{dataset:'監獄人數概況',data:'新入監人數',vizType:'直方圖',fwdSteps:[{goto:'犯次分類',transit:function transit(_this,params){return _this.DBtransBarToStackBar.apply(_this,params);},end:null},{goto:'犯次分類比例',transit:function transit(_this,params){return _this.DBtransStackBarToPCT.apply(_this,params);},end:null}],bwdSteps:[{goto:'總數',transit:function transit(_this,params){return _this.DBtransStackBarToBar.apply(_this,params);},end:null},{goto:'犯次分類',transit:function transit(_this,params){return _this.DBtransPCTToOriginStackBar.apply(_this,params);},end:null}]}]; // Store the current story chain.
 this._story=null;} // Decide which story chain should be applied.
 _createClass(StoryTeller,[{key:'decideChain',value:function decideChain(datasetName,dataName,vizTypeName){this._story=this.storyChains.find(function(chain){ // If the dataset is not defined, access the datasets.
@@ -413,18 +330,29 @@ vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arg
 // 		t.appendBarMouseOver(props.data);
 // 	});
 bG.update( // dataSheet.url, 
-_topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendBarMouseOver(props.data);});}else {bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false,_data.exceptHeaders).then(function(){t.initTips().appendBarMouseOver(props.data);});}}, // Visualizing data with bar chart
+_topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendBarMouseOver(props.data);});}else {bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false, // _data.exceptHeaders
+_topic.intl.mHeaders).then(function(){t.initTips().appendBarMouseOver(props.data);});}}, // Visualizing data with bar chart
 vizDataWithLineChart:function vizDataWithLineChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var lG=this.gpu.lineGraph,t=this.tip;var _topic=this.DBfindTopic(props);if(update){lG.update(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendDotMouseOver(props.data);});}else {lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false).then(function(){t.initTips().appendDotMouseOver(props.data);});}}, // Visualizing data with ring chart
 vizDataWithRingChart:function vizDataWithRingChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var rG=this.gpu.ringGraph;if(update){var yr=parseInt(props.data.match(/\d+/));rG.selectROCYr(yr).updateRings();}else {rG.resetRings().initializeAPad().init().selectROCYr(75).drawMultiRings(dataSheet.urls);}}, // working-spot-2
 // DBUpdateBar allows bar graph display different data in the same dataset.
-DBUpdateBar:function DBUpdateBar(props,header){var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);return bG.update(_topic.axes.x,_topic.axes.y,props.data===header?props.data:header).then(function(){t.appendBarMouseOver(props.data);});}, // Transform from bar to stack bars.
+DBUpdateBar:function DBUpdateBar(props,header){console.log('header',header);var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);return bG.update(_topic.axes.x,_topic.axes.y,props.data===header?props.data:header).then(function(){t.appendBarMouseOver(props.data);});}, // Transform from bar to stack bars.
 DBtransBarToStackBar:function DBtransBarToStackBar(props){var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);return bG.transitBarToStack(_topic.intl,_topic.extl);}, // working-spot-2: Transform from bar to stack bars.
-DBtransBarToPCTStackBar:function DBtransBarToPCTStackBar(props){var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);return bG.transitBarToPCTStackBar(_topic.axes.y,_topic.intl,_topic.extl,_data.exceptHeaders);}, // Transform from bar to stack bars.
-DBtransStackBarToBar:function DBtransStackBarToBar(props){var bG=this.gpu.barGraph,t=this.tip;var _data=this.DBfindData(props);var _topic=this.DBfindTopic(props);return bG.transitStackBarToBar(props.data,_data.exceptHeaders,_topic.axes.y).then(function(){t.appendBarMouseOver(props.data);});}, // Transform the stack bar into stack bar with percent unit
+DBtransBarToPCTStackBar:function DBtransBarToPCTStackBar(props){var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props); // return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _data.exceptHeaders);
+return bG.transitBarToPCTStackBar(_topic.axes.y,_topic.intl,_topic.extl,_topic.intl.mHeaders);}, // Transform from bar to stack bars.
+DBtransStackBarToBar:function DBtransStackBarToBar(props){var bG=this.gpu.barGraph,t=this.tip;var _data=this.DBfindData(props);var _topic=this.DBfindTopic(props);return bG.transitStackBarToBar(props.data,_topic.intl.mHeaders,_topic.axes.y).then(function(){t.appendBarMouseOver(props.data);}); // return bG.transitStackBarToBar(props.data, _data.exceptHeaders, _topic.axes.y)
+// 	.then(function() {
+// 		t.appendBarMouseOver(props.data);
+// 	});
+}, // Transform the stack bar into stack bar with percent unit
 DBtransStackBarToPCT:function DBtransStackBarToPCT(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props); // Add the except headers.
-return bG.transitPCTStackBar(_topic.axes.y,_data.exceptHeaders);}, // Transform the percentage stack bar into origin quantative stack bar
+// return bG.transitPCTStackBar(_topic.axes.y, _data.exceptHeaders);
+return bG.transitPCTStackBar(_topic.axes.y,_topic.exceptHeaders);}, // Transform the percentage stack bar into origin quantative stack bar
 DBtransPCTToOriginStackBar:function DBtransPCTToOriginStackBar(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);return bG.transitPCTSBarToSBar(_topic.axes.y,_topic.intl,_topic.extl,true);}, // Transform the percentage stack to general bar stack
-DBtransPCTToStackBar:function DBtransPCTToStackBar(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);return bG.transitPCTSBarToSBar(_topic.axes.y,_topic.intl,_topic.extl,false);},DBupdateStackBars:function DBupdateStackBars(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);return bG.updateStackBars(_topic.intl,_topic.extl);}, // Produce the params for forward steps and backward steps.
+DBtransPCTToStackBar:function DBtransPCTToStackBar(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);return bG.transitPCTSBarToSBar(_topic.axes.y,_topic.intl,_topic.extl,false);}, // working-spot-2
+// Transform the percentage stack bar to primitive bar
+DBtransPCTStackBarToBar:function DBtransPCTStackBarToBar(props){var bG=this.gpu.barGraph;var _data=this.DBfindData(props);var _topic=this.DBfindTopic(props);console.log('props.data: ',props.data);console.log('check the topic here:',_topic);console.log('check the mHeaders here: ',_topic.intl.mHeaders); // return bG.transitPCTSBarToBar(
+// _topic.axes.y, props.data, _topic.intl, _topic.extl, _data.exceptHeaders)
+return bG.transitPCTSBarToBar(_topic.axes.y,props.data,_topic.intl,_topic.extl,_topic.intl.mHeaders);},DBupdateStackBars:function DBupdateStackBars(props){var bG=this.gpu.barGraph;var _topic=this.DBfindTopic(props);return bG.updateStackBars(_topic.intl,_topic.extl);}, // Produce the params for forward steps and backward steps.
 DBTopicStepsProducer:function DBTopicStepsProducer(props){var theme=store.getState().get('theme'),datasetIdx=DataFilterStateTree.findDatasetIndex(theme,props.dataset),dataIdx=DataFilterStateTree.findDataIndex(theme,props.dataset,props.data),chartIdx=DataFilterStateTree.findChartTypeIndex(theme,props.dataset,props.chartType);var topics=DataFilterStateTree.listTopic(theme,datasetIdx,dataIdx,chartIdx),fwdTopics=topics.filter(function(d,i){return i!==0;}),bwdTopics=topics.filter(function(d,i){return i!==topics.length;}); // Forward steps
 var fwd=[];var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=fwdTopics[Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var topic=_step.value;fwd.push({_:this,params:[{dataset:props.dataset,data:props.data,chartType:props.chartType,topic:topic}]});}}catch(err){_didIteratorError=true;_iteratorError=err;}finally {try{if(!_iteratorNormalCompletion&&_iterator.return){_iterator.return();}}finally {if(_didIteratorError){throw _iteratorError;}}}var bwd=[];var _iteratorNormalCompletion2=true;var _didIteratorError2=false;var _iteratorError2=undefined;try{for(var _iterator2=bwdTopics[Symbol.iterator](),_step2;!(_iteratorNormalCompletion2=(_step2=_iterator2.next()).done);_iteratorNormalCompletion2=true){var topic=_step2.value;bwd.push({_:this,params:[{dataset:props.dataset,data:props.data,chartType:props.chartType,topic:topic}]});}}catch(err){_didIteratorError2=true;_iteratorError2=err;}finally {try{if(!_iteratorNormalCompletion2&&_iterator2.return){_iterator2.return();}}finally {if(_didIteratorError2){throw _iteratorError2;}}}return {fwd:fwd,bwd:bwd};}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
 {name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return window.googleSheet+'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'+query;}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return window.googleSheet+'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'+query;}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return window.googleSheet+'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'+query;}()}, // Prosecution Data

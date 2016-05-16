@@ -64,6 +64,8 @@ var colorClass = function() {
 		'普通竊盜破獲件數': '#5BC0EB',
 		'普通竊盜尚未破獲件數': '#FA7921',
 
+		'汽機車竊盜案件': '#00A8E8',
+
 		'汽車竊盜破獲件數': '#EF233C',
 		'汽車竊盜尚未破獲件數': '#EDF2F4',
 		'汽車竊盜破獲率': '#0CCA4A',
@@ -902,18 +904,18 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 }
 
 // Transit the bar to percentage stack bar
-barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, exceptHds) {
+barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
 
 	var self = this;
 
 	return this.transitBarToStack(intl, extl).then(function() {
-		self.transitPCTStackBar(yLabel, exceptHds);
+		self.transitPCTStackBar(yLabel, mHds);
 	})
 
 }
 
 // Transit the stack bar in percentage unit. (PCT = Percent abbr)
-barGraphClass.prototype.transitPCTStackBar = function(yLabel, exceptHds) {
+barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 
 	var self = this;
 
@@ -1030,7 +1032,7 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, exceptHds) {
 }
 
 // Transit the stack bar to origin bar.
-barGraphClass.prototype.transitStackBarToBar = function(header, exceptHds, yLabel) {
+barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 
 	var self = this;
 
@@ -1044,10 +1046,12 @@ barGraphClass.prototype.transitStackBarToBar = function(header, exceptHds, yLabe
 			data.push(this.__data__);
 
 			// Check if the header is a merged result.
-			var isHeaderMerged = self.isMergedCol(data, header),
+			var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
 					// selected headers for the merged.
+					// selectedHds = isHeaderMerged ? 
+					// 	self._avlHeaders(data, mHdrs) : [],
 					selectedHds = isHeaderMerged ? 
-						self._avlHeaders(data, exceptHds) : [],
+						mHdrs : [],
 					mergedData	= isHeaderMerged ? 
 						self._mergedColVal(data, selectedHds) : [];
 
@@ -1196,9 +1200,48 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 	return p
 }
 
+// working-spot-2
+// Transit the percentage stack bar to bar.
+barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
+	
+	// Fetch the rows data from the g.stack
+	var rows = [];
+
+	this.stacks.each(function(d, i) {
+		rows.push(d);
+	});
+
+	this.stackGroup.remove();
+
+	// The option maybe the combined columns of data.
+	var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+
+	// Get the available headers in specific. 
+	// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
+	var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+	
+	// Set the scale
+	this._setLinearYScale(
+		_mrows.length > 0 ?
+			_mrows : rows, 
+		shouldMergeCols ? 
+			null : dOption
+			);
+
+	// Set the Y axis
+	this._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : dOption);
+	this._createYAxis(yLabel);
+
+	// dataset, dOption, mergedDataset, isInit
+	this._createBars(rows, dOption, _mrows, true);
+	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
+
+	return new Promise(function(resolve, reject) { resolve(); })
+
+}
+
 /* </Stack Bars> */
 
-// working-spot-2
 barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset) {
 	
 	var self = this;
@@ -1232,10 +1275,12 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, isStacked, isGrouped, exceptHds) {
+// working-spot-3: Try to dump out the stupid except headers
+// barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, isStacked, isGrouped, exceptHds) {
+barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
 	
 	var self = this;
-
+	console.log('check the mHdrs here: ',mHdrs);
 	var p = new Promise(function(resolve, reject) {
 
 		self.readCSV(path)
@@ -1243,25 +1288,26 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, is
 			.get(function(errors, rows) {
 				
 				// The option maybe the combined columns of data.
-				var isdOptionMerged = self.isMergedCol(rows, dOption);
+
+				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
 				// Get the available headers in specific. 
-				var avlHeaders = isdOptionMerged ? self._avlHeaders(rows, exceptHds) : [],
-					_rows = isdOptionMerged ? self._mergedColVal(rows, avlHeaders) : [];
+				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
+				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
 				
 				self._setBarWidth(rows);
-	
+
 				// Set the scale
 				self._setOrdinalXScale(rows, xLabel);
 				self._setLinearYScale(
-					_rows.length > 0 ?
-						_rows : rows, 
-					isdOptionMerged ? 
-						null : dOption
+					_mrows.length > 0 ?
+						_mrows : rows, 
+					shouldMergeCols ? 
+						null : defaultCol
 						);
 
 				// Set the axes
-				self._setYAxis('left', _rows.length > 0 ? _rows : rows, isdOptionMerged ? null : dOption);
+				self._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : defaultCol);
 				self._setXAxis('bottom');
 
 				// Draw the axes
@@ -1269,8 +1315,8 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, is
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
-				self._createBars(rows, dOption, _rows, true);
-				self._markValOnBar(rows, dOption, _rows);
+				self._createBars(rows, defaultCol, _mrows, true);
+				self._markValOnBar(rows, defaultCol, _mrows);
 
 				resolve({
 					data: rows,
@@ -1285,8 +1331,9 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, is
 	return p
 }
 
+// working-spot-3: Rename it with a better name
 // To check if the selected option is merged results.
-barGraphClass.prototype.isMergedCol = function(rowData, opt) {
+barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
 	var ks = Object.keys(rowData[0]);
 	for (var i in ks)
 		if (ks[i] === opt) return false
@@ -1311,14 +1358,15 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 				
 }
 
-barGraphClass.prototype._avlHeaders = function(rowData, exceptHds) {
+// working-spot-3: Delete this stupid function.
+// barGraphClass.prototype._avlHeaders = function(rowData, exceptHds) {
 	
-	return  Object.keys(rowData[0]).filter(function(key) {
-			for ( var i in exceptHds )
-				if (exceptHds[i] === key) return false 
-			return true 
-		});
-}
+// 	return  Object.keys(rowData[0]).filter(function(key) {
+// 			for ( var i in exceptHds )
+// 				if (exceptHds[i] === key) return false 
+// 			return true 
+// 		});
+// }
 
 
 // working-spot-2: There is no need to reload the data when updating the displaying data in the same dataset
@@ -1367,6 +1415,11 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 				self._updateYAxisLabel(yLabel);
 
 				_bars
+					.attr({
+						width: function(d, i) {
+							return self.barWidth
+						}
+					})
 					.transition()
 						.attr({
 							y: function(d, i) {
