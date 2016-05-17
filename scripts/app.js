@@ -3727,7 +3727,56 @@ const DataBoard = React.createClass({
 
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
-				<div id='DATABOARD'></div>
+				<div id='DATABOARD'>
+			{/* Story indicator test */}
+					<div className='story-indicators'>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker passed'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator-small'>
+								<div className='indicator-small-marker passed'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator-small'>
+								<div className='indicator-small-marker passed'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker passed'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker active'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker'></div>
+							</div>
+						</div>
+						<div className='indicator-block'>
+							<div className='indicator'>
+								<div className='indicator-marker'></div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		)
 	}
