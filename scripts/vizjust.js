@@ -69,9 +69,11 @@ var colorClass = function() {
 		'汽車竊盜破獲件數': '#EF233C',
 		'汽車竊盜尚未破獲件數': '#EDF2F4',
 		'汽車竊盜破獲率': '#0CCA4A',
+		'汽車竊盜嫌疑犯人數': '#F24B48',
 
 		'機車竊盜破獲件數': '#35C3D6',
 		'機車竊盜尚未破獲件數': '#FF1654',
+		'機車竊盜嫌疑犯人數': '#FFD000',
 
 		// For 殺人罪 (Prosecution)
 
@@ -669,8 +671,9 @@ barGraphClass.prototype.updateStackBars = function(intl, extl) {
 }
 
 // Graph tranform from bar to stack bars.
-barGraphClass.prototype.transitBarToStack = function(intl, extl) {
-	
+barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
+	console.log('intl: ', intl);
+	console.log('extl: ', extl);
 	// Reselect the origin bar
 	this.bars = this.barsGroup.selectAll('rect.bar');
 	
@@ -730,47 +733,63 @@ barGraphClass.prototype.transitBarToStack = function(intl, extl) {
 
 		Promise.all([p_extl, p_intl]).then(function(dataHub) {
 		
-		var stackData = [];
+			var stackData = [];
 
-		// Find the longest data array.
-		var len = 0;
+			// Find the longest data array.
+			var len = 0;
 
-		for (var i = 0; i < 2; ++i) {
-			if (dataHub[i] && len < dataHub[i].length)
-				len = dataHub[i].length;
-		}
+			for (var i = 0; i < 2; ++i) {
+				if (dataHub[i] && len < dataHub[i].length)
+					len = dataHub[i].length;
+			}
 
-		// Tranverse the data array according to the longest data length and
-		// merge the two results as the data the stack bar needs.
-		for (var j = 0; j < len ; ++j) {
+			// Tranverse the data array according to the longest data length and
+			// merge the two results as the data the stack bar needs.
+			for (var j = 0; j < len ; ++j) {
+	
+				var temp = {};
+	
+				for (var k = 0; k < 2; ++k) 
+					if (dataHub[k]) Object.assign(temp, dataHub[k][j])
+	
+				stackData.push(temp); 
+			}
+			console.log(stackData);
+			// working-spot-2
+			/* update the yScale with the new data. */
+			// merged the headers defined 
+			var mergedHds = 
+				[].concat(extl.headers).concat(intl.headers)
+					.filter(function(d) { return d !== null && d !== undefined });
+			
+			// Find out the maximum values for each stack
+			var _mrows = self._mergedColVal(stackData, mergedHds);
+			
+			self._removeYAxis();
+			self._setLinearYScale(_mrows, null);
+			self._setYAxis('left', _mrows, null);
+			self._createYAxis(yLabel);
+			/* The above feature is testing. */
 
-			var temp = {};
+			bindingStack(stackData);
+			renderStack(stackData);
 
-			for (var k = 0; k < 2; ++k) 
-				if (dataHub[k]) Object.assign(temp, dataHub[k][j])
+			// Remove the bars group and the text group following it.
+			self.barsGroup.remove();
+			self.barTxtGroup.remove();
 
-			stackData.push(temp); 
-		}
-
-		bindingStack(stackData);
-		renderStack(stackData);
-		
-		// Remove the bars group and the text group following it.
-		self.barsGroup.remove();
-		self.barTxtGroup.remove();
-
-		self._stackBarProducer(intl, extl)
-			.then(function(stackbars) {
-				stackbars.each(function(d, i) {
-					// Reappend the year to the stack bar
-					this.__data__.year = this.parentNode.__data__['民國'];
+			self._stackBarProducer(intl, extl)
+				.then(function(stackbars) {
+					stackbars.each(function(d, i) {
+						// Reappend the year to the stack bar
+						this.__data__.year = this.parentNode.__data__['民國'];
+					});
+					return new tipClass()
+				})
+				.then(function(tip){ 
+					tip.appendStackBarMouseOver();
+					resolve();
 				});
-				return new tipClass()
-			})
-			.then(function(tip){ 
-				tip.appendStackBarMouseOver();
-				resolve();
-			});
 	});
 
 	});
@@ -908,7 +927,7 @@ barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, m
 
 	var self = this;
 
-	return this.transitBarToStack(intl, extl).then(function() {
+	return this.transitBarToStack(yLabel, intl, extl).then(function() {
 		self.transitPCTStackBar(yLabel, mHds);
 	})
 
@@ -918,7 +937,7 @@ barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, m
 barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 
 	var self = this;
-
+	console.log(mHds);
 	// Remove the old y axis.
 	this._removeYAxis();
 
@@ -1034,6 +1053,7 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 // Transit the stack bar to origin bar.
 barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 
+	console.log(header);
 	var self = this;
 
 	// Grape the data from stack.
@@ -1111,6 +1131,8 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 
 	// Remove the previous y axis.
 	this._removeYAxis();
+	console.log('check up here: ', d3.select('y-axis').empty());
+	console.log('checj up y-axis: ', d3.select('y-axis'));
 
 	// Calculate the total amount of the stack bars
 	function stackbarDataSum(d) {
@@ -1128,6 +1150,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 		var dataset = [];
 
 		if (isOrigin) {
+			console.log('should not be here');
 			self.stacks.each(function(d, i) {
 				dataset[i] = [];
 				d3.select(this).selectAll('rect')
@@ -1165,7 +1188,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 		}
 
 		else {
-
+			console.log('should be here');
 			var dataset = [];
 
 			self.stacks.each(function(d, i) {
@@ -1228,6 +1251,8 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 			null : dOption
 			);
 
+	this._removeYAxis();
+
 	// Set the Y axis
 	this._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : dOption);
 	this._createYAxis(yLabel);
@@ -1275,8 +1300,6 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-// working-spot-3: Try to dump out the stupid except headers
-// barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption, isStacked, isGrouped, exceptHds) {
 barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
 	
 	var self = this;
@@ -1294,7 +1317,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// Get the available headers in specific. 
 				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
 				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
-				
+				console.log('_mrows: ', _mrows);
 				self._setBarWidth(rows);
 
 				// Set the scale
@@ -1315,6 +1338,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
+				// working-spot-2 Debugging
 				self._createBars(rows, defaultCol, _mrows, true);
 				self._markValOnBar(rows, defaultCol, _mrows);
 
@@ -1357,17 +1381,6 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 	});
 				
 }
-
-// working-spot-3: Delete this stupid function.
-// barGraphClass.prototype._avlHeaders = function(rowData, exceptHds) {
-	
-// 	return  Object.keys(rowData[0]).filter(function(key) {
-// 			for ( var i in exceptHds )
-// 				if (exceptHds[i] === key) return false 
-// 			return true 
-// 		});
-// }
-
 
 // working-spot-2: There is no need to reload the data when updating the displaying data in the same dataset
 // barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
@@ -1477,9 +1490,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 			// });
 
 		});
-
-
-	
 	return p
 }
 
