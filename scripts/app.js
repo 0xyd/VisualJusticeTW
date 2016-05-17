@@ -110,7 +110,6 @@ const DataFilterStateTree = {
 									topics: [
 										[	
 											{
-												// working-spot-2
 												name: '總數',
 												axes: {
 													x: '民國',
@@ -137,7 +136,6 @@ const DataFilterStateTree = {
 												intl: {
 													header: '',
 													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
-													// mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -155,7 +153,6 @@ const DataFilterStateTree = {
 												}
 											},
 											{
-													// working-spot-2
 													name: '汽車竊盜發生件數',
 													axes: {
 														x: '民國',
@@ -2370,7 +2367,7 @@ class StoryTeller {
 				*The properties are the same as fwdSteps.*
 
 		*/
-		this.storyChains = [
+		this.vizStoryChains = [
 			// Stories for police.
 			{
 				dataset: '竊盜案件',
@@ -2391,90 +2388,6 @@ class StoryTeller {
 						},
 						end: null
 					}
-					// {
-					// 	goto: '重大竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '重大竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '重大竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
 				],
 				bwdSteps: [
 					{
@@ -2896,6 +2809,9 @@ class StoryTeller {
 			}
 		];
 
+		// working-spot-2
+		this.textStoryChain = []
+
 		// Store the current story chain.
 		this._story = null;
 	}
@@ -2903,7 +2819,7 @@ class StoryTeller {
 	// Decide which story chain should be applied.
 	decideChain(datasetName, dataName, vizTypeName) {
 
-		this._story = this.storyChains.find((chain) => {
+		this._story = this.vizStoryChains.find((chain) => {
 
 			// If the dataset is not defined, access the datasets.
 			if (!chain.dataset) {
@@ -3246,7 +3162,7 @@ const DataBoard = React.createClass({
 		return bG.transitBarToStack(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
-	// working-spot-2: Transform from bar to stack bars.
+	// Transform from bar to stack bars.
 	DBtransBarToPCTStackBar(props) {
 
 		let bG = this.gpu.barGraph,
@@ -3255,7 +3171,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _data.exceptHeaders);
 		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _topic.intl.mHeaders);
 	},
 
@@ -3268,7 +3183,6 @@ const DataBoard = React.createClass({
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
 
-		// working-spot-2
 		return bG.transitStackBarToBar(
 			// If the intl have only one header, the header is the data user wants to know.
 			_topic.intl.headers === undefined ? props.data : 
@@ -3303,7 +3217,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
-		// working-spot-2
 		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false);
 	},
 
@@ -3312,10 +3225,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _data  = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
-		// working-spot-2
-		console.log('props.data: ', props.data);
-		console.log('check the topic here:', _topic);
-		console.log('check the mHeaders here: ', _topic.intl.mHeaders);
 		
 		return bG.transitPCTSBarToBar(
 			_topic.axes.y, props.data, _topic.intl, _topic.extl, _topic.intl.mHeaders)
