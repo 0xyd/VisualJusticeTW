@@ -136,7 +136,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['汽車竊盜發生件數', '機車竊盜發生件數']
+													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													// mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -1888,6 +1889,13 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: []
+												},
+												intl: {
+													headers: []
 												}
 											}, 
 											{
@@ -1896,7 +1904,6 @@ const DataFilterStateTree = {
 													x: '民國',
 													y: '人數'
 												},
-												
 												extl: {
 													url: (function() {
 														if (isLocal) 
@@ -1909,7 +1916,7 @@ const DataFilterStateTree = {
 													headers: ['初犯', '再犯', '累犯']
 												},
 												intl: {
-													headers: null,
+													headers: [],
 												}
 											},
 											{
@@ -2638,7 +2645,7 @@ class StoryTeller {
 					{
 						goto: '汽機車案件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -2652,12 +2659,12 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜發生件數',
 						transit: (_this, params) => {	
+							params.push('汽車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
-						// working-spot-2
 						goto: '汽車竊盜嫌疑犯人數',
 						transit: (_this, params) => {
 							return _this.DBtransStackBarToBar.apply(_this, params);
@@ -2667,7 +2674,7 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBtransBarToStackBar.apply(_this, params);
+							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -3264,17 +3271,12 @@ const DataBoard = React.createClass({
 		// working-spot-2
 		return bG.transitStackBarToBar(
 			// If the intl have only one header, the header is the data user wants to know.
-			_topic.intl.headers.length === 1 ? 
-				_topic.intl.headers[0] : props.data, 
+			_topic.intl.headers === undefined ? props.data : 
+				_topic.intl.headers.length === 1 ? _topic.intl.headers[0] : props.data,
 				_topic.intl.mHeaders, _topic.axes.y)
 			.then(function() {
 				t.appendBarMouseOver(props.data);
 			});
-
-		// return bG.transitStackBarToBar(props.data, _data.exceptHeaders, _topic.axes.y)
-		// 	.then(function() {
-		// 		t.appendBarMouseOver(props.data);
-		// 	});
 	},
 
 	// Transform the stack bar into stack bar with percent unit
@@ -3310,6 +3312,7 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _data  = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
+		// working-spot-2
 		console.log('props.data: ', props.data);
 		console.log('check the topic here:', _topic);
 		console.log('check the mHeaders here: ', _topic.intl.mHeaders);
@@ -3318,10 +3321,9 @@ const DataBoard = React.createClass({
 			_topic.axes.y, props.data, _topic.intl, _topic.extl, _topic.intl.mHeaders)
 	},
 
-
 	DBupdateStackBars(props) {
 		let bG = this.gpu.barGraph;
-		const _topic =this.DBfindTopic(props)
+		const _topic = this.DBfindTopic(props);
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
 	},

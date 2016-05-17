@@ -654,7 +654,7 @@ barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackO
 }
 
 // Update the stack bars if more data features are coming in.
-barGraphClass.prototype.updateStackBars = function(intl, extl) {
+barGraphClass.prototype.updateStackBars = function(yLabel, intl, extl) {
 
 	this._stackBarProducer(intl, extl)
 		.then(function(stackbars) {
@@ -672,8 +672,7 @@ barGraphClass.prototype.updateStackBars = function(intl, extl) {
 
 // Graph tranform from bar to stack bars.
 barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
-	console.log('intl: ', intl);
-	console.log('extl: ', extl);
+	
 	// Reselect the origin bar
 	this.bars = this.barsGroup.selectAll('rect.bar');
 	
