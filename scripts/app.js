@@ -2980,11 +2980,19 @@ var IndexNavList = React.createClass({
 
 		return {
 			nav: [
-				<RR.Link to='/about_us'><img src="./src/aboutus.png" /></RR.Link>,
-				<RR.Link to='/main'><img src="./src/see.png" /></RR.Link>,
-				<RR.Link to='/special'><img src="./src/issue.png" /></RR.Link>,
-				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>,
-				<div>
+				<RR.Link to='/about_us'>
+					<img src="./src/aboutus.png" />
+				</RR.Link>,
+				<RR.Link to='/main'>
+					<img src="./src/see.png" />
+				</RR.Link>,
+				<RR.Link to='/special'>
+					<img src="./src/issue.png" />
+				</RR.Link>,
+				<RR.Link to='/work_together'>
+					<img src="./src/work.png" />
+				</RR.Link>,
+				<div className='social-group'>
 					<iframe id='githubStar' className='social-btn'
 						src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" 
 						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
@@ -3002,12 +3010,24 @@ var IndexNavList = React.createClass({
 		var listItems = [],
 			l = this.state.nav.length;
 
-		for ( var i=0; i<l; i++ ) 
-			listItems.push(
-				<IndexNavListItem 
-					key={i}
-					link={this.state.nav[i]} />
+		for ( var i=0; i<l; i++ ) {
+
+			if (i === l - 1) {
+				listItems.push(
+					<IndexNavListSocialItem 
+						key={i}
+						elements={ this.state.nav[i] }
+					/>
 				);
+			}
+			else {
+				listItems.push(
+					<IndexNavListItem 
+						key={i}
+						link={ this.state.nav[i] } />
+					);
+			}
+		}
 
 		return (
 			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
@@ -3022,10 +3042,41 @@ var IndexNavList = React.createClass({
 
 var IndexNavListItem = React.createClass({
 
+	getInitialState: function() {
+		return {
+			isHovered: false
+		}
+	},
+
+	mouseEnterItem: function() {
+		this.setState({ isHovered: true });
+	},
+	mouseLeaveItem: function() {
+		this.setState({ isHovered: false });
+	},
+
+	render: function() {
+		
+		return (
+			<li onMouseEnter={this.mouseEnterItem} 
+					onMouseLeave={this.mouseLeaveItem} 
+					className="nav-option b12-col-md-12 b12-row-md-2">
+					<span className='ver-helper'></span>
+					<div className={ this.state.isHovered ? 
+						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div>
+				{ this.props.link }
+			</li>
+		)
+	}
+});
+
+// working-spot
+var IndexNavListSocialItem = React.createClass({
 	render: function() {
 		return (
-			<li className="nav-option b12-col-md-12 b12-row-md-2">
-				{ this.props.link }
+			<li className="nav-option b12-col-md-12 b12-row-md-4">
+				<span className='ver-helper'></span>
+				{ this.props.elements }
 			</li>
 		)
 	}
