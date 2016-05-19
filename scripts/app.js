@@ -2647,7 +2647,6 @@ class StoryTeller {
 						end: null
 					},
 				],
-
 				bwdSteps: [
 					{ 
 						goto: '總數', 
@@ -2809,17 +2808,149 @@ class StoryTeller {
 			}
 		];
 
-		// working-spot-2
-		this.textStoryChain = []
+		// working-spot: Tales for explain the chart.
+		this.taleChains = [
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '兒童及少年性交易防制條例',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: true
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: true
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: true
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: true
+					},
+					{
+						infoContainer: {
+							body: <div></div>,
+							pos : {
+								x: '',
+								y: '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					}
+				]
+			}
+		];
+
+		// working-spot: Store the current tale.
+		this._txtTale = null;
 
 		// Store the current story chain.
-		this._story = null;
+		this._vizStory = null;
 	}
 
 	// Decide which story chain should be applied.
-	decideChain(datasetName, dataName, vizTypeName) {
+	decideVizStoryChain(datasetName, dataName, vizTypeName) {
 
-		this._story = this.vizStoryChains.find((chain) => {
+		this._vizStory = this.vizStoryChains.find((chain) => {
 
 			// If the dataset is not defined, access the datasets.
 			if (!chain.dataset) {
@@ -2840,6 +2971,17 @@ class StoryTeller {
 					chain.vizType === vizTypeName
 		})
 	}
+
+	// working-spot: Decide which tales chain shoule be applied.
+	decideTaleChain(datasetName, dataName, vizTypeName) {
+
+		this._txtTale = this.taleChains.find((chain) => {
+			return chain.dataset === datasetName && 
+					chain.data === dataName && 
+					chain.vizType === vizTypeName
+		});
+
+	}
 	
 	// toTell interates through the animation processes.
 	/*
@@ -2856,13 +2998,13 @@ class StoryTeller {
 				
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
-					this._story.fwdSteps[s].end = 
-						this._story.fwdSteps[s]
+					this._vizStory.fwdSteps[s].end = 
+						this._vizStory.fwdSteps[s]
 							.transit(fwdOpParams[s]._, fwdOpParams[s].params);
 				else
-					this._story.fwdSteps[s].end = 
-						this._story.fwdSteps[s-1].end
-							.then(this._story.fwdSteps[s]
+					this._vizStory.fwdSteps[s].end = 
+						this._vizStory.fwdSteps[s-1].end
+							.then(this._vizStory.fwdSteps[s]
 								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
 			}
 		}
@@ -2873,15 +3015,15 @@ class StoryTeller {
 			for (let s = startDepth - 1; s >= endDepth; --s) {
 
 				if ( s === startDepth - 1 ) {
-					this._story.bwdSteps[s].end = 
-						this._story.bwdSteps[s]
+					this._vizStory.bwdSteps[s].end = 
+						this._vizStory.bwdSteps[s]
 							.transit(bwdOpParams[s]._, bwdOpParams[s].params);
 				}
 
 				else {
-					this._story.bwdSteps[s].end = 
-						this._story.bwdSteps[s+1].end
-							.then(this._story.bwdSteps[s]
+					this._vizStory.bwdSteps[s].end = 
+						this._vizStory.bwdSteps[s+1].end
+							.then(this._vizStory.bwdSteps[s]
 								.transit.bind(null, bwdOpParams[s]._, bwdOpParams[s].params));
 				}
 			}
@@ -3595,7 +3737,17 @@ const DataBoard = React.createClass({
 				(this.props.topic !== nextProps.topic && 
 				 this.props.dataset === nextProps.dataset &&
 				 this.props.data === nextProps.data) ? true : false;
-		
+
+		// working-spot
+		// Select the chain 
+		this.storyTeller.decideVizStoryChain(
+			nextProps.dataset, nextProps.data, nextProps.chartType);
+
+		// working-spot
+		// Select the tales chain
+		this.storyTeller.decideTaleChain(
+			nextProps.dataset, nextProps.data, nextProps.chartType);
+
 		if (shouldRenew) { 
 
 			d3.select('#SKETCHPAD').remove();
@@ -3625,8 +3777,8 @@ const DataBoard = React.createClass({
 			let steps = this.DBTopicStepsProducer(nextProps);
 
 			// Select the chain 
-			this.storyTeller.decideChain(
-				nextProps.dataset, nextProps.data, nextProps.chartType);
+			// this.storyTeller.decideVizStoryChain(
+			// 	nextProps.dataset, nextProps.data, nextProps.chartType);
 
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 		}
@@ -3637,58 +3789,82 @@ const DataBoard = React.createClass({
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
 				<div id='DATABOARD'>
-			{/* Story indicator test */}
-					<div className='story-indicators'>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker passed'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator-small'>
-								<div className='indicator-small-marker passed'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator-small'>
-								<div className='indicator-small-marker passed'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker passed'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker active'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker'></div>
-							</div>
-						</div>
-						<div className='indicator-block'>
-							<div className='indicator'>
-								<div className='indicator-marker'></div>
-							</div>
-						</div>
-					</div>
+					{ /*working-spot-2*/ }
+					{
+						this.storyTeller._txtTale ? 
+							<TagentalIndicators indicators={ this.storyTeller._txtTale.sections } /> : null
+					}
 				</div>
 			</div>
 		)
 	}
+});
+
+
+// working-spot
+const TagentalIndicators = React.createClass({
+
+	render() {
+
+		let keyIndex = 0,
+				indicators = [];
+
+		for ( let ind of this.props.indicators ) {
+
+			indicators.push(<TagentalIndicator
+				key={++keyIndex} 
+				isSmall={ ind.isTopicFirstSec ? false : true } 
+				/>);
+		}
+
+		return (
+			<div className='indicators'>
+				{ indicators }
+			</div>
+			)
+	}
+
+});
+
+// working-spot
+const TagentalIndicator = React.createClass({
+
+	render() {
+		return (
+			<div className='indicator-block'>
+				<div className={ this.props.isSmall ? 'indicator-small' : 'indicator'}>
+					<TagentalIndicatorMkr small={ this.props.isSmall } />
+				</div>
+			</div>
+			)
+	}
+});
+
+
+// working-spot
+const TagentalIndicatorMkr = React.createClass({
+
+	getInitialState() {
+		return (
+				{
+					isActive: false,
+					isPassed: false
+				}
+			)
+	},
+
+	render() {
+		return (
+			this.props.isSmall ? 
+				<div className={ 
+					this.state.isActive ? 'indicator-small-marker active' : 
+					this.state.isPassed ? 'indicator-small-marker passed' : 'indicator-small-marker'}></div> :
+				<div className={ 
+					this.state.isActive ? 'indicator-marker active' : 
+					this.state.isPassed ? 'indicator-marker passed' : 'indicator-marker'}></div> 
+		)
+	}
+
 });
 
 const Filter = React.createClass({

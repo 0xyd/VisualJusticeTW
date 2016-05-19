@@ -1222,7 +1222,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 	return p
 }
 
-// working-spot-2
 // Transit the percentage stack bar to bar.
 barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
 	
@@ -1302,7 +1301,7 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
 	
 	var self = this;
-	console.log('check the mHdrs here: ',mHdrs);
+	
 	var p = new Promise(function(resolve, reject) {
 
 		self.readCSV(path)
@@ -1316,7 +1315,6 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// Get the available headers in specific. 
 				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
 				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
-				console.log('_mrows: ', _mrows);
 				self._setBarWidth(rows);
 
 				// Set the scale
@@ -1337,7 +1335,6 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
-				// working-spot-2 Debugging
 				self._createBars(rows, defaultCol, _mrows, true);
 				self._markValOnBar(rows, defaultCol, _mrows);
 
@@ -1381,17 +1378,12 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 				
 }
 
-// working-spot-2: There is no need to reload the data when updating the displaying data in the same dataset
 // barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
-
-		// self.readCSV(path)
-		// 	.row(function(d) { return d })
-		// 	.get(function(error, rows) {
 
 				var _bars = self.pad.selectAll('rect'),
 						_txts = self.pad.selectAll('.mark'),
@@ -1486,8 +1478,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 				self.pad
 					.selectAll('.y-axis')
 					.call(self.yAxis);
-			// });
-
 		});
 	return p
 }
@@ -3393,12 +3383,6 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 }
 
 /* Additional Functions */
-// Define the Tick text format.
-function kTick(tick) {
-	console.log(tick);
-	return Math.round(tick/1e3) + 'K'
-}
-
 /* 
 	A function for pinnig label at the middle bottom of the element space.
 	eleSpace: The width left for each element.
