@@ -245,7 +245,7 @@ graphClass.prototype.readCSV = function(path) {
 
 // To filter the data which are inproper for visualizing.
 graphClass.prototype._dataFiltering = function(d, i) {
-
+	console.log(d);
 	// Iterate d's object. Once the value is "", deperciate the d.
 	for ( var key in d )
 		if ( d[key] === "" ) return null
@@ -1298,19 +1298,17 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-
 barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
 	
 	var self = this;
 	
 	var p = new Promise(function(resolve, reject) {
-
+		console.log(path);
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-				
+				console.log(rows);
 				// The option maybe the combined columns of data.
-
 				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
 				// Get the available headers in specific. 
@@ -1355,9 +1353,11 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 // working-spot-3: Rename it with a better name
 // To check if the selected option is merged results.
 barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
-	var ks = Object.keys(rowData[0]);
-	for (var i in ks)
-		if (ks[i] === opt) return false
+	if (rowData) {
+		var ks = Object.keys(rowData[0]);
+		for (var i in ks)
+			if (ks[i] === opt) return false
+	}
 	return true
 }
 
@@ -3539,3 +3539,4 @@ function colorAdjust(hex, colorDelta) {
 
 	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
 }
+

@@ -8,10 +8,14 @@ const Map  = Immutable.Map,
 			List = Immutable.List;
 
 /* ***** Global Variables ***** */
+// Should be very 
 // window.isLocal = 
 // 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
 
-window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
+// window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
+
+window.isLocal = true;
+
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
@@ -3786,7 +3790,7 @@ const DataBoard = React.createClass({
 	componentDidMount() {
 
 		let dataSheet = this.findDataSheetIndex(this.props);
-		
+
 		if (this.props.chartType === '直方圖') {
 			this.vizDataWithBarChart(this.props, dataSheet);
 			
