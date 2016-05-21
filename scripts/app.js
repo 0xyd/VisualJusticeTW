@@ -3799,6 +3799,9 @@ const DataBoard = React.createClass({
 	// working-spot
 	shouldComponentUpdate(nextProps) {
 
+		// working-spot
+		console.log('check the updateDataBoard here: ', nextProps.updateDataBoard);
+
 		return nextProps.updateDataBoard
 	},
 
@@ -3822,6 +3825,8 @@ const DataBoard = React.createClass({
 	componentWillUpdate (nextProps, nextStates) {
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
+
+
 
 		// working-spot
 		// Select the chain 
@@ -3901,13 +3906,12 @@ const DataBoard = React.createClass({
 			let steps = this.DBTopicStepsProducer(nextProps);
 
 			// working-spot: Try to figure out the relationship between tale index and topic depth.
-			let td = this.props.topicDepth,
+			let incrementedTopocDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
 					tale = topicFirstTales.find((t, i) => {
-						console.log(t);
-						return i === td
+						return i === incrementedTopocDepth
 					});
-			console.log(tale.topicName);
+			
 			store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
 
 			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
@@ -3994,45 +3998,6 @@ const NextBtn = React.createClass({
 	}
 
 });
-
-// working-spot
-// const DataTxtBoard = React.createClass({
-
-
-// 	render() {
-
-// 		// The number of sub layers are decided by the tale indicators
-// 		let txtLayers = [];
-
-// 		if (this.props.context) {
-// 			let i = 0;
-// 			for (let section of this.props.context.sections)
-// 				txtLayers.push(<DataTxtLayer key={ i++ } text={ section } />);
-// 		}
-// 		else {
-// 			console.log('testing');
-// 			txtLayers.push(<DataTxtLayer key={0}/>);
-// 			txtLayers.push(<DataTxtLayer key={1}/>);
-// 			console.log(txtLayers);
-// 		}
-
-// 		return (
-// 			<div id="DATABOARD-txtLayer" onScroll={ this.scrollReading } >
-// 					{ txtLayers }
-// 			</div>
-// 			)
-// 	}
-// });
-
-// const DataTxtLayer = React.createClass({
-
-// 	render() {
-// 		return (
-// 			<div className='subLayer'>
-// 			</div>
-// 			)
-// 	}
-// });
 
 
 // working-spot
@@ -4689,11 +4654,17 @@ function setDropdownMenuStates(state, index) {
 
 // Update the dropdown menu. 
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
+
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
+
+	// working-spot
+	let newTaleIndex = null;
+
+	let shoudDataBoardUpdate = setState('updateDataBoard', true);
 
 	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
@@ -4735,9 +4706,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.chartType, 
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates)
+
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate)
 				}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selecting data
@@ -4751,10 +4726,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data,
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		}
 
 		// Selecting the charttype which will affect the topics.
@@ -4767,10 +4745,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				return state.merge(
 					newState.chartType,
 					newState.topic,
-					newState.dropdownMenuStates
+					// working-spot
+					newState.taleIndex,
+					newState.dropdownMenuStates,
+					shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selection the topic
@@ -4780,9 +4761,19 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				newTopic = setState('currentTopic', optionName);
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
-				return state.merge(newTopic, newTopicDepth, collapsedAllDropdownMenuStates)
+				// working-spot: The tale index should be correspond to the topic.
+				// We have to come up an idea to solve this.
+				newTaleIndex = setState('currentTaleIndex', 0);
+
+				return state.merge(
+					newTopic, 
+					newTopicDepth, 
+					// workng-spot
+					newTaleIndex,
+					collapsedAllDropdownMenuStates, 
+					shoudDataBoardUpdate)
 			}
-			return state.merge(collapsedAllDropdownMenuStates);
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate);
 		}
 
 		return state
@@ -4815,6 +4806,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		// Set the new topic depth to 0
 		let newTopicDepth = setState('currentTopicDepth', 0);
+
+		// working-spot
+		let newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Set up the states for the dropdowns.
 		let newDropdownMenuStates = 
@@ -4859,6 +4853,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			chartType: newChartType,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -4886,6 +4882,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
+		// working-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Switch data will change the available topics
 		const	newDropdownMenuStates = 
 			setState(
@@ -4896,6 +4895,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			data: newData,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -4910,6 +4911,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					'filterDropdownMenus', 
 					updateTopicDropdownOption(state, null, chartType));
 
+		// workng-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Update current topic
 		const newTopic = setState(
 					'currentTopic', 
@@ -4921,6 +4925,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		return {
 			chartType: newChartType,
 			topic: newTopic,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}

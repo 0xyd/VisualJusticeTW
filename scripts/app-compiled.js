@@ -117,7 +117,16 @@ DBTaleFactory:function DBTaleFactory(){ // temporary if statement
 if(this.storyTeller._txtTale){var index=store.getState().get('currentTaleIndex');var taleEle=this.storyTeller._txtTale.sections[index];var containerStyle=this.storyTeller._componentStyleFactory([taleEle.Container.pos,taleEle.Container.size]);var btnStyle=this.storyTeller._componentStyleFactory([taleEle.IndButton.pos,taleEle.IndButton.style]); // TaleBlock inital style
 var taleStyle={opacity:0}; // Add the opacity for the next button to do the first render animation.
 btnStyle['opacity']=0;return React.createElement('div',{className:'tale-container',style:containerStyle},React.createElement(TaleBlock,{innerText:taleEle.infoContext,style:taleStyle}),React.createElement(NextTaleBtn,{style:btnStyle}));}}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
-{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return window.googleSheet+'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'+query;}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return window.googleSheet+'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'+query;}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return window.googleSheet+'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'+query;}()}, // Prosecution Data
+{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else  // return window.googleSheet + 
+// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
+// 		+ query
+return '/police/p0.csv';}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else  // return window.googleSheet + 
+// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
+// 		+ query
+return '/police/p2.csv';}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else  // return window.googleSheet + 
+// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
+// 		+ query
+return '/police/p1.csv';}()}, // Prosecution Data
 {name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else  // return window.googleSheet + 
 // 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
 // 		+ query
@@ -162,8 +171,21 @@ return '/judicial/c2.csv';}()}, // Correction Data
 {name:'監獄人數概況',url:function(){if(isLocal)return '/correction/監獄人數概況.csv';else  // return window.googleSheet + 
 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
 //  		query
-return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:window.googleSheet+'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg'+window.query},{name:'新入監犯罪次數與種類.',url:window.googleSheet+'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg'+window.query},{name:'新入監前教育程度',url:window.googleSheet+'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8'+window.query},{name:'歷年新入監年齡歷年統計',url:window.googleSheet+'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'+window.query}];return urls;}}()}]};}, // working-spot
-shouldComponentUpdate:function shouldComponentUpdate(nextProps){return nextProps.updateDataBoard;}, // Initial Data Visualizing
+return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:'/correction/c1.csv' // window.googleSheet +
+// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+// 		window.query
+},{name:'新入監犯罪次數與種類.',url:'/correction/c3.csv' // window.googleSheet +
+// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+// 		window.query
+},{name:'新入監前教育程度',url:'/correction/c2.csv' // window.googleSheet +
+// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+// 		window.query
+},{name:'歷年新入監年齡歷年統計',url:'/correction/c4.csv' // window.googleSheet +
+// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+// 		window.query
+}];return urls;}}()}]};}, // working-spot
+shouldComponentUpdate:function shouldComponentUpdate(nextProps){ // working-spot
+console.log('check the updateDataBoard here: ',nextProps.updateDataBoard);return nextProps.updateDataBoard;}, // Initial Data Visualizing
 componentDidMount:function componentDidMount(){var dataSheet=this.findDataSheetIndex(this.props);if(this.props.chartType==='直方圖'){this.vizDataWithBarChart(this.props,dataSheet);}else if(this.props.chartType==='趨勢圖'){this.vizDataWithLineChart(this.props,dataSheet);}else if(this.props.chartType==='圓環比例圖'){}}, // The DataBoard component will renew the visualized data or change a different type.
 componentWillUpdate:function componentWillUpdate(nextProps,nextStates){var _this2=this;var dataSheet=this.findDataSheetIndex(nextProps); // working-spot
 // Select the chain 
@@ -183,41 +205,10 @@ var steps=this.DBTopicStepsProducer(nextProps); // Select the chain
 // 	nextProps.dataset, nextProps.data, nextProps.chartType);
 this.storyTeller.toTell(this.props.topicDepth,nextProps.topicDepth,steps.fwd,steps.bwd);}else if(isTopicSwitchingByTaleUd){(function(){ // working-spot
 var steps=_this2.DBTopicStepsProducer(nextProps); // working-spot: Try to figure out the relationship between tale index and topic depth.
-var td=_this2.props.topicDepth,topicFirstTales=_this2.storyTeller.calTopicFirstTale(),tale=topicFirstTales.find(function(t,i){console.log(t);return i===td;});console.log(tale.topicName);store.dispatch(rollingTalesAC(tale.topicName,_this2.props.topicDepth));_this2.storyTeller.toTell(_this2.props.topicDepth,_this2.props.topicDepth+1,steps.fwd,steps.bwd);})();}},render:function render(){ // working-spot
+var incrementedTopocDepth=_this2.props.topicDepth+1,topicFirstTales=_this2.storyTeller.calTopicFirstTale(),tale=topicFirstTales.find(function(t,i){return i===incrementedTopocDepth;});store.dispatch(rollingTalesAC(tale.topicName,_this2.props.topicDepth));_this2.storyTeller.toTell(_this2.props.topicDepth,_this2.props.topicDepth+1,steps.fwd,steps.bwd);})();}},render:function render(){ // working-spot
 var tale=this.DBTaleFactory();return React.createElement('div',{id:'DATABOARD_WRAPPER',className:'b20-col-md-20'},React.createElement('div',{id:'DATABOARD-vizLayer'}), /* Temp if statement */this.storyTeller._txtTale?React.createElement(TagentalIndicators,{currentIndex:this.props.taleIndex,indicators:this.storyTeller._txtTale.sections}):null,this.storyTeller._txtTale?tale:null);}}); // working-spot
 var TaleBlock=React.createClass({displayName:'TaleBlock',componentDidMount:function componentDidMount(){$v(ReactDOM.findDOMNode(this),{opacity:1},{duration:500});},componentWillReceiveProps:function componentWillReceiveProps(){$v(ReactDOM.findDOMNode(this),{opacity:0},{duration:1});},componentDidUpdate:function componentDidUpdate(){$v(ReactDOM.findDOMNode(this),{opacity:1},{duration:500});},render:function render(){return React.createElement('div',{className:'tale-body',style:this.props.style},this.props.innerText);}}); // working-spot
 var NextBtn=React.createClass({displayName:'NextBtn',componentDidMount:function componentDidMount(){$v(ReactDOM.findDOMNode(this),{opacity:1},{duration:500});},componentWillUpdate:function componentWillUpdate(){$v(ReactDOM.findDOMNode(this),{opacity:0},{duration:1});},componentDidUpdate:function componentDidUpdate(){$v(ReactDOM.findDOMNode(this),{opacity:1},{duration:500});},render:function render(){return React.createElement('div',{className:'nextbtn',style:this.props.style,onClick:this.props.nextTale},React.createElement('span',{className:'ver-helper'}),React.createElement('span',null,'Next   '),React.createElement('span',{className:'more-indicator'},'»'));}}); // working-spot
-// const DataTxtBoard = React.createClass({
-// 	render() {
-// 		// The number of sub layers are decided by the tale indicators
-// 		let txtLayers = [];
-// 		if (this.props.context) {
-// 			let i = 0;
-// 			for (let section of this.props.context.sections)
-// 				txtLayers.push(<DataTxtLayer key={ i++ } text={ section } />);
-// 		}
-// 		else {
-// 			console.log('testing');
-// 			txtLayers.push(<DataTxtLayer key={0}/>);
-// 			txtLayers.push(<DataTxtLayer key={1}/>);
-// 			console.log(txtLayers);
-// 		}
-// 		return (
-// 			<div id="DATABOARD-txtLayer" onScroll={ this.scrollReading } >
-// 					{ txtLayers }
-// 			</div>
-// 			)
-// 	}
-// });
-// const DataTxtLayer = React.createClass({
-// 	render() {
-// 		return (
-// 			<div className='subLayer'>
-// 			</div>
-// 			)
-// 	}
-// });
-// working-spot
 var TagentalIndicators=React.createClass({displayName:'TagentalIndicators',render:function render(){ // working-spot: Tangetal Indicators should be dynamical position.
 var keyIndex=0,indicators=[];var _iteratorNormalCompletion5=true;var _didIteratorError5=false;var _iteratorError5=undefined;try{for(var _iterator5=this.props.indicators[Symbol.iterator](),_step5;!(_iteratorNormalCompletion5=(_step5=_iterator5.next()).done);_iteratorNormalCompletion5=true){var ind=_step5.value;indicators.push(React.createElement(TagentalIndicator,{currentIndex:this.props.currentIndex,indIndex:keyIndex,key:keyIndex++,isSmall:ind.isTopicFirstSec?false:true}));}}catch(err){_didIteratorError5=true;_iteratorError5=err;}finally {try{if(!_iteratorNormalCompletion5&&_iterator5.return){_iterator5.return();}}finally {if(_didIteratorError5){throw _iteratorError5;}}}return React.createElement('div',{className:'indicators'},indicators);}}); // working-spot
 var TagentalIndicator=React.createClass({displayName:'TagentalIndicator',render:function render(){return React.createElement('div',{className:'indicator-block'},React.createElement('div',{className:this.props.isSmall?'indicator-small':'indicator'},React.createElement(TagentalIndicatorMkr,{isActive:this.props.indIndex===this.props.currentIndex?true:false,isPassed:this.props.indIndex<this.props.currentIndex?true:false,small:this.props.isSmall})));}}); // working-spot
@@ -255,28 +246,39 @@ for(var j=0;j<Menus.size;++j){var originMenuOptions=Menus.get(j).get('Options');
 		dataIdx:
 			Index of the data
  */ // Update the dropdown menu. 
-function selectDropdownOption(state,theme,optionName,fieldsetIndex,dataIdx,topicDepth){var newDataset=null;var newData=null;var newChartType=null;var newTopic=null;var newDropdownMenuStates=null; // Topic depth define how much info for users to read.
+function selectDropdownOption(state,theme,optionName,fieldsetIndex,dataIdx,topicDepth){var newDataset=null;var newData=null;var newChartType=null;var newTopic=null;var newDropdownMenuStates=null; // working-spot
+var newTaleIndex=null;var shoudDataBoardUpdate=setState('updateDataBoard',true); // Topic depth define how much info for users to read.
 var newTopicDepth=null;var currentState=store.getState(); // Create an initial collpased state for all menus.
 var collapsedAllDropdownMenuStates=setState('filterDropdownMenus',setAllDropdownCollapsed(currentState)); // Fetch the prepared states 
 var stateTree=DataFilterStateTree.state.get(theme);var datasetIndex=DataFilterStateTree.findDatasetIndex(theme,optionName);if(theme==='police')return _FilterRenderDispatcher(state,theme,optionName,fieldsetIndex,datasetIndex);else if(theme==='prosecution')return _FilterRenderDispatcher(state,theme,optionName,fieldsetIndex,datasetIndex);else if(theme==='judicial')return _FilterRenderDispatcher(state,theme,optionName,fieldsetIndex,datasetIndex);else if(theme==='correction')return _FilterRenderDispatcher(state,theme,optionName,fieldsetIndex,datasetIndex); // The process of how filter reacts when user click any of its options.
 function _FilterRenderDispatcher(state,theme,optionName,fieldsetIndex,datasetIndex){ // Select the dataset
-if(fieldsetIndex===0){if(currentState.get('currentDataset')!==optionName){var newState=__datasetSwitchRendering(theme,optionName,datasetIndex);return state.merge(newState.dataset,newState.data,newState.chartType,newState.topic,newState.topicDepth,newState.dropdownMenuStates);}return state.merge(collapsedAllDropdownMenuStates);} // Selecting data
-else if(fieldsetIndex===1){if(currentState.get('currentData')!==optionName){var newState=__dataSwitchRendering(state,theme,optionName);return state.merge(newState.data,newState.topic,newState.topicDepth,newState.dropdownMenuStates);}return state.merge(collapsedAllDropdownMenuStates);} // Selecting the charttype which will affect the topics.
-else if(fieldsetIndex===2){if(currentState.get('currentChartType')!==optionName){var newState=__chartTypeSwitchRendering(state,optionName,fieldsetIndex);return state.merge(newState.chartType,newState.topic,newState.dropdownMenuStates);}return state.merge(collapsedAllDropdownMenuStates);} // Selection the topic
-else if(fieldsetIndex===3){if(currentState.get('currentTopic')!==optionName){newTopic=setState('currentTopic',optionName);newTopicDepth=setState('currentTopicDepth',topicDepth);return state.merge(newTopic,newTopicDepth,collapsedAllDropdownMenuStates);}return state.merge(collapsedAllDropdownMenuStates);}return state;} // Rerender the dataset and its related options of different fields
+if(fieldsetIndex===0){if(currentState.get('currentDataset')!==optionName){var newState=__datasetSwitchRendering(theme,optionName,datasetIndex);return state.merge(newState.dataset,newState.data,newState.chartType,newState.topic,newState.topicDepth, // working-spot
+newState.taleIndex,newState.dropdownMenuStates,shoudDataBoardUpdate);}return state.merge(collapsedAllDropdownMenuStates,shoudDataBoardUpdate);} // Selecting data
+else if(fieldsetIndex===1){if(currentState.get('currentData')!==optionName){var newState=__dataSwitchRendering(state,theme,optionName);return state.merge(newState.data,newState.topic,newState.topicDepth, // working-spot
+newState.taleIndex,newState.dropdownMenuStates,shoudDataBoardUpdate);}return state.merge(collapsedAllDropdownMenuStates,shoudDataBoardUpdate);} // Selecting the charttype which will affect the topics.
+else if(fieldsetIndex===2){if(currentState.get('currentChartType')!==optionName){var newState=__chartTypeSwitchRendering(state,optionName,fieldsetIndex);return state.merge(newState.chartType,newState.topic, // working-spot
+newState.taleIndex,newState.dropdownMenuStates,shoudDataBoardUpdate);}return state.merge(collapsedAllDropdownMenuStates,shoudDataBoardUpdate);} // Selection the topic
+else if(fieldsetIndex===3){if(currentState.get('currentTopic')!==optionName){newTopic=setState('currentTopic',optionName);newTopicDepth=setState('currentTopicDepth',topicDepth);newTaleIndex=setState('currentTaleIndex',taleIndex);return state.merge(newTopic,newTopicDepth, // workng-spot
+newTaleIndex,collapsedAllDropdownMenuStates,shoudDataBoardUpdate);}return state.merge(collapsedAllDropdownMenuStates,shoudDataBoardUpdate);}return state;} // Rerender the dataset and its related options of different fields
 function __datasetSwitchRendering(theme,optionName,datasetIndex){ // Update the current dataset state to the chosen one
 var newDataset=setState('currentDataset',optionName); // Render the first available data beneath the dataset.
 var newData=setState('currentData',stateTree.get(datasetIndex).content.data[0].name); // Render the first available chartType beneath the dataset.
 var newChartType=setState('currentChartType',stateTree.get(datasetIndex).availableChartTypes[0]); // Render the first available topic beneath the dataset and chartType.
 var newTopic=setState('currentTopic',stateTree.get(datasetIndex).content.data[0].topics[0][0].name); // Set the new topic depth to 0
-var newTopicDepth=setState('currentTopicDepth',0); // Set up the states for the dropdowns.
+var newTopicDepth=setState('currentTopicDepth',0); // working-spot
+var newTaleIndex=setState('currentTaleIndex',0); // Set up the states for the dropdowns.
 var newDropdownMenuStates=setState('filterDropdownMenus',List([ // Options for the dataset
 Map().set('Options',List(DataFilterStateTree.listDataset(theme))).set('isDisplayed',false), // Options for the data
 Map().set('Options',List(DataFilterStateTree.listData(theme,datasetIndex))).set('isDisplayed',false), // Options for the graph
 Map().set('Options',List(DataFilterStateTree.listCharttype(theme,datasetIndex))).set('isDisplayed',false), // Options for the topics
-Map().set('Options',List(DataFilterStateTree.listTopic(theme,datasetIndex,0,0))).set('isDisplayed',false)]));return {dataset:newDataset,data:newData,chartType:newChartType,topic:newTopic,topicDepth:newTopicDepth,dropdownMenuStates:newDropdownMenuStates};}function __dataSwitchRendering(state,theme,dataName){var datasetName=state.get('currentDataset');var datasetIndex=DataFilterStateTree.findDatasetIndex(theme,datasetName);var dataIndex=DataFilterStateTree.findDataIndex(theme,datasetName,dataName);var chartTypeIndex=DataFilterStateTree.findChartTypeIndex(theme,datasetName,state.get('currentChartType'));var newData=setState('currentData',dataName);var newTopic=setState('currentTopic',stateTree.get(datasetIndex).content.data[dataIndex].topics[chartTypeIndex][0].name);var newTopicDepth=setState('currentTopicDepth',0); // Switch data will change the available topics
-var newDropdownMenuStates=setState('filterDropdownMenus',updateTopicDropdownOption(state,dataName,null));return {data:newData,topic:newTopic,topicDepth:newTopicDepth,dropdownMenuStates:newDropdownMenuStates};}function __chartTypeSwitchRendering(state,chartType,fieldsetIndex){var newChartType=setState('currentChartType',optionName);var newTopicDepth=setState('currentTopicDepth',0);var newDropdownMenuStates=setState('filterDropdownMenus',updateTopicDropdownOption(state,null,chartType)); // Update current topic
-var newTopic=setState('currentTopic',newDropdownMenuStates.get('filterDropdownMenus').get(fieldsetIndex+1).get('Options')[0]);return {chartType:newChartType,topic:newTopic,dropdownMenuStates:newDropdownMenuStates};}} /* Related function of selecting option: Collapse all dropdown menu */function setAllDropdownCollapsed(state){var newState=state.get('filterDropdownMenus').update(function(Menus){ // Renew each of the dropdown state
+Map().set('Options',List(DataFilterStateTree.listTopic(theme,datasetIndex,0,0))).set('isDisplayed',false)]));return {dataset:newDataset,data:newData,chartType:newChartType,topic:newTopic,topicDepth:newTopicDepth, // working-spot
+taleIndex:newTaleIndex,dropdownMenuStates:newDropdownMenuStates};}function __dataSwitchRendering(state,theme,dataName){var datasetName=state.get('currentDataset');var datasetIndex=DataFilterStateTree.findDatasetIndex(theme,datasetName);var dataIndex=DataFilterStateTree.findDataIndex(theme,datasetName,dataName);var chartTypeIndex=DataFilterStateTree.findChartTypeIndex(theme,datasetName,state.get('currentChartType'));var newData=setState('currentData',dataName);var newTopic=setState('currentTopic',stateTree.get(datasetIndex).content.data[dataIndex].topics[chartTypeIndex][0].name);var newTopicDepth=setState('currentTopicDepth',0); // working-spot
+var newTaleIndex=setState('currentTaleIndex',0); // Switch data will change the available topics
+var newDropdownMenuStates=setState('filterDropdownMenus',updateTopicDropdownOption(state,dataName,null));return {data:newData,topic:newTopic,topicDepth:newTopicDepth, // working-spot
+taleIndex:newTaleIndex,dropdownMenuStates:newDropdownMenuStates};}function __chartTypeSwitchRendering(state,chartType,fieldsetIndex){var newChartType=setState('currentChartType',optionName);var newTopicDepth=setState('currentTopicDepth',0);var newDropdownMenuStates=setState('filterDropdownMenus',updateTopicDropdownOption(state,null,chartType)); // workng-spot
+var newTaleIndex=setState('currentTaleIndex',0); // Update current topic
+var newTopic=setState('currentTopic',newDropdownMenuStates.get('filterDropdownMenus').get(fieldsetIndex+1).get('Options')[0]);return {chartType:newChartType,topic:newTopic, // working-spot
+taleIndex:newTaleIndex,dropdownMenuStates:newDropdownMenuStates};}} /* Related function of selecting option: Collapse all dropdown menu */function setAllDropdownCollapsed(state){var newState=state.get('filterDropdownMenus').update(function(Menus){ // Renew each of the dropdown state
 for(var j=0;j<Menus.size;++j){var originMenuOptions=Menus.get(j).get('Options');Menus=Menus.set(j,Map().set('isDisplayed',false).set('Options',originMenuOptions));}return Menus;});return newState;} /* 
 	 Related function of selecting option: Collapse all dropdown menu
 	 Data and charttype have relation with topics

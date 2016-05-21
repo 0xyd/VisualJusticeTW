@@ -245,7 +245,7 @@ graphClass.prototype.readCSV = function(path) {
 
 // To filter the data which are inproper for visualizing.
 graphClass.prototype._dataFiltering = function(d, i) {
-	console.log(d);
+	
 	// Iterate d's object. Once the value is "", deperciate the d.
 	for ( var key in d )
 		if ( d[key] === "" ) return null
