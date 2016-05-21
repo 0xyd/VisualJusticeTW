@@ -117,52 +117,73 @@ DBTaleFactory:function DBTaleFactory(){ // temporary if statement
 if(this.storyTeller._txtTale){var index=store.getState().get('currentTaleIndex');var taleEle=this.storyTeller._txtTale.sections[index];var containerStyle=this.storyTeller._componentStyleFactory([taleEle.Container.pos,taleEle.Container.size]);var btnStyle=this.storyTeller._componentStyleFactory([taleEle.IndButton.pos,taleEle.IndButton.style]); // TaleBlock inital style
 var taleStyle={opacity:0}; // Add the opacity for the next button to do the first render animation.
 btnStyle['opacity']=0;return React.createElement('div',{className:'tale-container',style:containerStyle},React.createElement(TaleBlock,{innerText:taleEle.infoContext,style:taleStyle}),React.createElement(NextTaleBtn,{style:btnStyle}));}}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
-{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return window.googleSheet+'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'+query;}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return window.googleSheet+'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'+query;}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return window.googleSheet+'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'+query;}()}, // Prosecution Data
+{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else  // return window.googleSheet + 
+// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
+// 		+ query
+return './police/p0.csv';}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else  // return window.googleSheet + 
+// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
+// 		+ query
+return './police/p2.csv';}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else  // return window.googleSheet + 
+// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
+// 		+ query
+return './police/p1.csv';}()}, // Prosecution Data
 {name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else  // return window.googleSheet + 
 // 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
 // 		+ query
-return '/prosecution/p0.csv';}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else  // return window.googleSheet + 
+return './prosecution/p0.csv';}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else  // return window.googleSheet + 
 // 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
 // 		+ query
-return '/prosecution/p2.csv';}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else  // return window.googleSheet + 
+return './prosecution/p2.csv';}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else  // return window.googleSheet + 
 // 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
 // 		+ query
-return '/prosecution/p3.csv';}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else  // return window.googleSheet + 
+return './prosecution/p3.csv';}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else  // return window.googleSheet + 
 // 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
 // 		+ query
-return '/prosecution/p4.csv';}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else  // return window.googleSheet + 
+return './prosecution/p4.csv';}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else  // return window.googleSheet + 
 // 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
 // 		+ query
-return '/prosecution/p5.csv';}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else  // return window.googleSheet + 
+return './prosecution/p5.csv';}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else  // return window.googleSheet + 
 // 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
 // 		+ query
-return '/prosecution/p1.csv';}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else  // return window.googleSheet + 
+return './prosecution/p1.csv';}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else  // return window.googleSheet + 
 // 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
 // 		+ query
-return '/prosecution/p6.csv';}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else  // return window.googleSheet + 
+return './prosecution/p6.csv';}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else  // return window.googleSheet + 
 // 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
 // 		+ query
-return '/prosecution/p7.csv';}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else  // return window.googleSheet + 
+return './prosecution/p7.csv';}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else  // return window.googleSheet + 
 // 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
 // 		+ query
-return '/prosecution/p8.csv';}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else  // return window.googleSheet + 
+return './prosecution/p8.csv';}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else  // return window.googleSheet + 
 // 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
 // 		+ query
-return '/prosecution/p9.csv';}()}, // Judical Data 
+return './prosecution/p9.csv';}()}, // Judical Data 
 {name:'地方法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/地方法院刑事案件收結情形.csv';else  // return window.googleSheet + 
 // 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
 // 		+ query
-return '/judicial/c0.csv';}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else  // return window.googleSheet + 
+return './judicial/c0.csv';}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else  // return window.googleSheet + 
 // 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
 // 		+ query
-return '/judicial/c1.csv';}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else  // return window.googleSheet + 
+return './judicial/c1.csv';}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else  // return window.googleSheet + 
 // 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
 // 		+ query
-return '/judicial/c2.csv';}()}, // Correction Data
+return './judicial/c2.csv';}()}, // Correction Data
 {name:'監獄人數概況',url:function(){if(isLocal)return '/correction/監獄人數概況.csv';else  // return window.googleSheet + 
 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
 //  		query
-return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:window.googleSheet+'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg'+window.query},{name:'新入監犯罪次數與種類.',url:window.googleSheet+'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg'+window.query},{name:'新入監前教育程度',url:window.googleSheet+'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8'+window.query},{name:'歷年新入監年齡歷年統計',url:window.googleSheet+'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'+window.query}];return urls;}}()}]};}, // working-spot
+return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:'/correction/c1.csv' // window.googleSheet +
+// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+// 		window.query
+},{name:'新入監犯罪次數與種類.',url:'/correction/c3.csv' // window.googleSheet +
+// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+// 		window.query
+},{name:'新入監前教育程度',url:'/correction/c2.csv' // window.googleSheet +
+// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+// 		window.query
+},{name:'歷年新入監年齡歷年統計',url:'/correction/c4.csv' // window.googleSheet +
+// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+// 		window.query
+}];return urls;}}()}]};}, // working-spot
 shouldComponentUpdate:function shouldComponentUpdate(nextProps){return nextProps.updateDataBoard;}, // Initial Data Visualizing
 componentDidMount:function componentDidMount(){var dataSheet=this.findDataSheetIndex(this.props);if(this.props.chartType==='直方圖'){this.vizDataWithBarChart(this.props,dataSheet);}else if(this.props.chartType==='趨勢圖'){this.vizDataWithLineChart(this.props,dataSheet);}else if(this.props.chartType==='圓環比例圖'){}}, // The DataBoard component will renew the visualized data or change a different type.
 componentWillUpdate:function componentWillUpdate(nextProps,nextStates){var _this2=this;var dataSheet=this.findDataSheetIndex(nextProps); // working-spot

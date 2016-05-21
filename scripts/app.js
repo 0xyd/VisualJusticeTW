@@ -3555,7 +3555,6 @@ const DataBoard = React.createClass({
 							return './police/p1.csv'
 					})(),
 				},
-
 				// Prosecution Data
 				{
 					name: '殺人罪',
