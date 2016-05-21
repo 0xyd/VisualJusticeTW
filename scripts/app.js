@@ -3528,7 +3528,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
 							// 		+ query
-							return '/police/p0.csv'
+							return './police/p0.csv'
 					})(),
 				},
 				{
@@ -3540,7 +3540,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
 							// 		+ query
-							return '/police/p2.csv'
+							return './police/p2.csv'
 					})(),
 				},
 				{
@@ -3552,7 +3552,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
 							// 		+ query
-							return '/police/p1.csv'
+							return './police/p1.csv'
 					})(),
 				},
 
@@ -3566,7 +3566,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
 							// 		+ query
-							return '/prosecution/p0.csv'
+							return './prosecution/p0.csv'
 					})(),
 				},
 				{
@@ -3578,7 +3578,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
 							// 		+ query
-							return '/prosecution/p2.csv'
+							return './prosecution/p2.csv'
 					})(),
 				},
 				{
@@ -3590,7 +3590,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
 							// 		+ query
-							return '/prosecution/p3.csv'
+							return './prosecution/p3.csv'
 					})(),
 				},
 				{
@@ -3602,7 +3602,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
 							// 		+ query
-							return '/prosecution/p4.csv'
+							return './prosecution/p4.csv'
 					})(),
 				},
 				{
@@ -3614,7 +3614,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
 							// 		+ query
-							return '/prosecution/p5.csv'
+							return './prosecution/p5.csv'
 					})(),
 				},
 				{
@@ -3626,7 +3626,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
 							// 		+ query
-							return '/prosecution/p1.csv'
+							return './prosecution/p1.csv'
 					})(),
 				},
 				{
@@ -3638,7 +3638,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
 							// 		+ query
-							return '/prosecution/p6.csv'
+							return './prosecution/p6.csv'
 					})(),
 				},
 				{
@@ -3650,7 +3650,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
 							// 		+ query
-							return '/prosecution/p7.csv'
+							return './prosecution/p7.csv'
 					})(),
 				},
 				{
@@ -3662,7 +3662,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
 							// 		+ query
-							return '/prosecution/p8.csv'
+							return './prosecution/p8.csv'
 					})(),
 				},
 				{
@@ -3674,7 +3674,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
 							// 		+ query
-							return '/prosecution/p9.csv'
+							return './prosecution/p9.csv'
 					})(),
 				},
 				// Judical Data 
@@ -3687,7 +3687,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
 							// 		+ query
-							return '/judicial/c0.csv'
+							return './judicial/c0.csv'
 					})(),
 				},
 				{
@@ -3699,7 +3699,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
 							// 		+ query
-							return '/judicial/c1.csv'
+							return './judicial/c1.csv'
 					})(),
 				},
 				{
@@ -3711,7 +3711,7 @@ const DataBoard = React.createClass({
 							// return window.googleSheet + 
 							// 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
 							// 		+ query
-							return '/judicial/c2.csv'
+							return './judicial/c2.csv'
 					})(),
 				},
 
