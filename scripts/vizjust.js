@@ -50,14 +50,77 @@ queue.prototype.queuing = function(complete) {
 var colorClass = function() {
 
 	this.bar = {
+
+		// For 竊盜案件 (Police)
+		'合計發生件數': '#70C1B3',
+		'重大竊盜發生件數': '#F25F5C',
+		'普通竊盜發生件數': '#FFE066',
+		'汽車竊盜發生件數': '#247BA0',	
+		'機車竊盜發生件數': '#2C5B26',
+
+		'重大竊盜破獲件數': '#9BC53D',
+		'重大竊盜尚未破獲件數': '#E55934',
+
+		'普通竊盜破獲件數': '#5BC0EB',
+		'普通竊盜尚未破獲件數': '#FA7921',
+
+		'汽機車竊盜案件': '#00A8E8',
+
+		'汽車竊盜破獲件數': '#EF233C',
+		'汽車竊盜尚未破獲件數': '#EDF2F4',
+		'汽車竊盜破獲率': '#0CCA4A',
+		'汽車竊盜嫌疑犯人數': '#F24B48',
+
+		'機車竊盜破獲件數': '#35C3D6',
+		'機車竊盜尚未破獲件數': '#FF1654',
+		'機車竊盜嫌疑犯人數': '#FFD000',
+
+		// For 殺人罪 (Prosecution)
+
+		// For 兒童及少年性交易防制條例 (Prosecution),
+		'被告人數': '#FC7B29',
+		'死刑': '#C20446',
+		// '無期徒刑': '#E5404C',
+		// '有期徒刑': '#FD9C3C',
+		'無期徒刑': '#FD9C3C',
+		'有期徒刑': '#E5404C',
+		'拘役': '#FFB14A',
+		'罰金': '#F68989',
+		'緩刑人數': '#9F89F4',
+		'免刑': '#53B4C4',
+		'無罪': '#2BA608',
+		'不受理': '#646561',
+		'累犯人數': '#D13F37',
+		'保安處分人數': '#809176',
+
+		// For 監獄人數概況 (Correction)
 		'本年執行人數': '#BA0F30',
 		'本年入監人數': '#C41F3A',
 		'新入監人數': '#61B045',
 		'上年底留監人數': '#E9C247',
 		'本年出獄人數': '#F16B23',
-		'本年年底留監人數': '#55B5DF'
+		'本年年底留監人數': '#55B5DF',
+
+		// For 地方法院刑事案件收結情形
+		'案件數': '#4979BC',
+		'舊受': '#5C4491',
+		'新受': '#4CA0E0',
+		'終結': '#3B8AE5',
+		'未結': '#822979',
+
+		'平均每法官每月辦結件數': '#E71D36',
+		'終結案件中平均一件所需日數': '#FF9F1C',
+		'上訴案件維持率': '#2D73C4',
+		'抗告案件維持率': '#169976',
+
+		// For 犯次分類 (Correction)
+		'累犯': '#E5404C',
+		'再犯': '#F16B23',
+		'初犯': '#F68989'
+		
 	},
 	this.line = {
+		// For 監獄人數概況 (Correction)
 		'本年執行人數': '#BA0F30',
 		'本年入監人數': '#C41F3A',
 		'新入監人數': '#61B045',
@@ -137,13 +200,18 @@ var graphClass = function() {
 	this.padHeight = null;
 	this.padWidth = null;
 	this.padPadding = null;
+
+	// Axes
+	this.xAxis = null;
+	this.yAxis = null;
+
 }
 
 graphClass.prototype.initializeAPad = function() {
 
 	this.pad = (function() {
 
-		return d3.select('#DISPLAY_PANEL')
+		return d3.select('#DATABOARD-vizLayer')
 			.append('svg')
 			.attr('id', 'SKETCHPAD')
 			.style({
@@ -175,6 +243,228 @@ graphClass.prototype.readCSV = function(path) {
 	return d3.csv(path)
 }
 
+// To filter the data which are inproper for visualizing.
+graphClass.prototype._dataFiltering = function(d, i) {
+
+	// Iterate d's object. Once the value is "", deperciate the d.
+	for ( var key in d )
+		if ( d[key] === "" ) return null
+	return d
+	// Suspend.
+	// for ( var key in d )
+		// if ( d[key] === "" ) d[key] = null
+	// return d
+}
+
+graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
+
+	this.xScale = d3.scale.ordinal()
+		.domain(
+			dataset.map(
+				function(d){ return xLabel? d[xLabel]: d }))
+		.rangeBands([0, this.chartWidth]);
+}
+
+graphClass.prototype._setXAxis = function(pos) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		this.xAxis = d3.svg.axis()
+			.scale(this.xScale).orient(pos);		
+	} 
+}
+
+graphClass.prototype._setLinearYScale = function(dataset, dOption) {
+	
+	this.yScale = d3.scale.linear()
+		.domain(
+			[0, d3.max(
+					dataset, 
+					function(d) { return dOption ? parseFloat(d[dOption]): d})
+			])
+		.rangeRound([this.chartHeight, 0]);
+
+}
+
+// Set the y scale in percentage
+graphClass.prototype._setYPctScale = function(dataset, dOption) {
+	this.yScale = d3.scale.linear()
+		.domain([0, 100]).rangeRound([this.chartHeight, 0]);
+}
+
+graphClass.prototype._setYAxis = function(pos, values, specKey) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		// Tick divs are used for section the data with tick.
+		var tickDiv = null,
+				// Transform the tick format
+				tickFormater = null;
+
+		var dmax = d3.max(values, function(value) {
+			if (specKey)
+				return parseInt(value[specKey])
+			return parseInt(value)
+		});
+
+		// The maximum defines the tick format and the number of ticks.
+		if (dmax > 100000) {
+			tickDiv = 100000;
+			tickFormater = kTick;
+		}
+		else if (dmax > 10000) {
+			tickDiv = 10000;
+			tickFormater = kTick;
+		}
+		else if (dmax < 10000 && dmax > 2000) {
+			tickDiv = 1000;
+		}
+		else if (dmax < 2000 && dmax > 1000) {
+			tickDiv = 500;
+		}
+		else if (dmax < 1000) {
+			tickDiv = 200;
+		}
+		else if (dmax < 100) {
+			tickDiv = 10;
+		}
+		
+		this.yAxis = d3.svg.axis()
+			.scale(this.yScale).orient(pos)
+				.tickValues(d3.range(0, dmax, tickDiv)).tickFormat(tickFormater);
+	}
+
+	// Transfer ,000 to K
+	function kTick(tick) {
+		return Math.round(tick/1e3) + 'K'
+	} 
+}
+
+// The y axis in percentage.
+graphClass.prototype._setYPctAxis = function(pos) {
+
+	if ( typeof pos === 'string' && 
+		pos === 'right' || 'left' || 'bottom' || 'top' ) {
+
+		this.yAxis = d3.svg.axis()
+			.scale(this.yScale).orient(pos)
+				.tickValues(d3.range(0, 100, 20))
+					.tickFormat(function(tick) {
+						return tick + '%'
+					});
+	}
+}
+
+graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, outPadding) {
+
+	var self = this;
+
+	this.pad
+		.append('g')
+			.attr('class', 'x-axis')
+			.attr('transform', 'translate(0,' + this.chartHeight + ')')
+			.call(this.xAxis)
+			.call(c_pinLbl2XAxisMidPt, horSpace, step, outPadding)
+		.append('text')
+			.attr('class', 'axis-name')
+			.attr('x', function() {
+				return dataset.length*(horSpace+step)+outPadding
+			})
+			.attr('y', '25')
+		.text(xLabel);
+}
+
+graphClass.prototype._createYAxis = function(yLabel) {
+	this.pad
+		.append('g')
+			.attr('class', 'y-axis')
+			.call(this.yAxis)
+		.append('text')
+			.attr('class', 'axis-name')
+			.attr('transform', 'rotate(90) translate(0, -10)')
+			.text(yLabel);
+}
+
+
+graphClass.prototype._removeYAxis = function() {
+	this.pad.select('g.y-axis').remove();
+}
+
+// update the x label
+graphClass.prototype._updateXAxisLabel = function(xLabel) {
+
+	var xAxis = 
+		this.pad.select('g.x-axis');
+
+	var xPrevLabel = 
+		xAxis.select('text.axis-name');
+
+	if (xPrevLabel.html() !== xLabel) {
+
+		// Store the previous x label's position
+		var xLabelAttrs = {
+			x: xPrevLabel.attr('x'),
+			y: xPrevLabel.attr('y'),
+			class: xPrevLabel.attr('class')
+		};
+
+		xPrevLabel.remove();
+
+		xAxis.append('text')
+			.text(xLabel)
+				.attr({
+					x: xLabelAttrs.x,
+					y: xLabelAttrs.y,
+					class: xLabelAttrs.class
+				});
+	}
+}
+
+// update the y label
+graphClass.prototype._updateYAxisLabel = function(yLabel) {
+
+	var yAxis = 
+		this.pad
+			.select('g.y-axis');
+
+	var yPrevLabel =
+		yAxis.select('text.axis-name');
+
+	if (yPrevLabel.html() !== yLabel) {
+		var yLabelAttrs = {
+			transform: yPrevLabel.attr('transform'),
+			class: yPrevLabel.attr('class')
+		}
+	
+		yPrevLabel.remove();
+	
+		yAxis.append('text')
+			.text(yLabel)
+				.attr({
+					transform: yLabelAttrs.transform,
+					class: yLabelAttrs.class
+				});
+	}
+}
+
+graphClass.prototype.setOutPadding = function(val) { 
+	this.outPadding = val; 
+	return this
+}
+
+graphClass.prototype.setStep = function(val) { 
+	this.step = val;
+	return this
+}
+
+// Left the horizontal space for each element
+graphClass.prototype._setHorSpace = function(dataset, step, outPadding) {
+	
+	return parseInt((this.chartWidth-outPadding-step*dataset.length) / dataset.length);
+}
+
 /* A class for Bar chart */
 var barGraphClass = function() {
 
@@ -183,9 +473,17 @@ var barGraphClass = function() {
 	this.chartHeight = null;
 		
 	this.chartWidth = null;
-		
+	
+	// Normal Bars
 	this.bars = null;
+	this.barsGroup = null;
 	this.barWidth = null;
+	this.barTxtGroup = null;
+
+	// Stack Bars
+	this.stacks  = null;
+	this.stackGroup = null;
+
 
 	this.outPadding = null;
 
@@ -198,7 +496,6 @@ var barGraphClass = function() {
 	this.yAxis = null;
 
 }
-
 
 /* Inherit the barGraphClass from the graph */
 barGraphClass.prototype = Object.create(graphClass.prototype);
@@ -225,183 +522,822 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 		parseInt((this.chartWidth-this.outPadding-this.step*dataset.length) / dataset.length);
 }
 
-barGraphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
-	this.xScale = d3.scale.ordinal()
-		.domain(
-			dataset.map(
-				function(d){ return xLabel? d[xLabel]: d }))
-		.rangeBands([0, this.chartWidth]);
-}
-
-barGraphClass.prototype._setXAxis = function(pos) {
-
-	if ( typeof pos === 'string' && 
-		pos === 'right' || 'left' || 'bottom' || 'top' ) {
-
-		this.xAxis = d3.svg.axis()
-			.scale(this.xScale).orient(pos);		
-	} 
-}
-
-barGraphClass.prototype._setLinearYScale = function(dataset, dOption) {
-
-	this.yScale = d3.scale.linear()
-		.domain(
-			[0, d3.max(
-					dataset, 
-					function(d) { return dOption? parseInt(d[dOption]): d})
-			])
-		.rangeRound([this.chartHeight, 0]);
-
-}
-
-barGraphClass.prototype._setYAxis = function(pos, tickFormater) {
-
-	if ( typeof pos === 'string' && 
-		pos === 'right' || 'left' || 'bottom' || 'top' ) {
-
-		this.yAxis = d3.svg.axis()
-			.scale(this.yScale).orient(pos).tickFormat(tickFormater).ticks(10);
-
-	} 
-}
-
-barGraphClass.prototype._createXAxis = function(dataset, xLabel) {
-
-	var self = this;
+barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit) {
 	
-	this.pad
-		.append('g')
-			.attr('class', 'x-axis')
-			.attr('transform', 'translate(0,' + this.chartHeight + ')')
-			.call(this.xAxis)
-			.call(c_pinLbl2XAxisBarMidPt, this.barWidth, this.step, this.outPadding)
-		.append('text')
-			.attr('class', 'axis-name')
-			.attr('x', function() {
-				return dataset.length*(self.barWidth+self.step)+self.outPadding
-			})
-			.attr('y', '25')
-		.text(xLabel);
-}
-
-barGraphClass.prototype._createYAxis = function(dataset, yLabel) {
-	this.pad
-		.append('g')
-			.attr('class', 'y-axis')
-			.call(this.yAxis)
-		.append('text')
-			.attr('class', 'axis-name')
-			.attr('transform', 'rotate(90) translate(0, -10)')
-			.text(yLabel);
-}
-
-barGraphClass.prototype._createBars = function(dataset, dOption, barColor) {
-
 	var self = this;
 
-	this.bars = 
+	// Merged dataset has higher priority.
+	var beMergedDataset = mergedDataset.length > 0 ? true : false;
+	
+	this.barsGroup = 
 		this.pad.append('g')
-			.attr('class', 'bar-group')
-			.selectAll('rect')
-			.data(dataset)
-			.enter()
-			.append('rect')
-				.attr('class', 'bar')
-				.attr('x', function(d, i) {
-					return self.outPadding + 
-						i * (self.barWidth + self.step)
-				})
-				.attr('y', function(d) {
-					return self.yScale(d[dOption])
-				})
-				.attr('width', self.barWidth)
-				.attr('height', function(d) {
-					return self.chartHeight - self.yScale(parseInt(d[dOption]))
-				})
-				.attr('fill', function(d) {
-					return colorObj.bar[dOption]
-				})
-				.each(function(d, i) {
-					
-					// Calculate value difference between the current and the previous
-					if (i !== 0) {
-						var _this = d3.select(this),
-								pData = this.previousSibling.__data__,
-								diffs = 
-									Object.keys(d).map(function(key, i) {
-										if ( i !== 0 )
-											return { name: key, val: parseInt(d[key])-parseInt(pData[key]) }
-									})
-									.filter(function(d) { if (d) return d });
+			.attr('class', 'bar-group');
 
-						// Attach the variance of each data type.
-						for (var j in diffs) 
-							_this.attr('diff-'+diffs[j].name, diffs[j].val);
-					}
-				});
+	function binding(data) {
+		this.bars = this.barsGroup.selectAll('rect').data(data).enter();
+	}
+
+	function render(isInit, eachFn) {
+
+		var updated = 
+			this.bars
+				.append('rect').classed('bar', true)
+					.attr({
+						x: function(d, i) {
+							return self.outPadding + i * (self.barWidth + self.step)
+						}
+					});
+		var attrs = 
+			{
+				y: function(d, i) {
+					return beMergedDataset ? self.yScale(mergedDataset[i]) : self.yScale(d[dOption])
+				},
+				width: function(d, i) {
+					return self.barWidth
+				},
+				height: function(d, i) {
+					return beMergedDataset ? 
+						self.chartHeight - self.yScale(mergedDataset[i]) : 
+							self.chartHeight - self.yScale(parseFloat(d[dOption]))
+				},
+				fill: function(d, i) {
+					return colorObj.bar[dOption]
+				}
+			}
+
+		if (isInit) {
+			return updated
+				.attr({
+					y: self.chartHeight,
+					height: 0,
+					width :0
+				})
+				.transition().duration(1000)
+					.attr(attrs)
+					.each('end', eachFn);
+		}
+		else 
+			updated.attr(attrs).each(eachFn);
+	}
+
+	function diffCal(d, i) {
+		if (i !== 0) {
+			var _this = d3.select(this),
+					pData = this.previousSibling.__data__,
+					diffs = 
+						Object.keys(d).map(function(key, i) {
+							if ( i !== 0 )
+								return { 
+									name: key, 
+									val: (function() {
+										// Check the value is float or integer
+										return (d[key] - Math.ceil(d[key]) < 0) ?
+												(parseFloat(d[key]) - parseFloat(pData[key])).toFixed(2) :
+													parseInt(d[key]) - parseInt(pData[key])
+										})()
+									}
+					}).filter(function(d) { if (d) return d });
+
+		// Attach the variance of each data type.
+		for (var j in diffs) 
+			_this.attr('diff-'+diffs[j].name, diffs[j].val);
+	}
+}
+
+	binding.apply(this, [dataset]);
+	render.apply(this, [isInit, diffCal]);
+
+	return this
 }
 
 /* 
 The bar information is the combined information of other sub elements
 Stack bars display the users about what the bars are composed of.
 */
-barGraphClass.prototype._makeStackBars = function() {
+/* <Stack Bars> */
+/*
+	dataset: The data imported from dataset.
+	isFullStack : All data in the dataset are used for stack bars creating.
+	stackOptions: The data options selected.
+*/
+barGraphClass.prototype._createStackBars = function(dataset, isFullStack, stackOptions) {
 
+	this.stackGroup = 
+		this.pad.append('g')
+			.classed('stack-bars-group', true);
 
+	var stacks = this.pad.select('g.stack-bars-group').selectAll('g');
+			
+	// Binding the dataset to stack bars.
+	function bindingStack(data) {
+		
+		if (stacks[0].length < data.length)
+			stacks = stacks.data(data).enter();
+		else
+			stacks = stacks.data(data).exit().remove();
+	}
 
+	function renderStack(data, time) {
+		if (stacks[0].length === data.length)
+			stacks.append('g')
+				.classed('stack', true);
+	}
+
+	bindingStack(dataset);
+	renderStack(dataset, null);
+
+	// Assign the stacks to barGraph 
+	this.stacks = stacks;
+
+	// Create the stack bars.
+	this._stackBarProducer(stackOptions);
 }
 
-barGraphClass.prototype._markValOnBar = function(dataset, dOption) {
+// Update the stack bars if more data features are coming in.
+barGraphClass.prototype.updateStackBars = function(yLabel, intl, extl) {
+
+	this._stackBarProducer(intl, extl)
+		.then(function(stackbars) {
+				stackbars.each(function(d, i) {
+					// Reappend the year to the stack bar
+					this.__data__.year = this.parentNode.__data__['民國'];
+				});
+				return new tipClass()
+			})
+			.then(function(tip){ 
+				tip.appendStackBarMouseOver();
+				// resolve();
+			});
+}
+
+// Graph tranform from bar to stack bars.
+barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
+	
+	// Reselect the origin bar
+	this.bars = this.barsGroup.selectAll('rect.bar');
+	
+	this.stackGroup = 
+		this.pad.append('g')
+			.classed('stack-bars-group', true);
+
+	var self = this,
+			stacks = this.stackGroup.selectAll('g'),
+			promised = null;
+
+	// g.stack are used for storing the row data from origin 
+	function bindingStack(data) {
+		if (stacks[0].length < data.length)
+			stacks = stacks.data(data).enter();
+		else
+			stacks = stacks.data(data).exit().remove();
+	}
+	function renderStack(data) {
+		if (stacks[0].length === data.length)
+			stacks.append('g')
+				.classed('stack', true);
+	}
+
+	// Import the data from external data sheet.
+	if (extl.url) {
+
+		// Once the data loading is succeed, return the rows.
+		var p_extl = new Promise(function(resolve, reject) {
+
+			self.readCSV(extl.url)
+				.row(self._dataFiltering)
+				.get(function(errors, rows) {
+					resolve(rows);
+				});
+		});
+	}
+
+	var p_intl = new Promise(function(resolve, reject) {
+
+		// Fetch the data from the existed bars.
+		var barsData = (function(bars) {
+
+			var data = [];
+			
+			bars.each(function(d, i) {
+				data.push(d);
+				if (i === bars[0].length - 1)
+					resolve(data);
+			});
+			return data
+		})(self.bars);
+
+	});
+
+	var p_final = new Promise(function(resolve, reject) {
+
+		Promise.all([p_extl, p_intl]).then(function(dataHub) {
+		
+			var stackData = [];
+
+			// Find the longest data array.
+			var len = 0;
+
+			for (var i = 0; i < 2; ++i) {
+				if (dataHub[i] && len < dataHub[i].length)
+					len = dataHub[i].length;
+			}
+
+			// Tranverse the data array according to the longest data length and
+			// merge the two results as the data the stack bar needs.
+			for (var j = 0; j < len ; ++j) {
+	
+				var temp = {};
+	
+				for (var k = 0; k < 2; ++k) 
+					if (dataHub[k]) Object.assign(temp, dataHub[k][j])
+	
+				stackData.push(temp); 
+			}
+			console.log(stackData);
+			// working-spot-2
+			/* update the yScale with the new data. */
+			// merged the headers defined 
+			var mergedHds = 
+				[].concat(extl.headers).concat(intl.headers)
+					.filter(function(d) { return d !== null && d !== undefined });
+			
+			// Find out the maximum values for each stack
+			var _mrows = self._mergedColVal(stackData, mergedHds);
+			
+			self._removeYAxis();
+			self._setLinearYScale(_mrows, null);
+			self._setYAxis('left', _mrows, null);
+			self._createYAxis(yLabel);
+			/* The above feature is testing. */
+
+			bindingStack(stackData);
+			renderStack(stackData);
+
+			// Remove the bars group and the text group following it.
+			self.barsGroup.remove();
+			self.barTxtGroup.remove();
+
+			self._stackBarProducer(intl, extl)
+				.then(function(stackbars) {
+					stackbars.each(function(d, i) {
+						// Reappend the year to the stack bar
+						this.__data__.year = this.parentNode.__data__['民國'];
+					});
+					return new tipClass()
+				})
+				.then(function(tip){ 
+					tip.appendStackBarMouseOver();
+					resolve();
+				});
+	});
+
+	});
+	return p_final
+}
+
+// Create the stack bars
+barGraphClass.prototype._stackBarProducer = function(intl, extl) {
+	
+	this.stacks = this.stackGroup.selectAll('g.stack');
+	
+	var self = this,
+			headers = 
+				[].concat(intl.headers, extl.headers)
+					.filter(function(d) { 
+						return (d !== null && d !== undefined )
+					});
+	
+	var p = new Promise(function(resolve, reject) {
+
+		d3.selectAll('g.stack').each(function(d, stackIndex) {
+
+		// Select the headers chosen for specific purpose.
+		if (headers) {
+
+			var barData = [],
+
+				// Calculate the total stacks height
+				sumStacksHeight = (function() {
+	
+					var sum = 0;
+					for (var i in headers) 
+						sum += parseFloat(d[headers[i]])
+					
+					return self.chartHeight - self.yScale(sum)
+				})();
+			
+			for (var i in headers) {
+				
+				var temp = {};
+				
+				// Set up the name and value of the option
+				temp.name = headers[i]
+				temp.value = parseFloat(d[headers[i]]);
+
+				// Calculate the stacks' height
+				temp.dy = 
+					self.chartHeight - self.yScale(temp.value);
+				
+				// Define the start y for the first stack bar element
+				if (parseInt(i) === 0) 
+					temp.y0 = self.chartHeight - sumStacksHeight;
+				else 
+					temp.y0 = barData[parseInt(i) - 1].y0 + barData[parseInt(i) - 1].dy
+
+				barData.push(temp);
+			}
+		}
+
+		// rects store the original rects before transition.
+		var rects = d3.select(this).selectAll('rect'),
+				updatedRects = null,
+				shouldAppendRects = false;
+		
+		function binding(data) {
+			// if (data.length > updatedRects[0].length) {
+			if (data.length > rects[0].length) {
+				shouldAppendRects = true;
+				updatedRects = rects.data(data).enter();
+			}
+			else rects.data(data).exit().remove();
+			
+		}
+
+		function render(time) {
+			var initAttrs = {
+				x: self.outPadding + stackIndex * (self.barWidth + self.step),
+				y: function(d, i) {
+					return d.y0
+				},
+				fill: function(d) {
+					return colorObj.bar[d.name]
+				},
+				width: self.barWidth,
+				height: 0
+			};
+
+			if (shouldAppendRects) {
+				rects
+					.attr(initAttrs)
+						.transition()
+							.duration(time)
+								.attr({
+									height: function(d, i) {
+										return d.dy >= 0 ? d.dy : 0
+									}
+								});
+				updatedRects
+					.append('rect').classed('stackbar', true)
+						.attr(initAttrs)
+						.transition()
+							.duration(time)
+								.attr({
+									height: function(d, i) {
+										return d.dy >= 0 ? d.dy : 0
+									}
+								});
+			} 
+			else {
+				rects
+					.attr(initAttrs).transition()
+						.duration(time)
+							.attr({
+								height: function(d) {
+									return d.dy >= 0 ? d.dy : 0
+								}
+							});
+			}
+		}
+
+		binding(barData);
+		render(500);
+		
+		if (this === this.parentNode.lastChild) 
+			resolve(d3.selectAll('rect.stackbar'));
+		});
+
+	});
+
+	return p
+}
+
+// Transit the bar to percentage stack bar
+barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
 
 	var self = this;
 
-	this.pad.append('g')
-		.attr('id', 'TXTGROUP')
+	return this.transitBarToStack(yLabel, intl, extl).then(function() {
+		self.transitPCTStackBar(yLabel, mHds);
+	})
+
+}
+
+// Transit the stack bar in percentage unit. (PCT = Percent abbr)
+barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
+
+	var self = this;
+	console.log(mHds);
+	// Remove the old y axis.
+	this._removeYAxis();
+
+	// Create the percentage y scale.
+	this._setYPctScale();
+	this._setYPctAxis('left');
+	this._createYAxis(yLabel);
+
+	// Collect the data from stack bars, the index is the stack
+	var dataPairs = [];
+
+	this.stacks.each(function(d, i) {
+
+		// Each pair has several array which contain the data of each stack bar.
+		dataPairs[i] = [];
+		
+		d3.select(this).selectAll('rect').each(function(d, j) {
+			dataPairs[i].push({
+				year : d.year,
+				name : d.name,
+				value: d.value,
+
+				// For returning to the quantitive stack bar
+				y0: d.y0,
+				dy: d.dy
+			});
+		});
+	});
+	
+	// Update the data pairs with percent value
+	dataPairs = dataPairs.map(function(pair) {
+
+		var sum = (function(pair) {
+			var temp = 0
+			for (var i in pair)
+				temp += pair[i].value;
+			return temp
+		})(pair);
+
+		// Calculate the percentage for each
+		for (var j = 0; j < pair.length; j++) {
+
+			var pct = (pair[j].value / sum).toFixed(2);
+			
+			pair[j].pct = pct;
+			
+			// The first stack bar starts from y0
+			if ( j === 0 )
+				pair[j].y0_pct = 0;
+			// The begining point for the element are the combined y0 and dy results of the previous 
+			else 
+				pair[j].y0_pct = pair[j-1].dy_pct + pair[j-1].y0_pct
+
+			// The last stack bar should fill out the left space.
+			if ( j === pair.length - 1) {
+
+				pair[j].dy_pct = 
+					(function(pairNumber) {
+						var sum_dy = 0  
+						for (var i = 0; i < pairNumber; i++) 
+							sum_dy += pair[i].dy_pct
+						return self.chartHeight - sum_dy
+						})(j);
+			}
+			else
+				pair[j].dy_pct = self.chartHeight - self.yScale(parseFloat(pct) * 100);
+		}
+		return pair
+	});
+
+	
+	var p = new Promise(function(resolve, reject) {
+
+		// Update the rect size
+		self.stacks.each(function(d, i) {
+			d3.select(this).selectAll('rect')
+				.data(dataPairs[i])
+					.transition()
+						.duration(1000)
+						.attr({
+							y: function(d, i) {
+								return d.y0_pct
+							},	
+							height: function(d, i){
+								return d.dy_pct >= 0 ? d.dy_pct : 0
+							}
+						})
+						.each('end', function(d, i) {
+							if (this === this.parentNode.lastChild)
+								resolve();
+						});
+		});
+
+	// Update the rect size
+	// this.stacks.each(function(d, i) {
+	// 	d3.select(this).selectAll('rect')
+	// 		.data(dataPairs[i])
+	// 			.transition()
+	// 				.duration(1000)
+	// 				.attr({
+	// 					y: function(d, i) {
+	// 						return d.y0_pct
+	// 					},
+	// 					height: function(d, i){
+	// 						return d.dy_pct >= 0 ? d.dy_pct : 0
+	// 					}
+	// 				});
+	});
+
+	return p
+}
+
+// Transit the stack bar to origin bar.
+barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
+
+	console.log(header);
+	var self = this;
+
+	// Grape the data from stack.
+	var data = [];
+
+	var p = new Promise(function(resolve, reject) {
+
+		self.stacks.each(function(d, i) {
+
+			data.push(this.__data__);
+
+			// Check if the header is a merged result.
+			var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
+					// selected headers for the merged.
+					// selectedHds = isHeaderMerged ? 
+					// 	self._avlHeaders(data, mHdrs) : [],
+					selectedHds = isHeaderMerged ? 
+						mHdrs : [],
+					mergedData	= isHeaderMerged ? 
+						self._mergedColVal(data, selectedHds) : [];
+
+			// Collpase the stack bars inside the stack group.
+			d3.select(this).selectAll('rect.stackbar')
+				.transition().duration(2000)
+					.attr({
+						y: self.chartHeight,
+						height: 0,
+						width : 0
+					});
+
+			if (this === this.parentNode.lastChild ) {
+				self.stackGroup.remove();
+				resolve({
+					isHeaderMerged: isHeaderMerged,
+					mergedData: mergedData
+				});
+			}
+		});
+	});
+
+	p.then(function(r) {
+
+		// Remove the old y axis.
+		self._removeYAxis();
+
+		// Create the percentage y scale.
+		self._setLinearYScale(
+			r.mergedData.length > 0 ? r.mergedData : data, 
+			r.isHeaderMerged ? null : header
+			);
+
+		self._setYAxis(
+			'left', 
+			r.mergedData.length > 0 ? r.mergedData : data, 
+			r.isHeaderMerged ? null : header
+			);
+
+		self._createYAxis(yLabel);
+
+		self._createBars(data, header, r.mergedData, false);
+		self._markValOnBar(data, header, r.mergedData);
+	})
+	
+	return p
+}
+
+
+/* Switch from percent stack bar to stack bar. */
+barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOrigin) {
+	
+	var self = this,
+			headers = 
+				intl.headers.concat(extl.headers)
+					.filter(function(d, i) { return (d !== null && d !== undefined) });
+
+	// Remove the previous y axis.
+	this._removeYAxis();
+	console.log('check up here: ', d3.select('y-axis').empty());
+	console.log('checj up y-axis: ', d3.select('y-axis'));
+
+	// Calculate the total amount of the stack bars
+	function stackbarDataSum(d) {
+		return d.map(function(_d) {
+			var t = 0;
+			for ( var i = 0; i < _d.length; ++i )
+				t += _d[i].value
+			return t
+		})
+	}
+
+	var p = new Promise(function(resolve, reject) {
+
+		// Store the dataset from the stack bars.
+		var dataset = [];
+
+		if (isOrigin) {
+			console.log('should not be here');
+			self.stacks.each(function(d, i) {
+				dataset[i] = [];
+				d3.select(this).selectAll('rect')
+					.each(function(d, j) {
+					dataset[i].push(d);
+				});
+			});
+			
+			// Sum up the value of each stack bar.
+			var _dataSum = stackbarDataSum(dataset);
+
+			// Create the linear y scale.
+			self._setLinearYScale(_dataSum, null);
+			self._setYAxis('left', _dataSum, null); 
+			self._createYAxis(yLabel);
+	
+			// Resize the stack bars.
+			self.stacks.each(function(d, i) {
+				d3.select(this).selectAll('rect')
+					.transition()
+						.duration(2000)
+							.attr({
+								y: function(d, i) {
+									return d.y0 
+								},
+								height: function(d, i) {
+									return d.dy >= 0 ? d.dy : 0
+								}
+							})
+							.each('end', function(d, i) {
+								if ( this === this.parentNode.lastChild )
+									resolve(new tipClass());
+							});
+			});
+		}
+
+		else {
+			console.log('should be here');
+			var dataset = [];
+
+			self.stacks.each(function(d, i) {
+				dataset[i] = [];
+				for (var j in headers)
+					dataset[i].push({
+						name : headers[j],
+						value: parseFloat(d[headers[j]])
+					});
+			});
+			
+			// Combined value of each stack
+			var _dataSum = stackbarDataSum(dataset);
+
+			self._setLinearYScale(_dataSum, null);
+			self._setYAxis('left', _dataSum, null); 
+			self._createYAxis(yLabel);
+			self._stackBarProducer(intl, extl).then(function(stackbars) {
+				stackbars.each(function(d, i) {
+					// Reappend the year to the stack bar
+					this.__data__.year = this.parentNode.__data__['民國'];
+				});
+				return new tipClass()
+			})
+			.then(function(tip){ 
+				tip.appendStackBarMouseOver();
+				resolve();
+			});
+		}
+	});
+
+	return p
+}
+
+// Transit the percentage stack bar to bar.
+barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
+	
+	// Fetch the rows data from the g.stack
+	var rows = [];
+
+	this.stacks.each(function(d, i) {
+		rows.push(d);
+	});
+
+	this.stackGroup.remove();
+
+	// The option maybe the combined columns of data.
+	var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+
+	// Get the available headers in specific. 
+	// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
+	var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+	
+	// Set the scale
+	this._setLinearYScale(
+		_mrows.length > 0 ?
+			_mrows : rows, 
+		shouldMergeCols ? 
+			null : dOption
+			);
+
+	this._removeYAxis();
+
+	// Set the Y axis
+	this._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : dOption);
+	this._createYAxis(yLabel);
+
+	// dataset, dOption, mergedDataset, isInit
+	this._createBars(rows, dOption, _mrows, true);
+	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
+
+	return new Promise(function(resolve, reject) { resolve(); })
+
+}
+
+/* </Stack Bars> */
+
+barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset) {
+	
+	var self = this;
+
+	// Mergeddataset has higher priority for data rendering 
+	var beMergedDataset = mergedDataset.length > 0 ? true : false; 
+	
+	this.barTxtGroup = 
+		this.pad.append('g')
+			.attr('id', 'BAR-TXTGROUP');
+
+	this.barTxtGroup
 		.selectAll('text')
 		.data(dataset)
 		.enter()
 		.append('text')
-			.text(function(d) {
-				return dOption ? d[dOption]: d
+			.text(function(d, i) {
+				return beMergedDataset ?
+					mergedDataset[i] : d[dOption] ? 
+						d[dOption] : d
 			})
 			.attr('class', 'mark')
 			.attr('x', function(d, i) {
 				return self.outPadding + i*(self.barWidth+self.step)
 			})
-			.attr('y', function(d) {
-				return dOption? 
-					self.yScale(d[dOption]) : self.yScale(d)
+			.attr('y', function(d, i) {
+				return beMergedDataset ?
+					self.yScale(mergedDataset[i]) : d[dOption] ? 
+						self.yScale(d[dOption]) : self.yScale(d)
 			})
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
-	console.log(path);
-	var self = this;
 
+barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
+	
+	var self = this;
+	
 	var p = new Promise(function(resolve, reject) {
 
 		self.readCSV(path)
-			.row(function(d) { return d })
+			.row(self._dataFiltering)
 			.get(function(errors, rows) {
+				
+				// The option maybe the combined columns of data.
 
+				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+				
+				// Get the available headers in specific. 
+				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
+				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
 				self._setBarWidth(rows);
-	
+
 				// Set the scale
 				self._setOrdinalXScale(rows, xLabel);
-				self._setLinearYScale(rows, dOption);
+				self._setLinearYScale(
+					_mrows.length > 0 ?
+						_mrows : rows, 
+					shouldMergeCols ? 
+						null : defaultCol
+						);
 
 				// Set the axes
-				self._setYAxis('left', kTick);
+				self._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : defaultCol);
 				self._setXAxis('bottom');
 
 				// Draw the axes
-				self._createXAxis(rows, xLabel);
-				self._createYAxis(rows, yLabel);
+				self._createXAxis(rows, xLabel, self.barWidth, self.step, self.outPadding); 
+				// There is a bug for y-axis.
+				self._createYAxis(yLabel);
 
-				self._createBars(rows, dOption);
-				self._markValOnBar(rows, dOption);
+				self._createBars(rows, defaultCol, _mrows, true);
+				self._markValOnBar(rows, defaultCol, _mrows);
 
 				resolve({
 					data: rows,
@@ -410,62 +1346,107 @@ barGraphClass.prototype.drawingData = function(path, xLabel, yLabel, dOption) {
 					barWidth: self.barWidth,
 					outPadding: self.outPadding
 				});
-
 			});
 	});
 
 	return p
 }
 
-barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
+// working-spot-3: Rename it with a better name
+// To check if the selected option is merged results.
+barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
+	var ks = Object.keys(rowData[0]);
+	for (var i in ks)
+		if (ks[i] === opt) return false
+	return true
+}
+
+/*
+	_mergedColVal function is used once the dOption is not specific or
+	it is a combined value that have to be customized with except options.
+*/
+barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
+	
+	// Rows for max combined value
+	return rowData.map(function(row, i) {
+					
+		var maxVal = 0;
+
+		for (var i in mergedCols)
+			maxVal += parseFloat(row[mergedCols[i]])
+		return maxVal
+	});
+				
+}
+
+// barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
+barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
 
-		self.readCSV(path)
-			.row(function(d) { return d })
-			.get(function(error, rows) {
-
 				var _bars = self.pad.selectAll('rect'),
-					_txts = self.pad.selectAll('.mark'),
+						_txts = self.pad.selectAll('.mark'),
 
-					// Former x value of bars
+					// Former x value of bars for text marker transition.
 					f_Pos = (function() {
 						var posAry = [];
 						for ( var i = 0; i < _bars[0].length; i++ ) {
-							posAry.push({
-							x: _bars[0][i].getAttribute('x'),
-							y: _bars[0][i].getAttribute('y')
-						});
+							posAry.push(
+							{
+								x: _bars[0][i].getAttribute('x'),
+								y: _bars[0][i].getAttribute('y')
+							});
 					};
 					return posAry
 				})(),
 
-				// The positions of bars after update
-				c_Pos = [];
+					// The positions of bars after update
+					c_Pos = [];
 
-				self._setLinearYScale(rows, dOption);
-				self._setYAxis('left', kTick);
+				// working-spot-2: store the data from the bars
+				var data = []; 
+
+				_bars.each(function(d, i) {
+					data.push(d);
+				});
+
+				self._setLinearYScale(data, dOption);
+				self._setYAxis('left', data, dOption);
+
+				// set xy axes' labels.
+				self._updateXAxisLabel(xLabel);
+				self._updateYAxisLabel(yLabel);
 
 				_bars
+					.attr({
+						width: function(d, i) {
+							return self.barWidth
+						}
+					})
 					.transition()
-						.attr('y', function(d, i) { 
+						.attr({
+							y: function(d, i) {
 
-							// get current positions of 
-							c_Pos.push(
-								{
-									x: this.getAttribute('x'),
-									y: self.yScale(d[dOption])
-								}
-							);
-						return c_Pos[i].y })
-						.attr('height', 
-							function(d) { 
-								return self.chartHeight - self.yScale(parseInt(d[dOption])) 
-						})
-						.attr('fill', function() {
-							return colorObj.bar[dOption]
+								// get current positions of bars which will use for bar transition animations.
+								c_Pos.push(
+									{
+										x: this.getAttribute('x'),
+										y: self.yScale(parseFloat(d[dOption]))
+									}
+								);
+								return c_Pos[i].y
+							}, 
+
+							height: function(d) {
+								
+								return self.chartHeight - self.yScale(parseFloat(d[dOption])) 
+							},
+
+							fill :function(d, i) {
+								return colorObj.bar[dOption]
+							}
 						})
 					.each(
 						'end', 
@@ -473,21 +1454,22 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 
 							// When the last bar is transited, resolve to the next animation.
 							if ( i === _bars[0].length - 1) {
-
 								resolve({
-									data: rows,
+									data: data,
 									pad: self.pad,
 									step: self.step,
 									barWidth: self.barWidth,
 									outPadding: self.outPadding
 								});
-
 							}
 					});
 
 				_txts
 					.transition()
-					// The text has been rotated about 90 degree
+					/* 
+						The text has been rotated about 90 degrees,
+						so the text x direction would be vertical.
+					*/
 					.attr('x', function(d, i) {
 						var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
 						return parseInt(this.getAttribute('x')) + deltaX })
@@ -497,10 +1479,7 @@ barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 				self.pad
 					.selectAll('.y-axis')
 					.call(self.yAxis);
-			});
-
 		});
-	
 	return p
 }
 
@@ -536,9 +1515,7 @@ barGraphClass.prototype.beDisplayed = function() {
 
 barGraphClass.prototype.isBarHidden = function() {
 
-	var displayStatus = 
-			this.bars.style('display');
-
+	var displayStatus = this.bars.style('display');
 	if ( displayStatus === 'none') return true
 	else return false
 }
@@ -580,9 +1557,17 @@ var lineGraphClass = function() {
 	this.chartHeight = null;
 	this.chartWidth = null;
 
+	this.step = 0;
+
 	this.linePath = null;
 	this.lineDots = null;
 	this.areaUnderLine = null;
+
+	this.dottedLine = d3.svg.line()
+		.x(function(d, i) { return d.cx })
+		.y(function(d, i) { return d.cy });
+
+	this.dotSpace = null;
 
 	this.xScale = null;
 	this.xAxis = null;
@@ -667,7 +1652,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check if line is existed or not
 		if ( self.linePath ) {
-			console.log('Line is existed');
+			
 			self.linePath
 				.datum(data)
 				.transition()
@@ -676,10 +1661,11 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create a line once it is not existed
 		} else {
-			console.log('Line is not existed');
+			
 			self.linePath = 
 				self.pad
 					.append('g')
+						.attr('class', 'line-group')
 					.append('path')
 						.attr('class', 'dotted-path')
 					.datum(data)
@@ -692,7 +1678,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Check the dots on line are existed or not
 		if ( self.lineDots ) {
-			console.log('Dots are existed');
+			
 			self.lineDots
 				.data(data)
 				.transition()
@@ -702,7 +1688,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 
 		// Create the dots once they aren't existed
 		} else {
-			console.log('Dots did not exist');
+			
 			self.lineDots = self.pad
 				.append('g')
 					.attr('class', 'dots-cluster')
@@ -736,34 +1722,17 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 			dots: self.lineDots,
 			area: self.areaUnderLine
 		});
-
 	});
 
-	function colorAdjust(hex, colorDelta) {
-
-		// Make the stroke color slightly different from the bars.
-		var rgb = colorObj.hexToRgb(hex);
-
-		// Abjust one of the color.
-		if ( 255 - rgb.r > colorDelta ) rgb.r += colorDelta
-		else {
-			if ( 255 - rgb.g > colorDelta ) rgb.g += colorDelta
-			else {
-				if ( 255 - rgb.b > colorDelta) rgb.b += colorDelta
-				}
-			}
-
-		return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
-	}
 
 	return p0
 }
 
-// working-spot-1: Init info board for displaying detail info
+// Init info board for displaying detail info
 lineGraphClass.prototype.initInfoBoard = function() {
 
 	this.infoBoard = 
-		d3.select('#DISPLAY_PANEL')
+		d3.select('#DATABOARD-vizLayer')
 			.append('div')
 				.attr('id', 'LINE-INFO-BOARD')
 				.attr('class', 'board');
@@ -778,47 +1747,165 @@ lineGraphClass.prototype.inheritPad = function(motherPad, padHeight, padWidth, p
 	return this
 }
 
-lineGraphClass.prototype.drawingData = function(path, offsetX, offsetY, xLabel, yLabel, dOption) {
-
+// Drawing data.
+lineGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption) {
+	
 	var self = this;
 	
-	this.readCSV(path)
-		.row(function(d) { return d })
-		.get(function(errors, rows) {
+	var p = new Promise(function(resolve, reject) {
+		self.readCSV(path)
+			.row(self._dataFiltering)
+			.get(function(errors, rows) {
+	
+				self.dotSpace = self._setHorSpace(rows, self.step, self.outPadding);
 			
-			self.xScale = !this.xScale ? 
-				d3.scale.ordinal()
-					.domain(rows.map(function(d){ return d[xLabel] }))
-						.rangeBands([0, self.chartWidth])
-				: self.xScale;
-			
-			self.yScale = !this.yScale ?
-				d3.scale.linear()
-					.domain([0, d3.max(rows, 
-									function(d) { return parseInt(d[dOption]) })
-							])
-					.rangeRound([self.chartHeight, 0])
-				: self.yScale;
+				self._setOrdinalXScale(rows, xLabel);
+				self._setLinearYScale(rows, dOption);
+	
+				// Set the axes
+				self._setYAxis('left', rows, dOption);
+				self._setXAxis('bottom');
 
-			self.line = d3.svg.line()
-				.x(function(d) { return self.xScale(d[xLabel]) + offsetX })
-				.y(function(d) { return self.yScale(d[dOption]) });
+				// Draw the axes
+				self._createXAxis(rows, xLabel, self.dotSpace, self.step, self.outPadding); 
+				self._createYAxis(yLabel);
 
-			
-			d3.select("#SKETCHPAD")
-				.append('g')
-				.append('path')
-				.datum(rows)
-				.attr('class', 'line')
-				.attr('d', self.line)
-				.attr('fill', 'none')
-				.attr('stroke', colorObj.line[dOption]);
+				self.lineDots = self.pad
+					.append('g')
+						.attr('class', 'dots-cluster')
+					.selectAll('circle')
+						.data(rows)
+						.enter()
+						.append('circle')
+							.attr('cx', function(d, i) { 
+								return self.outPadding+(2*i+1)*self.dotSpace/2+i*self.step 
+							})
+							.attr('cy', function(d, i) { 
+								return self.yScale(d[dOption]) 
+							})
+							.attr({
+								r: 7,
+								class: 'dots',
+								fill: colorAdjust(colorObj.line[dOption], 20),
+								stroke: '#fff',
+								'stroke-width': 2
+							})
+							.call(function() {
 
+								var circlePoses = (function(circles) {
+									var poses = [];
+									for (var i = 0; i < circles[0].length; i++) 
+										poses.push({
+											cx : parseInt(d3.select(circles[0][i]).attr('cx')),
+											cy : parseInt(d3.select(circles[0][i]).attr('cy'))
+										});
+									return poses
+								})(this);
+
+								self.linePath = self.pad.append('g')
+									.classed('line-group', true)
+										.append('path')
+											.datum(circlePoses)
+													.attr({
+														d: self.dottedLine,
+														fill : 'none',
+														class: 'line',
+														stroke: colorObj.line[dOption],
+														'stroke-width': 3
+													});
+								resolve();
+							})
 		});
-
+	});
+	return p
 }
 
-// working-spot-1: Fill the area between divide lines and dot line
+// working-spot-6
+// Line graph update
+lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
+	
+	var self = this;
+	
+	var p = new Promise(function(resolve, reject) {
+		self.readCSV(path)
+			.row(function(d) { return d })
+			.get(function(error, rows) {
+
+					self._setLinearYScale(rows, dOption);
+					self._setYAxis('left', rows, dOption);
+
+					var circles = 
+						self.pad.select('.dots-cluster')
+							.selectAll('circle');
+
+					// Bind the data to the circles
+					function binding(data) {
+						if (data.length >= circles[0].length)
+							circles.data(data).enter().append('circle');
+						else
+							circles.data(data).exit()
+					}
+
+					// Render the data
+					function render(time) {
+						circles
+							.transition().duration(time)
+								.attr({
+									cy: function(d, i) {
+										return self.yScale(d[dOption]) 
+									},
+									fill: function() {
+										return colorObj.line[dOption]
+									}
+								})
+								.each(
+									'end', 
+									function(d, i) {
+
+										// When the last transition is completed,
+										// resolve the promise for line path animation.
+										if (i === circles[0].length - 1)
+											resolve({
+												circles: circles[0]
+											});
+								});
+					}
+
+					// Update Y axis
+					self.pad
+						.selectAll('.y-axis')
+						.call(self.yAxis);
+
+					binding(rows);
+					render(1000);
+				});	
+			});
+
+	p.then(function(r) {
+						
+		var circlePoses = (function(circles) {
+				var poses = [];
+				for (var i = 0; i < circles.length; i++) 
+					poses.push({
+						cx : parseInt(d3.select(circles[i]).attr('cx')),
+						cy : parseInt(d3.select(circles[i]).attr('cy'))
+					});
+				return poses
+			})(r.circles); 
+
+		self.pad.select('g.line-group').select('path')
+			.datum(circlePoses)
+				.transition()
+				.duration(600)
+					.attr({
+						d: self.dottedLine,
+						stroke: colorObj.line[dOption]
+					});
+		});
+	return p
+}
+
+// Fill the area between divide lines and dot line
 lineGraphClass.prototype.fillArea = function(data, color) {
 
 	this.area = d3.svg.area()
@@ -831,9 +1918,7 @@ lineGraphClass.prototype.fillArea = function(data, color) {
 			.datum(data)
 				.attr('fill', color)
 				.attr('d', this.area);
-
 }
-
 
 lineGraphClass.prototype.drawUnderArea = function(data, color) {
 
@@ -851,7 +1936,6 @@ lineGraphClass.prototype.drawUnderArea = function(data, color) {
 				.attr('class', 'under-line-area')
 				.attr('fill', color)
 				.attr('d', this.area);
-
 }
 
 lineGraphClass.prototype.updateUnderArea = function(data, color) {
@@ -862,7 +1946,6 @@ lineGraphClass.prototype.updateUnderArea = function(data, color) {
 			.attr('d', this.area)
 			.attr('fill', color)
 			.style('opacity', 0.8);
-
 }
 
 lineGraphClass.prototype.isInvisible = function() {
@@ -954,7 +2037,7 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 							} 
 							return row['民國'] === dots[i].__data__['民國']
 						});
-					// working-spot-1
+					
 					if (r) {
 						// Attach the judicial events
 						dots[i].__data__['司法事記'] = r['司法事記'];
@@ -966,7 +2049,6 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 					}
 						
 				}
-			console.log(self.lineDots[0]);
 			})();
 
 			// The end point of each lines.
@@ -1032,7 +2114,6 @@ lineGraphClass.prototype.drawEvtMarkers = function() {
 
 
 lineGraphClass.prototype.isEvtMarkersExisted = function() {
-	console.log(this.pad.select('g.evt-marker-lines').empty());
 	return this.pad.select('g.evt-marker-lines').empty()
 }
 
@@ -1044,7 +2125,6 @@ lineGraphClass.prototype.emptyEvtMarkers = function() {
 
 // working-spot-1
 lineGraphClass.prototype.updateEvtMarkers = function() {
-	console.log('update evt marker');
 
 	d3.select('g.evt-marker-lines').selectAll('line')
 		.transition()
@@ -1277,19 +2357,19 @@ ringGraphClass.prototype.init = function() {
 
 	// Initial the board for stats
 	this.ringInfoBoard.statsBoard.body =  
-		d3.select('#DISPLAY_PANEL').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
+			.classed('board', true)
 			.attr('id', 'RING_STATS_BOARD')
-			.attr('class', 'board')
 			.style('top', '7%')
-			.style('left', '3%');
+			.style('left', '7%');
 
 	// Initial the board for pecentage
 	this.ringInfoBoard.percentageBoard.body = 
-		d3.select('#DISPLAY_PANEL').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
+			.classed('board', true)
 			.attr('id', 'RING_PERCENTAGE_BOARD')
-			.attr('class', 'board')
-			.style('bottom', '2%')
-			.style('left', '3%');
+			.style('bottom', '5%')
+			.style('left', '7%');
 
 	this.ringInfoBoard.percentageBoard.body
 		.append('section')
@@ -1609,7 +2689,6 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 
 							// Store the data and initialize the info board.
 							.call(function(d) {
-								// working-spot-2
 								self.ringInfoBoard.statsBoard.storeInfo(keywords, ringObj.idName, d[0]);
 								self._infoBoardRender();
 							})
@@ -1979,7 +3058,7 @@ ringGraphClass.prototype.removeBoards = function() {
 /* A class for tooltip */
 var tipClass = function() {
 
-	var panel = d3.select('#PANEL');
+	var panel = d3.select('#APP');
 	
 	this.dotTip = panel ? 
 		panel.append('div')
@@ -2000,13 +3079,14 @@ var tipClass = function() {
 
 tipClass.prototype.initTips = function() {
 	this.dotTip = 
-		d3.select('#PANEL')
+		d3.select('#APP')
 			.append('div')
 				.attr('id', 'DOT-TIP').attr('class', 'tip'); 
 	this.barTip = 
-		d3.select('#PANEL')
+		d3.select('#APP')
 			.append('div')
-				.attr('id', 'BAR-TIP').attr('class', 'tip'); 
+				.attr('id', 'BAR-TIP').attr('class', 'tip');
+	return this 
 }
 
 tipClass.prototype.appendDotMouseOver = function(dOption) {
@@ -2070,9 +3150,9 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 	d3.select('#SKETCHPAD')
 		.selectAll('.bar')
 		.on(
-			'mouseover', 
+			'mouseenter', 
 			function(d) {
-
+				
 				var 
 					_this = d3.select(this),
 					diff = (function(name){
@@ -2129,6 +3209,55 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		);
 }
 
+tipClass.prototype.appendStackBarMouseOver = function() {
+
+	var self = this,
+			offset = this._setOffset('BAR-TIP');
+
+	d3.select('#SKETCHPAD').selectAll('rect.stackbar')
+		.on('mouseenter', function(d) {
+			var 
+					posX = 
+						parseFloat(this.getAttribute('x')) + 
+						parseFloat(this.getAttribute('width')/2),
+					posY = 
+						parseFloat(this.getAttribute('y'));
+
+				self.barTip
+					.classed('display', true)
+
+					// Make the tip's origin fixed at center of circles
+					.style('top' , posY + offset.Y + 'px')
+					.style('left', posX + offset.X + 'px')
+
+					.html(function() {
+						
+						var info = 
+							'民國 ' + d.year + '<br>' +
+						   		d.name + ': ' + d.value;
+
+						// If the percentage value is available.
+						if (d.pct) 
+							info += '<br>' + (parseFloat(d.pct) * 100).toFixed(2) + '%'
+
+						return '<span id="BAR-INFO">' + info + '</span>'
+					})
+					.call(function(d) {
+						self._correctPos('BAR-TIP')
+							._nodeSizeCorrect('BAR-TIP');
+					});
+		})
+		.on(
+			'mouseout',
+			function(d) {
+				self.barTip
+					.classed('display', false);
+			}
+		);;
+}
+
+
+
 tipClass.prototype._setOffset = function(nodeId) {
 
 	// The origin of tip has to be the same as the origin of the sketchpad.
@@ -2139,16 +3268,16 @@ tipClass.prototype._setOffset = function(nodeId) {
 			calOffsetFromOrigins(parentContainers, dotTipNode),
 
 		displayPanelWrapperStyle = 
-			window.getComputedStyle(document.getElementById('DISPLAY_PANEL_WRAPPER')),
+			window.getComputedStyle(document.getElementById('DATABOARD_WRAPPER')),
 
 		displayPanelStyle = 
-			window.getComputedStyle(document.getElementById('DISPLAY_PANEL')),
+			window.getComputedStyle(document.getElementById('DATABOARD-vizLayer')),
 
 		svgPadStyle = 
 			window.getComputedStyle(document.getElementById('SKETCHPAD'), null),
 
 		headerStyle = 
-			window.getComputedStyle(document.getElementById('DASHBOARD_HDR'), null);
+			window.getComputedStyle(document.getElementById('HDR'), null);
 
 		offset.X += 
 				parseInt(displayPanelWrapperStyle['padding-left'].replace('px', '')) +
@@ -2255,13 +3384,9 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 }
 
 /* Additional Functions */
-function kTick(tick) {
-	return Math.round(tick/1e3) + 'K'
-}
-
 /* 
-	A function for pinnig label at the middle bottom of the bar 
-	barW: The width of bar
+	A function for pinnig label at the middle bottom of the element space.
+	eleSpace: The width left for each element.
 	inPad: 
 		The abbreviation about "innerPadding", 
 		The padding between each bar
@@ -2269,10 +3394,10 @@ function kTick(tick) {
 		The abbreviation about "outPadding"
 		meaning the padding space between the first bar and the y axis.
 */
-function c_pinLbl2XAxisBarMidPt(xAxis, barW, inPad, outPad) {
+function c_pinLbl2XAxisMidPt(xAxis, eleSpace, inPad, outPad) {
 	// xAxis is the same as "this" 
 	xAxis.selectAll('.tick').attr('transform', function(d, i) {
-		return 'translate(' + (outPad+(2*i+1)*barW/2+i*inPad) + ',0)'
+		return 'translate(' + (outPad+(2*i+1)*eleSpace/2+i*inPad) + ',0)'
 	});
 }
 
@@ -2283,23 +3408,26 @@ function c_pinLbl2XAxisBarMidPt(xAxis, barW, inPad, outPad) {
 	d:
 		displacement from the head position
 */
-function c_placeValOnBarHdV(txt, d, barW, inPad, outPad) {
+function c_placeValOnBarHdV(txt, d, eleSpace, inPad, outPad) {
 
 	var _txt = txt[0];
 
 	for ( var i=0 ; i<_txt.length; i++ ) {
 
-		var bWMidPt = _txt[i].offsetWidth/2,
-				bHMidPt = _txt[i].offsetHeight/2,
+		var _txtBox = _txt[i].getBBox(),
+
+				bWMidPt = _txtBox.width/2,
+				bHMidPt = _txtBox.height/2,
 				// Displacement in X direction
 				xd = parseInt(_txt[i].getAttribute('x')),
 				// Displacement in Y direction
 				yd = parseInt(_txt[i].getAttribute('y')),
-				delta = ( barW/2 < 2*bHMidPt ) ? (barW/2-0.5*bHMidPt*2): (barW/2-bHMidPt/2);
+				delta = ( eleSpace/2 < 2*bHMidPt ) ? 
+					(eleSpace/2-0.5*bHMidPt*2) : (eleSpace/2-bHMidPt/2);
 
 		_txt[i].setAttribute(
 			'transform', 
-			'rotate(90, ' + xd + ', ' + yd+ ')' +
+			'rotate(90, ' + xd + ', ' + yd + ')' +
 			'translate(' + d + ',' + (-1 * delta) + ')'); 
 	}
 }
@@ -2394,3 +3522,20 @@ function transtoPartitonFormat(obj, popKey) {
 	}
 }
 
+
+function colorAdjust(hex, colorDelta) {
+
+	// Make the stroke color slightly different from the bars.
+	var rgb = colorObj.hexToRgb(hex);
+	
+	// Abjust one of the color.
+	if ( 255 - rgb.r > colorDelta ) rgb.r += colorDelta
+	else {
+		if ( 255 - rgb.g > colorDelta ) rgb.g += colorDelta
+		else {
+			if ( 255 - rgb.b > colorDelta) rgb.b += colorDelta
+			}
+		}
+
+	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
+}
