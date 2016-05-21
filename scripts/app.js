@@ -2817,23 +2817,105 @@ class StoryTeller {
 				vizType: '直方圖',
 				sections: [
 					{
-						infoContainer: {
-							body: <div></div>,
+						Container: {
 							pos : {
-								x: '',
-								y: '',
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
 							}
 						},
-						infoContext  : '',
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
 						infoAnimation: '',
-						isTopicFirstSec: true
+						isTopicFirstSec: true,
+						topicName: '總數' 
 					},
 					{
-						infoContainer: {
-							body: <div></div>,
+						
+						Container: {
 							pos : {
-								x: '',
-								y: '',
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '250px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. ',
+						infoAnimation: '',
+						isTopicFirstSec: false
+					},
+					{
+						// working-spot
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '刑名統計' 
+					},
+					{
+						Container: {
+							pos : {
+								left: '',
+								top : '',
 							}
 						},
 						infoContext  : '',
@@ -2841,11 +2923,22 @@ class StoryTeller {
 						isTopicFirstSec: false
 					},
 					{
-						infoContainer: {
-							body: <div></div>,
+						Container: {
 							pos : {
-								x: '',
-								y: '',
+								left: '',
+								top : '',
+							}
+						},
+						infoContext  : '',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '刑名百分比' 
+					},
+					{
+						Container: {
+							pos : {
+								left: '',
+								top : '',
 							}
 						},
 						infoContext  : '',
@@ -2853,83 +2946,10 @@ class StoryTeller {
 						isTopicFirstSec: false
 					},
 					{
-						infoContainer: {
-							body: <div></div>,
+						Container: {
 							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: true
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: true
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: true
-					},
-					{
-						infoContainer: {
-							body: <div></div>,
-							pos : {
-								x: '',
-								y: '',
+								left: '',
+								top : '',
 							}
 						},
 						infoContext  : '',
@@ -2940,7 +2960,31 @@ class StoryTeller {
 			}
 		];
 
-		// working-spot: Store the current tale.
+		// working-spot: The tale will
+		this.calTopicFirstTale = function() {
+			let tales = 
+				this._txtTale.sections.filter((section, i) => {
+					return section.isTopicFirstSec === true
+				});
+			return tales
+		},
+
+		// To get the styles for the components that the story teller needs
+		this._componentStyleFactory = function(styleObjs) {
+
+			let style = {};
+
+			for ( let styleObj of styleObjs ) {
+				let params = Object.keys(styleObj);
+				for ( let param of params ) 
+					style[param] = styleObj[param]
+				
+			}
+			return style
+
+		};
+
+		// Store the current tale.
 		this._txtTale = null;
 
 		// Store the current story chain.
@@ -3431,6 +3475,40 @@ const DataBoard = React.createClass({
 		}
 	},
 
+	// Scrolling event update the text info and in some perticular moment, 
+	// it also refreshens the chart
+	// scrollReading(e) { // May not work well as expect.
+		
+	// },
+
+	// working-spot: 
+	DBTaleFactory() {
+
+		// temporary if statement
+		if (this.storyTeller._txtTale) {
+
+			const index = store.getState().get('currentTaleIndex');
+			const taleEle = this.storyTeller._txtTale.sections[index];
+			const containerStyle   = this.storyTeller._componentStyleFactory(
+				[taleEle.Container.pos, taleEle.Container.size]);
+			let btnStyle = this.storyTeller._componentStyleFactory(
+				[taleEle.IndButton.pos, taleEle.IndButton.style]);
+			
+			// TaleBlock inital style
+			const taleStyle = { opacity: 0 }
+
+			// Add the opacity for the next button to do the first render animation.
+			btnStyle['opacity'] = 0;
+
+				return (
+					<div className='tale-container' style={ containerStyle }>
+						<TaleBlock innerText={ taleEle.infoContext } style={ taleStyle }/>
+						<NextTaleBtn style={ btnStyle } />
+					</div>
+					)
+		}
+	},
+
 	/* React Native methods */
 	getInitialState() {
 		return {
@@ -3696,6 +3774,12 @@ const DataBoard = React.createClass({
 				}
 	},
 
+	// working-spot
+	shouldComponentUpdate(nextProps) {
+
+		return nextProps.updateDataBoard
+	},
+
 	// Initial Data Visualizing
 	componentDidMount() {
 
@@ -3717,6 +3801,16 @@ const DataBoard = React.createClass({
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
+		// working-spot
+		// Select the chain 
+		this.storyTeller.decideVizStoryChain(
+			nextProps.dataset, nextProps.data, nextProps.chartType);
+
+		// working-spot
+		// Select the tales chain
+		this.storyTeller.decideTaleChain(
+			nextProps.dataset, nextProps.data, nextProps.chartType);
+
 		var 
 			// Renew the board when user switch dataset, chartTypes or 
 			// switch to the new data when reading in the detail story.
@@ -3733,24 +3827,24 @@ const DataBoard = React.createClass({
 				 this.props.topic === nextProps.topic ) ? true : false,
 
 			// Extend the chart when topic update.
-			shouldDive = 
+			isTopicSwitching = 
 				(this.props.topic !== nextProps.topic && 
 				 this.props.dataset === nextProps.dataset &&
-				 this.props.data === nextProps.data) ? true : false;
+				 this.props.data === nextProps.data) ? true : false,
 
-		// working-spot
-		// Select the chain 
-		this.storyTeller.decideVizStoryChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
-
-		// working-spot
-		// Select the tales chain
-		this.storyTeller.decideTaleChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
+			// working-spot
+			// 
+			isTopicSwitchingByTaleUd = (() => {
+				if (this.storyTeller._txtTale) {
+					return this.storyTeller._txtTale.sections[nextProps.taleIndex].isTopicFirstSec;
+				}
+				return false
+			})();
 
 		if (shouldRenew) { 
 
 			d3.select('#SKETCHPAD').remove();
+
 			if (nextProps.chartType === '直方圖') { 
 				if (this.props.chartType === '圓環比例圖') 
 					this.gpu.ringGraph.removeBoards();
@@ -3771,34 +3865,152 @@ const DataBoard = React.createClass({
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
-		} else if (shouldDive) { // Update when topic changing.
+		} else if (isTopicSwitching) { // Update when topic changing.
 
 			// Produce the steps for topic explanation.
 			let steps = this.DBTopicStepsProducer(nextProps);
-
 			// Select the chain 
 			// this.storyTeller.decideVizStoryChain(
 			// 	nextProps.dataset, nextProps.data, nextProps.chartType);
-
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+			
+		} else if (isTopicSwitchingByTaleUd) {
+			// working-spot
+			let steps = this.DBTopicStepsProducer(nextProps);
+
+			// working-spot: Try to figure out the relationship between tale index and topic depth.
+			let td = this.props.topicDepth,
+					topicFirstTales = this.storyTeller.calTopicFirstTale(),
+					tale = topicFirstTales.find((t, i) => {
+						console.log(t);
+						return i === td
+					});
+			console.log(tale.topicName);
+			store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
+
+			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
 		}
 	},
 
 	render() {
 
+		// working-spot
+		let tale = this.DBTaleFactory();
+		
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
-				<div id='DATABOARD'>
-					{ /*working-spot-2*/ }
-					{
+				<div id='DATABOARD-vizLayer'></div>
+				{
+						/* Temp if statement */
 						this.storyTeller._txtTale ? 
-							<TagentalIndicators indicators={ this.storyTeller._txtTale.sections } /> : null
+							<TagentalIndicators 
+								currentIndex = { this.props.taleIndex }
+								indicators={ this.storyTeller._txtTale.sections } /> : null
 					}
-				</div>
+				{ /*
+					this.storyTeller._txtTale ?
+						<DataTxtBoard context={ this.storyTeller._txtTale }/> : 
+						<DataTxtBoard />
+				*/}
+			{/* working-spot */}
+				{ this.storyTeller._txtTale ? tale: null }
+				{ /*this.storyTeller._txtTale ? NextBtn: null*/ }
 			</div>
 		)
 	}
 });
+
+// working-spot
+const TaleBlock = React.createClass({
+
+	componentDidMount() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	componentWillReceiveProps() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 0 }, { duration: 1 });
+	},
+
+	componentDidUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	render() {
+		return (
+			<div className='tale-body' style={this.props.style}>
+				{ this.props.innerText }
+			</div>
+			)
+	}
+});
+
+// working-spot
+const NextBtn = React.createClass({
+
+	componentDidMount() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	componentWillUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 0 }, { duration: 1 });
+	},
+
+	componentDidUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	render() {
+		return (
+			<div 
+				className='nextbtn'
+				style={ this.props.style }
+				onClick={ this.props.nextTale } > 
+				<span className='ver-helper'></span>
+				<span>Next &nbsp;&nbsp;</span>
+				<span className='more-indicator'>&raquo;</span>
+			</div>)
+	}
+
+});
+
+// working-spot
+// const DataTxtBoard = React.createClass({
+
+
+// 	render() {
+
+// 		// The number of sub layers are decided by the tale indicators
+// 		let txtLayers = [];
+
+// 		if (this.props.context) {
+// 			let i = 0;
+// 			for (let section of this.props.context.sections)
+// 				txtLayers.push(<DataTxtLayer key={ i++ } text={ section } />);
+// 		}
+// 		else {
+// 			console.log('testing');
+// 			txtLayers.push(<DataTxtLayer key={0}/>);
+// 			txtLayers.push(<DataTxtLayer key={1}/>);
+// 			console.log(txtLayers);
+// 		}
+
+// 		return (
+// 			<div id="DATABOARD-txtLayer" onScroll={ this.scrollReading } >
+// 					{ txtLayers }
+// 			</div>
+// 			)
+// 	}
+// });
+
+// const DataTxtLayer = React.createClass({
+
+// 	render() {
+// 		return (
+// 			<div className='subLayer'>
+// 			</div>
+// 			)
+// 	}
+// });
 
 
 // working-spot
@@ -3806,15 +4018,18 @@ const TagentalIndicators = React.createClass({
 
 	render() {
 
+		// working-spot: Tangetal Indicators should be dynamical position.
+
 		let keyIndex = 0,
 				indicators = [];
 
 		for ( let ind of this.props.indicators ) {
-
-			indicators.push(<TagentalIndicator
-				key={++keyIndex} 
-				isSmall={ ind.isTopicFirstSec ? false : true } 
-				/>);
+			indicators.push(
+				<TagentalIndicator
+					currentIndex = { this.props.currentIndex }
+					indIndex = { keyIndex }
+					key={ keyIndex++ }
+					isSmall={ ind.isTopicFirstSec ? false : true } />);
 		}
 
 		return (
@@ -3830,10 +4045,14 @@ const TagentalIndicators = React.createClass({
 const TagentalIndicator = React.createClass({
 
 	render() {
+		
 		return (
 			<div className='indicator-block'>
 				<div className={ this.props.isSmall ? 'indicator-small' : 'indicator'}>
-					<TagentalIndicatorMkr small={ this.props.isSmall } />
+					<TagentalIndicatorMkr 
+						isActive={ this.props.indIndex === this.props.currentIndex ? true : false } 
+						isPassed={ this.props.indIndex < this.props.currentIndex ? true : false } 
+						small={ this.props.isSmall } />
 				</div>
 			</div>
 			)
@@ -3844,24 +4063,15 @@ const TagentalIndicator = React.createClass({
 // working-spot
 const TagentalIndicatorMkr = React.createClass({
 
-	getInitialState() {
-		return (
-				{
-					isActive: false,
-					isPassed: false
-				}
-			)
-	},
-
 	render() {
 		return (
 			this.props.isSmall ? 
 				<div className={ 
-					this.state.isActive ? 'indicator-small-marker active' : 
-					this.state.isPassed ? 'indicator-small-marker passed' : 'indicator-small-marker'}></div> :
+					this.props.isActive ? 'indicator-small-marker active' : 
+					this.props.isPassed ? 'indicator-small-marker passed' : 'indicator-small-marker'}></div> :
 				<div className={ 
-					this.state.isActive ? 'indicator-marker active' : 
-					this.state.isPassed ? 'indicator-marker passed' : 'indicator-marker'}></div> 
+					this.props.isActive ? 'indicator-marker active' : 
+					this.props.isPassed ? 'indicator-marker passed' : 'indicator-marker'}></div> 
 		)
 	}
 
@@ -4123,6 +4333,25 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicD
 	}
 }
 
+// working-spot
+function rollingTalesAC(topic, depth) {
+	return {
+		type: 'INCRE_TOPIC_DEPTH',
+		topic: topic,
+		topicDepth: depth,
+	}
+}
+
+// working-spot
+function setTaleIndexAC(index) {
+	return {
+		type: 'SET_TALE_INDEX',
+		taleIndex: index
+	}
+}
+
+
+
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
 
@@ -4143,6 +4372,14 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
+
+		// working-spot
+		// Set the tale index
+		case 'SET_TALE_INDEX':
+			return setTaleIndex(state, action.taleIndex)
+
+		case 'INCRE_TOPIC_DEPTH':
+			 return rollingTales(state, action.topic, action.topicDepth)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -4246,9 +4483,14 @@ function selectAppTheme(state, theme) {
 	let defaultData = null;
 	let defaultChartType = null;
 	let defaultTopic = null;
+	let defaultTaleIndex = null;
 
 	// Topic depth defines how deep the user drilling into the data.
 	let defaultTopicDepth = null;
+
+	// working-spot
+	// A control state to decide the viz data board refresh or not.
+	let defaultDataBoardUpdateSet = setState('updateDataBoard', true);
 
 	let defaultFilterDropdownMenus = null;
 
@@ -4262,6 +4504,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '案件總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			// Set the default dropdown menu and its option.
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('police');
@@ -4270,7 +4513,9 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames, 
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
+				)
 
 		case 'PROSECUTION_STAT':
 
@@ -4281,6 +4526,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('prosecution');
 				
@@ -4288,7 +4534,8 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames,
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
 				)
 
 		case 'JUDICIAL_STAT':
@@ -4300,6 +4547,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '受理件數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('judicial');
 
@@ -4307,7 +4555,8 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames, 
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet)
 
 		case 'CORRECTION_STAT':
 			
@@ -4318,6 +4567,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('correction');
@@ -4326,7 +4576,9 @@ function selectAppTheme(state, theme) {
 				navState, mainState, 
 				statTitle, filterNames, themeState,
 				defaultDataset, defaultData, defaultChartType,
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
+				)
 
 		default:
 			return state
@@ -4726,6 +4978,22 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 	return newState
 }
 
+// working-spot
+function rollingTales(state, topic, topicDepth) {
+	const newTopicDepth = setState('currentTopicDepth', topicDepth+1);
+	const newTopic = setState('currentTopic', topic);
+	const updateDataBoard = setState('updateDataBoard', false);
+	return state.merge(newTopicDepth, newTopic, updateDataBoard)
+}
+
+
+function setTaleIndex(state, taleIndex) {
+
+	const newState = setState('currentTaleIndex', taleIndex);
+
+	return state.merge(newState)
+}
+
 // Create a immutable Map object as state
 function setState(key, value) {
 	return Map().set(key, value)
@@ -4841,7 +5109,7 @@ const mapStateToFilterProps = (state) => {
 		currentData: state.get('currentData'),
 		currentChartType: state.get('currentChartType'),
 		currentTopic: state.get('currentTopic'),
-		currentFilterDropdownMenus: state.get('filterDropdownMenus')
+		currentFilterDropdownMenus: state.get('filterDropdownMenus'),
 	}
 }
 
@@ -4857,7 +5125,11 @@ const mapStateToDataBoardProps = (state) => {
 		data     : state.get('currentData'), 
 		chartType: state.get('currentChartType'),
 		topic    : state.get('currentTopic'),
-		topicDepth: state.get('currentTopicDepth')
+		topicDepth: state.get('currentTopicDepth'),
+		taleIndex : state.get('currentTaleIndex'),
+
+		// working-spot
+		updateDataBoard: state.get('updateDataBoard')
 	}
 }
 
@@ -4865,6 +5137,36 @@ const StatDataBoard = RRd.connect(
 	mapStateToDataBoardProps,
 	null
 	)(DataBoard);
+
+/* Connect more tale button */
+// working-spot
+const mapDispatchToNextBtn = (dispatch, props) => {
+	return {
+		nextTale: (e) => {
+			// working-spot
+			const taleIndex = store.getState().get('currentTaleIndex');
+
+			store.dispatch(setTaleIndexAC(taleIndex + 1));
+		}
+	}
+}
+
+const NextTaleBtn = RRd.connect(
+	null,
+	mapDispatchToNextBtn
+	)(NextBtn);
+
+/* Connect Indicator */
+const mapDispatchToIndicators = (dispatch, props) => {
+
+	return {
+						
+		selectTale: (e) => {
+
+		}
+	}	
+
+};
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);

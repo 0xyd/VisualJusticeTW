@@ -211,7 +211,7 @@ graphClass.prototype.initializeAPad = function() {
 
 	this.pad = (function() {
 
-		return d3.select('#DATABOARD')
+		return d3.select('#DATABOARD-vizLayer')
 			.append('svg')
 			.attr('id', 'SKETCHPAD')
 			.style({
@@ -1731,7 +1731,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 lineGraphClass.prototype.initInfoBoard = function() {
 
 	this.infoBoard = 
-		d3.select('#DATABOARD')
+		d3.select('#DATABOARD-vizLayer')
 			.append('div')
 				.attr('id', 'LINE-INFO-BOARD')
 				.attr('class', 'board');
@@ -2356,7 +2356,7 @@ ringGraphClass.prototype.init = function() {
 
 	// Initial the board for stats
 	this.ringInfoBoard.statsBoard.body =  
-		d3.select('#DATABOARD').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
 			.classed('board', true)
 			.attr('id', 'RING_STATS_BOARD')
 			.style('top', '7%')
@@ -2364,7 +2364,7 @@ ringGraphClass.prototype.init = function() {
 
 	// Initial the board for pecentage
 	this.ringInfoBoard.percentageBoard.body = 
-		d3.select('#DATABOARD').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
 			.classed('board', true)
 			.attr('id', 'RING_PERCENTAGE_BOARD')
 			.style('bottom', '5%')
@@ -3270,7 +3270,7 @@ tipClass.prototype._setOffset = function(nodeId) {
 			window.getComputedStyle(document.getElementById('DATABOARD_WRAPPER')),
 
 		displayPanelStyle = 
-			window.getComputedStyle(document.getElementById('DATABOARD')),
+			window.getComputedStyle(document.getElementById('DATABOARD-vizLayer')),
 
 		svgPadStyle = 
 			window.getComputedStyle(document.getElementById('SKETCHPAD'), null),
