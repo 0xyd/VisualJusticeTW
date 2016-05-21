@@ -1248,8 +1248,7 @@ const DataFilterStateTree = {
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 												}
-											}
-												, 
+											}, 
 											{
 												name: '各刑名百分比',
 												axes: {
