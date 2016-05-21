@@ -14,7 +14,7 @@ const Map  = Immutable.Map,
 
 // window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
 
-window.isLocal = true;
+window.isLocal = false;
 
 
 // To access the remove csv sources.

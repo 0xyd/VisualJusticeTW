@@ -2,7 +2,7 @@
 // window.isLocal = 
 // 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
 // window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
-window.isLocal=true; // To access the remove csv sources.
+window.isLocal=false; // To access the remove csv sources.
 window.query='&tqx=out:csv';window.googleSheet='https://spreadsheets.google.com/tq?'; /* States for different topic */ /*
 	Properties:
 		dataset: the name of the dataset
