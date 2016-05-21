@@ -3525,9 +3525,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/竊盜案件.csv'
 						else 
-							return window.googleSheet + 
-								'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
-									+ query
+							// return window.googleSheet + 
+							// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
+							// 		+ query
+							return '/police/p0.csv'
 					})(),
 				},
 				{
@@ -3536,9 +3537,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/暴力犯罪案件.csv'
 						else 
-							return window.googleSheet + 
-								'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
-									+ query
+							// return window.googleSheet + 
+							// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
+							// 		+ query
+							return '/police/p2.csv'
 					})(),
 				},
 				{
@@ -3547,9 +3549,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/毒品案件.csv'
 						else 
-							return window.googleSheet + 
-								'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
-									+ query
+							// return window.googleSheet + 
+							// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
+							// 		+ query
+							return '/police/p1.csv'
 					})(),
 				},
 
@@ -3758,31 +3761,31 @@ const DataBoard = React.createClass({
 									let urls = [
 										{
 											name: '新入監前家庭狀況',
-											url : 
-												window.googleSheet +
-													'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
-														window.query
+											url : '/correction/c1.csv'
+												// window.googleSheet +
+												// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監犯罪次數與種類.',
-											url : 
-												window.googleSheet +
-													'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
-														window.query
+											url : '/correction/c3.csv'
+												// window.googleSheet +
+												// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監前教育程度',
-											url : 
-												window.googleSheet +
-													'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
-														window.query
+											url : '/correction/c2.csv'
+												// window.googleSheet +
+												// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+												// 		window.query
 										},
 										{
 											name: '歷年新入監年齡歷年統計',
-											url : 
-												window.googleSheet +
-													'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
-														window.query
+											url : '/correction/c4.csv'
+												// window.googleSheet +
+												// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+												// 		window.query
 										}
 									];
 									return urls
