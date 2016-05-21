@@ -12,9 +12,9 @@ const Map  = Immutable.Map,
 // window.isLocal = 
 // 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
 
-// window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
+window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
 
-window.isLocal = false;
+// window.isLocal = false;
 
 
 // To access the remove csv sources.
@@ -3706,9 +3706,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/correction/監獄人數概況.csv'
 						else
-							return window.googleSheet + 
-						  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
-						  		query
+							// return window.googleSheet + 
+						 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
+						 //  		query
+							return './correction/c0.csv'
 					})(),
 				},
 				{
