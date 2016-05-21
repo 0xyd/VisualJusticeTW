@@ -1,8 +1,8 @@
 'use strict';var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||false;descriptor.configurable=true;if("value" in descriptor)descriptor.writable=true;Object.defineProperty(target,descriptor.key,descriptor);}}return function(Constructor,protoProps,staticProps){if(protoProps)defineProperties(Constructor.prototype,protoProps);if(staticProps)defineProperties(Constructor,staticProps);return Constructor;};}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor)){throw new TypeError("Cannot call a class as a function");}} /* ***** Import Libraries ***** */var Re=Redux,RR=ReactRouter,RRd=ReactRedux; /* ***** The Immutables ***** */var Map=Immutable.Map,List=Immutable.List; /* ***** Global Variables ***** */ // Should be very 
 // window.isLocal = 
 // 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
-// window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
-window.isLocal=false; // To access the remove csv sources.
+window.isLocal=document.URL.match(/127.0.0.1/)?true:false; // window.isLocal = false;
+// To access the remove csv sources.
 window.query='&tqx=out:csv';window.googleSheet='https://spreadsheets.google.com/tq?'; /* States for different topic */ /*
 	Properties:
 		dataset: the name of the dataset
@@ -118,8 +118,47 @@ if(this.storyTeller._txtTale){var index=store.getState().get('currentTaleIndex')
 var taleStyle={opacity:0}; // Add the opacity for the next button to do the first render animation.
 btnStyle['opacity']=0;return React.createElement('div',{className:'tale-container',style:containerStyle},React.createElement(TaleBlock,{innerText:taleEle.infoContext,style:taleStyle}),React.createElement(NextTaleBtn,{style:btnStyle}));}}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
 {name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return window.googleSheet+'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'+query;}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return window.googleSheet+'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'+query;}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return window.googleSheet+'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'+query;}()}, // Prosecution Data
-{name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else return window.googleSheet+'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'+query;}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else return window.googleSheet+'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'+query;}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else return window.googleSheet+'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'+query;}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else return window.googleSheet+'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'+query;}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else return window.googleSheet+'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'+query;}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else return window.googleSheet+'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'+query;}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else return window.googleSheet+'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'+query;}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else return window.googleSheet+'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'+query;}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else return window.googleSheet+'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'+query;}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else return window.googleSheet+'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'+query;}()}, // Judical Data 
-{name:'地方法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/地方法院刑事案件收結情形.csv';else return window.googleSheet+'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'+query;}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else return window.googleSheet+'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'+query;}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else return window.googleSheet+'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'+query;}()}, // Correction Data
+{name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else  // return window.googleSheet + 
+// 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
+// 		+ query
+return '/prosecution/p0.csv';}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else  // return window.googleSheet + 
+// 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
+// 		+ query
+return '/prosecution/p2.csv';}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else  // return window.googleSheet + 
+// 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
+// 		+ query
+return '/prosecution/p3.csv';}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else  // return window.googleSheet + 
+// 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
+// 		+ query
+return '/prosecution/p4.csv';}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else  // return window.googleSheet + 
+// 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
+// 		+ query
+return '/prosecution/p5.csv';}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else  // return window.googleSheet + 
+// 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
+// 		+ query
+return '/prosecution/p1.csv';}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else  // return window.googleSheet + 
+// 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
+// 		+ query
+return '/prosecution/p6.csv';}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else  // return window.googleSheet + 
+// 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
+// 		+ query
+return '/prosecution/p7.csv';}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else  // return window.googleSheet + 
+// 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
+// 		+ query
+return '/prosecution/p8.csv';}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else  // return window.googleSheet + 
+// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+// 		+ query
+return '/prosecution/p9.csv';}()}, // Judical Data 
+{name:'地方法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/地方法院刑事案件收結情形.csv';else  // return window.googleSheet + 
+// 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
+// 		+ query
+return '/judicial/c0.csv';}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else  // return window.googleSheet + 
+// 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
+// 		+ query
+return '/judicial/c1.csv';}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else  // return window.googleSheet + 
+// 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
+// 		+ query
+return '/judicial/c2.csv';}()}, // Correction Data
 {name:'監獄人數概況',url:function(){if(isLocal)return '/correction/監獄人數概況.csv';else  // return window.googleSheet + 
 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
 //  		query

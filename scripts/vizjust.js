@@ -1303,16 +1303,15 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 	var self = this;
 	
 	var p = new Promise(function(resolve, reject) {
-		console.log(path);
+		
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-				console.log(rows);
+				
 				// The option maybe the combined columns of data.
 				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
 				// Get the available headers in specific. 
-				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
 				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
 				self._setBarWidth(rows);
 
