@@ -8,8 +8,10 @@ const Map  = Immutable.Map,
 			List = Immutable.List;
 
 /* ***** Global Variables ***** */
-window.isLocal = 
-	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+// window.isLocal = 
+// 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+
+window.isLocal = document.URL.match(/127.0.0.1/) ? true: false;
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
