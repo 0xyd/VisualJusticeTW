@@ -2970,7 +2970,7 @@ class StoryTeller {
 								backgroundColor: '#3B8AE5'
 							}
 						},
-						infoContext  : '兒童及少年，是國家未來的主人翁，更是社會持續發展及進步的原動力，確保我們的孩子在無憂無慮、安全健康的環境下成長，是我們責無旁貸的使命，為此立法院立法<<兒童及少年性交易防制條例>>就是希望給予我們的下一代多一層保障。',
+						infoContext  : '殺人罪是古老之罪行，流傳千年之久，但社會關注度不曾減弱。',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '總數',
@@ -2995,7 +2995,31 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : '早年的粉紅色代表罰金，近年的黃色代表拘役，無論何者均是輕罪，為什麼呢？',
+						infoContext  : '我們統計的殺人罪包含「殺人」、「殺人未遂」、「預備殺人」及「殺害直系尊親屬」不包含過失致死及相關罪行。',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '過去三十年台灣殺人犯的數量是逐年減少的，被求處最高刑罰（死刑）的現象亦趨罕見。特別的是，無罪的人數量也逐年遞減，應可解釋為科學辦案日新月異，減少因證據不足而判無罪的現象。',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '各刑名統計',
@@ -3020,58 +3044,10 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : '因為此條例並不一定是涉及性交易才會被起訴，散步兒少相關猥褻資訊或向兒少散步猥褻資訊均是違反此條例的，但罪不至徒刑，故此。',
-						infoAnimation: '',
-						isTopicFirstSec: false,
-						isEnd: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '5em',
-								top : '2em',
-							},
-							size: {
-								width : '300px',
-								padding: '0.5em 1em'
-							}
-						},
-						IndButton: {
-							pos  : {
-
-							},
-							style: {
-								backgroundColor: '#822979'
-							}
-						},
-						infoContext  : '民國91、92年很明顯被判有期徒刑人數遠勝前幾年，也比後幾年多出不少，為什麼呢？',
+						infoContext  : '以百分比來看，這張圖跟上張無異，但各位可以注意103年的藍色代表「有罪免刑」，這是為什麼呢？請參考中國時報報導http://www.chinatimes.com/realtimenews/20140605002800-260402',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '各刑名百分比',
-						isEnd: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '5em',
-								top : '2em',
-							},
-							size: {
-								width : '300px',
-								padding: '0.5em 1em'
-							}
-						},
-						IndButton: {
-							pos  : {
-
-							},
-							style: {
-								backgroundColor: '#822979'
-							}
-						},
-						infoContext  : '目前我們也還沒找到合理的解釋，還請各位一同集思廣益囉',
-						infoAnimation: '',
-						isTopicFirstSec: false,
 						isEnd: true
 					}
 				]
@@ -3992,6 +3968,17 @@ const DataBoard = React.createClass({
 				}
 	},
 
+	componentWillMount() {
+		// working-spot
+		this.storyTeller.decideVizStoryChain(
+			this.props.dataset, this.props.data, this.props.chartType);
+
+		// working-spot
+		// Select the tales chain
+		this.storyTeller.decideTaleChain(
+			this.props.dataset, this.props.data, this.props.chartType);
+	},
+
 	shouldComponentUpdate(nextProps) {
 
 		if (nextProps.updateDataBoard) {
@@ -4276,7 +4263,7 @@ const Filter = React.createClass({
 				];
 
 		for (let i = 0; i < FilterNames.size; i++) {
-
+			
 			FilterFields.push(
 				<FilterField key={i} 
 										 index={i}
@@ -4790,25 +4777,27 @@ function selectAppTheme(state, theme) {
 	// Set the default dropdown menus with initial state.
 	function _setDefaultDropdownMenus(theme) {
 			
+			// working-spot
+			console.log(List(DataFilterStateTree.listDataset(theme)));
 			const dropdownMenus = 
 				setState(
 					'filterDropdownMenus',
 					List([
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listDataset(theme))
+							List(DataFilterStateTree.listDataset(theme)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listData(theme, 0))
+							List(DataFilterStateTree.listData(theme, 0)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listCharttype(theme, 0))
+							List(DataFilterStateTree.listCharttype(theme, 0)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listTopic(theme, 0, 0, 0))
+							List(DataFilterStateTree.listTopic(theme, 0, 0, 0)))
 								.set('isDisplayed', false)
 						])
 					);
@@ -4834,14 +4823,14 @@ function setDropdownMenuStates(state, index) {
 					index, 
 					Map()
 						.set('isDisplayed', true)
-							.set('Options', originMenuOptions)
+							.set('Options', List(originMenuOptions))
 					);
 			} else {
 				Menus = Menus.set(
 					j, 
 					Map()
 						.set('isDisplayed', false)
-							.set('Options', originMenuOptions)
+							.set('Options', List(originMenuOptions))
 					);
 			}
 		}
@@ -5198,8 +5187,7 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 			DataFilterStateTree.findChartTypeIndex(key, currentDataset, currentChartType);
 
 		const topics = 
-			DataFilterStateTree
-				.listTopic(key, datasetIndex, dataIndex, chartIndex);
+			List(DataFilterStateTree.listTopic(key, datasetIndex, dataIndex, chartIndex));
 
 		return Menus
 			.set(1,
@@ -5246,7 +5234,7 @@ function selectTale(state, taleIndex, taleContext) {
 		setState(
 			'currentTopic', 
 			taleContext.topicName ? taleContext.topicName : state.get('currentTopic'));
-
+	console.log(state.get('filterDropdownMenus'));
 	// Find out the topic depth
 	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
 	const topicDepth = topicList.findIndex((topic) => {
