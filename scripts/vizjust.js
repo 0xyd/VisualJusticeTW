@@ -211,7 +211,7 @@ graphClass.prototype.initializeAPad = function() {
 
 	this.pad = (function() {
 
-		return d3.select('#DATABOARD')
+		return d3.select('#DATABOARD-vizLayer')
 			.append('svg')
 			.attr('id', 'SKETCHPAD')
 			.style({
@@ -245,7 +245,7 @@ graphClass.prototype.readCSV = function(path) {
 
 // To filter the data which are inproper for visualizing.
 graphClass.prototype._dataFiltering = function(d, i) {
-
+	
 	// Iterate d's object. Once the value is "", deperciate the d.
 	for ( var key in d )
 		if ( d[key] === "" ) return null
@@ -753,7 +753,7 @@ barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
 	
 				stackData.push(temp); 
 			}
-			console.log(stackData);
+			
 			// working-spot-2
 			/* update the yScale with the new data. */
 			// merged the headers defined 
@@ -936,7 +936,7 @@ barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, m
 barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 
 	var self = this;
-	console.log(mHds);
+	
 	// Remove the old y axis.
 	this._removeYAxis();
 
@@ -1222,7 +1222,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 	return p
 }
 
-// working-spot-2
 // Transit the percentage stack bar to bar.
 barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
 	
@@ -1302,21 +1301,18 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
 	
 	var self = this;
-	console.log('check the mHdrs here: ',mHdrs);
+	
 	var p = new Promise(function(resolve, reject) {
-
+		
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
 				
 				// The option maybe the combined columns of data.
-
 				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
 				// Get the available headers in specific. 
-				// var avlHeaders = shouldMergeCols ? self._avlHeaders(rows, exceptHds) : [],
 				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
-				console.log('_mrows: ', _mrows);
 				self._setBarWidth(rows);
 
 				// Set the scale
@@ -1337,7 +1333,6 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
-				// working-spot-2 Debugging
 				self._createBars(rows, defaultCol, _mrows, true);
 				self._markValOnBar(rows, defaultCol, _mrows);
 
@@ -1357,9 +1352,11 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 // working-spot-3: Rename it with a better name
 // To check if the selected option is merged results.
 barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
-	var ks = Object.keys(rowData[0]);
-	for (var i in ks)
-		if (ks[i] === opt) return false
+	if (rowData) {
+		var ks = Object.keys(rowData[0]);
+		for (var i in ks)
+			if (ks[i] === opt) return false
+	}
 	return true
 }
 
@@ -1381,17 +1378,12 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 				
 }
 
-// working-spot-2: There is no need to reload the data when updating the displaying data in the same dataset
 // barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
 barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 
 	var self = this;
 
 	var p = new Promise(function(resolve, reject) {
-
-		// self.readCSV(path)
-		// 	.row(function(d) { return d })
-		// 	.get(function(error, rows) {
 
 				var _bars = self.pad.selectAll('rect'),
 						_txts = self.pad.selectAll('.mark'),
@@ -1486,8 +1478,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 				self.pad
 					.selectAll('.y-axis')
 					.call(self.yAxis);
-			// });
-
 		});
 	return p
 }
@@ -1741,7 +1731,7 @@ lineGraphClass.prototype.plotBars = function(data, motherPad, bars ,offset, isPi
 lineGraphClass.prototype.initInfoBoard = function() {
 
 	this.infoBoard = 
-		d3.select('#DATABOARD')
+		d3.select('#DATABOARD-vizLayer')
 			.append('div')
 				.attr('id', 'LINE-INFO-BOARD')
 				.attr('class', 'board');
@@ -2366,7 +2356,7 @@ ringGraphClass.prototype.init = function() {
 
 	// Initial the board for stats
 	this.ringInfoBoard.statsBoard.body =  
-		d3.select('#DATABOARD').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
 			.classed('board', true)
 			.attr('id', 'RING_STATS_BOARD')
 			.style('top', '7%')
@@ -2374,7 +2364,7 @@ ringGraphClass.prototype.init = function() {
 
 	// Initial the board for pecentage
 	this.ringInfoBoard.percentageBoard.body = 
-		d3.select('#DATABOARD').append('div')
+		d3.select('#DATABOARD-vizLayer').append('div')
 			.classed('board', true)
 			.attr('id', 'RING_PERCENTAGE_BOARD')
 			.style('bottom', '5%')
@@ -3280,7 +3270,7 @@ tipClass.prototype._setOffset = function(nodeId) {
 			window.getComputedStyle(document.getElementById('DATABOARD_WRAPPER')),
 
 		displayPanelStyle = 
-			window.getComputedStyle(document.getElementById('DATABOARD')),
+			window.getComputedStyle(document.getElementById('DATABOARD-vizLayer')),
 
 		svgPadStyle = 
 			window.getComputedStyle(document.getElementById('SKETCHPAD'), null),
@@ -3393,12 +3383,6 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 }
 
 /* Additional Functions */
-// Define the Tick text format.
-function kTick(tick) {
-	console.log(tick);
-	return Math.round(tick/1e3) + 'K'
-}
-
 /* 
 	A function for pinnig label at the middle bottom of the element space.
 	eleSpace: The width left for each element.
@@ -3554,3 +3538,4 @@ function colorAdjust(hex, colorDelta) {
 
 	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
 }
+

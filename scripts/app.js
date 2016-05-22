@@ -8,8 +8,14 @@ const Map  = Immutable.Map,
 			List = Immutable.List;
 
 /* ***** Global Variables ***** */
-window.isLocal = 
-	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+// Should be very 
+// window.isLocal = 
+// 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
+
+window.isLocal = document.URL.match(/127.0.0.1/) ? true : false;
+
+// window.isLocal = false;
+
 
 // To access the remove csv sources.
 window.query = '&tqx=out:csv';
@@ -110,7 +116,6 @@ const DataFilterStateTree = {
 									topics: [
 										[	
 											{
-												// working-spot-2
 												name: '總數',
 												axes: {
 													x: '民國',
@@ -137,7 +142,6 @@ const DataFilterStateTree = {
 												intl: {
 													header: '',
 													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
-													// mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -155,7 +159,6 @@ const DataFilterStateTree = {
 												}
 											},
 											{
-													// working-spot-2
 													name: '汽車竊盜發生件數',
 													axes: {
 														x: '民國',
@@ -1245,8 +1248,7 @@ const DataFilterStateTree = {
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 												}
-											}
-												, 
+											}, 
 											{
 												name: '各刑名百分比',
 												axes: {
@@ -2370,7 +2372,7 @@ class StoryTeller {
 				*The properties are the same as fwdSteps.*
 
 		*/
-		this.storyChains = [
+		this.vizStoryChains = [
 			// Stories for police.
 			{
 				dataset: '竊盜案件',
@@ -2391,90 +2393,6 @@ class StoryTeller {
 						},
 						end: null
 					}
-					// {
-					// 	goto: '重大竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '重大竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '重大竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '普通竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '汽車竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜發生件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransPCTToStackBar.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜破獲與否件數',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBupdateStackBars.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
-					// {
-					// 	goto: '機車竊盜案破獲率',
-					// 	transit: (_this, params) => {	
-					// 		return _this.DBtransStackBarToPCT.apply(_this, params);
-					// 	},
-					// 	end: null
-					// },
 				],
 				bwdSteps: [
 					{
@@ -2734,7 +2652,6 @@ class StoryTeller {
 						end: null
 					},
 				],
-
 				bwdSteps: [
 					{ 
 						goto: '總數', 
@@ -2896,14 +2813,249 @@ class StoryTeller {
 			}
 		];
 
+		// working-spot: Tales for explain the chart.
+		this.taleChains = [
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '兒童及少年性交易防制條例',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						
+						Container: {
+							pos : {
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '250px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. ',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						// working-spot
+						isEnd: true
+					}
+				]
+			}
+		];
+
+		// working-spot: The tale will
+		this.calTopicFirstTale = function() {
+			let tales = 
+				this._txtTaleChain.sections.filter((section, i) => {
+					return section.isTopicFirstSec === true
+				});
+			return tales
+		},
+
+		// To get the styles for the components that the story teller needs
+		this._componentStyleFactory = function(styleObjs) {
+
+			let style = {};
+
+			for ( let styleObj of styleObjs ) {
+				let params = Object.keys(styleObj);
+				for ( let param of params ) 
+					style[param] = styleObj[param]
+				
+			}
+			return style
+
+		};
+
+		// Store the current tale.
+		this._txtTaleChain = null;
+
 		// Store the current story chain.
-		this._story = null;
+		this._vizStory = null;
 	}
 
 	// Decide which story chain should be applied.
-	decideChain(datasetName, dataName, vizTypeName) {
+	decideVizStoryChain(datasetName, dataName, vizTypeName) {
 
-		this._story = this.storyChains.find((chain) => {
+		this._vizStory = this.vizStoryChains.find((chain) => {
 
 			// If the dataset is not defined, access the datasets.
 			if (!chain.dataset) {
@@ -2924,6 +3076,17 @@ class StoryTeller {
 					chain.vizType === vizTypeName
 		})
 	}
+
+	// working-spot: Decide which tales chain shoule be applied.
+	decideTaleChain(datasetName, dataName, vizTypeName) {
+
+		this._txtTaleChain = this.taleChains.find((chain) => {
+			return chain.dataset === datasetName && 
+					chain.data === dataName && 
+					chain.vizType === vizTypeName
+		});
+
+	}
 	
 	// toTell interates through the animation processes.
 	/*
@@ -2940,13 +3103,13 @@ class StoryTeller {
 				
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
-					this._story.fwdSteps[s].end = 
-						this._story.fwdSteps[s]
+					this._vizStory.fwdSteps[s].end = 
+						this._vizStory.fwdSteps[s]
 							.transit(fwdOpParams[s]._, fwdOpParams[s].params);
 				else
-					this._story.fwdSteps[s].end = 
-						this._story.fwdSteps[s-1].end
-							.then(this._story.fwdSteps[s]
+					this._vizStory.fwdSteps[s].end = 
+						this._vizStory.fwdSteps[s-1].end
+							.then(this._vizStory.fwdSteps[s]
 								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
 			}
 		}
@@ -2957,15 +3120,15 @@ class StoryTeller {
 			for (let s = startDepth - 1; s >= endDepth; --s) {
 
 				if ( s === startDepth - 1 ) {
-					this._story.bwdSteps[s].end = 
-						this._story.bwdSteps[s]
+					this._vizStory.bwdSteps[s].end = 
+						this._vizStory.bwdSteps[s]
 							.transit(bwdOpParams[s]._, bwdOpParams[s].params);
 				}
 
 				else {
-					this._story.bwdSteps[s].end = 
-						this._story.bwdSteps[s+1].end
-							.then(this._story.bwdSteps[s]
+					this._vizStory.bwdSteps[s].end = 
+						this._vizStory.bwdSteps[s+1].end
+							.then(this._vizStory.bwdSteps[s]
 								.transit.bind(null, bwdOpParams[s]._, bwdOpParams[s].params));
 				}
 			}
@@ -3297,7 +3460,7 @@ const DataBoard = React.createClass({
 		return bG.transitBarToStack(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
-	// working-spot-2: Transform from bar to stack bars.
+	// Transform from bar to stack bars.
 	DBtransBarToPCTStackBar(props) {
 
 		let bG = this.gpu.barGraph,
@@ -3306,7 +3469,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _data.exceptHeaders);
 		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _topic.intl.mHeaders);
 	},
 
@@ -3319,7 +3481,6 @@ const DataBoard = React.createClass({
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
 
-		// working-spot-2
 		return bG.transitStackBarToBar(
 			// If the intl have only one header, the header is the data user wants to know.
 			_topic.intl.headers === undefined ? props.data : 
@@ -3354,7 +3515,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
-		// working-spot-2
 		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false);
 	},
 
@@ -3363,10 +3523,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _data  = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
-		// working-spot-2
-		console.log('props.data: ', props.data);
-		console.log('check the topic here:', _topic);
-		console.log('check the mHeaders here: ', _topic.intl.mHeaders);
 		
 		return bG.transitPCTSBarToBar(
 			_topic.axes.y, props.data, _topic.intl, _topic.extl, _topic.intl.mHeaders)
@@ -3431,6 +3587,72 @@ const DataBoard = React.createClass({
 		}
 	},
 
+	DBTaleFactory() {
+
+		// temporary if statement
+		if (this.storyTeller._txtTaleChain) {
+
+			const index = store.getState().get('currentTaleIndex');
+			const taleEle = this.storyTeller._txtTaleChain.sections[index];
+			const containerStyle = this.storyTeller._componentStyleFactory(
+				[taleEle.Container.pos, taleEle.Container.size]);
+			let btnStyle = this.storyTeller._componentStyleFactory(
+				[taleEle.IndButton.pos, taleEle.IndButton.style]);
+			
+			// TaleBlock inital style
+			const taleStyle = { opacity: 0 }
+
+			// Add the opacity for the next button to do the first render animation.
+			btnStyle['opacity'] = 0;
+
+				return (
+					<div className='tale-container' style={ containerStyle }>
+						<TaleBlock innerText={ taleEle.infoContext } style={ taleStyle }/>
+					  {/* The this.props here is the nextProps that prepared to render */}
+					  {
+					  	taleEle.isEnd ? 
+					  		<EndTaleBtn
+					  		 	topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="End &nbsp;&nbsp;"
+					  			indicator="&#8607;"
+					  			style={ btnStyle }
+					  		 /> :
+					  		<NextTaleBtn 
+					  			topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="Next &nbsp;&nbsp;"
+					  			indicator="&raquo;"
+					  			style={ btnStyle }/> 
+					  }
+					</div>
+					)
+		}
+	},
+
+	DBTopicUpdate(nextProps) {
+		
+		// Produce the steps for topic explanation.
+		let steps = this.DBTopicStepsProducer(nextProps);
+			
+			// Use the topic name to find the taleIndex it corresponeds to
+			if (this.storyTeller._txtTaleChain) {
+				
+				let tName = nextProps.topic,
+						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
+							return t.topicName === tName
+						});
+				
+				store.dispatch(setTaleIndexAC(taleIndex));
+			}
+			
+			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+	},
+
 	/* React Native methods */
 	getInitialState() {
 		return {
@@ -3442,9 +3664,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/竊盜案件.csv'
 						else 
-							return window.googleSheet + 
-								'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
-									+ query
+							// return window.googleSheet + 
+							// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
+							// 		+ query
+							return '/police/p0.csv'
 					})(),
 				},
 				{
@@ -3453,9 +3676,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/暴力犯罪案件.csv'
 						else 
-							return window.googleSheet + 
-								'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
-									+ query
+							// return window.googleSheet + 
+							// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
+							// 		+ query
+							return '/police/p2.csv'
 					})(),
 				},
 				{
@@ -3464,9 +3688,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/毒品案件.csv'
 						else 
-							return window.googleSheet + 
-								'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
-									+ query
+							// return window.googleSheet + 
+							// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
+							// 		+ query
+							return '/police/p1.csv'
 					})(),
 				},
 
@@ -3477,9 +3702,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/殺人罪.csv'
 						else 
-							return window.googleSheet + 
-								'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
-									+ query
+							// return window.googleSheet + 
+							// 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
+							// 		+ query
+							return '/prosecution/p0.csv'
 					})(),
 				},
 				{
@@ -3488,9 +3714,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/竊盜罪.csv'
 						else 
-							return window.googleSheet + 
-								'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
-									+ query
+							// return window.googleSheet + 
+							// 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
+							// 		+ query
+							return '/prosecution/p2.csv'
 					})(),
 				},
 				{
@@ -3499,9 +3726,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/擄人勒贖罪.csv'
 						else 
-							return window.googleSheet + 
-								'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
-									+ query
+							// return window.googleSheet + 
+							// 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
+							// 		+ query
+							return '/prosecution/p3.csv'
 					})(),
 				},
 				{
@@ -3510,9 +3738,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/恐嚇罪.csv'
 						else 
-							return window.googleSheet + 
-								'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
-									+ query
+							// return window.googleSheet + 
+							// 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
+							// 		+ query
+							return '/prosecution/p4.csv'
 					})(),
 				},
 				{
@@ -3521,9 +3750,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/槍砲彈藥刀械管制條例.csv'
 						else 
-							return window.googleSheet + 
-								'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
-									+ query
+							// return window.googleSheet + 
+							// 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
+							// 		+ query
+							return '/prosecution/p5.csv'
 					})(),
 				},
 				{
@@ -3532,9 +3762,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/兒童及少年性交易防制條例.csv'
 						else 
-							return window.googleSheet + 
-								'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
-									+ query
+							// return window.googleSheet + 
+							// 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
+							// 		+ query
+							return '/prosecution/p1.csv'
 					})(),
 				},
 				{
@@ -3543,9 +3774,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/公共危險罪.csv'
 						else 
-							return window.googleSheet + 
-								'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
-									+ query
+							// return window.googleSheet + 
+							// 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
+							// 		+ query
+							return '/prosecution/p6.csv'
 					})(),
 				},
 				{
@@ -3554,9 +3786,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/貪污罪.csv'
 						else 
-							return window.googleSheet + 
-								'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
-									+ query
+							// return window.googleSheet + 
+							// 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
+							// 		+ query
+							return '/prosecution/p7.csv'
 					})(),
 				},
 				{
@@ -3565,9 +3798,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/瀆職罪.csv'
 						else 
-							return window.googleSheet + 
-								'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
-									+ query
+							// return window.googleSheet + 
+							// 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
+							// 		+ query
+							return '/prosecution/p8.csv'
 					})(),
 				},
 				{
@@ -3576,9 +3810,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/賭博罪.csv'
 						else 
-							return window.googleSheet + 
-								'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-									+ query
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p9.csv'
 					})(),
 				},
 				// Judical Data 
@@ -3588,9 +3823,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/地方法院刑事案件收結情形.csv'
 						else 
-							return window.googleSheet + 
-								'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
-									+ query
+							// return window.googleSheet + 
+							// 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
+							// 		+ query
+							return '/judicial/c0.csv'
 					})(),
 				},
 				{
@@ -3599,9 +3835,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/高等法院刑事案件收結情形.csv'
 						else 
-							return window.googleSheet + 
-								'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
-									+ query
+							// return window.googleSheet + 
+							// 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
+							// 		+ query
+							return '/judicial/c1.csv'
 					})(),
 				},
 				{
@@ -3610,9 +3847,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/最高法院刑事案件收結情形.csv'
 						else 
-							return window.googleSheet + 
-								'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
-									+ query
+							// return window.googleSheet + 
+							// 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
+							// 		+ query
+							return '/judicial/c2.csv'
 					})(),
 				},
 
@@ -3623,9 +3861,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/correction/監獄人數概況.csv'
 						else
-							return window.googleSheet + 
-						  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
-						  		query
+							// return window.googleSheet + 
+						 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
+						 //  		query
+							return './correction/c0.csv'
 					})(),
 				},
 				{
@@ -3661,31 +3900,31 @@ const DataBoard = React.createClass({
 									let urls = [
 										{
 											name: '新入監前家庭狀況',
-											url : 
-												window.googleSheet +
-													'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
-														window.query
+											url : '/correction/c1.csv'
+												// window.googleSheet +
+												// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監犯罪次數與種類.',
-											url : 
-												window.googleSheet +
-													'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
-														window.query
+											url : '/correction/c3.csv'
+												// window.googleSheet +
+												// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監前教育程度',
-											url : 
-												window.googleSheet +
-													'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
-														window.query
+											url : '/correction/c2.csv'
+												// window.googleSheet +
+												// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+												// 		window.query
 										},
 										{
 											name: '歷年新入監年齡歷年統計',
-											url : 
-												window.googleSheet +
-													'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
-														window.query
+											url : '/correction/c4.csv'
+												// window.googleSheet +
+												// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+												// 		window.query
 										}
 									];
 									return urls
@@ -3696,11 +3935,32 @@ const DataBoard = React.createClass({
 				}
 	},
 
+	shouldComponentUpdate(nextProps) {
+
+		if (nextProps.updateDataBoard) {
+
+			// working-spot
+			// Select the chain 
+			this.storyTeller.decideVizStoryChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			// working-spot
+			// Select the tales chain
+			this.storyTeller.decideTaleChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			return true
+		}
+
+		// working-spot
+		return false
+	},
+
 	// Initial Data Visualizing
 	componentDidMount() {
 
 		let dataSheet = this.findDataSheetIndex(this.props);
-		
+
 		if (this.props.chartType === '直方圖') {
 			this.vizDataWithBarChart(this.props, dataSheet);
 			
@@ -3733,14 +3993,23 @@ const DataBoard = React.createClass({
 				 this.props.topic === nextProps.topic ) ? true : false,
 
 			// Extend the chart when topic update.
-			shouldDive = 
+			isTopicSwitching = 
 				(this.props.topic !== nextProps.topic && 
 				 this.props.dataset === nextProps.dataset &&
-				 this.props.data === nextProps.data) ? true : false;
-		
+				 this.props.data === nextProps.data) ? true : false,
+			
+			// Switch to the next topic when reach the end of the above one.
+			isTopicSwitchingByTaleUd = (() => {
+				if (this.storyTeller._txtTaleChain) {
+					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
+				}
+				return false
+			})();
+
 		if (shouldRenew) { 
 
 			d3.select('#SKETCHPAD').remove();
+
 			if (nextProps.chartType === '直方圖') { 
 				if (this.props.chartType === '圓環比例圖') 
 					this.gpu.ringGraph.removeBoards();
@@ -3761,27 +4030,177 @@ const DataBoard = React.createClass({
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
-		} else if (shouldDive) { // Update when topic changing.
+		} else if (isTopicSwitching) { // Update when topic changing.
+			console.log('testing');
+			console.log('this.props: ', this.props);
+			console.log('nextProps: ', nextProps);
+			this.DBTopicUpdate(nextProps);
+			
+		} else if (isTopicSwitchingByTaleUd) {
 
-			// Produce the steps for topic explanation.
 			let steps = this.DBTopicStepsProducer(nextProps);
 
-			// Select the chain 
-			this.storyTeller.decideChain(
-				nextProps.dataset, nextProps.data, nextProps.chartType);
+			// Find out the relationship between tale index and topic depth.
+			let incrementedTopicDepth = this.props.topicDepth + 1,
+					topicFirstTales = this.storyTeller.calTopicFirstTale(),
+					tale = topicFirstTales.find((t, i) => {
+						return i === incrementedTopicDepth
+					});
 
-			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
 		}
 	},
 
 	render() {
 
+		// Create element tale for info displaying.
+		let tale = this.DBTaleFactory();
+		
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
-				<div id='DATABOARD'></div>
+				<div id='DATABOARD-vizLayer'></div>
+				{
+						/* Temp if statement */
+						this.storyTeller._txtTaleChain ? 
+							<TagentalIndicators 
+								currentIndex = { store.getState().get('currentTaleIndex') }
+								indicators={ this.storyTeller._txtTaleChain.sections } /> : null
+					}
+				{ this.storyTeller._txtTaleChain ? tale : null }
 			</div>
 		)
 	}
+});
+
+const TaleBlock = React.createClass({
+
+	componentDidMount() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	// working-spot
+	shouldComponentUpdate(nextProps) {
+		return true
+	},
+
+	componentWillReceiveProps() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 0 }, { duration: 1 });
+	},
+
+	componentDidUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	render() {
+		return (
+			<div className='tale-body' style={this.props.style}>
+				{ this.props.innerText }
+			</div>
+			)
+	}
+});
+
+// Button for controlling the tales like going to the next or back to the top.
+const TaleBtn = React.createClass({
+
+	componentDidMount() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	shouldComponentUpdate(nextProps) {
+		return true
+	},
+
+	componentWillUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 0 }, { duration: 1 });
+	},
+
+	componentDidUpdate() {
+		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	render() {
+
+		return (
+			<div 
+				className='nextbtn'
+				style={ this.props.style }
+				onClick={ this.props.nextTale } > 
+				<span className='ver-helper'></span>
+				<span>{ this.props.msg }</span>
+				<span className='more-indicator'>{ this.props.indicator }</span>
+			</div>)
+	}
+});
+
+const TagentalIndicators = React.createClass({
+
+	componentDidMount() {
+		let indicatorsHeight = this.props.indicators.length * 25,
+				indicatorsTop = (window.innerHeight - indicatorsHeight) / 2;
+		let indicatorStyle = { top: indicatorsTop  + 'px' };
+
+		$v(ReactDOM.findDOMNode(this), { top: indicatorsHeight }, { duration: 1000 });
+	},
+
+	render() {
+
+		// Tangetal Indicators should be dynamical position.
+		let keyIndex = 0,
+				indicators = [];
+
+		for ( let ind of this.props.indicators ) {
+			indicators.push(
+				<TaleIndicator
+					currentIndex = { this.props.currentIndex }
+					indIndex = { keyIndex }
+					key={ keyIndex++ }
+					context={ ind }
+					isSmall={ ind.isTopicFirstSec ? false : true }
+					/>);
+		}
+
+		const initStlye = { top: '100%' };
+
+		return (
+			<div className='indicators' style={ initStlye } >
+				{ indicators }
+			</div>
+			)
+	}
+});
+
+const TagentalIndicator = React.createClass({
+
+	render() {
+		return (
+			<div className='indicator-block' onClick={ this.props.selectTale } >
+				<div className={ this.props.isSmall ? 'indicator-small' : 'indicator'}>
+					<TagentalIndicatorMkr 
+						isActive={ this.props.indIndex === this.props.currentIndex ? true : false } 
+						isPassed={ this.props.indIndex < this.props.currentIndex ? true : false } 
+						small={ this.props.isSmall } />
+				</div>
+			</div>
+			)
+	}
+});
+
+
+const TagentalIndicatorMkr = React.createClass({
+
+	render() {
+		return (
+			this.props.isSmall ? 
+				<div className={ 
+					this.props.isActive ? 'indicator-small-marker active' : 
+					this.props.isPassed ? 'indicator-small-marker passed' : 'indicator-small-marker'}></div> :
+				<div className={ 
+					this.props.isActive ? 'indicator-marker active' : 
+					this.props.isPassed ? 'indicator-marker passed' : 'indicator-marker'}></div> 
+		)
+	}
+
 });
 
 const Filter = React.createClass({
@@ -4040,6 +4459,40 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicD
 	}
 }
 
+/* Action creator for tales */
+function rollingTalesAC(topic, topicDepth, taleChain, taleIndex) {
+	return {
+		type: 'INCRE_TALE_IND',
+		topic: topic,
+		topicDepth: topicDepth,
+		taleIndex: taleIndex,
+		taleChain: taleChain
+	}
+}
+
+function back2FirstTaleAC(taleChain) {
+	return {
+		type: 'BACK_TO_FIRST_TALE',
+		taleChain: taleChain
+	}
+}
+
+function setTaleIndexAC(index) {
+	return {
+		type: 'SET_TALE_INDEX',
+		taleIndex: index
+	}
+}
+
+// working-spot
+function selectTaleAC(index, context) {
+	return {
+		type: 'SELECT_TALE',
+		taleIndex: index,
+		taleContext: context
+	}
+}
+
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
 
@@ -4060,6 +4513,19 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
+
+		// Set the tale index
+		case 'SET_TALE_INDEX':
+			return setTaleIndex(state, action.taleIndex)
+
+		case 'INCRE_TALE_IND':
+			 return rollingTales(state, action.topic, action.topicDepth, action.taleChain, action.taleIndex)
+
+		case 'BACK_TO_FIRST_TALE':
+			return back2FirstTale(state, action.taleChain)
+
+		case 'SELECT_TALE':
+			return selectTale(state, action.taleIndex, action.taleContext)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -4163,9 +4629,14 @@ function selectAppTheme(state, theme) {
 	let defaultData = null;
 	let defaultChartType = null;
 	let defaultTopic = null;
+	let defaultTaleIndex = null;
 
 	// Topic depth defines how deep the user drilling into the data.
 	let defaultTopicDepth = null;
+
+	// working-spot
+	// A control state to decide the viz data board refresh or not.
+	let defaultDataBoardUpdateSet = setState('updateDataBoard', true);
 
 	let defaultFilterDropdownMenus = null;
 
@@ -4179,6 +4650,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '案件總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			// Set the default dropdown menu and its option.
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('police');
@@ -4187,7 +4659,9 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames, 
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
+				)
 
 		case 'PROSECUTION_STAT':
 
@@ -4198,6 +4672,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('prosecution');
 				
@@ -4205,7 +4680,8 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames,
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
 				)
 
 		case 'JUDICIAL_STAT':
@@ -4217,6 +4693,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '受理件數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('judicial');
 
@@ -4224,7 +4701,8 @@ function selectAppTheme(state, theme) {
 				navState, mainState,
 				themeState, statTitle, filterNames, 
 				defaultDataset, defaultData, defaultChartType, 
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet)
 
 		case 'CORRECTION_STAT':
 			
@@ -4235,6 +4713,7 @@ function selectAppTheme(state, theme) {
 			defaultChartType = setState('currentChartType', '直方圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
+			defaultTaleIndex = setState('currentTaleIndex', 0);
 
 
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('correction');
@@ -4243,7 +4722,9 @@ function selectAppTheme(state, theme) {
 				navState, mainState, 
 				statTitle, filterNames, themeState,
 				defaultDataset, defaultData, defaultChartType,
-				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus)
+				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
+				defaultTaleIndex, defaultDataBoardUpdateSet
+				)
 
 		default:
 			return state
@@ -4332,11 +4813,17 @@ function setDropdownMenuStates(state, index) {
 
 // Update the dropdown menu. 
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
+
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
+
+	// working-spot
+	let newTaleIndex = null;
+
+	let shoudDataBoardUpdate = setState('updateDataBoard', true);
 
 	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
@@ -4378,9 +4865,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.chartType, 
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates)
+
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate)
 				}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selecting data
@@ -4394,10 +4885,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data,
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		}
 
 		// Selecting the charttype which will affect the topics.
@@ -4410,10 +4904,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				return state.merge(
 					newState.chartType,
 					newState.topic,
-					newState.dropdownMenuStates
+					// working-spot
+					newState.taleIndex,
+					newState.dropdownMenuStates,
+					shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selection the topic
@@ -4423,9 +4920,19 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				newTopic = setState('currentTopic', optionName);
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
-				return state.merge(newTopic, newTopicDepth, collapsedAllDropdownMenuStates)
+				// working-spot: The tale index should be correspond to the topic.
+				// We have to come up an idea to solve this.
+				newTaleIndex = setState('currentTaleIndex', 0);
+
+				return state.merge(
+					newTopic, 
+					newTopicDepth, 
+					// workng-spot
+					newTaleIndex,
+					collapsedAllDropdownMenuStates, 
+					shoudDataBoardUpdate)
 			}
-			return state.merge(collapsedAllDropdownMenuStates);
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate);
 		}
 
 		return state
@@ -4458,6 +4965,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		// Set the new topic depth to 0
 		let newTopicDepth = setState('currentTopicDepth', 0);
+
+		// working-spot
+		let newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Set up the states for the dropdowns.
 		let newDropdownMenuStates = 
@@ -4502,6 +5012,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			chartType: newChartType,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -4529,6 +5041,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
+		// working-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Switch data will change the available topics
 		const	newDropdownMenuStates = 
 			setState(
@@ -4539,6 +5054,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			data: newData,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -4553,6 +5070,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					'filterDropdownMenus', 
 					updateTopicDropdownOption(state, null, chartType));
 
+		// workng-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Update current topic
 		const newTopic = setState(
 					'currentTopic', 
@@ -4564,6 +5084,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		return {
 			chartType: newChartType,
 			topic: newTopic,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -4641,6 +5163,65 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 	});
 
 	return newState
+}
+
+function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
+	
+	const newTaleIndex = setState('currentTaleIndex', taleIndex + 1);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	// Check up whether the next tale is the new topic's first tale.
+	const nextTale = taleChain.sections[taleIndex+1];
+
+	if (nextTale.isTopicFirstSec) {
+		const newTopic = setState('currentTopic', nextTale.topicName);
+		const newTopicDepth = setState('currentTopicDepth', state.get('currentTopicDepth') + 1);
+		return state.merge(newTaleIndex, newTopic, newTopicDepth)
+	}
+	else return state.merge(newTaleIndex, updateDataBoard);
+}
+
+// working-spot
+function selectTale(state, taleIndex, taleContext) {
+	
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	const newTopic = 
+		setState(
+			'currentTopic', 
+			taleContext.topicName ? taleContext.topicName : state.get('currentTopic'));
+
+	// Find out the topic depth
+	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
+	const topicDepth = topicList.findIndex((topic) => {
+		return taleContext.topicName === topic
+	});
+	console.log('topicDepth: ', topicDepth);
+	const newTopicDepth = 
+		setState(
+			'currentTopicDepth', 
+			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+
+}
+
+function back2FirstTale(state, taleChain) {
+
+	const newTaleIndex = setState('currentTaleIndex', 0);
+	const newTopic = setState('currentTopic', taleChain.sections[0].topicName);
+	const newTopicDepth = setState('currentTopicDepth', 0);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard);
+}
+
+function setTaleIndex(state, taleIndex) {
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	// working-spot
+	const updateDataBoard = setState('updateDataBoard', false);
+	return state.merge(newTaleIndex, updateDataBoard)
+	// return state.merge(newTaleIndex)
 }
 
 // Create a immutable Map object as state
@@ -4758,7 +5339,7 @@ const mapStateToFilterProps = (state) => {
 		currentData: state.get('currentData'),
 		currentChartType: state.get('currentChartType'),
 		currentTopic: state.get('currentTopic'),
-		currentFilterDropdownMenus: state.get('filterDropdownMenus')
+		currentFilterDropdownMenus: state.get('filterDropdownMenus'),
 	}
 }
 
@@ -4774,7 +5355,9 @@ const mapStateToDataBoardProps = (state) => {
 		data     : state.get('currentData'), 
 		chartType: state.get('currentChartType'),
 		topic    : state.get('currentTopic'),
-		topicDepth: state.get('currentTopicDepth')
+		topicDepth: state.get('currentTopicDepth'),
+		taleIndex : state.get('currentTaleIndex'),
+		updateDataBoard: state.get('updateDataBoard')
 	}
 }
 
@@ -4782,6 +5365,51 @@ const StatDataBoard = RRd.connect(
 	mapStateToDataBoardProps,
 	null
 	)(DataBoard);
+
+/* Connect more tale button */
+const mapDispatchToNextBtn = (dispatch, props) => {
+	return {
+		nextTale: (e) => {
+			dispatch(rollingTalesAC(props.topic, props.topicDepth, props.taleChain, props.taleIndex));
+		}
+	}
+}
+
+const NextTaleBtn = RRd.connect(
+	null,
+	mapDispatchToNextBtn
+	)(TaleBtn);
+
+const mapDispatchToEndBtn = (dispatch, props) => {
+	return {
+		nextTale: (e) => {
+			// working-spot: Back to start tale
+			dispatch(back2FirstTaleAC(props.taleChain));
+		}
+	}
+}
+
+const EndTaleBtn = RRd.connect(
+	null,
+	mapDispatchToEndBtn
+	)(TaleBtn);
+
+/* Connect Indicator */
+const mapDispatchToIndicators = (dispatch, props) => {
+
+	return {
+		selectTale: (e) => {
+			// working-spot
+			dispatch(selectTaleAC(props.indIndex, props.context));
+		}
+	}	
+
+};
+
+const TaleIndicator = RRd.connect(
+	null,
+	mapDispatchToIndicators
+	)(TagentalIndicator);
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
