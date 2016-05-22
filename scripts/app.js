@@ -3583,14 +3583,14 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	// working-spot
 	DBTopicUpdate(nextProps) {
 		
+		// Produce the steps for topic explanation.
 		let steps = this.DBTopicStepsProducer(nextProps);
 			
-			// working-spot: Use the topic name to find the taleIndex it corresponeds to
+			// Use the topic name to find the taleIndex it corresponeds to
 			if (this.storyTeller._txtTaleChain) {
-				console.log('nextProps.topic: ', nextProps.topic);
+				
 				let tName = nextProps.topic,
 						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
 							return t.topicName === tName
@@ -3981,75 +3981,39 @@ const DataBoard = React.createClass({
 
 		} else if (isTopicSwitching) { // Update when topic changing.
 
-			// Produce the steps for topic explanation.
-			// let steps = this.DBTopicStepsProducer(nextProps);
-			// console.log('testing 1');
-			// // working-spot: Use the topic name to find the taleIndex it corresponeds to
-			// if (this.storyTeller._txtTaleChain) {
-
-			// 	let tName = nextProps.topic,
-			// 			taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
-			// 				return t.topicName === tName
-			// 			});
-			// 	store.dispatch(setTaleIndexAC(taleIndex));
-			// }
-			
-			// console.log(nextProps.topicDepth);
-			// // Select the chain 
-			// // this.storyTeller.decideVizStoryChain(
-			// // 	nextProps.dataset, nextProps.data, nextProps.chartType);
-			// this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 			this.DBTopicUpdate(nextProps);
 			
 		} else if (isTopicSwitchingByTaleUd) {
 
-			// working-spot
 			let steps = this.DBTopicStepsProducer(nextProps);
-			console.log('DBTopicUpdateByTaleUd');
 
-			// working-spot: Try to figure out the relationship between tale index and topic depth.
+			// Find out the relationship between tale index and topic depth.
 			let incrementedTopicDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
 					tale = topicFirstTales.find((t, i) => {
 						return i === incrementedTopicDepth
 					});
 
-			console.log('Check up the nextProps: ', nextProps);
-			
-			// store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
-
 			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
 		}
-	},
-
-	// working-spot
-	componentDidUpdate() {
-
 	},
 
 	render() {
 
 		// Create element tale for info displaying.
 		let tale = this.DBTaleFactory();
-		console.log('DATABOARD render');
-		console.log(this.props);
+		
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
 				<div id='DATABOARD-vizLayer'></div>
 				{
 						/* Temp if statement */
-						// this.storyTeller._txtTaleChain ? 
-						// 	<TagentalIndicators 
-						// 		currentIndex = { this.props.taleIndex }
-						// 		indicators={ this.storyTeller._txtTaleChain.sections } /> : null
 						this.storyTeller._txtTaleChain ? 
 							<TagentalIndicators 
 								currentIndex = { store.getState().get('currentTaleIndex') }
 								indicators={ this.storyTeller._txtTaleChain.sections } /> : null
 					}
-			{/* working-spot */}
 				{ this.storyTeller._txtTaleChain ? tale : null }
-				{ /*this.storyTeller._txtTaleChain ? Btn: null*/ }
 			</div>
 		)
 	}
@@ -4063,7 +4027,6 @@ const TaleBlock = React.createClass({
 
 	// working-spot
 	shouldComponentUpdate(nextProps) {
-		console.log('update TaleBlock');
 		return true
 	},
 
@@ -4091,7 +4054,6 @@ const TaleBtn = React.createClass({
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
 	},
 
-	// working-spot
 	shouldComponentUpdate(nextProps) {
 		return true
 	},
@@ -4112,7 +4074,6 @@ const TaleBtn = React.createClass({
 				style={ this.props.style }
 				onClick={ this.props.nextTale } > 
 				<span className='ver-helper'></span>
-				{/*<span>Next &nbsp;&nbsp;</span>*/}
 				<span>{ this.props.msg }</span>
 				<span className='more-indicator'>{ this.props.indicator }</span>
 			</div>)
@@ -4121,24 +4082,35 @@ const TaleBtn = React.createClass({
 
 const TagentalIndicators = React.createClass({
 
+	componentDidMount() {
+		let indicatorsHeight = this.props.indicators.length * 25,
+				indicatorsTop = (window.innerHeight - indicatorsHeight) / 2;
+		let indicatorStyle = { top: indicatorsTop  + 'px' };
+
+		$v(ReactDOM.findDOMNode(this), { top: indicatorsHeight }, { duration: 1000 });
+	},
+
 	render() {
 
-		// working-spot: Tangetal Indicators should be dynamical position.
-
+		// Tangetal Indicators should be dynamical position.
 		let keyIndex = 0,
 				indicators = [];
 
 		for ( let ind of this.props.indicators ) {
 			indicators.push(
-				<TagentalIndicator
+				<TaleIndicator
 					currentIndex = { this.props.currentIndex }
 					indIndex = { keyIndex }
 					key={ keyIndex++ }
-					isSmall={ ind.isTopicFirstSec ? false : true } />);
+					context={ ind }
+					isSmall={ ind.isTopicFirstSec ? false : true }
+					/>);
 		}
 
+		const initStlye = { top: '100%' };
+
 		return (
-			<div className='indicators'>
+			<div className='indicators' style={ initStlye } >
 				{ indicators }
 			</div>
 			)
@@ -4148,9 +4120,8 @@ const TagentalIndicators = React.createClass({
 const TagentalIndicator = React.createClass({
 
 	render() {
-		
 		return (
-			<div className='indicator-block'>
+			<div className='indicator-block' onClick={ this.props.selectTale } >
 				<div className={ this.props.isSmall ? 'indicator-small' : 'indicator'}>
 					<TagentalIndicatorMkr 
 						isActive={ this.props.indIndex === this.props.currentIndex ? true : false } 
@@ -4460,6 +4431,15 @@ function setTaleIndexAC(index) {
 	}
 }
 
+// working-spot
+function selectTaleAC(index, context) {
+	return {
+		type: 'SELECT_TALE',
+		taleIndex: index,
+		taleContext: context
+	}
+}
+
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
 
@@ -4490,6 +4470,9 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'BACK_TO_FIRST_TALE':
 			return back2FirstTale(state, action.taleChain)
+
+		case 'SELECT_TALE':
+			return selectTale(state, action.taleIndex, action.context)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -5145,6 +5128,24 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 	else return state.merge(newTaleIndex, updateDataBoard);
 }
 
+// working-spot
+function selectTale(state, taleIndex, taleContext) {
+
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	const newTopic = setState('currentTopic', taleContext.topicName);
+
+	// Find out the topic depth
+	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
+	const topicDepth = topicList.findIndex((topic) => {
+		return taleContext.topicName === topic
+	});
+
+	const newTopicDepth = setState('currentTopicDepth', topicDepth);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth)
+
+}
+
 function back2FirstTale(state, taleChain) {
 
 	const newTaleIndex = setState('currentTaleIndex', 0);
@@ -5327,7 +5328,7 @@ const mapDispatchToEndBtn = (dispatch, props) => {
 		}
 	}
 }
-// working-spot
+
 const EndTaleBtn = RRd.connect(
 	null,
 	mapDispatchToEndBtn
@@ -5337,13 +5338,18 @@ const EndTaleBtn = RRd.connect(
 const mapDispatchToIndicators = (dispatch, props) => {
 
 	return {
-						
 		selectTale: (e) => {
-
+			// working-spot
+			dispatch(selectTaleAC(props.indIndex, props.context));
 		}
 	}	
 
 };
+
+const TaleIndicator = RRd.connect(
+	null,
+	mapDispatchToIndicators
+	)(TagentalIndicator);
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
