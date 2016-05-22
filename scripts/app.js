@@ -2842,7 +2842,8 @@ class StoryTeller {
 						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
 						infoAnimation: '',
 						isTopicFirstSec: true,
-						topicName: '總數' 
+						topicName: '總數',
+						isEnd: false
 					},
 					{
 						
@@ -2865,7 +2866,8 @@ class StoryTeller {
 						},
 						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: false,
+						isEnd: false
 					},
 					{
 						
@@ -2889,10 +2891,10 @@ class StoryTeller {
 						},
 						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. ',
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: false,
+						isEnd: false
 					},
 					{
-						// working-spot
 						Container: {
 							pos : {
 								left: '5em',
@@ -2914,52 +2916,106 @@ class StoryTeller {
 						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
 						infoAnimation: '',
 						isTopicFirstSec: true,
-						topicName: '刑名統計' 
+						topicName: '各刑名統計',
+						isEnd: false
 					},
 					{
 						Container: {
 							pos : {
-								left: '',
-								top : '',
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
 							}
 						},
-						infoContext  : '',
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: false,
+						isEnd: false
 					},
 					{
 						Container: {
 							pos : {
-								left: '',
-								top : '',
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
 							}
 						},
-						infoContext  : '',
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
 						infoAnimation: '',
 						isTopicFirstSec: true,
-						topicName: '刑名百分比' 
+						topicName: '各刑名百分比',
+						isEnd: false
 					},
 					{
 						Container: {
 							pos : {
-								left: '',
-								top : '',
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
 							}
 						},
-						infoContext  : '',
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: false,
+						isEnd: false
 					},
 					{
 						Container: {
 							pos : {
-								left: '',
-								top : '',
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
 							}
 						},
-						infoContext  : '',
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: false,
+						// working-spot
+						isEnd: true
 					}
 				]
 			}
@@ -2968,7 +3024,7 @@ class StoryTeller {
 		// working-spot: The tale will
 		this.calTopicFirstTale = function() {
 			let tales = 
-				this._txtTale.sections.filter((section, i) => {
+				this._txtTaleChain.sections.filter((section, i) => {
 					return section.isTopicFirstSec === true
 				});
 			return tales
@@ -2990,7 +3046,7 @@ class StoryTeller {
 		};
 
 		// Store the current tale.
-		this._txtTale = null;
+		this._txtTaleChain = null;
 
 		// Store the current story chain.
 		this._vizStory = null;
@@ -3024,7 +3080,7 @@ class StoryTeller {
 	// working-spot: Decide which tales chain shoule be applied.
 	decideTaleChain(datasetName, dataName, vizTypeName) {
 
-		this._txtTale = this.taleChains.find((chain) => {
+		this._txtTaleChain = this.taleChains.find((chain) => {
 			return chain.dataset === datasetName && 
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
@@ -3480,21 +3536,14 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	// Scrolling event update the text info and in some perticular moment, 
-	// it also refreshens the chart
-	// scrollReading(e) { // May not work well as expect.
-		
-	// },
-
-	// working-spot: 
 	DBTaleFactory() {
 
 		// temporary if statement
-		if (this.storyTeller._txtTale) {
+		if (this.storyTeller._txtTaleChain) {
 
 			const index = store.getState().get('currentTaleIndex');
-			const taleEle = this.storyTeller._txtTale.sections[index];
-			const containerStyle   = this.storyTeller._componentStyleFactory(
+			const taleEle = this.storyTeller._txtTaleChain.sections[index];
+			const containerStyle = this.storyTeller._componentStyleFactory(
 				[taleEle.Container.pos, taleEle.Container.size]);
 			let btnStyle = this.storyTeller._componentStyleFactory(
 				[taleEle.IndButton.pos, taleEle.IndButton.style]);
@@ -3508,10 +3557,49 @@ const DataBoard = React.createClass({
 				return (
 					<div className='tale-container' style={ containerStyle }>
 						<TaleBlock innerText={ taleEle.infoContext } style={ taleStyle }/>
-						<NextTaleBtn style={ btnStyle } />
+					  {/* The this.props here is the nextProps that prepared to render */}
+					  {
+					  	taleEle.isEnd ? 
+					  		<EndTaleBtn
+					  		 	topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="End &nbsp;&nbsp;"
+					  			indicator="&#8607;"
+					  			style={ btnStyle }
+					  		 /> :
+					  		<NextTaleBtn 
+					  			topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="Next &nbsp;&nbsp;"
+					  			indicator="&raquo;"
+					  			style={ btnStyle }/> 
+					  }
 					</div>
 					)
 		}
+	},
+
+	// working-spot
+	DBTopicUpdate(nextProps) {
+		
+		let steps = this.DBTopicStepsProducer(nextProps);
+			
+			// working-spot: Use the topic name to find the taleIndex it corresponeds to
+			if (this.storyTeller._txtTaleChain) {
+				console.log('nextProps.topic: ', nextProps.topic);
+				let tName = nextProps.topic,
+						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
+							return t.topicName === tName
+						});
+				
+				store.dispatch(setTaleIndexAC(taleIndex));
+			}
+			
+			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 
 	/* React Native methods */
@@ -3796,13 +3884,25 @@ const DataBoard = React.createClass({
 				}
 	},
 
-	// working-spot
 	shouldComponentUpdate(nextProps) {
 
-		// working-spot
-		console.log('check the updateDataBoard here: ', nextProps.updateDataBoard);
+		if (nextProps.updateDataBoard) {
 
-		return nextProps.updateDataBoard
+			// working-spot
+			// Select the chain 
+			this.storyTeller.decideVizStoryChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			// working-spot
+			// Select the tales chain
+			this.storyTeller.decideTaleChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			return true
+		}
+
+		// working-spot
+		return false
 	},
 
 	// Initial Data Visualizing
@@ -3826,18 +3926,6 @@ const DataBoard = React.createClass({
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
-
-
-		// working-spot
-		// Select the chain 
-		this.storyTeller.decideVizStoryChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
-
-		// working-spot
-		// Select the tales chain
-		this.storyTeller.decideTaleChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
-
 		var 
 			// Renew the board when user switch dataset, chartTypes or 
 			// switch to the new data when reading in the detail story.
@@ -3858,12 +3946,11 @@ const DataBoard = React.createClass({
 				(this.props.topic !== nextProps.topic && 
 				 this.props.dataset === nextProps.dataset &&
 				 this.props.data === nextProps.data) ? true : false,
-
-			// working-spot
-			// 
+			
+			// Switch to the next topic when reach the end of the above one.
 			isTopicSwitchingByTaleUd = (() => {
-				if (this.storyTeller._txtTale) {
-					return this.storyTeller._txtTale.sections[nextProps.taleIndex].isTopicFirstSec;
+				if (this.storyTeller._txtTaleChain) {
+					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
 				}
 				return false
 			})();
@@ -3895,62 +3982,89 @@ const DataBoard = React.createClass({
 		} else if (isTopicSwitching) { // Update when topic changing.
 
 			// Produce the steps for topic explanation.
-			let steps = this.DBTopicStepsProducer(nextProps);
-			// Select the chain 
-			// this.storyTeller.decideVizStoryChain(
-			// 	nextProps.dataset, nextProps.data, nextProps.chartType);
-			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+			// let steps = this.DBTopicStepsProducer(nextProps);
+			// console.log('testing 1');
+			// // working-spot: Use the topic name to find the taleIndex it corresponeds to
+			// if (this.storyTeller._txtTaleChain) {
+
+			// 	let tName = nextProps.topic,
+			// 			taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
+			// 				return t.topicName === tName
+			// 			});
+			// 	store.dispatch(setTaleIndexAC(taleIndex));
+			// }
+			
+			// console.log(nextProps.topicDepth);
+			// // Select the chain 
+			// // this.storyTeller.decideVizStoryChain(
+			// // 	nextProps.dataset, nextProps.data, nextProps.chartType);
+			// this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+			this.DBTopicUpdate(nextProps);
 			
 		} else if (isTopicSwitchingByTaleUd) {
+
 			// working-spot
 			let steps = this.DBTopicStepsProducer(nextProps);
+			console.log('DBTopicUpdateByTaleUd');
 
 			// working-spot: Try to figure out the relationship between tale index and topic depth.
-			let incrementedTopocDepth = this.props.topicDepth + 1,
+			let incrementedTopicDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
 					tale = topicFirstTales.find((t, i) => {
-						return i === incrementedTopocDepth
+						return i === incrementedTopicDepth
 					});
+
+			console.log('Check up the nextProps: ', nextProps);
 			
-			store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
+			// store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
 
 			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
 		}
 	},
 
+	// working-spot
+	componentDidUpdate() {
+
+	},
+
 	render() {
 
-		// working-spot
+		// Create element tale for info displaying.
 		let tale = this.DBTaleFactory();
-		
+		console.log('DATABOARD render');
+		console.log(this.props);
 		return (
 			<div id='DATABOARD_WRAPPER' className='b20-col-md-20'>
 				<div id='DATABOARD-vizLayer'></div>
 				{
 						/* Temp if statement */
-						this.storyTeller._txtTale ? 
+						// this.storyTeller._txtTaleChain ? 
+						// 	<TagentalIndicators 
+						// 		currentIndex = { this.props.taleIndex }
+						// 		indicators={ this.storyTeller._txtTaleChain.sections } /> : null
+						this.storyTeller._txtTaleChain ? 
 							<TagentalIndicators 
-								currentIndex = { this.props.taleIndex }
-								indicators={ this.storyTeller._txtTale.sections } /> : null
+								currentIndex = { store.getState().get('currentTaleIndex') }
+								indicators={ this.storyTeller._txtTaleChain.sections } /> : null
 					}
-				{ /*
-					this.storyTeller._txtTale ?
-						<DataTxtBoard context={ this.storyTeller._txtTale }/> : 
-						<DataTxtBoard />
-				*/}
 			{/* working-spot */}
-				{ this.storyTeller._txtTale ? tale: null }
-				{ /*this.storyTeller._txtTale ? NextBtn: null*/ }
+				{ this.storyTeller._txtTaleChain ? tale : null }
+				{ /*this.storyTeller._txtTaleChain ? Btn: null*/ }
 			</div>
 		)
 	}
 });
 
-// working-spot
 const TaleBlock = React.createClass({
 
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	// working-spot
+	shouldComponentUpdate(nextProps) {
+		console.log('update TaleBlock');
+		return true
 	},
 
 	componentWillReceiveProps() {
@@ -3970,11 +4084,16 @@ const TaleBlock = React.createClass({
 	}
 });
 
-// working-spot
-const NextBtn = React.createClass({
+// Button for controlling the tales like going to the next or back to the top.
+const TaleBtn = React.createClass({
 
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	// working-spot
+	shouldComponentUpdate(nextProps) {
+		return true
 	},
 
 	componentWillUpdate() {
@@ -3986,21 +4105,20 @@ const NextBtn = React.createClass({
 	},
 
 	render() {
+
 		return (
 			<div 
 				className='nextbtn'
 				style={ this.props.style }
 				onClick={ this.props.nextTale } > 
 				<span className='ver-helper'></span>
-				<span>Next &nbsp;&nbsp;</span>
-				<span className='more-indicator'>&raquo;</span>
+				{/*<span>Next &nbsp;&nbsp;</span>*/}
+				<span>{ this.props.msg }</span>
+				<span className='more-indicator'>{ this.props.indicator }</span>
 			</div>)
 	}
-
 });
 
-
-// working-spot
 const TagentalIndicators = React.createClass({
 
 	render() {
@@ -4025,10 +4143,8 @@ const TagentalIndicators = React.createClass({
 			</div>
 			)
 	}
-
 });
 
-// working-spot
 const TagentalIndicator = React.createClass({
 
 	render() {
@@ -4047,7 +4163,6 @@ const TagentalIndicator = React.createClass({
 });
 
 
-// working-spot
 const TagentalIndicatorMkr = React.createClass({
 
 	render() {
@@ -4320,24 +4435,30 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicD
 	}
 }
 
-// working-spot
-function rollingTalesAC(topic, depth) {
+/* Action creator for tales */
+function rollingTalesAC(topic, topicDepth, taleChain, taleIndex) {
 	return {
-		type: 'INCRE_TOPIC_DEPTH',
+		type: 'INCRE_TALE_IND',
 		topic: topic,
-		topicDepth: depth,
+		topicDepth: topicDepth,
+		taleIndex: taleIndex,
+		taleChain: taleChain
 	}
 }
 
-// working-spot
+function back2FirstTaleAC(taleChain) {
+	return {
+		type: 'BACK_TO_FIRST_TALE',
+		taleChain: taleChain
+	}
+}
+
 function setTaleIndexAC(index) {
 	return {
 		type: 'SET_TALE_INDEX',
 		taleIndex: index
 	}
 }
-
-
 
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
@@ -4360,13 +4481,15 @@ function AppReducer(state = INITIAL_STATE, action) {
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
 
-		// working-spot
 		// Set the tale index
 		case 'SET_TALE_INDEX':
 			return setTaleIndex(state, action.taleIndex)
 
-		case 'INCRE_TOPIC_DEPTH':
-			 return rollingTales(state, action.topic, action.topicDepth)
+		case 'INCRE_TALE_IND':
+			 return rollingTales(state, action.topic, action.topicDepth, action.taleChain, action.taleIndex)
+
+		case 'BACK_TO_FIRST_TALE':
+			return back2FirstTale(state, action.taleChain)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -5006,20 +5129,38 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 	return newState
 }
 
-// working-spot
-function rollingTales(state, topic, topicDepth) {
-	const newTopicDepth = setState('currentTopicDepth', topicDepth+1);
-	const newTopic = setState('currentTopic', topic);
-	const updateDataBoard = setState('updateDataBoard', false);
-	return state.merge(newTopicDepth, newTopic, updateDataBoard)
+function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
+	
+	const newTaleIndex = setState('currentTaleIndex', taleIndex + 1);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	// Check up whether the next tale is the new topic's first tale.
+	const nextTale = taleChain.sections[taleIndex+1];
+
+	if (nextTale.isTopicFirstSec) {
+		const newTopic = setState('currentTopic', nextTale.topicName);
+		const newTopicDepth = setState('currentTopicDepth', state.get('currentTopicDepth') + 1);
+		return state.merge(newTaleIndex, newTopic, newTopicDepth)
+	}
+	else return state.merge(newTaleIndex, updateDataBoard);
 }
 
+function back2FirstTale(state, taleChain) {
+
+	const newTaleIndex = setState('currentTaleIndex', 0);
+	const newTopic = setState('currentTopic', taleChain.sections[0].topicName);
+	const newTopicDepth = setState('currentTopicDepth', 0);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard);
+}
 
 function setTaleIndex(state, taleIndex) {
-
-	const newState = setState('currentTaleIndex', taleIndex);
-
-	return state.merge(newState)
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	// working-spot
+	const updateDataBoard = setState('updateDataBoard', false);
+	return state.merge(newTaleIndex, updateDataBoard)
+	// return state.merge(newTaleIndex)
 }
 
 // Create a immutable Map object as state
@@ -5155,8 +5296,6 @@ const mapStateToDataBoardProps = (state) => {
 		topic    : state.get('currentTopic'),
 		topicDepth: state.get('currentTopicDepth'),
 		taleIndex : state.get('currentTaleIndex'),
-
-		// working-spot
 		updateDataBoard: state.get('updateDataBoard')
 	}
 }
@@ -5167,14 +5306,10 @@ const StatDataBoard = RRd.connect(
 	)(DataBoard);
 
 /* Connect more tale button */
-// working-spot
 const mapDispatchToNextBtn = (dispatch, props) => {
 	return {
 		nextTale: (e) => {
-			// working-spot
-			const taleIndex = store.getState().get('currentTaleIndex');
-
-			store.dispatch(setTaleIndexAC(taleIndex + 1));
+			dispatch(rollingTalesAC(props.topic, props.topicDepth, props.taleChain, props.taleIndex));
 		}
 	}
 }
@@ -5182,7 +5317,21 @@ const mapDispatchToNextBtn = (dispatch, props) => {
 const NextTaleBtn = RRd.connect(
 	null,
 	mapDispatchToNextBtn
-	)(NextBtn);
+	)(TaleBtn);
+
+const mapDispatchToEndBtn = (dispatch, props) => {
+	return {
+		nextTale: (e) => {
+			// working-spot: Back to start tale
+			dispatch(back2FirstTaleAC(props.taleChain));
+		}
+	}
+}
+// working-spot
+const EndTaleBtn = RRd.connect(
+	null,
+	mapDispatchToEndBtn
+	)(TaleBtn);
 
 /* Connect Indicator */
 const mapDispatchToIndicators = (dispatch, props) => {
