@@ -1269,6 +1269,186 @@ const DataFilterStateTree = {
 								}
 							]
 						}
+					},
+					{
+						dataset: '賭博罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					{
+						dataset: '重傷罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					{
+						dataset: '詐欺罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
 					}
 				]))
 			// State of judicial data selector
@@ -2632,7 +2812,7 @@ class StoryTeller {
 				datasets: [
 					'殺人罪', '兒童及少年性交易防制條例', '竊盜罪', 
 					'擄人勒贖罪', '恐嚇罪', '槍砲彈藥刀械管制條例',
-					'公共危險罪', '貪污罪', '瀆職罪'
+					'公共危險罪', '貪污罪', '瀆職罪', '重傷罪', '詐欺罪'
 				],
 				data: '被告人數',
 				vizType: '直方圖',
@@ -3674,6 +3854,30 @@ const DataBoard = React.createClass({
 							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
 							// 		+ query
 							return './prosecution/p9.csv'
+					})(),
+				},
+				{
+					name: '重傷罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/重傷罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return './prosecution/p10.csv'
+					})(),
+				},
+				{
+					name: '詐欺罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/詐欺罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return './prosecution/p11.csv'
 					})(),
 				},
 				// Judical Data 

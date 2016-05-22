@@ -1307,7 +1307,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-				
+				console.log(rows);
 				// The option maybe the combined columns of data.
 				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
