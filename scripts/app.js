@@ -2813,7 +2813,7 @@ class StoryTeller {
 			}
 		];
 
-		// working-spot: Tales for explain the chart.
+		// Tales for explain the chart.
 		this.taleChains = [
 			{
 				// The first section of each topic is the main indicator.
@@ -2839,14 +2839,120 @@ class StoryTeller {
 								backgroundColor: '#3B8AE5'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoContext  : '兒童及少年，是國家未來的主人翁，更是社會持續發展及進步的原動力，確保我們的孩子在無憂無慮、安全健康的環境下成長，是我們責無旁貸的使命，為此立法院立法<<兒童及少年性交易防制條例>>就是希望給予我們的下一代多一層保障。',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '總數',
 						isEnd: false
 					},
 					{
-						
+						Container: {
+							pos : {
+								left: '4.5em',
+								top : '9em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '早年的粉紅色代表罰金，近年的黃色代表拘役，無論何者均是輕罪，為什麼呢？',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4.5em',
+								top : '9em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '因為此條例並不一定是涉及性交易才會被起訴，散步兒少相關猥褻資訊或向兒少散步猥褻資訊均是違反此條例的，但罪不至徒刑，故此。',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '民國91、92年很明顯被判有期徒刑人數遠勝前幾年，也比後幾年多出不少，為什麼呢？',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '目前我們也還沒找到合理的解釋，還請各位一同集思廣益囉',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: true
+					}
+				]
+			},
+			// working-spot
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '殺人罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
 						Container: {
 							pos : {
 								right: '2em',
@@ -2864,34 +2970,10 @@ class StoryTeller {
 								backgroundColor: '#3B8AE5'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoContext  : '兒童及少年，是國家未來的主人翁，更是社會持續發展及進步的原動力，確保我們的孩子在無憂無慮、安全健康的環境下成長，是我們責無旁貸的使命，為此立法院立法<<兒童及少年性交易防制條例>>就是希望給予我們的下一代多一層保障。',
 						infoAnimation: '',
-						isTopicFirstSec: false,
-						isEnd: false
-					},
-					{
-						
-						Container: {
-							pos : {
-								left: '5em',
-								top : '2em',
-							},
-							size: {
-								width : '250px',
-								padding: '0.5em 1em'
-							}
-						},
-						IndButton: {
-							pos  : {
-
-							},
-							style: {
-								backgroundColor: '#822979'
-							}
-						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. ',
-						infoAnimation: '',
-						isTopicFirstSec: false,
+						isTopicFirstSec: true,
+						topicName: '總數',
 						isEnd: false
 					},
 					{
@@ -2913,7 +2995,7 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoContext  : '早年的粉紅色代表罰金，近年的黃色代表拘役，無論何者均是輕罪，為什麼呢？',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '各刑名統計',
@@ -2938,7 +3020,7 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoContext  : '因為此條例並不一定是涉及性交易才會被起訴，散步兒少相關猥褻資訊或向兒少散步猥褻資訊均是違反此條例的，但罪不至徒刑，故此。',
 						infoAnimation: '',
 						isTopicFirstSec: false,
 						isEnd: false
@@ -2962,7 +3044,7 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoContext  : '民國91、92年很明顯被判有期徒刑人數遠勝前幾年，也比後幾年多出不少，為什麼呢？',
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '各刑名百分比',
@@ -2987,38 +3069,13 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoContext  : '目前我們也還沒找到合理的解釋，還請各位一同集思廣益囉',
 						infoAnimation: '',
 						isTopicFirstSec: false,
-						isEnd: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '5em',
-								top : '2em',
-							},
-							size: {
-								width : '300px',
-								padding: '0.5em 1em'
-							}
-						},
-						IndButton: {
-							pos  : {
-
-							},
-							style: {
-								backgroundColor: '#822979'
-							}
-						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
-						infoAnimation: '',
-						isTopicFirstSec: false,
-						// working-spot
 						isEnd: true
 					}
 				]
-			}
+			},
 		];
 
 		// working-spot: The tale will
