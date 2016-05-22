@@ -1449,6 +1449,126 @@ const DataFilterStateTree = {
 								}
 							]
 						}
+					},
+					{
+						dataset: '偽造文書印文罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					{
+						dataset: '強制性交罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
 					}
 				]))
 			// State of judicial data selector
@@ -2812,7 +2932,8 @@ class StoryTeller {
 				datasets: [
 					'殺人罪', '兒童及少年性交易防制條例', '竊盜罪', 
 					'擄人勒贖罪', '恐嚇罪', '槍砲彈藥刀械管制條例',
-					'公共危險罪', '貪污罪', '瀆職罪', '重傷罪', '詐欺罪'
+					'公共危險罪', '貪污罪', '瀆職罪', '重傷罪', '詐欺罪',
+					'偽造文書印文罪', '強制性交罪'
 				],
 				data: '被告人數',
 				vizType: '直方圖',
@@ -3833,6 +3954,24 @@ const DataBoard = React.createClass({
 							return '/prosecution/詐欺罪.csv'
 						else 
 							return './prosecution/p11.csv'
+					})(),
+				},
+				{
+					name: '偽造文書印文罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/偽造文書印文罪.csv'
+						else 
+							return './prosecution/p12.csv'
+					})(),
+				},
+				{
+					name: '強制性交罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/強制性交罪.csv'
+						else 
+							return './prosecution/p13.csv'
 					})(),
 				},
 				// Judical Data 
