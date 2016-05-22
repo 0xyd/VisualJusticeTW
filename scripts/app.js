@@ -3980,7 +3980,9 @@ const DataBoard = React.createClass({
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
 		} else if (isTopicSwitching) { // Update when topic changing.
-
+			console.log('testing');
+			console.log('this.props: ', this.props);
+			console.log('nextProps: ', nextProps);
 			this.DBTopicUpdate(nextProps);
 			
 		} else if (isTopicSwitchingByTaleUd) {
@@ -4472,7 +4474,7 @@ function AppReducer(state = INITIAL_STATE, action) {
 			return back2FirstTale(state, action.taleChain)
 
 		case 'SELECT_TALE':
-			return selectTale(state, action.taleIndex, action.context)
+			return selectTale(state, action.taleIndex, action.taleContext)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -5130,19 +5132,26 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 
 // working-spot
 function selectTale(state, taleIndex, taleContext) {
-
+	
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
-	const newTopic = setState('currentTopic', taleContext.topicName);
+	const newTopic = 
+		setState(
+			'currentTopic', 
+			taleContext.topicName ? taleContext.topicName : state.get('currentTopic'));
 
 	// Find out the topic depth
 	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
 	const topicDepth = topicList.findIndex((topic) => {
 		return taleContext.topicName === topic
 	});
+	console.log('topicDepth: ', topicDepth);
+	const newTopicDepth = 
+		setState(
+			'currentTopicDepth', 
+			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
+	const updateDataBoard = setState('updateDataBoard', true);
 
-	const newTopicDepth = setState('currentTopicDepth', topicDepth);
-
-	return state.merge(newTaleIndex, newTopic, newTopicDepth)
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
 
 }
 
