@@ -4867,11 +4867,16 @@ class StoryTeller {
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
 
+	// Display a board to tell user that the page they want to go is not ready.
+	pageHasNotFinished: function() {
+		window.alert('即將推出，敬請期待。')
+	},
+
 	getInitialState: function() {
 
 		return {
 			nav: [
-				<RR.Link to='/about_us'>
+				/*<RR.Link to='/about_us'>
 					<img src="./src/aboutus.png" />
 				</RR.Link>,
 				<RR.Link to='/main'>
@@ -4882,15 +4887,15 @@ var IndexNavList = React.createClass({
 				</RR.Link>,
 				<RR.Link to='/work_together'>
 					<img src="./src/work.png" />
-				</RR.Link>,
+				</RR.Link>, */ 
+				<img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
+				<img src="./src/see.png"  onClick={ this.pageHasNotFinished }/>,
+				<img src="./src/issue.png"  onClick={ this.pageHasNotFinished }/>,
+				<img src="./src/work.png"  onClick={ this.pageHasNotFinished }/>,
 				<div className='social-group'>
 					<iframe id='githubStar' className='social-btn'
 						src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" 
 						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-					<div id='FBLike' className="fb-like" 
-						data-href="https://developers.facebook.com/docs/plugins/" 
-						data-layout="button_count" data-action="like" 
-						data-show-faces="true" data-share="true"></div>
 				</div>
 			]
 		}
