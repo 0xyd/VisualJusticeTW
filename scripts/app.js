@@ -2175,9 +2175,24 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: []
+												},
+												intl: {
+													headers: []
 												}
-										}, 
-										'入監原因分類'],
+											}, 
+											// For the next version
+											// {
+											// 	name: '入監原因分類',
+											// 	axes: {
+											// 		x: '民國',
+											// 		y: '人數'
+											// 	}
+											// }
+										],
 										[
 											{
 												name: '減刑',
@@ -2219,9 +2234,7 @@ const DataFilterStateTree = {
 														if (isLocal) 
 															return './correction/新入監犯罪次數與種類.csv'
 														else
-															return window.googleSheet +
-																'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
-																	window.query
+															return './correction/c3.csv'
 													})(),
 													headers: ['初犯', '再犯', '累犯']
 												},
@@ -2263,9 +2276,28 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													headers: null,
+												},
+												intl: {
+													headers: null,
 												}
-										}, 
-										'出獄原因分類'],
+											}, 
+											{
+												name: '出獄原因分類',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null,
+												},
+												intl: {
+													headers: null,
+												}
+											}
+											],
 										[
 											{
 												name: '減刑',
@@ -2286,6 +2318,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													headers: null,
+												},
+												intl: {
+													headers: null,
 												}
 											}
 										],
