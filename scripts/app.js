@@ -5621,7 +5621,9 @@ const Logo = React.createClass({
 	render: function() {
 		return (
 			<div id="LOGO-WRAPPER" className="b12-col-md-12 b15-row-md-5">
-				<div id="LOGO" className="b12-col-md-12 b12-row-md-12"></div>
+				<RR.Link to='/'>
+					<div id="LOGO" className="b12-col-md-12 b12-row-md-12"></div>
+				</RR.Link>
 			</div>
 		)
 	}
