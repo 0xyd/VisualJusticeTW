@@ -3508,7 +3508,7 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								等待說明。
+								很明顯的，民國84年有瀆職罪不受理人數相當多的現象。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: false,
