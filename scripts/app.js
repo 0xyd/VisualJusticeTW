@@ -1269,7 +1269,312 @@ const DataFilterStateTree = {
 								}
 							]
 						}
-					}
+					},
+					// 詐欺罪
+					{
+						dataset: '詐欺罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 重傷罪
+					{
+						dataset: '重傷罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 強制性交罪
+					{
+						dataset: '強制性交罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 偽造文書印文罪
+					{
+						dataset: '偽造文書印文罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 賭博罪
+					{
+						dataset: '賭博罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
 				]))
 			// State of judicial data selector
 			.set('judicial',
@@ -2632,7 +2937,8 @@ class StoryTeller {
 				datasets: [
 					'殺人罪', '兒童及少年性交易防制條例', '竊盜罪', 
 					'擄人勒贖罪', '恐嚇罪', '槍砲彈藥刀械管制條例',
-					'公共危險罪', '貪污罪', '瀆職罪'
+					'公共危險罪', '貪污罪', '瀆職罪', '詐欺罪',
+					'重傷罪', '強制性交罪', '偽造文書印文罪', '賭博罪'
 				],
 				data: '被告人數',
 				vizType: '直方圖',
@@ -2815,6 +3121,7 @@ class StoryTeller {
 
 		// Tales for explain the chart.
 		this.taleChains = [
+			// 兒少法 (Prosecution)
 			{
 				// The first section of each topic is the main indicator.
 				dataset: '兒童及少年性交易防制條例',
@@ -2951,6 +3258,7 @@ class StoryTeller {
 					}
 				]
 			},
+			// 殺人罪 (Prosecution)
 			{
 				// The first section of each topic is the main indicator.
 				dataset: '殺人罪',
@@ -2960,8 +3268,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								right: '2em',
-								top : '2em',
+								right: '4em',
+								top : '4em',
 							},
 							size: {
 								width : '400px',
@@ -2984,8 +3292,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3008,8 +3316,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '3em',
 							},
 							size: {
 								width : '300px',
@@ -3033,8 +3341,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '3em',
 							},
 							size: {
 								width : '300px',
@@ -3070,8 +3378,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								right: '2em',
-								top : '2em',
+								left: '6em',
+								top : '4em',
 							},
 							size: {
 								width : '400px',
@@ -3095,8 +3403,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '6em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3119,8 +3427,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '6em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3144,8 +3452,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3170,8 +3478,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3195,8 +3503,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '4em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3229,8 +3537,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								right: '2em',
-								top : '2em',
+								left: '7em',
+								top : '6em',
 							},
 							size: {
 								width : '400px',
@@ -3254,11 +3562,11 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '7em',
+								top : '6em',
 							},
 							size: {
-								width : '300px',
+								width : '350px',
 								padding: '0.5em 1em'
 							}
 						},
@@ -3283,8 +3591,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '7em',
+								top : '6em',
 							},
 							size: {
 								width : '300px',
@@ -3308,8 +3616,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '3em',
+								top : '6.5em',
 							},
 							size: {
 								width : '300px',
@@ -3334,8 +3642,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '3em',
+								top : '6.5em',
 							},
 							size: {
 								width : '300px',
@@ -3368,8 +3676,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								right: '2em',
-								top : '2em',
+								left: '6em',
+								top : '3em',
 							},
 							size: {
 								width : '400px',
@@ -3397,8 +3705,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '6em',
+								top : '3em',
 							},
 							size: {
 								width : '300px',
@@ -3425,8 +3733,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '6em',
+								top : '3em',
 							},
 							size: {
 								width : '300px',
@@ -3490,8 +3798,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '3.5em',
+								top : '7em',
 							},
 							size: {
 								width : '300px',
@@ -3509,33 +3817,6 @@ class StoryTeller {
 						infoContext  : 
 							<span>
 								很明顯的，民國84年有瀆職罪不受理人數相當多的現象。
-							</span>,
-						infoAnimation: '',
-						isTopicFirstSec: false,
-						isEnd: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '5em',
-								top : '2em',
-							},
-							size: {
-								width : '300px',
-								padding: '0.5em 1em'
-							}
-						},
-						IndButton: {
-							pos  : {
-
-							},
-							style: {
-								backgroundColor: '#822979'
-							}
-						},
-						infoContext  : 
-							<span>
-								以比例而言，被判無罪的人也多。除此之外「其他」也多（免訴、撤回、管轄錯誤）可見瀆職罪之地位尷尬。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
@@ -3581,7 +3862,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								right: '2em',
-								top : '2em',
+								top : '4em',
 							},
 							size: {
 								width : '400px',
@@ -3608,8 +3889,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '2em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -3636,8 +3917,8 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								right: '2em',
+								top : '4em',
 							},
 							size: {
 								width : '300px',
@@ -4762,6 +5043,54 @@ const DataBoard = React.createClass({
 							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
 							// 		+ query
 							return '/prosecution/p9.csv'
+					})(),
+				},
+				{
+					name: '詐欺罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/詐欺罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p11.csv'
+					})(),
+				},
+				{
+					name: '重傷罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/重傷罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p10.csv'
+					})(),
+				},
+				{
+					name: '強制性交罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/強制性交罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p13.csv'
+					})(),
+				},
+				{
+					name: '偽造文書印文罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/偽造文書印文罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p12賭博罪.csv'
 					})(),
 				},
 				// Judical Data 
