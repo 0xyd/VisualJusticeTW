@@ -42,7 +42,7 @@ const DataFilterStateTree = {
 						dataset: '竊盜案件',
 						availableChartTypes: [
 							'直方圖',
-							'趨勢圖'
+							// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -422,7 +422,7 @@ const DataFilterStateTree = {
 						dataset: '暴力犯罪案件',
 						availableChartTypes: [
 							'直方圖',
-							'趨勢圖'
+							// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -435,18 +435,25 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// Next version
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								},
 								{
@@ -458,18 +465,24 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								},
 								{
@@ -481,6 +494,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
@@ -504,18 +523,24 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								},
 								{
@@ -527,18 +552,24 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								},
 								{
@@ -550,18 +581,24 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
 											}
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								},
 								{
@@ -573,163 +610,199 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													header: '',
 												}
-											}
+											},
 										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
+										// [
+										// 	{
+										// 		name: '趨勢',
+										// 		axes: {
+										// 			x: '民國',
+										// 			y: '人數'
+										// 		}
+										// 	}
+										// ]
 									]
 								}
 							]
 						}
 					},
-					{
-						dataset: '毒品案件',
-						availableChartTypes: [
-							'直方圖',
-							'趨勢圖'
-						],
-						content: {
-							data: [
-								{
-									name: '嫌疑犯人數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '查獲第一級毒品數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '毒品數'
-												}
-											}, 
-											{
-												name: '相較他級毒品'
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '查獲第二級毒品數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '毒品數'
-												}
-											}
-										, {
-												name: '相較他級毒品'
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '查獲第三級毒品數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '毒品數'
-												}
-											}
-										, {
-												name: '相較他級毒品'
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '查獲第四級毒品數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '毒品數'
-												}
-											}
-										, 
-											{
-													name: '相較他級毒品'
-												}
+					// Collapsed 毒品案件
+					// {
+					// 	dataset: '毒品案件',
+					// 	availableChartTypes: [
+					// 		'直方圖',
+					// 		'趨勢圖'
+					// 	],
+					// 	content: {
+					// 		data: [
+					// 			{
+					// 				name: '嫌疑犯人數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
 
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								}
-							]
-						}
-					}
+					// 						}
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '查獲第一級毒品數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '毒品數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}, 
+					// 						{
+					// 							name: '相較他級毒品'
+					// 						}
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '查獲第二級毒品數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '毒品數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						},
+					// 						// {
+					// 						// 	name: '相較他級毒品'
+					// 						// }
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '查獲第三級毒品數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '毒品數'
+					// 							}
+					// 						},
+					// 						// {
+					// 						// 	name: '相較他級毒品'
+					// 						// }
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '查獲第四級毒品數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '毒品數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}, 
+					// 						// {
+					// 						// 		name: '相較他級毒品'
+					// 						// }
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			}
+					// 		]
+					// 	}
+					// }
 				]))
 					
 			// State of Prosecution Data Selector 
@@ -1586,7 +1659,7 @@ const DataFilterStateTree = {
 						dataset: '地方法院刑事案件收結情形',
 						availableChartTypes: [
 								'直方圖',
-								'趨勢圖'
+								// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -1679,8 +1752,15 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '天數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
-											}
+											},
+
 										],
 										[
 											{
@@ -1702,6 +1782,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1725,6 +1811,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1748,6 +1840,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										]
@@ -1770,7 +1868,7 @@ const DataFilterStateTree = {
 						dataset: '高等法院刑事案件收結情形',
 						availableChartTypes: [
 								'直方圖',
-								'趨勢圖'
+								// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -1859,6 +1957,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '天數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1883,6 +1987,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										]
@@ -1907,6 +2017,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1930,6 +2046,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '百分比'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1951,7 +2073,7 @@ const DataFilterStateTree = {
 						dataset: '最高法院刑事案件收結情形',
 						availableChartTypes: [
 								'直方圖',
-								'趨勢圖'
+								// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -1964,6 +2086,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1987,6 +2115,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -1996,6 +2130,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										]
@@ -2011,6 +2151,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '案件數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										],
@@ -2034,9 +2180,15 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -2058,9 +2210,15 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '天數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
-										}]
-										,
+											}
+										],
 										[
 											{
 												name: '趨勢',
@@ -2082,6 +2240,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 										}]
 										,
@@ -2091,6 +2255,12 @@ const DataFilterStateTree = {
 												axes: {
 													x: '民國',
 													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['終結', '未結'] 
 												}
 											}
 										]

@@ -1060,7 +1060,6 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 // Transit the stack bar to origin bar.
 barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 
-	console.log(header);
 	var self = this;
 
 	// Grape the data from stack.
@@ -1155,7 +1154,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 		var dataset = [];
 
 		if (isOrigin) {
-			console.log('should not be here');
 			self.stacks.each(function(d, i) {
 				dataset[i] = [];
 				d3.select(this).selectAll('rect')
@@ -1193,7 +1191,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 		}
 
 		else {
-			console.log('should be here');
 			var dataset = [];
 
 			self.stacks.each(function(d, i) {
@@ -1313,7 +1310,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-				console.log(rows);
+				
 				// The option maybe the combined columns of data.
 				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
 				
@@ -3191,7 +3188,6 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 						   			// Render the merged result if it is.
 						   			(isMergedResult ? _this.attr('merged-result') : d[dOption]);
 
-						console.log(info);
 						if (diff) {
 							if (diff < 0) 
 								return '<span id="BAR-INFO">' + info + '</span>' + 
