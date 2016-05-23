@@ -204,7 +204,6 @@ var graphClass = function() {
 	// Axes
 	this.xAxis = null;
 	this.yAxis = null;
-
 }
 
 graphClass.prototype.initializeAPad = function() {
@@ -547,6 +546,7 @@ barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, 
 							return self.outPadding + i * (self.barWidth + self.step)
 						}
 					});
+
 		var attrs = 
 			{
 				y: function(d, i) {
@@ -581,8 +581,16 @@ barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, 
 	}
 
 	function diffCal(d, i) {
+
+		var _this = d3.select(this);
+		
+		// Mark the headers that used to merge
+		if (beMergedDataset) 
+			_this.attr('merged-result', mergedDataset[i]);
+		
+		// Calculate the differences value for the bar after the first one.
 		if (i !== 0) {
-			var _this = d3.select(this),
+				var
 					pData = this.previousSibling.__data__,
 					diffs = 
 						Object.keys(d).map(function(key, i) {
@@ -1130,8 +1138,6 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 
 	// Remove the previous y axis.
 	this._removeYAxis();
-	console.log('check up here: ', d3.select('y-axis').empty());
-	console.log('checj up y-axis: ', d3.select('y-axis'));
 
 	// Calculate the total amount of the stack bars
 	function stackbarDataSum(d) {
@@ -1819,7 +1825,6 @@ lineGraphClass.prototype.mappingData = function(path, xLabel, yLabel, dOption) {
 	return p
 }
 
-// working-spot-6
 // Line graph update
 lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
 	
@@ -3154,6 +3159,7 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 				
 				var 
 					_this = d3.select(this),
+					prevBar = this.previousSibling,
 					diff = (function(name){
 						var r = _this.attr('diff-'+name);
 						if(r) return r 
@@ -3175,10 +3181,17 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 					.html(function() {
 
+						// Check the current display data is a merged result or not.
+						var keys = Object.keys(d),
+								isMergedResult = !(dOption in keys);
+
 						var info = 
 							'民國 ' + d['民國'] + '<br>' +
-						   		dOption + ': ' + d[dOption];
+						   		dOption + ': ' + 
+						   			// Render the merged result if it is.
+						   			(isMergedResult ? _this.attr('merged-result') : d[dOption]);
 
+						console.log(info);
 						if (diff) {
 							if (diff < 0) 
 								return '<span id="BAR-INFO">' + info + '</span>' + 
@@ -3190,6 +3203,20 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 											 '<span>較去年同期：</span>' +
 											 '<span><span class="up-arrow align">' + '</span>' + 
 											 '<span class="align">&nbsp;'+ diff + '</span></span>'
+						} else if (diff === undefined && isMergedResult) {
+
+							if (prevBar) {
+
+								diff = 
+									parseInt(_this.attr('merged-result')) - 
+										parseInt(d3.select(prevBar).attr('merged-result'));
+
+								return '<span id="BAR-INFO">' + info + '</span>' + 
+											 '<span>較去年同期：</span>' +
+											 '<span><span class="up-arrow align">' + '</span>' + 
+											 '<span class="align">&nbsp;'+ diff + '</span></span>'
+							}
+							return '<span id="BAR-INFO">' + info + '</span>'
 						}
 						else
 							return '<span id="BAR-INFO">' + info + '</span>'

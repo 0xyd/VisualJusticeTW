@@ -1,2 +1,2828 @@
-"use strict";function c_pinLbl2XAxisMidPt(t,e,a,r){t.selectAll(".tick").attr("transform",function(t,n){return"translate("+(r+(2*n+1)*e/2+n*a)+",0)"})}function c_placeValOnBarHdV(t,e,a,r,n){for(var i=t[0],s=0;s<i.length;s++){var o=i[s].getBBox(),l=(o.width/2,o.height/2),d=parseInt(i[s].getAttribute("x")),p=parseInt(i[s].getAttribute("y")),c=2*l>a/2?a/2-.5*l*2:a/2-l/2;i[s].setAttribute("transform","rotate(90, "+d+", "+p+")translate("+e+","+-1*c+")")}}function listAncestorNodes(t){for(var e=t,a=[];e&&e.parentNode;)"BODY"!==e.tagName?(a.push(e.parentNode),e=e.parentNode):e=null;return a}function calOffsetFromOrigins(t,e){var a=0,r=0,n=/\d+px/;for(var i in t){var s=window.getComputedStyle(t[i],null);a+=parseInt(s["border-left"].match(n)[0].replace("px",""))+parseInt(s["padding-left"].replace("px",""))+parseInt(s["margin-left"].replace("px","")),r+=parseInt(s["border-top"].match(n)[0].replace("px",""))+parseInt(s["padding-top"].replace("px",""))+parseInt(s["margin-top"].replace("px",""))}return{X:a,Y:r}}function jsonPop(t){var e=Object.prototype.toString.call(this).slice(8,-1);if("Object"===e)for(var a in this)if(a===t){var r=this[a];return delete this[t],r}}function transtoPartitonFormat(t,e){return{name:t.pop(e),children:function(t){var e=[];for(var a in t){var r={};"Function"!==Object.prototype.toString.call(t[a]).slice(8,-1)&&(r.name=a,r.value=parseInt(t[a]),e.push(r))}return e}(t)}}function colorAdjust(t,e){var a=colorObj.hexToRgb(t);return 255-a.r>e?a.r+=e:255-a.g>e?a.g+=e:255-a.b>e&&(a.b+=e),"rgb("+a.r+", "+a.g+", "+a.b+")"}var $v=Velocity,queue=function(){this.queueTasks=[]};queue.prototype.taskConst=function(t,e){return{f:t,fArgs:e}},queue.prototype.push=function(t){this.queueTasks.push(t)},queue.prototype.pushTasks=function(t){for(var e in t)this.queueTasks.push(t[e])},queue.prototype.shift=function(){return this.queueTasks.shift()},queue.prototype.queuing=function(t){var e=this,a=e.queueTasks!==[]?e.shift():null,r=a?a.f.apply(this,a.fArgs):null;r?r.then(function(){e.queuing(t)}):t&&t()};var colorClass=function(){this.bar={"合計發生件數":"#70C1B3","重大竊盜發生件數":"#F25F5C","普通竊盜發生件數":"#FFE066","汽車竊盜發生件數":"#247BA0","機車竊盜發生件數":"#2C5B26","重大竊盜破獲件數":"#9BC53D","重大竊盜尚未破獲件數":"#E55934","普通竊盜破獲件數":"#5BC0EB","普通竊盜尚未破獲件數":"#FA7921","汽機車竊盜案件":"#00A8E8","汽車竊盜破獲件數":"#EF233C","汽車竊盜尚未破獲件數":"#EDF2F4","汽車竊盜破獲率":"#0CCA4A","汽車竊盜嫌疑犯人數":"#F24B48","機車竊盜破獲件數":"#35C3D6","機車竊盜尚未破獲件數":"#FF1654","機車竊盜嫌疑犯人數":"#FFD000","被告人數":"#FC7B29","死刑":"#C20446","無期徒刑":"#FD9C3C","有期徒刑":"#E5404C","拘役":"#FFB14A","罰金":"#F68989","緩刑人數":"#9F89F4","免刑":"#53B4C4","無罪":"#2BA608","不受理":"#646561","累犯人數":"#D13F37","保安處分人數":"#809176","本年執行人數":"#BA0F30","本年入監人數":"#C41F3A","新入監人數":"#61B045","上年底留監人數":"#E9C247","本年出獄人數":"#F16B23","本年年底留監人數":"#55B5DF","案件數":"#4979BC","舊受":"#5C4491","新受":"#4CA0E0","終結":"#3B8AE5","未結":"#822979","平均每法官每月辦結件數":"#E71D36","終結案件中平均一件所需日數":"#FF9F1C","上訴案件維持率":"#2D73C4","抗告案件維持率":"#169976","累犯":"#E5404C","再犯":"#F16B23","初犯":"#F68989"},this.line={"本年執行人數":"#BA0F30","本年入監人數":"#C41F3A","新入監人數":"#61B045","上年底留監人數":"#E9C247","本年出獄人數":"#F16B23","本年年底留監人數":"#55B5DF"},this.rings=[{name:"新入監前家庭狀況",value:{"不詳":"#6B96AD","貧困無以為生":"#669FCC","免足維持生活":"#5FA4D4","小康之家":"#58ABD8","中產之上":"#55B5DF"}},{name:"新入監犯罪次數與種類",value:{"累犯":"#F16B23","再犯":"#F27422","初犯":"#ED8222"}},{name:"新入監前教育程度",value:{"大專以上":"#61B045","高中職":"#6EBE44","國中":"#78C14A","國小":"#87C66A","自修":"#8CBC71","不識字":"#8AB276","不詳":"#8AA679"}},{name:"歷年新入監年齡歷年統計",value:{"14 ~ 18":"#A885A4","18 ~ 20":"#AA77A2","20 ~ 24":"#B26DA5","24 ~ 30":"#B765A5","30 ~ 40":"#B9529E","40 ~ 50":"#B5479A","50 ~ 60":"#AD3C96","60 ~ 70":"#A93393","70 ~ 80":"#A42D91","80 ~":"#9F238E"}}]};colorClass.prototype.hexToRgb=function(t){var e=/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(t);return e?{r:parseInt(e[1],16),g:parseInt(e[2],16),b:parseInt(e[3],16)}:null};var colorObj=new colorClass,graphClass=function(){this.pad=null,this.padHeight=null,this.padWidth=null,this.padPadding=null,this.xAxis=null,this.yAxis=null};graphClass.prototype.initializeAPad=function(){return this.pad=function(){return d3.select("#DATABOARD-vizLayer").append("svg").attr("id","SKETCHPAD").style({"padding-top":"5%","padding-left":"5%","padding-right":"5%","padding-bottom":"5%"}).style("height","100%").style("width","100%")}(),this.padWidth=parseInt(this.pad.style("width").replace("px","")),this.padHeight=parseInt(this.pad.style("height").replace("px","")),this.padPadding={top:this.pad.style("padding-top").replace("px",""),bottom:this.pad.style("padding-bottom").replace("px",""),left:this.pad.style("padding-left").replace("px",""),right:this.pad.style("padding-right").replace("px","")},this},graphClass.prototype.readCSV=function(t){return d3.csv(t)},graphClass.prototype._dataFiltering=function(t,e){for(var a in t)if(""===t[a])return null;return t},graphClass.prototype._setOrdinalXScale=function(t,e){this.xScale=d3.scale.ordinal().domain(t.map(function(t){return e?t[e]:t})).rangeBands([0,this.chartWidth])},graphClass.prototype._setXAxis=function(t){this.xAxis=d3.svg.axis().scale(this.xScale).orient(t)},graphClass.prototype._setLinearYScale=function(t,e){this.yScale=d3.scale.linear().domain([0,d3.max(t,function(t){return e?parseFloat(t[e]):t})]).rangeRound([this.chartHeight,0])},graphClass.prototype._setYPctScale=function(t,e){this.yScale=d3.scale.linear().domain([0,100]).rangeRound([this.chartHeight,0])},graphClass.prototype._setYAxis=function(t,e,a){function r(t){return Math.round(t/1e3)+"K"}var n=null,i=null,s=d3.max(e,function(t){return a?parseInt(t[a]):parseInt(t)});s>1e5?(n=1e5,i=r):s>1e4?(n=1e4,i=r):1e4>s&&s>2e3?n=1e3:2e3>s&&s>1e3?n=500:1e3>s?n=200:100>s&&(n=10),this.yAxis=d3.svg.axis().scale(this.yScale).orient(t).tickValues(d3.range(0,s,n)).tickFormat(i)},graphClass.prototype._setYPctAxis=function(t){this.yAxis=d3.svg.axis().scale(this.yScale).orient(t).tickValues(d3.range(0,100,20)).tickFormat(function(t){return t+"%"})},graphClass.prototype._createXAxis=function(t,e,a,r,n){this.pad.append("g").attr("class","x-axis").attr("transform","translate(0,"+this.chartHeight+")").call(this.xAxis).call(c_pinLbl2XAxisMidPt,a,r,n).append("text").attr("class","axis-name").attr("x",function(){return t.length*(a+r)+n}).attr("y","25").text(e)},graphClass.prototype._createYAxis=function(t){this.pad.append("g").attr("class","y-axis").call(this.yAxis).append("text").attr("class","axis-name").attr("transform","rotate(90) translate(0, -10)").text(t)},graphClass.prototype._removeYAxis=function(){this.pad.select("g.y-axis").remove()},graphClass.prototype._updateXAxisLabel=function(t){var e=this.pad.select("g.x-axis"),a=e.select("text.axis-name");if(a.html()!==t){var r={x:a.attr("x"),y:a.attr("y"),"class":a.attr("class")};a.remove(),e.append("text").text(t).attr({x:r.x,y:r.y,"class":r["class"]})}},graphClass.prototype._updateYAxisLabel=function(t){var e=this.pad.select("g.y-axis"),a=e.select("text.axis-name");if(a.html()!==t){var r={transform:a.attr("transform"),"class":a.attr("class")};a.remove(),e.append("text").text(t).attr({transform:r.transform,"class":r["class"]})}},graphClass.prototype.setOutPadding=function(t){return this.outPadding=t,this},graphClass.prototype.setStep=function(t){return this.step=t,this},graphClass.prototype._setHorSpace=function(t,e,a){return parseInt((this.chartWidth-a-e*t.length)/t.length)};var barGraphClass=function(){graphClass.call(this),this.chartHeight=null,this.chartWidth=null,this.bars=null,this.barsGroup=null,this.barWidth=null,this.barTxtGroup=null,this.stacks=null,this.stackGroup=null,this.outPadding=null,this.step=null,this.xScale=null,this.xAxis=null,this.yScale=null,this.yAxis=null};barGraphClass.prototype=Object.create(graphClass.prototype),barGraphClass.prototype.constructor=barGraphClass,barGraphClass.prototype.setChartSize=function(){return this.chartHeight=this.padHeight-this.padPadding.top-this.padPadding.bottom,this.chartWidth=this.padWidth-this.padPadding.left-this.padPadding.right,this},barGraphClass.prototype.setOutPadding=function(t){return this.outPadding=t,this},barGraphClass.prototype.setStep=function(t){return this.step=t,this},barGraphClass.prototype._setBarWidth=function(t){this.barWidth=parseInt((this.chartWidth-this.outPadding-this.step*t.length)/t.length)},barGraphClass.prototype._createBars=function(t,e,a,r){function n(t){this.bars=this.barsGroup.selectAll("rect").data(t).enter()}function i(t,r){var n=this.bars.append("rect").classed("bar",!0).attr({x:function(t,e){return o.outPadding+e*(o.barWidth+o.step)}}),i={y:function(t,r){return l?o.yScale(a[r]):o.yScale(t[e])},width:function(t,e){return o.barWidth},height:function(t,r){return l?o.chartHeight-o.yScale(a[r]):o.chartHeight-o.yScale(parseFloat(t[e]))},fill:function(t,a){return colorObj.bar[e]}};return t?n.attr({y:o.chartHeight,height:0,width:0}).transition().duration(1e3).attr(i).each("end",r):void n.attr(i).each(r)}function s(t,e){if(0!==e){var a=d3.select(this),r=this.previousSibling.__data__,n=Object.keys(t).map(function(e,a){return 0!==a?{name:e,val:function(){return t[e]-Math.ceil(t[e])<0?(parseFloat(t[e])-parseFloat(r[e])).toFixed(2):parseInt(t[e])-parseInt(r[e])}()}:void 0}).filter(function(t){return t?t:void 0});for(var i in n)a.attr("diff-"+n[i].name,n[i].val)}}var o=this,l=a.length>0?!0:!1;return this.barsGroup=this.pad.append("g").attr("class","bar-group"),n.apply(this,[t]),i.apply(this,[r,s]),this},barGraphClass.prototype._createStackBars=function(t,e,a){function r(t){i=i[0].length<t.length?i.data(t).enter():i.data(t).exit().remove()}function n(t,e){i[0].length===t.length&&i.append("g").classed("stack",!0)}this.stackGroup=this.pad.append("g").classed("stack-bars-group",!0);var i=this.pad.select("g.stack-bars-group").selectAll("g");r(t),n(t,null),this.stacks=i,this._stackBarProducer(a)},barGraphClass.prototype.updateStackBars=function(t,e,a){this._stackBarProducer(e,a).then(function(t){return t.each(function(t,e){this.__data__.year=this.parentNode.__data__["民國"]}),new tipClass}).then(function(t){t.appendStackBarMouseOver()})},barGraphClass.prototype.transitBarToStack=function(t,e,a){function r(t){s=s[0].length<t.length?s.data(t).enter():s.data(t).exit().remove()}function n(t){s[0].length===t.length&&s.append("g").classed("stack",!0)}this.bars=this.barsGroup.selectAll("rect.bar"),this.stackGroup=this.pad.append("g").classed("stack-bars-group",!0);var i=this,s=this.stackGroup.selectAll("g");if(a.url)var o=new Promise(function(t,e){i.readCSV(a.url).row(i._dataFiltering).get(function(e,a){t(a)})});var l=new Promise(function(t,e){(function(e){var a=[];return e.each(function(r,n){a.push(r),n===e[0].length-1&&t(a)}),a})(i.bars)}),d=new Promise(function(s,d){Promise.all([o,l]).then(function(o){for(var l=[],d=0,p=0;2>p;++p)o[p]&&d<o[p].length&&(d=o[p].length);for(var c=0;d>c;++c){for(var u={},h=0;2>h;++h)o[h]&&Object.assign(u,o[h][c]);l.push(u)}var f=[].concat(a.headers).concat(e.headers).filter(function(t){return null!==t&&void 0!==t}),g=i._mergedColVal(l,f);i._removeYAxis(),i._setLinearYScale(g,null),i._setYAxis("left",g,null),i._createYAxis(t),r(l),n(l),i.barsGroup.remove(),i.barTxtGroup.remove(),i._stackBarProducer(e,a).then(function(t){return t.each(function(t,e){this.__data__.year=this.parentNode.__data__["民國"]}),new tipClass}).then(function(t){t.appendStackBarMouseOver(),s()})})});return d},barGraphClass.prototype._stackBarProducer=function(t,e){this.stacks=this.stackGroup.selectAll("g.stack");var a=this,r=[].concat(t.headers,e.headers).filter(function(t){return null!==t&&void 0!==t}),n=new Promise(function(t,e){d3.selectAll("g.stack").each(function(e,n){function i(t){t.length>c[0].length?(h=!0,u=c.data(t).enter()):c.data(t).exit().remove()}function s(t){var e={x:a.outPadding+n*(a.barWidth+a.step),y:function(t,e){return t.y0},fill:function(t){return colorObj.bar[t.name]},width:a.barWidth,height:0};h?(c.attr(e).transition().duration(t).attr({height:function(t,e){return t.dy>=0?t.dy:0}}),u.append("rect").classed("stackbar",!0).attr(e).transition().duration(t).attr({height:function(t,e){return t.dy>=0?t.dy:0}})):c.attr(e).transition().duration(t).attr({height:function(t){return t.dy>=0?t.dy:0}})}if(r){var o=[],l=function(){var t=0;for(var n in r)t+=parseFloat(e[r[n]]);return a.chartHeight-a.yScale(t)}();for(var d in r){var p={};p.name=r[d],p.value=parseFloat(e[r[d]]),p.dy=a.chartHeight-a.yScale(p.value),0===parseInt(d)?p.y0=a.chartHeight-l:p.y0=o[parseInt(d)-1].y0+o[parseInt(d)-1].dy,o.push(p)}}var c=d3.select(this).selectAll("rect"),u=null,h=!1;i(o),s(500),this===this.parentNode.lastChild&&t(d3.selectAll("rect.stackbar"))})});return n},barGraphClass.prototype.transitBarToPCTStackBar=function(t,e,a,r){var n=this;return this.transitBarToStack(t,e,a).then(function(){n.transitPCTStackBar(t,r)})},barGraphClass.prototype.transitPCTStackBar=function(t,e){var a=this;this._removeYAxis(),this._setYPctScale(),this._setYPctAxis("left"),this._createYAxis(t);var r=[];this.stacks.each(function(t,e){r[e]=[],d3.select(this).selectAll("rect").each(function(t,a){r[e].push({year:t.year,name:t.name,value:t.value,y0:t.y0,dy:t.dy})})}),r=r.map(function(t){for(var e=function(t){var e=0;for(var a in t)e+=t[a].value;return e}(t),r=0;r<t.length;r++){var n=(t[r].value/e).toFixed(2);t[r].pct=n,0===r?t[r].y0_pct=0:t[r].y0_pct=t[r-1].dy_pct+t[r-1].y0_pct,r===t.length-1?t[r].dy_pct=function(e){for(var r=0,n=0;e>n;n++)r+=t[n].dy_pct;return a.chartHeight-r}(r):t[r].dy_pct=a.chartHeight-a.yScale(100*parseFloat(n))}return t});var n=new Promise(function(t,e){a.stacks.each(function(e,a){d3.select(this).selectAll("rect").data(r[a]).transition().duration(1e3).attr({y:function(t,e){return t.y0_pct},height:function(t,e){return t.dy_pct>=0?t.dy_pct:0}}).each("end",function(e,a){this===this.parentNode.lastChild&&t()})})});return n},barGraphClass.prototype.transitStackBarToBar=function(t,e,a){console.log(t);var r=this,n=[],i=new Promise(function(a,i){r.stacks.each(function(i,s){n.push(this.__data__);var o=r._checkColAccessableInOrigin(n,t),l=o?e:[],d=o?r._mergedColVal(n,l):[];d3.select(this).selectAll("rect.stackbar").transition().duration(2e3).attr({y:r.chartHeight,height:0,width:0}),this===this.parentNode.lastChild&&(r.stackGroup.remove(),a({isHeaderMerged:o,mergedData:d}))})});return i.then(function(e){r._removeYAxis(),r._setLinearYScale(e.mergedData.length>0?e.mergedData:n,e.isHeaderMerged?null:t),r._setYAxis("left",e.mergedData.length>0?e.mergedData:n,e.isHeaderMerged?null:t),r._createYAxis(a),r._createBars(n,t,e.mergedData,!1),r._markValOnBar(n,t,e.mergedData)}),i},barGraphClass.prototype.transitPCTSBarToSBar=function(t,e,a,r){function n(t){return t.map(function(t){for(var e=0,a=0;a<t.length;++a)e+=t[a].value;return e})}var i=this,s=e.headers.concat(a.headers).filter(function(t,e){return null!==t&&void 0!==t});this._removeYAxis(),console.log("check up here: ",d3.select("y-axis").empty()),console.log("checj up y-axis: ",d3.select("y-axis"));var o=new Promise(function(o,l){var d=[];if(r){console.log("should not be here"),i.stacks.each(function(t,e){d[e]=[],d3.select(this).selectAll("rect").each(function(t,a){d[e].push(t)})});var p=n(d);i._setLinearYScale(p,null),i._setYAxis("left",p,null),i._createYAxis(t),i.stacks.each(function(t,e){d3.select(this).selectAll("rect").transition().duration(2e3).attr({y:function(t,e){return t.y0},height:function(t,e){return t.dy>=0?t.dy:0}}).each("end",function(t,e){this===this.parentNode.lastChild&&o(new tipClass)})})}else{console.log("should be here");var d=[];i.stacks.each(function(t,e){d[e]=[];for(var a in s)d[e].push({name:s[a],value:parseFloat(t[s[a]])})});var p=n(d);i._setLinearYScale(p,null),i._setYAxis("left",p,null),i._createYAxis(t),i._stackBarProducer(e,a).then(function(t){return t.each(function(t,e){this.__data__.year=this.parentNode.__data__["民國"]}),new tipClass}).then(function(t){t.appendStackBarMouseOver(),o()})}});return o},barGraphClass.prototype.transitPCTSBarToBar=function(t,e,a,r,n){var i=[];this.stacks.each(function(t,e){i.push(t)}),this.stackGroup.remove();var s=this._checkColAccessableInOrigin(i,e),o=s?this._mergedColVal(i,n):[];return this._setLinearYScale(o.length>0?o:i,s?null:e),this._removeYAxis(),this._setYAxis("left",o.length>0?o:i,s?null:e),this._createYAxis(t),this._createBars(i,e,o,!0),this._markValOnBar(i,e,s?o:null),new Promise(function(t,e){t()})},barGraphClass.prototype._markValOnBar=function(t,e,a){var r=this,n=a.length>0?!0:!1;this.barTxtGroup=this.pad.append("g").attr("id","BAR-TXTGROUP"),this.barTxtGroup.selectAll("text").data(t).enter().append("text").text(function(t,r){return n?a[r]:t[e]?t[e]:t}).attr("class","mark").attr("x",function(t,e){return r.outPadding+e*(r.barWidth+r.step)}).attr("y",function(t,i){return n?r.yScale(a[i]):t[e]?r.yScale(t[e]):r.yScale(t)}).call(c_placeValOnBarHdV,10,this.barWidth,this.step,this.outPadding)},barGraphClass.prototype.mappingData=function(t,e,a,r,n,i,s){var o=this,l=new Promise(function(n,i){o.readCSV(t).row(o._dataFiltering).get(function(t,i){console.log(i);var l=o._checkColAccessableInOrigin(i,r),d=l?o._mergedColVal(i,s):[];o._setBarWidth(i),o._setOrdinalXScale(i,e),o._setLinearYScale(d.length>0?d:i,l?null:r),o._setYAxis("left",d.length>0?d:i,l?null:r),o._setXAxis("bottom"),o._createXAxis(i,e,o.barWidth,o.step,o.outPadding),o._createYAxis(a),o._createBars(i,r,d,!0),o._markValOnBar(i,r,d),n({data:i,pad:o.pad,step:o.step,barWidth:o.barWidth,outPadding:o.outPadding})})});return l},barGraphClass.prototype._checkColAccessableInOrigin=function(t,e){if(t){var a=Object.keys(t[0]);for(var r in a)if(a[r]===e)return!1}return!0},barGraphClass.prototype._mergedColVal=function(t,e){return t.map(function(t,a){var r=0;for(var a in e)r+=parseFloat(t[e[a]]);return r})},barGraphClass.prototype.update=function(t,e,a){var r=this,n=new Promise(function(n,i){var s=r.pad.selectAll("rect"),o=r.pad.selectAll(".mark"),l=function(){for(var t=[],e=0;e<s[0].length;e++)t.push({x:s[0][e].getAttribute("x"),y:s[0][e].getAttribute("y")});return t}(),d=[],p=[];s.each(function(t,e){p.push(t)}),r._setLinearYScale(p,a),r._setYAxis("left",p,a),r._updateXAxisLabel(t),r._updateYAxisLabel(e),s.attr({width:function(t,e){return r.barWidth}}).transition().attr({y:function(t,e){return d.push({x:this.getAttribute("x"),y:r.yScale(parseFloat(t[a]))}),d[e].y},height:function(t){return r.chartHeight-r.yScale(parseFloat(t[a]))},fill:function(t,e){return colorObj.bar[a]}}).each("end",function(t,e){e===s[0].length-1&&n({data:p,pad:r.pad,step:r.step,barWidth:r.barWidth,outPadding:r.outPadding})}),o.transition().attr("x",function(t,e){var a=d[e].y-l[e].y;return parseInt(this.getAttribute("x"))+a}).text(function(t){return t[a]}),r.pad.selectAll(".y-axis").call(r.yAxis)});return n},barGraphClass.prototype.isInvisible=function(){return this.bars.style("opacity")?!0:void 0},barGraphClass.prototype.bePhantom=function(){this.bars.style("opacity",0),this.isBarHidden()&&this.beDisplayed()},barGraphClass.prototype.beVisible=function(){this.bars.style("opacity",1),this.isBarHidden()&&this.beDisplayed()},barGraphClass.prototype.hide=function(){this.bars.style("display","none")},barGraphClass.prototype.beDisplayed=function(){this.bars.style("display","inline")},barGraphClass.prototype.isBarHidden=function(){var t=this.bars.style("display");return"none"===t?!0:!1},barGraphClass.prototype._makeXGridLines=function(){return d3.svg.axis(this.xScale).orient("bottom")},barGraphClass.prototype._makeYGridLines=function(){return d3.svg.axis(this.yScale).orient("left")},barGraphClass.prototype.makeGrid=function(){this.pad.append("g").attr("class","grid").attr("transform",""),this.pad.append("g").attr("class","grid").attr("transform","")};var lineGraphClass=function(){graphClass.call(this),this.pad=null,this.padPadding=null,this.padHeight=0,this.padWidth=0,this.chartHeight=null,this.chartWidth=null,this.step=0,this.linePath=null,this.lineDots=null,this.areaUnderLine=null,this.dottedLine=d3.svg.line().x(function(t,e){return t.cx}).y(function(t,e){return t.cy}),this.dotSpace=null,this.xScale=null,this.xAxis=null,this.yScale=null,this.yAxis=null,this.area=null,this.dividedAreas=null,this.infoBoard={infoReset:function(){},emptyAll:function(){this.body.remove()}}};lineGraphClass.prototype=Object.create(graphClass.prototype),lineGraphClass.prototype.constructor=lineGraphClass,lineGraphClass.prototype.setChartSize=function(t){return this.chartHeight=t?t.padHeight-t.padPadding.top-t.padPadding.bottom:this.padHeight-this.padPadding.top-this.padPadding.bottom,this.chartWidth=t?t.padWidth-t.padPadding.left-t.padPadding.right:this.padWidth-this.padPadding.left-this.padPadding.right,this},lineGraphClass.prototype.plotBars=function(t,e,a,r,n){var i=this,s=new Promise(function(n,s){for(var o=a?a[0]:e.selectAll("rect")[0],l=d3.select("#SKETCHPAD").select("rect").attr("fill"),d=0;d<o.length;d++){var p=o[d].getBBox();t[d].dotX=p.x+r,t[d].dotY=p.y}var c=d3.svg.line().x(function(t){return t.dotX}).y(function(t){return t.dotY});i.linePath?i.linePath.datum(t).transition().attr("d",c).attr("stroke",colorAdjust(l,20)):i.linePath=i.pad.append("g").attr("class","line-group").append("path").attr("class","dotted-path").datum(t).attr("d",c).attr("fill","none").attr("stroke",colorAdjust(l,20)).attr("stroke-width",3),i.lineDots?i.lineDots.data(t).transition().attr("fill",colorAdjust(l,20)).attr("cx",function(t){return t.dotX}).attr("cy",function(t){return t.dotY}):i.lineDots=i.pad.append("g").attr("class","dots-cluster").selectAll("circle").data(t).enter().append("circle").attr("cx",function(t){return t.dotX}).attr("cy",function(t){return t.dotY}).attr("class","dots").attr("fill",colorAdjust(l,20)).attr("stroke-width",2).attr("stroke","#fff").attr("r",7),i.areaUnderLine?i.updateUnderArea(t,colorAdjust(l,40)):i.drawUnderArea(t,colorAdjust(l,40)),n({data:t,hexCode:l,line:i.linePath,dots:i.lineDots,area:i.areaUnderLine})});return s},lineGraphClass.prototype.initInfoBoard=function(){this.infoBoard=d3.select("#DATABOARD-vizLayer").append("div").attr("id","LINE-INFO-BOARD").attr("class","board")},lineGraphClass.prototype.inheritPad=function(t,e,a,r){return this.pad=t,this.padHeight=e,this.padWidth=a,this.padPadding=r,this},lineGraphClass.prototype.mappingData=function(t,e,a,r){var n=this,i=new Promise(function(i,s){n.readCSV(t).row(n._dataFiltering).get(function(t,s){n.dotSpace=n._setHorSpace(s,n.step,n.outPadding),n._setOrdinalXScale(s,e),n._setLinearYScale(s,r),n._setYAxis("left",s,r),n._setXAxis("bottom"),n._createXAxis(s,e,n.dotSpace,n.step,n.outPadding),n._createYAxis(a),n.lineDots=n.pad.append("g").attr("class","dots-cluster").selectAll("circle").data(s).enter().append("circle").attr("cx",function(t,e){return n.outPadding+(2*e+1)*n.dotSpace/2+e*n.step}).attr("cy",function(t,e){return n.yScale(t[r])}).attr({r:7,"class":"dots",fill:colorAdjust(colorObj.line[r],20),stroke:"#fff","stroke-width":2}).call(function(){var t=function(t){for(var e=[],a=0;a<t[0].length;a++)e.push({cx:parseInt(d3.select(t[0][a]).attr("cx")),cy:parseInt(d3.select(t[0][a]).attr("cy"))});return e}(this);n.linePath=n.pad.append("g").classed("line-group",!0).append("path").datum(t).attr({d:n.dottedLine,fill:"none","class":"line",stroke:colorObj.line[r],"stroke-width":3}),i()})})});return i},lineGraphClass.prototype.update=function(t,e,a,r){var n=this,i=new Promise(function(e,a){n.readCSV(t).row(function(t){return t}).get(function(t,a){function i(t){t.length>=o[0].length?o.data(t).enter().append("circle"):o.data(t).exit()}function s(t){o.transition().duration(t).attr({cy:function(t,e){return n.yScale(t[r])},fill:function(){return colorObj.line[r]}}).each("end",function(t,a){a===o[0].length-1&&e({circles:o[0]})})}n._setLinearYScale(a,r),n._setYAxis("left",a,r);var o=n.pad.select(".dots-cluster").selectAll("circle");n.pad.selectAll(".y-axis").call(n.yAxis),i(a),s(1e3)})});return i.then(function(t){var e=function(t){for(var e=[],a=0;a<t.length;a++)e.push({cx:parseInt(d3.select(t[a]).attr("cx")),cy:parseInt(d3.select(t[a]).attr("cy"))});return e}(t.circles);n.pad.select("g.line-group").select("path").datum(e).transition().duration(600).attr({d:n.dottedLine,stroke:colorObj.line[r]})}),i},lineGraphClass.prototype.fillArea=function(t,e){this.area=d3.svg.area().x(function(t){return t.dotX}).y0(this.chartHeight).y1(function(t){return t.dotY}),this.pad.append("path").datum(t).attr("fill",e).attr("d",this.area)},lineGraphClass.prototype.drawUnderArea=function(t,e){this.area=d3.svg.area().x(function(t){return t.dotX}).y0(this.chartHeight).y1(function(t){return t.dotY}),this.areaUnderLine=this.pad.append("g").attr("class","under-line-area-group").append("path").datum(t).attr("class","under-line-area").attr("fill",e).attr("d",this.area)},lineGraphClass.prototype.updateUnderArea=function(t,e){this.areaUnderLine.datum(t).transition().attr("d",this.area).attr("fill",e).style("opacity",.8)},lineGraphClass.prototype.isInvisible=function(){return this.linePath.style("opacity")?!0:void 0},lineGraphClass.prototype.hide=function(){return this.linePath.style("display","none"),this.lineDots.style("display","none"),this},lineGraphClass.prototype.beDisplayed=function(){return this.linePath.style("display","inline"),this.lineDots.style("display","inline"),this},lineGraphClass.prototype.isLineHidden=function(){var t=this.linePath.style("display");return"none"===t?!0:!1},lineGraphClass.prototype.displayUnderArea=function(){return this.areaUnderLine.style("display","inline"),this},lineGraphClass.prototype.hideUnderArea=function(){return this.areaUnderLine.style("display","none"),this},lineGraphClass.prototype.empty=function(){return this.linePath=null,this.lineDots=null,this.areaUnderLine=null,this},lineGraphClass.prototype.drawEvtMarkers=function(){var t="https://spreadsheets.google.com/tq?key=",e="1jAMtUHVlw_pqmlnyFrscqwy274CgmQQ9C0Kp3EXmoAY",a="&tqx=out:csv",r=this,n=this.lineDots[0].filter(function(t){return"circle"===t.tagName?t:void 0});this.readCSV(t+e+a).row(function(t,e){return 0!==e?t:void 0}).get(function(t,e){var a=e.map(function(t){return t["民國"]}),i=n.map(function(t){for(var e in a)if(t.__data__["民國"]===a[e])return t.__data__}).filter(function(t){return t?t:void 0});!function(){for(var t in n){var a=e.find(function(e){try{n[t].__data__["民國"]}catch(a){if(a instanceof TypeError)return null}return e["民國"]===n[t].__data__["民國"]});a?(n[t].__data__["司法事記"]=a["司法事記"],n[t].__data__.tag=a.tag,n[t].__data__.hasEvent=!0):(n[t].__data__.hasEvent=!1,n[t].__data__.tag="")}}();r.pad.select("g.x-axis").attr("transform").match(/\d+\.\d+/g);r.pad.append("g").attr("class","evt-marker-lines").selectAll("line").data(i).enter().append("line").attr("x1",function(t){return t.dotX}).attr("y1",function(t){return t.dotY}).attr("x2",function(t){return t.dotX}).attr("y2",function(t){return t.dotY-50<30?t.dotY+50:t.dotY-50}).attr("stroke","#333").attr("stroke-width",1).each(function(t,e){var a=d3.select(this);0===e&&r.pad.append("g").attr("class","evt-marker-names"),this.__data__.text=r.pad.select("g.evt-marker-names").append("text").attr("x",a.attr("x2")).attr("y",a.attr("y2")).text(a.node().__data__.tag).attr("fill","#08f")}).call(function(){var t=this[0].filter(function(t){return"line"===t.tagName?t:void 0});for(var e in n)n[e].__data__.hasEvent&&(n[e].__data__.line=d3.select(t.shift()))})})},lineGraphClass.prototype.isEvtMarkersExisted=function(){return this.pad.select("g.evt-marker-lines").empty()},lineGraphClass.prototype.emptyEvtMarkers=function(){this.pad.select("g.evt-marker-lines").remove(),this.pad.select("g.evt-marker-names").remove()},lineGraphClass.prototype.updateEvtMarkers=function(){d3.select("g.evt-marker-lines").selectAll("line").transition().duration(200).attr("x1",function(t){return t.dotX}).attr("y1",function(t){return t.dotY}).attr("x2",function(t){return t.dotX}).attr("y2",function(t){return t.dotY-50<30?t.dotY+50:t.dotY-50})};var ringGraphClass=function(){graphClass.call(this),this.coreRadius=100,this.ringInnerRadius=this.coreRadius,this.ringDelta=0,this.ringGap=2,this.ringGroup=[],this.rocYr=null,this.dataInfoView={textArea:null,percentage:null,categoryName:null,itemName:null,itemNumber:null},this.ringInfoBoard={statsBoard:{body:null,scale:null,info:[],infoIdx:0,infoReset:function(){return this.info=[],this.infoIdx=0,this},emptyAll:function(){this.body.remove(),this.scale=null,this.infoReset()},setScale:function(){var t=parseInt(this.body.style("width").replace("px",""));this.scale=d3.scale.linear().domain([0,d3.max(this.info[this.infoIdx].values,function(t){return t.value})]).rangeRound([0,.5*t])},storeInfo:function(t,e,a){for(var r=a.length,n={name:t,ringId:e,year:null,values:[]},i=0;r>i;++i)0===parseInt(i)?n.year=a[i].__data__.name:n.values.push({name:a[i].__data__.name,value:a[i].__data__.value});this.info.push(n)},update:function(){var t=this,e=this.info[this.infoIdx],a=t.body.select("#"+e.ringId+"-menu"),r=a.select("svg");t.setScale(),a.selectAll("svg > text").remove(),a.selectAll("rect").each(function(t,a){this.__data__=e.values[a]}).call(function(){this.transition().duration(600).attr("width",function(e,a){return t.scale(e.value)}).each("end",function(){t._markValText.call(this,{svg:r})})})},_markValText:function(){var t=arguments[0].svg,e=d3.select(this),a=this.__data__,r=parseInt(e.attr("width").replace("px","")),n=parseInt(e.attr("x")),i=parseInt(e.attr("y"));t.append("text").text(a.value).style("font-size","0.8em").attr("x",n+r+5).attr("y",i+12).attr("fill","#fff"),arguments[0].isInit&&arguments[0].isLast&&t.attr("default-height",i+30)}},percentageBoard:{body:null,emptyAll:function(){this.body.remove()},calVal:function(t){var t=100*t>.0999999999?(100*t).toFixed(1):'<span style="font-size: 0.4em;">&lt;</span> 0.1';return this.body.select(".board-body-txt").html(t),this},setTitle:function(t,e){return this.body.select(".board-body-title").text(t+":"+e),this}}}};ringGraphClass.prototype=Object.create(graphClass.prototype),ringGraphClass.prototype.constructor=ringGraphClass,ringGraphClass.prototype.init=function(){return this.shellRadius=function(t,e){return Math.min(t,e)/2}(this.padWidth-this.padPadding.left,this.padHeight-this.padPadding.top),this.ringInfoBoard.statsBoard.body=d3.select("#DATABOARD-vizLayer").append("div").classed("board",!0).attr("id","RING_STATS_BOARD").style("top","7%").style("left","7%"),this.ringInfoBoard.percentageBoard.body=d3.select("#DATABOARD-vizLayer").append("div").classed("board",!0).attr("id","RING_PERCENTAGE_BOARD").style("bottom","5%").style("left","7%"),this.ringInfoBoard.percentageBoard.body.append("section").attr("class","board-body board-body--centering").style("height","100%").call(function(){this.append("div").attr("class","board-body-title"),this.append("div").attr("class","board-body-txt")}),this},ringGraphClass.prototype.ringConstructor=function(t,e,a,r){var n=function(t,e,a,r){this.idName=t,this.dataSource=r,this.outerRadius=a,this.innerRadius=e,this.partition=d3.layout.partition().sort(null).size([2*Math.PI,this.outerRadius*this.outerRadius]).value(function(t){return t.value}),this.arc=d3.svg.arc().startAngle(function(t){return t.x}).endAngle(function(t){return t.x+t.dx}).innerRadius(this.innerRadius).outerRadius(this.outerRadius),this.pathOriginPos=[]},i=new n(t,a,r,e);return i},ringGraphClass.prototype._infoBoardRender=function(t){var e=this.ringInfoBoard.statsBoard,a=e.info,r=e.infoIdx,t=t?!0:!1,n=(parseInt(e.body.style("width").replace("px","")),colorObj.rings.find(function(t){return t.name===a[r].name?!0:void 0}));if(e.setScale(),t){e.info[e.infoIdx];e.update()}else e.body.append("div").attr("id",a[r].ringId+"-menu").attr("class","board-dropdown").html(function(){return'<div class="board-dropdown-header"><span class="title">'+a[r].name+'</span><span class="arrow"><div class="arrow-left"></div><div class="arrow-right"></div></span></div>'}).selectAll("div.board-dropdown").data([a[r]]).enter().append("div").attr("class","board-dropdown-menu").append("svg").selectAll("g").data(a[r].values).enter().append("g").append("text").text(function(t){return t.name}).attr("x",0).attr("y",function(t,e){return 22.5+25*(e>0?e:0)+"px"}).attr("font-size","0.8em").attr("fill","#fff").call(function(t){
-var i=function(t){for(var e=[],a=t.length,r=0;a>r;++r)e.push(parseInt(d3.select(t[r]).style("width").replace("px","")));return Math.max.apply(null,e)}(t[0]),s=e.body.select("#"+a[r].ringId+"-menu svg");s.selectAll("rect").data(a[r].values).enter().append("rect").attr("height",15).attr("width",function(t,a){return e.scale(t.value)}).attr("default-color",function(t){return n.value[t.name]}).attr("fill",function(t){return n.value[t.name]}).attr("x",function(t,e){return 10+i+"px"}).attr("y",function(t,e){return 10+25*(e>0?e:0)+"px"}).call(function(t){for(var n=t[0],i=n.length,o=0;i>o;o++)o===i-1?e._markValText.call(n[o],{svg:s,isInit:!0,isLast:!0}):e._markValText.call(n[o],{svg:s,isInit:!0});"RING_3"===a[r].ringId?(e.body.attr("current-ring-data","RING_3"),s.attr("height",function(){return this.getAttribute("default-height"),this.getAttribute("default-height")+"px"})):(s.attr("height",0),d3.select("#"+a[r].ringId+"-menu").style("display","none"))})});e.infoIdx+=1},ringGraphClass.prototype.calRadiusDelta=function(t){this.ringDelta=(this.shellRadius-this.coreRadius-(t-1)*this.ringGap)/t},ringGraphClass.prototype.selectROCYr=function(t){var e=new Date;return this.rocYr=t>=75&&e.getFullYear()-1911-1>t?t:null,this},ringGraphClass.prototype.selectRow=function(){return this.rocYr?this.rocYr-75:null},ringGraphClass.prototype.drawRing=function(t){var e=this,a=this.rocYr?!0:!1,r=t.dataSource.name;this.readCSV(t.dataSource.url).row(function(t,r){return a?r===e.selectRow()?t:null:void 0}).get(function(a,n){function i(t,a){function r(t,e,a){t.style("display","block"),$v(e.node(),{height:e.attr("default-height")},{duration:400}),$v(a.node(),{rotateZ:"180deg"},{duration:400})}function n(t,e,a){t.style("display","none"),$v(e.node(),{height:0},{duration:400}),$v(a.node(),{rotateZ:"0deg"},{duration:400})}var i=e.ringInfoBoard.statsBoard.info.length,s=e.ringInfoBoard.statsBoard.info[0].ringId,o=e.ringInfoBoard.statsBoard.info[i-1].ringId,l=d3.select("#"+t).node(),d=d3.select("#"+t+"-menu"),p=d.select("div.board-dropdown-menu").select("svg"),c=d.select("div.board-dropdown-header").select("span.arrow"),u=d3.select("#"+s+"-menu"),h=u.select("div.board-dropdown-menu").select("svg"),f=u.select("div.board-dropdown-header").select("span.arrow"),g=d3.select("#"+o+"-menu"),y=g.select("div.board-dropdown-menu").select("svg"),v=g.select("div.board-dropdown-header").select("span.arrow");"expand"===a?($v(l,{opacity:1},{duration:400}),t!==o&&t!==s?("block"===u.style("display")?n(u,h,f):"block"===g.style("display")&&n(g,y,v),r(d,p,c)):t===o?r(d,p,c):t===s&&r(d,p,c)):"collapse"===a&&($v(l,{opacity:.6},{duration:400}),t!==o&&t!==s&&n(d,p,c))}var s=1===n.length?n[0]:null,o=function(t){var e=0;for(var a in t)e+=parseInt(t[a]);return e}(s);s&&(s.pop=jsonPop,s=transtoPartitonFormat(s,"民國"),e.pad.append("g").attr("id",t.idName).attr("class","RING").attr("transform",function(){return"translate("+(e.padWidth/9*6-e.padPadding.left)+","+(e.padHeight/2-e.padPadding.top)+")"}).style("stroke","#fff").style("opacity",.6).on("mouseenter",function(t,a){e.ringInfoBoard.statsBoard.body.attr("current-ring-data",this.id),i(this.id,"expand")}).on("mouseleave",function(t,e){i(this.id,"collapse")}).datum(s).selectAll("path").data(t.partition.nodes).enter().append("path").attr("d",t.arc).call(function(a){e.ringInfoBoard.statsBoard.storeInfo(r,t.idName,a[0]),e._infoBoardRender()}).style("fill",function(t,e){var a=colorObj.rings.findIndex(function(t){return t.name===r?!0:void 0});return colorObj.rings[a].value[t.name]}).style("fill-rule","evenodd").on("mouseenter",function(t,a){d3.select("#"+this.parentNode.id+"-menu").selectAll("rect").each(function(t,e){a===e+1&&d3.select(this).classed("selected",!0)}),d3.select(this).attr("stroke-width","5px").attr("stroke","#fff"),e.ringInfoBoard.percentageBoard.calVal(t.value/o).setTitle(r,t.name)}).on("mouseout",function(t,e){d3.select("#"+this.parentNode.id+"-menu").select("rect.selected").classed("selected",!1),d3.select(this).attr("stroke-width",null).attr("stroke",null)}).call(function(a){t.pathOriginPos=e._stashOriginPathPos(a[0])}))})},ringGraphClass.prototype.drawMultiRings=function(t){var e=t.length,a=[];this.calRadiusDelta(e);for(var r=0;e>r;r++)a.push({idName:"RING_"+r,path:t[r],innerRadius:this.coreRadius+(r-1)*this.ringGap+(r-1)*this.ringDelta,outerRadius:this.coreRadius+(r-1)*this.ringGap+r*this.ringDelta});for(var n=a.length,i=0;n>i;++i){var s=a.shift();this.ringGroup.push(this.ringConstructor(s.idName,s.path,s.innerRadius,s.outerRadius))}for(var o=0;o<this.ringGroup.length;++o)this.drawRing(this.ringGroup[o])},ringGraphClass.prototype.updateRings=function(){var t=!0,e=!1,a=void 0;try{for(var r,n=this.ringGroup[Symbol.iterator]();!(t=(r=n.next()).done);t=!0){var i=r.value;this.updateRing(i)}}catch(s){e=!0,a=s}finally{try{!t&&n["return"]&&n["return"]()}finally{if(e)throw a}}},ringGraphClass.prototype.updateRing=function(t){var e=this,a=this.selectRow(),r=this.rocYr?!0:!1,n=t.dataSource.name;this.readCSV(t.dataSource.url).row(function(t,e){return r?e===a?t:null:void 0}).get(function(a,r){var i=1===r.length?r[0]:null;i&&(i.pop=jsonPop,i=transtoPartitonFormat(i,"民國"),d3.select("#"+t.idName).datum(i).selectAll("path").data(t.partition.nodes).each(function(e,a){0!==a&&a<=t.pathOriginPos.length&&(e.x0=t.pathOriginPos[a-1].x0,e.dx0=t.pathOriginPos[a-1].dx0)}).call(function(a){"RING_0"==t.idName?e.ringInfoBoard.statsBoard.infoReset().storeInfo(n[0],t.idName,a[0]):e.ringInfoBoard.statsBoard.storeInfo(n[0],t.idName,a[0]),e._infoBoardRender(!0)}).transition().duration(500).call(function(){var t=(this[0].map(function(t,e){return e>0?{name:t.__data__.name,value:t.__data__.value}:void 0}).filter(function(t){return t?t:void 0}),d3.select(this.node().parentNode));t.transition().duration(500).style("opacity",1).transition().duration(1e3).style("opacity",.6)}).attrTween("d",function(e,a,r){if(a>0){var n=d3.interpolate({x:e.x0,dx:e.dx0},e);return function(a){var r=n(a);return e.x0=r.x,e.dx0=r.dx,t.arc(r)}}}).call(function(a){t.pathOriginPos=e._stashOriginPathPos(a[0])}))})},ringGraphClass.prototype._stashOriginPathPos=function(t){var e=[];for(var a in t)parseInt(a)>0&&e.push({x0:t[a].__data__.x,dx0:t[a].__data__.dx});return e},ringGraphClass.prototype.resetRings=function(){return this.ringGroup=[],this},ringGraphClass.prototype.removeBoards=function(){var t=this.ringInfoBoard.statsBoard,e=this.ringInfoBoard.percentageBoard;t.body&&t.emptyAll(),e.body&&e.emptyAll()};var tipClass=function(){var t=d3.select("#APP");this.dotTip=t?t.append("div").attr("id","DOT-TIP").attr("class","tip"):void 0,this.barTip=t?t.append("div").attr("id","BAR-TIP").attr("class","tip"):void 0,this._bTipH=null,this._bTipW=null};tipClass.prototype.initTips=function(){return this.dotTip=d3.select("#APP").append("div").attr("id","DOT-TIP").attr("class","tip"),this.barTip=d3.select("#APP").append("div").attr("id","BAR-TIP").attr("class","tip"),this},tipClass.prototype.appendDotMouseOver=function(t){var e=this,a=this._setOffset("DOT-TIP");d3.select("#SKETCHPAD").selectAll(".dots").on("mouseover",function(r){var n=parseInt(this.getAttribute("cx")),i=parseInt(this.getAttribute("cy"));e.dotTip.classed("display",!0).style("top",i+a.Y+"px").style("left",n+a.X+"px").html(function(){var e="民國 "+r["民國"]+"<br>"+t+": "+r[t];return'<span id="DOT-INFO">'+e+"</span>"}).call(function(t){e._correctPos("DOT-TIP")})}).on("mouseout",function(t){e.dotTip.classed("display",!1)})},tipClass.prototype.appendBarMouseOver=function(t){var e=this,a=this._setOffset("BAR-TIP");d3.select("#SKETCHPAD").selectAll(".bar").on("mouseenter",function(r){var n=d3.select(this),i=function(t){var e=n.attr("diff-"+t);return e?e:void 0}(t),s=parseFloat(this.getAttribute("x"))+parseFloat(this.getAttribute("width")/2),o=parseFloat(this.getAttribute("y"));e.barTip.classed("display",!0).style("top",o+a.Y+"px").style("left",s+a.X+"px").html(function(){var e="民國 "+r["民國"]+"<br>"+t+": "+r[t];return i?0>i?'<span id="BAR-INFO">'+e+'</span><span>較去年同期：</span><span><span class="down-arrow align"></span><span class="align">&nbsp;'+i+"</span></span>":'<span id="BAR-INFO">'+e+'</span><span>較去年同期：</span><span><span class="up-arrow align"></span><span class="align">&nbsp;'+i+"</span></span>":'<span id="BAR-INFO">'+e+"</span>"}).call(function(t){e._correctPos("BAR-TIP")._nodeSizeCorrect("BAR-TIP")})}).on("mouseout",function(t){e.barTip.classed("display",!1)})},tipClass.prototype.appendStackBarMouseOver=function(){var t=this,e=this._setOffset("BAR-TIP");d3.select("#SKETCHPAD").selectAll("rect.stackbar").on("mouseenter",function(a){var r=parseFloat(this.getAttribute("x"))+parseFloat(this.getAttribute("width")/2),n=parseFloat(this.getAttribute("y"));t.barTip.classed("display",!0).style("top",n+e.Y+"px").style("left",r+e.X+"px").html(function(){var t="民國 "+a.year+"<br>"+a.name+": "+a.value;return a.pct&&(t+="<br>"+(100*parseFloat(a.pct)).toFixed(2)+"%"),'<span id="BAR-INFO">'+t+"</span>"}).call(function(e){t._correctPos("BAR-TIP")._nodeSizeCorrect("BAR-TIP")})}).on("mouseout",function(e){t.barTip.classed("display",!1)})},tipClass.prototype._setOffset=function(t){var e=document.getElementById(t),a=listAncestorNodes(e),r=calOffsetFromOrigins(a,e),n=window.getComputedStyle(document.getElementById("DATABOARD_WRAPPER")),i=(window.getComputedStyle(document.getElementById("DATABOARD-vizLayer")),window.getComputedStyle(document.getElementById("SKETCHPAD"),null)),s=window.getComputedStyle(document.getElementById("HDR"),null);return r.X+=parseInt(n["padding-left"].replace("px",""))+parseInt(i["padding-left"].replace("px",""))+parseInt(s.width.replace("px","")),r.Y+=parseInt(n["padding-top"].replace("px",""))+parseInt(i["padding-top"].replace("px","")),r},tipClass.prototype._correctPos=function(t){var e=this,a=null,r=9,n=9/Math.sqrt(3);!function(){"DOT-TIP"===t?a=e.dotTip:"BAR-TIP"===t&&(a=e.barTip)}(),this._bTipH=a.node().offsetHeight,this._bTipW=a.node().offsetWidth;var i=parseInt(a.node().style.top.replace("px","")),s=parseInt(a.node().style.left.replace("px","")),o=i-a.node().offsetHeight-r,l=s-a.node().offsetWidth/2-n;return o>0&&l>0?a.classed("tip-before-display",!1).classed("tip-after-display",!0).style("top",o+"px").style("left",l+"px"):0>o&&(o=i+r,a.classed("tip-before-display",!0).classed("tip-after-display",!1).style("top",o+"px").style("left",l+"px")),this},tipClass.prototype._nodeSizeCorrect=function(t){var e=this;if("BAR-TIP"===t){var a=e.barTip.node().offsetHeight,r=e.barTip.node().offsetWidth;this.barTip.style("top",function(){var t=this.style.top;if(e._bTipH!==a){var r=parseInt(t.replace("px",""));return r+e._bTipH-a+"px"}return t}).style("left",function(){var t=this.style.left;if(e._bTipW!==r){var a=parseInt(t.replace("px",""));return a+e._bTipW/2-r/2+"px"}return t}).style("width",function(){return r+"px"})}else"DOT-TIP"===t&&console.log(this.dotTip.node().offsetHeight);return this};
+'use strict';
+
+/* Import Velocity library to control the non-svg elements */
+// Simplified Velocity function
+
+var $v = Velocity;
+
+/* Queuing process */
+var queue = function queue() {
+	this.queueTasks = [];
+};
+queue.prototype.taskConst = function (fn, args) {
+	return { f: fn, fArgs: args };
+};
+
+queue.prototype.push = function (task) {
+	this.queueTasks.push(task);
+};
+
+queue.prototype.pushTasks = function (tasks) {
+	for (var i in tasks) {
+		this.queueTasks.push(tasks[i]);
+	}
+};
+
+queue.prototype.shift = function () {
+	return this.queueTasks.shift();
+};
+queue.prototype.queuing = function (complete) {
+
+	var self = this,
+	    task = self.queueTasks !== [] ? self.shift() : null;
+
+	// A p which is returned from a task object with promise
+	var p = task ? task.f.apply(this, task.fArgs) : null;
+
+	if (p) {
+		// The p.then won't run util the state truns to be resolved.
+		p.then(function () {
+			self.queuing(complete);
+		});
+	} else {
+		if (complete) {
+			complete();
+		}
+	}
+};
+
+var colorClass = function colorClass() {
+
+	this.bar = {
+
+		// For 竊盜案件 (Police)
+		'合計發生件數': '#70C1B3',
+		'重大竊盜發生件數': '#F25F5C',
+		'普通竊盜發生件數': '#FFE066',
+		'汽車竊盜發生件數': '#247BA0',
+		'機車竊盜發生件數': '#2C5B26',
+
+		'重大竊盜破獲件數': '#9BC53D',
+		'重大竊盜尚未破獲件數': '#E55934',
+
+		'普通竊盜破獲件數': '#5BC0EB',
+		'普通竊盜尚未破獲件數': '#FA7921',
+
+		'汽機車竊盜案件': '#00A8E8',
+
+		'汽車竊盜破獲件數': '#EF233C',
+		'汽車竊盜尚未破獲件數': '#EDF2F4',
+		'汽車竊盜破獲率': '#0CCA4A',
+		'汽車竊盜嫌疑犯人數': '#F24B48',
+
+		'機車竊盜破獲件數': '#35C3D6',
+		'機車竊盜尚未破獲件數': '#FF1654',
+		'機車竊盜嫌疑犯人數': '#FFD000',
+
+		// For 殺人罪 (Prosecution)
+
+		// For 兒童及少年性交易防制條例 (Prosecution),
+		'被告人數': '#FC7B29',
+		'死刑': '#C20446',
+		// '無期徒刑': '#E5404C',
+		// '有期徒刑': '#FD9C3C',
+		'無期徒刑': '#FD9C3C',
+		'有期徒刑': '#E5404C',
+		'拘役': '#FFB14A',
+		'罰金': '#F68989',
+		'緩刑人數': '#9F89F4',
+		'免刑': '#53B4C4',
+		'無罪': '#2BA608',
+		'不受理': '#646561',
+		'累犯人數': '#D13F37',
+		'保安處分人數': '#809176',
+
+		// For 監獄人數概況 (Correction)
+		'本年執行人數': '#BA0F30',
+		'本年入監人數': '#C41F3A',
+		'新入監人數': '#61B045',
+		'上年底留監人數': '#E9C247',
+		'本年出獄人數': '#F16B23',
+		'本年年底留監人數': '#55B5DF',
+
+		// For 地方法院刑事案件收結情形
+		'案件數': '#4979BC',
+		'舊受': '#5C4491',
+		'新受': '#4CA0E0',
+		'終結': '#3B8AE5',
+		'未結': '#822979',
+
+		'平均每法官每月辦結件數': '#E71D36',
+		'終結案件中平均一件所需日數': '#FF9F1C',
+		'上訴案件維持率': '#2D73C4',
+		'抗告案件維持率': '#169976',
+
+		// For 犯次分類 (Correction)
+		'累犯': '#E5404C',
+		'再犯': '#F16B23',
+		'初犯': '#F68989'
+
+	}, this.line = {
+		// For 監獄人數概況 (Correction)
+		'本年執行人數': '#BA0F30',
+		'本年入監人數': '#C41F3A',
+		'新入監人數': '#61B045',
+		'上年底留監人數': '#E9C247',
+		'本年出獄人數': '#F16B23',
+		'本年年底留監人數': '#55B5DF'
+	}, this.rings = [{
+		name: '新入監前家庭狀況',
+		value: {
+			'不詳': '#6B96AD',
+			'貧困無以為生': '#669FCC',
+			'免足維持生活': '#5FA4D4',
+			'小康之家': '#58ABD8',
+			'中產之上': '#55B5DF'
+		}
+	}, {
+		name: '新入監犯罪次數與種類',
+		value: {
+			'累犯': '#F16B23',
+			'再犯': '#F27422',
+			'初犯': '#ED8222'
+		}
+	}, {
+		name: '新入監前教育程度',
+		value: {
+			'大專以上': '#61B045',
+			'高中職': '#6EBE44',
+			'國中': '#78C14A',
+			'國小': '#87C66A',
+			'自修': '#8CBC71',
+			'不識字': '#8AB276',
+			'不詳': '#8AA679'
+		}
+	}, {
+		name: '歷年新入監年齡歷年統計',
+		value: {
+			'14 ~ 18': '#A885A4',
+			'18 ~ 20': '#AA77A2',
+			'20 ~ 24': '#B26DA5',
+			'24 ~ 30': '#B765A5',
+			'30 ~ 40': '#B9529E',
+			'40 ~ 50': '#B5479A',
+			'50 ~ 60': '#AD3C96',
+			'60 ~ 70': '#A93393',
+			'70 ~ 80': '#A42D91',
+			'80 ~': '#9F238E'
+		}
+	}];
+};
+
+colorClass.prototype.hexToRgb = function (hex) {
+
+	var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+	return result ? {
+		r: parseInt(result[1], 16),
+		g: parseInt(result[2], 16),
+		b: parseInt(result[3], 16)
+	} : null;
+};
+
+var colorObj = new colorClass();
+
+/* Graph is the mother of the charts */
+var graphClass = function graphClass() {
+
+	// A place for drawing
+	this.pad = null;
+
+	// Define the basic setting for the pad
+	this.padHeight = null;
+	this.padWidth = null;
+	this.padPadding = null;
+
+	// Axes
+	this.xAxis = null;
+	this.yAxis = null;
+};
+
+graphClass.prototype.initializeAPad = function () {
+
+	this.pad = function () {
+
+		return d3.select('#DATABOARD-vizLayer').append('svg').attr('id', 'SKETCHPAD').style({
+			'padding-top': '5%',
+			'padding-left': '5%',
+			'padding-right': '5%',
+			'padding-bottom': '5%'
+		}).style('height', '100%').style('width', '100%');
+	}();
+
+	this.padWidth = parseInt(this.pad.style('width').replace('px', '')), this.padHeight = parseInt(this.pad.style('height').replace('px', '')), this.padPadding = {
+		top: this.pad.style('padding-top').replace('px', ''),
+		bottom: this.pad.style('padding-bottom').replace('px', ''),
+		left: this.pad.style('padding-left').replace('px', ''),
+		right: this.pad.style('padding-right').replace('px', '')
+	};
+
+	return this;
+};
+
+graphClass.prototype.readCSV = function (path) {
+	return d3.csv(path);
+};
+
+// To filter the data which are inproper for visualizing.
+graphClass.prototype._dataFiltering = function (d, i) {
+
+	// Iterate d's object. Once the value is "", deperciate the d.
+	for (var key in d) {
+		if (d[key] === "") return null;
+	}return d;
+	// Suspend.
+	// for ( var key in d )
+	// if ( d[key] === "" ) d[key] = null
+	// return d
+};
+
+graphClass.prototype._setOrdinalXScale = function (dataset, xLabel) {
+
+	this.xScale = d3.scale.ordinal().domain(dataset.map(function (d) {
+		return xLabel ? d[xLabel] : d;
+	})).rangeBands([0, this.chartWidth]);
+};
+
+graphClass.prototype._setXAxis = function (pos) {
+
+	if (typeof pos === 'string' && pos === 'right' || 'left' || 'bottom' || 'top') {
+
+		this.xAxis = d3.svg.axis().scale(this.xScale).orient(pos);
+	}
+};
+
+graphClass.prototype._setLinearYScale = function (dataset, dOption) {
+
+	this.yScale = d3.scale.linear().domain([0, d3.max(dataset, function (d) {
+		return dOption ? parseFloat(d[dOption]) : d;
+	})]).rangeRound([this.chartHeight, 0]);
+};
+
+// Set the y scale in percentage
+graphClass.prototype._setYPctScale = function (dataset, dOption) {
+	this.yScale = d3.scale.linear().domain([0, 100]).rangeRound([this.chartHeight, 0]);
+};
+
+graphClass.prototype._setYAxis = function (pos, values, specKey) {
+
+	if (typeof pos === 'string' && pos === 'right' || 'left' || 'bottom' || 'top') {
+
+		// Tick divs are used for section the data with tick.
+		var tickDiv = null,
+		   
+		// Transform the tick format
+		tickFormater = null;
+
+		var dmax = d3.max(values, function (value) {
+			if (specKey) return parseInt(value[specKey]);
+			return parseInt(value);
+		});
+
+		// The maximum defines the tick format and the number of ticks.
+		if (dmax > 100000) {
+			tickDiv = 100000;
+			tickFormater = kTick;
+		} else if (dmax > 10000) {
+			tickDiv = 10000;
+			tickFormater = kTick;
+		} else if (dmax < 10000 && dmax > 2000) {
+			tickDiv = 1000;
+		} else if (dmax < 2000 && dmax > 1000) {
+			tickDiv = 500;
+		} else if (dmax < 1000) {
+			tickDiv = 200;
+		} else if (dmax < 100) {
+			tickDiv = 10;
+		}
+
+		this.yAxis = d3.svg.axis().scale(this.yScale).orient(pos).tickValues(d3.range(0, dmax, tickDiv)).tickFormat(tickFormater);
+	}
+
+	// Transfer ,000 to K
+	function kTick(tick) {
+		return Math.round(tick / 1e3) + 'K';
+	}
+};
+
+// The y axis in percentage.
+graphClass.prototype._setYPctAxis = function (pos) {
+
+	if (typeof pos === 'string' && pos === 'right' || 'left' || 'bottom' || 'top') {
+
+		this.yAxis = d3.svg.axis().scale(this.yScale).orient(pos).tickValues(d3.range(0, 100, 20)).tickFormat(function (tick) {
+			return tick + '%';
+		});
+	}
+};
+
+graphClass.prototype._createXAxis = function (dataset, xLabel, horSpace, step, outPadding) {
+
+	var self = this;
+
+	this.pad.append('g').attr('class', 'x-axis').attr('transform', 'translate(0,' + this.chartHeight + ')').call(this.xAxis).call(c_pinLbl2XAxisMidPt, horSpace, step, outPadding).append('text').attr('class', 'axis-name').attr('x', function () {
+		return dataset.length * (horSpace + step) + outPadding;
+	}).attr('y', '25').text(xLabel);
+};
+
+graphClass.prototype._createYAxis = function (yLabel) {
+	this.pad.append('g').attr('class', 'y-axis').call(this.yAxis).append('text').attr('class', 'axis-name').attr('transform', 'rotate(90) translate(0, -10)').text(yLabel);
+};
+
+graphClass.prototype._removeYAxis = function () {
+	this.pad.select('g.y-axis').remove();
+};
+
+// update the x label
+graphClass.prototype._updateXAxisLabel = function (xLabel) {
+
+	var xAxis = this.pad.select('g.x-axis');
+
+	var xPrevLabel = xAxis.select('text.axis-name');
+
+	if (xPrevLabel.html() !== xLabel) {
+
+		// Store the previous x label's position
+		var xLabelAttrs = {
+			x: xPrevLabel.attr('x'),
+			y: xPrevLabel.attr('y'),
+			class: xPrevLabel.attr('class')
+		};
+
+		xPrevLabel.remove();
+
+		xAxis.append('text').text(xLabel).attr({
+			x: xLabelAttrs.x,
+			y: xLabelAttrs.y,
+			class: xLabelAttrs.class
+		});
+	}
+};
+
+// update the y label
+graphClass.prototype._updateYAxisLabel = function (yLabel) {
+
+	var yAxis = this.pad.select('g.y-axis');
+
+	var yPrevLabel = yAxis.select('text.axis-name');
+
+	if (yPrevLabel.html() !== yLabel) {
+		var yLabelAttrs = {
+			transform: yPrevLabel.attr('transform'),
+			class: yPrevLabel.attr('class')
+		};
+
+		yPrevLabel.remove();
+
+		yAxis.append('text').text(yLabel).attr({
+			transform: yLabelAttrs.transform,
+			class: yLabelAttrs.class
+		});
+	}
+};
+
+graphClass.prototype.setOutPadding = function (val) {
+	this.outPadding = val;
+	return this;
+};
+
+graphClass.prototype.setStep = function (val) {
+	this.step = val;
+	return this;
+};
+
+// Left the horizontal space for each element
+graphClass.prototype._setHorSpace = function (dataset, step, outPadding) {
+
+	return parseInt((this.chartWidth - outPadding - step * dataset.length) / dataset.length);
+};
+
+/* A class for Bar chart */
+var barGraphClass = function barGraphClass() {
+
+	graphClass.call(this);
+
+	this.chartHeight = null;
+
+	this.chartWidth = null;
+
+	// Normal Bars
+	this.bars = null;
+	this.barsGroup = null;
+	this.barWidth = null;
+	this.barTxtGroup = null;
+
+	// Stack Bars
+	this.stacks = null;
+	this.stackGroup = null;
+
+	this.outPadding = null;
+
+	this.step = null;
+
+	this.xScale = null;
+	this.xAxis = null;
+
+	this.yScale = null;
+	this.yAxis = null;
+};
+
+/* Inherit the barGraphClass from the graph */
+barGraphClass.prototype = Object.create(graphClass.prototype);
+barGraphClass.prototype.constructor = barGraphClass;
+
+barGraphClass.prototype.setChartSize = function () {
+	this.chartHeight = this.padHeight - this.padPadding.top - this.padPadding.bottom;
+	this.chartWidth = this.padWidth - this.padPadding.left - this.padPadding.right;
+	return this;
+};
+
+barGraphClass.prototype.setOutPadding = function (val) {
+	this.outPadding = val;
+	return this;
+};
+
+barGraphClass.prototype.setStep = function (val) {
+	this.step = val;
+	return this;
+};
+
+barGraphClass.prototype._setBarWidth = function (dataset) {
+	this.barWidth = parseInt((this.chartWidth - this.outPadding - this.step * dataset.length) / dataset.length);
+};
+
+barGraphClass.prototype._createBars = function (dataset, dOption, mergedDataset, isInit) {
+
+	var self = this;
+
+	// Merged dataset has higher priority.
+	var beMergedDataset = mergedDataset.length > 0 ? true : false;
+
+	this.barsGroup = this.pad.append('g').attr('class', 'bar-group');
+
+	function binding(data) {
+		this.bars = this.barsGroup.selectAll('rect').data(data).enter();
+	}
+
+	function render(isInit, eachFn) {
+
+		var updated = this.bars.append('rect').classed('bar', true).attr({
+			x: function x(d, i) {
+				return self.outPadding + i * (self.barWidth + self.step);
+			}
+		});
+
+		var attrs = {
+			y: function y(d, i) {
+				return beMergedDataset ? self.yScale(mergedDataset[i]) : self.yScale(d[dOption]);
+			},
+			width: function width(d, i) {
+				return self.barWidth;
+			},
+			height: function height(d, i) {
+				return beMergedDataset ? self.chartHeight - self.yScale(mergedDataset[i]) : self.chartHeight - self.yScale(parseFloat(d[dOption]));
+			},
+			fill: function fill(d, i) {
+				return colorObj.bar[dOption];
+			}
+		};
+
+		if (isInit) {
+			return updated.attr({
+				y: self.chartHeight,
+				height: 0,
+				width: 0
+			}).transition().duration(1000).attr(attrs).each('end', eachFn);
+		} else updated.attr(attrs).each(eachFn);
+	}
+
+	function diffCal(d, i) {
+
+		// working-spot
+		// Mark the headers that used to merge
+		if (beMergedDataset) _this.attr('merged-result', mergedDataset[i]);
+
+		// Calculate the differences value for the bar after the first one.
+		if (i !== 0) {
+			var _this = d3.select(this),
+			    pData = this.previousSibling.__data__,
+			    diffs = Object.keys(d).map(function (key, i) {
+				if (i !== 0) return {
+					name: key,
+					val: function () {
+						// Check the value is float or integer
+						return d[key] - Math.ceil(d[key]) < 0 ? (parseFloat(d[key]) - parseFloat(pData[key])).toFixed(2) : parseInt(d[key]) - parseInt(pData[key]);
+					}()
+				};
+			}).filter(function (d) {
+				if (d) return d;
+			});
+
+			// Attach the variance of each data type.
+			for (var j in diffs) {
+				_this.attr('diff-' + diffs[j].name, diffs[j].val);
+			}
+		}
+	}
+
+	binding.apply(this, [dataset]);
+	render.apply(this, [isInit, diffCal]);
+
+	return this;
+};
+
+/* 
+The bar information is the combined information of other sub elements
+Stack bars display the users about what the bars are composed of.
+*/
+/* <Stack Bars> */
+/*
+	dataset: The data imported from dataset.
+	isFullStack : All data in the dataset are used for stack bars creating.
+	stackOptions: The data options selected.
+*/
+barGraphClass.prototype._createStackBars = function (dataset, isFullStack, stackOptions) {
+
+	this.stackGroup = this.pad.append('g').classed('stack-bars-group', true);
+
+	var stacks = this.pad.select('g.stack-bars-group').selectAll('g');
+
+	// Binding the dataset to stack bars.
+	function bindingStack(data) {
+
+		if (stacks[0].length < data.length) stacks = stacks.data(data).enter();else stacks = stacks.data(data).exit().remove();
+	}
+
+	function renderStack(data, time) {
+		if (stacks[0].length === data.length) stacks.append('g').classed('stack', true);
+	}
+
+	bindingStack(dataset);
+	renderStack(dataset, null);
+
+	// Assign the stacks to barGraph
+	this.stacks = stacks;
+
+	// Create the stack bars.
+	this._stackBarProducer(stackOptions);
+};
+
+// Update the stack bars if more data features are coming in.
+barGraphClass.prototype.updateStackBars = function (yLabel, intl, extl) {
+
+	this._stackBarProducer(intl, extl).then(function (stackbars) {
+		stackbars.each(function (d, i) {
+			// Reappend the year to the stack bar
+			this.__data__.year = this.parentNode.__data__['民國'];
+		});
+		return new tipClass();
+	}).then(function (tip) {
+		tip.appendStackBarMouseOver();
+		// resolve();
+	});
+};
+
+// Graph tranform from bar to stack bars.
+barGraphClass.prototype.transitBarToStack = function (yLabel, intl, extl) {
+
+	// Reselect the origin bar
+	this.bars = this.barsGroup.selectAll('rect.bar');
+
+	this.stackGroup = this.pad.append('g').classed('stack-bars-group', true);
+
+	var self = this,
+	    stacks = this.stackGroup.selectAll('g'),
+	    promised = null;
+
+	// g.stack are used for storing the row data from origin
+	function bindingStack(data) {
+		if (stacks[0].length < data.length) stacks = stacks.data(data).enter();else stacks = stacks.data(data).exit().remove();
+	}
+	function renderStack(data) {
+		if (stacks[0].length === data.length) stacks.append('g').classed('stack', true);
+	}
+
+	// Import the data from external data sheet.
+	if (extl.url) {
+
+		// Once the data loading is succeed, return the rows.
+		var p_extl = new Promise(function (resolve, reject) {
+
+			self.readCSV(extl.url).row(self._dataFiltering).get(function (errors, rows) {
+				resolve(rows);
+			});
+		});
+	}
+
+	var p_intl = new Promise(function (resolve, reject) {
+
+		// Fetch the data from the existed bars.
+		var barsData = function (bars) {
+
+			var data = [];
+
+			bars.each(function (d, i) {
+				data.push(d);
+				if (i === bars[0].length - 1) resolve(data);
+			});
+			return data;
+		}(self.bars);
+	});
+
+	var p_final = new Promise(function (resolve, reject) {
+
+		Promise.all([p_extl, p_intl]).then(function (dataHub) {
+
+			var stackData = [];
+
+			// Find the longest data array.
+			var len = 0;
+
+			for (var i = 0; i < 2; ++i) {
+				if (dataHub[i] && len < dataHub[i].length) len = dataHub[i].length;
+			}
+
+			// Tranverse the data array according to the longest data length and
+			// merge the two results as the data the stack bar needs.
+			for (var j = 0; j < len; ++j) {
+
+				var temp = {};
+
+				for (var k = 0; k < 2; ++k) {
+					if (dataHub[k]) Object.assign(temp, dataHub[k][j]);
+				}stackData.push(temp);
+			}
+
+			// working-spot-2
+			/* update the yScale with the new data. */
+			// merged the headers defined
+			var mergedHds = [].concat(extl.headers).concat(intl.headers).filter(function (d) {
+				return d !== null && d !== undefined;
+			});
+
+			// Find out the maximum values for each stack
+			var _mrows = self._mergedColVal(stackData, mergedHds);
+
+			self._removeYAxis();
+			self._setLinearYScale(_mrows, null);
+			self._setYAxis('left', _mrows, null);
+			self._createYAxis(yLabel);
+			/* The above feature is testing. */
+
+			bindingStack(stackData);
+			renderStack(stackData);
+
+			// Remove the bars group and the text group following it.
+			self.barsGroup.remove();
+			self.barTxtGroup.remove();
+
+			self._stackBarProducer(intl, extl).then(function (stackbars) {
+				stackbars.each(function (d, i) {
+					// Reappend the year to the stack bar
+					this.__data__.year = this.parentNode.__data__['民國'];
+				});
+				return new tipClass();
+			}).then(function (tip) {
+				tip.appendStackBarMouseOver();
+				resolve();
+			});
+		});
+	});
+	return p_final;
+};
+
+// Create the stack bars
+barGraphClass.prototype._stackBarProducer = function (intl, extl) {
+
+	this.stacks = this.stackGroup.selectAll('g.stack');
+
+	var self = this,
+	    headers = [].concat(intl.headers, extl.headers).filter(function (d) {
+		return d !== null && d !== undefined;
+	});
+
+	var p = new Promise(function (resolve, reject) {
+
+		d3.selectAll('g.stack').each(function (d, stackIndex) {
+
+			// Select the headers chosen for specific purpose.
+			if (headers) {
+
+				var barData = [],
+				   
+
+				// Calculate the total stacks height
+				sumStacksHeight = function () {
+
+					var sum = 0;
+					for (var i in headers) {
+						sum += parseFloat(d[headers[i]]);
+					}return self.chartHeight - self.yScale(sum);
+				}();
+
+				for (var i in headers) {
+
+					var temp = {};
+
+					// Set up the name and value of the option
+					temp.name = headers[i];
+					temp.value = parseFloat(d[headers[i]]);
+
+					// Calculate the stacks' height
+					temp.dy = self.chartHeight - self.yScale(temp.value);
+
+					// Define the start y for the first stack bar element
+					if (parseInt(i) === 0) temp.y0 = self.chartHeight - sumStacksHeight;else temp.y0 = barData[parseInt(i) - 1].y0 + barData[parseInt(i) - 1].dy;
+
+					barData.push(temp);
+				}
+			}
+
+			// rects store the original rects before transition.
+			var rects = d3.select(this).selectAll('rect'),
+			    updatedRects = null,
+			    shouldAppendRects = false;
+
+			function binding(data) {
+				// if (data.length > updatedRects[0].length) {
+				if (data.length > rects[0].length) {
+					shouldAppendRects = true;
+					updatedRects = rects.data(data).enter();
+				} else rects.data(data).exit().remove();
+			}
+
+			function render(time) {
+				var initAttrs = {
+					x: self.outPadding + stackIndex * (self.barWidth + self.step),
+					y: function y(d, i) {
+						return d.y0;
+					},
+					fill: function fill(d) {
+						return colorObj.bar[d.name];
+					},
+					width: self.barWidth,
+					height: 0
+				};
+
+				if (shouldAppendRects) {
+					rects.attr(initAttrs).transition().duration(time).attr({
+						height: function height(d, i) {
+							return d.dy >= 0 ? d.dy : 0;
+						}
+					});
+					updatedRects.append('rect').classed('stackbar', true).attr(initAttrs).transition().duration(time).attr({
+						height: function height(d, i) {
+							return d.dy >= 0 ? d.dy : 0;
+						}
+					});
+				} else {
+					rects.attr(initAttrs).transition().duration(time).attr({
+						height: function height(d) {
+							return d.dy >= 0 ? d.dy : 0;
+						}
+					});
+				}
+			}
+
+			binding(barData);
+			render(500);
+
+			if (this === this.parentNode.lastChild) resolve(d3.selectAll('rect.stackbar'));
+		});
+	});
+
+	return p;
+};
+
+// Transit the bar to percentage stack bar
+barGraphClass.prototype.transitBarToPCTStackBar = function (yLabel, intl, extl, mHds) {
+
+	var self = this;
+
+	return this.transitBarToStack(yLabel, intl, extl).then(function () {
+		self.transitPCTStackBar(yLabel, mHds);
+	});
+};
+
+// Transit the stack bar in percentage unit. (PCT = Percent abbr)
+barGraphClass.prototype.transitPCTStackBar = function (yLabel, mHds) {
+
+	var self = this;
+
+	// Remove the old y axis.
+	this._removeYAxis();
+
+	// Create the percentage y scale.
+	this._setYPctScale();
+	this._setYPctAxis('left');
+	this._createYAxis(yLabel);
+
+	// Collect the data from stack bars, the index is the stack
+	var dataPairs = [];
+
+	this.stacks.each(function (d, i) {
+
+		// Each pair has several array which contain the data of each stack bar.
+		dataPairs[i] = [];
+
+		d3.select(this).selectAll('rect').each(function (d, j) {
+			dataPairs[i].push({
+				year: d.year,
+				name: d.name,
+				value: d.value,
+
+				// For returning to the quantitive stack bar
+				y0: d.y0,
+				dy: d.dy
+			});
+		});
+	});
+
+	// Update the data pairs with percent value
+	dataPairs = dataPairs.map(function (pair) {
+
+		var sum = function (pair) {
+			var temp = 0;
+			for (var i in pair) {
+				temp += pair[i].value;
+			}return temp;
+		}(pair);
+
+		// Calculate the percentage for each
+		for (var j = 0; j < pair.length; j++) {
+
+			var pct = (pair[j].value / sum).toFixed(2);
+
+			pair[j].pct = pct;
+
+			// The first stack bar starts from y0
+			if (j === 0) pair[j].y0_pct = 0;
+			// The begining point for the element are the combined y0 and dy results of the previous
+			else pair[j].y0_pct = pair[j - 1].dy_pct + pair[j - 1].y0_pct;
+
+			// The last stack bar should fill out the left space.
+			if (j === pair.length - 1) {
+
+				pair[j].dy_pct = function (pairNumber) {
+					var sum_dy = 0;
+					for (var i = 0; i < pairNumber; i++) {
+						sum_dy += pair[i].dy_pct;
+					}return self.chartHeight - sum_dy;
+				}(j);
+			} else pair[j].dy_pct = self.chartHeight - self.yScale(parseFloat(pct) * 100);
+		}
+		return pair;
+	});
+
+	var p = new Promise(function (resolve, reject) {
+
+		// Update the rect size
+		self.stacks.each(function (d, i) {
+			d3.select(this).selectAll('rect').data(dataPairs[i]).transition().duration(1000).attr({
+				y: function y(d, i) {
+					return d.y0_pct;
+				},
+				height: function height(d, i) {
+					return d.dy_pct >= 0 ? d.dy_pct : 0;
+				}
+			}).each('end', function (d, i) {
+				if (this === this.parentNode.lastChild) resolve();
+			});
+		});
+
+		// Update the rect size
+		// this.stacks.each(function(d, i) {
+		// 	d3.select(this).selectAll('rect')
+		// 		.data(dataPairs[i])
+		// 			.transition()
+		// 				.duration(1000)
+		// 				.attr({
+		// 					y: function(d, i) {
+		// 						return d.y0_pct
+		// 					},
+		// 					height: function(d, i){
+		// 						return d.dy_pct >= 0 ? d.dy_pct : 0
+		// 					}
+		// 				});
+	});
+
+	return p;
+};
+
+// Transit the stack bar to origin bar.
+barGraphClass.prototype.transitStackBarToBar = function (header, mHdrs, yLabel) {
+
+	console.log(header);
+	var self = this;
+
+	// Grape the data from stack.
+	var data = [];
+
+	var p = new Promise(function (resolve, reject) {
+
+		self.stacks.each(function (d, i) {
+
+			data.push(this.__data__);
+
+			// Check if the header is a merged result.
+			var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
+			   
+			// selected headers for the merged.
+			// selectedHds = isHeaderMerged ?
+			// 	self._avlHeaders(data, mHdrs) : [],
+			selectedHds = isHeaderMerged ? mHdrs : [],
+			    mergedData = isHeaderMerged ? self._mergedColVal(data, selectedHds) : [];
+
+			// Collpase the stack bars inside the stack group.
+			d3.select(this).selectAll('rect.stackbar').transition().duration(2000).attr({
+				y: self.chartHeight,
+				height: 0,
+				width: 0
+			});
+
+			if (this === this.parentNode.lastChild) {
+				self.stackGroup.remove();
+				resolve({
+					isHeaderMerged: isHeaderMerged,
+					mergedData: mergedData
+				});
+			}
+		});
+	});
+
+	p.then(function (r) {
+
+		// Remove the old y axis.
+		self._removeYAxis();
+
+		// Create the percentage y scale.
+		self._setLinearYScale(r.mergedData.length > 0 ? r.mergedData : data, r.isHeaderMerged ? null : header);
+
+		self._setYAxis('left', r.mergedData.length > 0 ? r.mergedData : data, r.isHeaderMerged ? null : header);
+
+		self._createYAxis(yLabel);
+
+		self._createBars(data, header, r.mergedData, false);
+		self._markValOnBar(data, header, r.mergedData);
+	});
+
+	return p;
+};
+
+/* Switch from percent stack bar to stack bar. */
+barGraphClass.prototype.transitPCTSBarToSBar = function (yLabel, intl, extl, isOrigin) {
+
+	var self = this,
+	    headers = intl.headers.concat(extl.headers).filter(function (d, i) {
+		return d !== null && d !== undefined;
+	});
+
+	// Remove the previous y axis.
+	this._removeYAxis();
+
+	// Calculate the total amount of the stack bars
+	function stackbarDataSum(d) {
+		return d.map(function (_d) {
+			var t = 0;
+			for (var i = 0; i < _d.length; ++i) {
+				t += _d[i].value;
+			}return t;
+		});
+	}
+
+	var p = new Promise(function (resolve, reject) {
+
+		// Store the dataset from the stack bars.
+		var dataset = [];
+
+		if (isOrigin) {
+			console.log('should not be here');
+			self.stacks.each(function (d, i) {
+				dataset[i] = [];
+				d3.select(this).selectAll('rect').each(function (d, j) {
+					dataset[i].push(d);
+				});
+			});
+
+			// Sum up the value of each stack bar.
+			var _dataSum = stackbarDataSum(dataset);
+
+			// Create the linear y scale.
+			self._setLinearYScale(_dataSum, null);
+			self._setYAxis('left', _dataSum, null);
+			self._createYAxis(yLabel);
+
+			// Resize the stack bars.
+			self.stacks.each(function (d, i) {
+				d3.select(this).selectAll('rect').transition().duration(2000).attr({
+					y: function y(d, i) {
+						return d.y0;
+					},
+					height: function height(d, i) {
+						return d.dy >= 0 ? d.dy : 0;
+					}
+				}).each('end', function (d, i) {
+					if (this === this.parentNode.lastChild) resolve(new tipClass());
+				});
+			});
+		} else {
+			console.log('should be here');
+			var dataset = [];
+
+			self.stacks.each(function (d, i) {
+				dataset[i] = [];
+				for (var j in headers) {
+					dataset[i].push({
+						name: headers[j],
+						value: parseFloat(d[headers[j]])
+					});
+				}
+			});
+
+			// Combined value of each stack
+			var _dataSum = stackbarDataSum(dataset);
+
+			self._setLinearYScale(_dataSum, null);
+			self._setYAxis('left', _dataSum, null);
+			self._createYAxis(yLabel);
+			self._stackBarProducer(intl, extl).then(function (stackbars) {
+				stackbars.each(function (d, i) {
+					// Reappend the year to the stack bar
+					this.__data__.year = this.parentNode.__data__['民國'];
+				});
+				return new tipClass();
+			}).then(function (tip) {
+				tip.appendStackBarMouseOver();
+				resolve();
+			});
+		}
+	});
+
+	return p;
+};
+
+// Transit the percentage stack bar to bar.
+barGraphClass.prototype.transitPCTSBarToBar = function (yLabel, dOption, intl, extl, mHdrs) {
+
+	// Fetch the rows data from the g.stack
+	var rows = [];
+
+	this.stacks.each(function (d, i) {
+		rows.push(d);
+	});
+
+	this.stackGroup.remove();
+
+	// The option maybe the combined columns of data.
+	var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+
+	// Get the available headers in specific.
+	// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
+	var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+
+	// Set the scale
+	this._setLinearYScale(_mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : dOption);
+
+	this._removeYAxis();
+
+	// Set the Y axis
+	this._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : dOption);
+	this._createYAxis(yLabel);
+
+	// dataset, dOption, mergedDataset, isInit
+	this._createBars(rows, dOption, _mrows, true);
+	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
+
+	return new Promise(function (resolve, reject) {
+		resolve();
+	});
+};
+
+/* </Stack Bars> */
+
+barGraphClass.prototype._markValOnBar = function (dataset, dOption, mergedDataset) {
+
+	var self = this;
+
+	// Mergeddataset has higher priority for data rendering
+	var beMergedDataset = mergedDataset.length > 0 ? true : false;
+
+	this.barTxtGroup = this.pad.append('g').attr('id', 'BAR-TXTGROUP');
+
+	this.barTxtGroup.selectAll('text').data(dataset).enter().append('text').text(function (d, i) {
+		return beMergedDataset ? mergedDataset[i] : d[dOption] ? d[dOption] : d;
+	}).attr('class', 'mark').attr('x', function (d, i) {
+		return self.outPadding + i * (self.barWidth + self.step);
+	}).attr('y', function (d, i) {
+		return beMergedDataset ? self.yScale(mergedDataset[i]) : d[dOption] ? self.yScale(d[dOption]) : self.yScale(d);
+	}).call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
+};
+
+barGraphClass.prototype.mappingData = function (path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
+
+	var self = this;
+
+	var p = new Promise(function (resolve, reject) {
+
+		self.readCSV(path).row(self._dataFiltering).get(function (errors, rows) {
+			console.log(rows);
+			// The option maybe the combined columns of data.
+			var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+
+			// Get the available headers in specific.
+			var _mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
+			self._setBarWidth(rows);
+
+			// Set the scale
+			self._setOrdinalXScale(rows, xLabel);
+			self._setLinearYScale(_mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : defaultCol);
+
+			// Set the axes
+			self._setYAxis('left', _mrows.length > 0 ? _mrows : rows, shouldMergeCols ? null : defaultCol);
+			self._setXAxis('bottom');
+
+			// Draw the axes
+			self._createXAxis(rows, xLabel, self.barWidth, self.step, self.outPadding);
+			// There is a bug for y-axis.
+			self._createYAxis(yLabel);
+
+			self._createBars(rows, defaultCol, _mrows, true);
+			self._markValOnBar(rows, defaultCol, _mrows);
+
+			resolve({
+				data: rows,
+				pad: self.pad,
+				step: self.step,
+				barWidth: self.barWidth,
+				outPadding: self.outPadding
+			});
+		});
+	});
+
+	return p;
+};
+
+// working-spot-3: Rename it with a better name
+// To check if the selected option is merged results.
+barGraphClass.prototype._checkColAccessableInOrigin = function (rowData, opt) {
+	if (rowData) {
+		var ks = Object.keys(rowData[0]);
+		for (var i in ks) {
+			if (ks[i] === opt) return false;
+		}
+	}
+	return true;
+};
+
+/*
+	_mergedColVal function is used once the dOption is not specific or
+	it is a combined value that have to be customized with except options.
+*/
+barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
+
+	// Rows for max combined value
+	return rowData.map(function (row, i) {
+
+		var maxVal = 0;
+
+		for (var i in mergedCols) {
+			maxVal += parseFloat(row[mergedCols[i]]);
+		}return maxVal;
+	});
+};
+
+// barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
+barGraphClass.prototype.update = function (xLabel, yLabel, dOption) {
+
+	var self = this;
+
+	var p = new Promise(function (resolve, reject) {
+
+		var _bars = self.pad.selectAll('rect'),
+		    _txts = self.pad.selectAll('.mark'),
+		   
+
+		// Former x value of bars for text marker transition.
+		f_Pos = function () {
+			var posAry = [];
+			for (var i = 0; i < _bars[0].length; i++) {
+				posAry.push({
+					x: _bars[0][i].getAttribute('x'),
+					y: _bars[0][i].getAttribute('y')
+				});
+			};
+			return posAry;
+		}(),
+		   
+
+		// The positions of bars after update
+		c_Pos = [];
+
+		// working-spot-2: store the data from the bars
+		var data = [];
+
+		_bars.each(function (d, i) {
+			data.push(d);
+		});
+
+		self._setLinearYScale(data, dOption);
+		self._setYAxis('left', data, dOption);
+
+		// set xy axes' labels.
+		self._updateXAxisLabel(xLabel);
+		self._updateYAxisLabel(yLabel);
+
+		_bars.attr({
+			width: function width(d, i) {
+				return self.barWidth;
+			}
+		}).transition().attr({
+			y: function y(d, i) {
+
+				// get current positions of bars which will use for bar transition animations.
+				c_Pos.push({
+					x: this.getAttribute('x'),
+					y: self.yScale(parseFloat(d[dOption]))
+				});
+				return c_Pos[i].y;
+			},
+
+			height: function height(d) {
+
+				return self.chartHeight - self.yScale(parseFloat(d[dOption]));
+			},
+
+			fill: function fill(d, i) {
+				return colorObj.bar[dOption];
+			}
+		}).each('end', function (d, i) {
+
+			// When the last bar is transited, resolve to the next animation.
+			if (i === _bars[0].length - 1) {
+				resolve({
+					data: data,
+					pad: self.pad,
+					step: self.step,
+					barWidth: self.barWidth,
+					outPadding: self.outPadding
+				});
+			}
+		});
+
+		_txts.transition()
+		/* 
+  	The text has been rotated about 90 degrees,
+  	so the text x direction would be vertical.
+  */
+		.attr('x', function (d, i) {
+			var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
+			return parseInt(this.getAttribute('x')) + deltaX;
+		}).text(function (d) {
+			return d[dOption];
+		});
+
+		// Update Y axis
+		self.pad.selectAll('.y-axis').call(self.yAxis);
+	});
+	return p;
+};
+
+barGraphClass.prototype.isInvisible = function () {
+	if (this.bars.style('opacity')) return true;else false;
+};
+
+barGraphClass.prototype.bePhantom = function () {
+
+	this.bars.style('opacity', 0);
+
+	if (this.isBarHidden()) this.beDisplayed();
+};
+
+barGraphClass.prototype.beVisible = function () {
+
+	this.bars.style('opacity', 1);
+
+	if (this.isBarHidden()) this.beDisplayed();
+};
+
+barGraphClass.prototype.hide = function () {
+	this.bars.style('display', 'none');
+};
+
+barGraphClass.prototype.beDisplayed = function () {
+	this.bars.style('display', 'inline');
+};
+
+barGraphClass.prototype.isBarHidden = function () {
+
+	var displayStatus = this.bars.style('display');
+	if (displayStatus === 'none') return true;else return false;
+};
+
+/* Make the x line for the grids */
+barGraphClass.prototype._makeXGridLines = function () {
+
+	return d3.svg.axis(this.xScale).orient('bottom');
+};
+barGraphClass.prototype._makeYGridLines = function () {
+
+	return d3.svg.axis(this.yScale).orient('left');
+};
+
+/* Bar chart's grid*/
+barGraphClass.prototype.makeGrid = function () {
+
+	this.pad.append('g').attr('class', 'grid').attr('transform', '');
+	this.pad.append('g').attr('class', 'grid').attr('transform', '');
+};
+
+/* A Line chart class */
+var lineGraphClass = function lineGraphClass() {
+
+	graphClass.call(this);
+
+	this.pad = null;
+	this.padPadding = null;
+	this.padHeight = 0;
+	this.padWidth = 0;
+
+	this.chartHeight = null;
+	this.chartWidth = null;
+
+	this.step = 0;
+
+	this.linePath = null;
+	this.lineDots = null;
+	this.areaUnderLine = null;
+
+	this.dottedLine = d3.svg.line().x(function (d, i) {
+		return d.cx;
+	}).y(function (d, i) {
+		return d.cy;
+	});
+
+	this.dotSpace = null;
+
+	this.xScale = null;
+	this.xAxis = null;
+
+	this.yScale = null;
+	this.yAxis = null;
+
+	this.area = null;
+
+	// working-spot-1: Divided areas are used for tensifying the dots graph's trend display affect.
+	this.dividedAreas = null;
+
+	// working-spot-1
+	// A board of the line graph info
+	this.infoBoard = {
+		// body: ,
+		infoReset: function infoReset() {
+			// this.info    = [];
+			// this.infoIdx = 0;
+			// return this
+		},
+
+		// Empty all the elemets
+		emptyAll: function emptyAll() {
+			this.body.remove();
+			// this.infoReset();
+		}
+	};
+};
+
+/* Inherit the lineGraphClass from the graph */
+lineGraphClass.prototype = Object.create(graphClass.prototype);
+lineGraphClass.prototype.constructor = lineGraphClass;
+
+lineGraphClass.prototype.setChartSize = function (motherPad) {
+	/*
+ 	motherPad = { pad: '', padWidth: '', padHeight: '', padPadding: '' }
+ */
+	this.chartHeight = motherPad ? motherPad.padHeight - motherPad.padPadding.top - motherPad.padPadding.bottom : this.padHeight - this.padPadding.top - this.padPadding.bottom;
+
+	this.chartWidth = motherPad ? motherPad.padWidth - motherPad.padPadding.left - motherPad.padPadding.right : this.padWidth - this.padPadding.left - this.padPadding.right;
+
+	return this;
+};
+
+// Plot the data from bar graph.
+// Debugging
+lineGraphClass.prototype.plotBars = function (data, motherPad, bars, offset, isPinned) {
+
+	var self = this,
+	    isPinned = isPinned ? true : false;
+
+	var p0 = new Promise(function (resolve, reject) {
+
+		var rects = bars ? bars[0] : motherPad.selectAll('rect')[0],
+		   
+		// Get hex code of rect elements
+		hex = d3.select('#SKETCHPAD').select('rect').attr('fill');
+
+		// Get the all elements' x y position besides the parent
+		for (var i = 0; i < rects.length; i++) {
+
+			var box = rects[i].getBBox();
+
+			// Added the dot's position in data
+			data[i].dotX = box.x + offset;
+			data[i].dotY = box.y;
+		}
+
+		var line = d3.svg.line().x(function (d) {
+			return d.dotX;
+		}).y(function (d) {
+			return d.dotY;
+		});
+
+		// Check if line is existed or not
+		if (self.linePath) {
+
+			self.linePath.datum(data).transition().attr('d', line).attr('stroke', colorAdjust(hex, 20));
+
+			// Create a line once it is not existed
+		} else {
+
+				self.linePath = self.pad.append('g').attr('class', 'line-group').append('path').attr('class', 'dotted-path').datum(data).attr('d', line).attr('fill', 'none').attr('stroke', colorAdjust(hex, 20)).attr('stroke-width', 3);
+			}
+
+		// Check the dots on line are existed or not
+		if (self.lineDots) {
+
+			self.lineDots.data(data).transition().attr('fill', colorAdjust(hex, 20)).attr('cx', function (d) {
+				return d.dotX;
+			}).attr('cy', function (d) {
+				return d.dotY;
+			});
+
+			// Create the dots once they aren't existed
+		} else {
+
+				self.lineDots = self.pad.append('g').attr('class', 'dots-cluster').selectAll('circle').data(data).enter().append('circle').attr('cx', function (d) {
+					return d.dotX;
+				}).attr('cy', function (d) {
+					return d.dotY;
+				}).attr('class', 'dots').attr('fill', colorAdjust(hex, 20)).attr('stroke-width', 2).attr('stroke', '#fff').attr('r', 7);
+			}
+
+		// Check if the unde line area is existed
+		if (self.areaUnderLine) {
+			self.updateUnderArea(data, colorAdjust(hex, 40));
+
+			// If it is not, then create one.
+		} else {
+				self.drawUnderArea(data, colorAdjust(hex, 40));
+			}
+
+		resolve({
+			data: data,
+			hexCode: hex,
+			line: self.linePath,
+			dots: self.lineDots,
+			area: self.areaUnderLine
+		});
+	});
+
+	return p0;
+};
+
+// Init info board for displaying detail info
+lineGraphClass.prototype.initInfoBoard = function () {
+
+	this.infoBoard = d3.select('#DATABOARD-vizLayer').append('div').attr('id', 'LINE-INFO-BOARD').attr('class', 'board');
+};
+
+lineGraphClass.prototype.inheritPad = function (motherPad, padHeight, padWidth, padPadding) {
+
+	this.pad = motherPad;
+	this.padHeight = padHeight;
+	this.padWidth = padWidth;
+	this.padPadding = padPadding;
+	return this;
+};
+
+// Drawing data.
+lineGraphClass.prototype.mappingData = function (path, xLabel, yLabel, dOption) {
+
+	var self = this;
+
+	var p = new Promise(function (resolve, reject) {
+		self.readCSV(path).row(self._dataFiltering).get(function (errors, rows) {
+
+			self.dotSpace = self._setHorSpace(rows, self.step, self.outPadding);
+
+			self._setOrdinalXScale(rows, xLabel);
+			self._setLinearYScale(rows, dOption);
+
+			// Set the axes
+			self._setYAxis('left', rows, dOption);
+			self._setXAxis('bottom');
+
+			// Draw the axes
+			self._createXAxis(rows, xLabel, self.dotSpace, self.step, self.outPadding);
+			self._createYAxis(yLabel);
+
+			self.lineDots = self.pad.append('g').attr('class', 'dots-cluster').selectAll('circle').data(rows).enter().append('circle').attr('cx', function (d, i) {
+				return self.outPadding + (2 * i + 1) * self.dotSpace / 2 + i * self.step;
+			}).attr('cy', function (d, i) {
+				return self.yScale(d[dOption]);
+			}).attr({
+				r: 7,
+				class: 'dots',
+				fill: colorAdjust(colorObj.line[dOption], 20),
+				stroke: '#fff',
+				'stroke-width': 2
+			}).call(function () {
+
+				var circlePoses = function (circles) {
+					var poses = [];
+					for (var i = 0; i < circles[0].length; i++) {
+						poses.push({
+							cx: parseInt(d3.select(circles[0][i]).attr('cx')),
+							cy: parseInt(d3.select(circles[0][i]).attr('cy'))
+						});
+					}return poses;
+				}(this);
+
+				self.linePath = self.pad.append('g').classed('line-group', true).append('path').datum(circlePoses).attr({
+					d: self.dottedLine,
+					fill: 'none',
+					class: 'line',
+					stroke: colorObj.line[dOption],
+					'stroke-width': 3
+				});
+				resolve();
+			});
+		});
+	});
+	return p;
+};
+
+// Line graph update
+lineGraphClass.prototype.update = function (path, xLabel, yLabel, dOption) {
+
+	var self = this;
+
+	var p = new Promise(function (resolve, reject) {
+		self.readCSV(path).row(function (d) {
+			return d;
+		}).get(function (error, rows) {
+
+			self._setLinearYScale(rows, dOption);
+			self._setYAxis('left', rows, dOption);
+
+			var circles = self.pad.select('.dots-cluster').selectAll('circle');
+
+			// Bind the data to the circles
+			function binding(data) {
+				if (data.length >= circles[0].length) circles.data(data).enter().append('circle');else circles.data(data).exit();
+			}
+
+			// Render the data
+			function render(time) {
+				circles.transition().duration(time).attr({
+					cy: function cy(d, i) {
+						return self.yScale(d[dOption]);
+					},
+					fill: function fill() {
+						return colorObj.line[dOption];
+					}
+				}).each('end', function (d, i) {
+
+					// When the last transition is completed,
+					// resolve the promise for line path animation.
+					if (i === circles[0].length - 1) resolve({
+						circles: circles[0]
+					});
+				});
+			}
+
+			// Update Y axis
+			self.pad.selectAll('.y-axis').call(self.yAxis);
+
+			binding(rows);
+			render(1000);
+		});
+	});
+
+	p.then(function (r) {
+
+		var circlePoses = function (circles) {
+			var poses = [];
+			for (var i = 0; i < circles.length; i++) {
+				poses.push({
+					cx: parseInt(d3.select(circles[i]).attr('cx')),
+					cy: parseInt(d3.select(circles[i]).attr('cy'))
+				});
+			}return poses;
+		}(r.circles);
+
+		self.pad.select('g.line-group').select('path').datum(circlePoses).transition().duration(600).attr({
+			d: self.dottedLine,
+			stroke: colorObj.line[dOption]
+		});
+	});
+	return p;
+};
+
+// Fill the area between divide lines and dot line
+lineGraphClass.prototype.fillArea = function (data, color) {
+
+	this.area = d3.svg.area().x(function (d) {
+		return d.dotX;
+	}).y0(this.chartHeight).y1(function (d) {
+		return d.dotY;
+	});
+
+	this.pad.append('path').datum(data).attr('fill', color).attr('d', this.area);
+};
+
+lineGraphClass.prototype.drawUnderArea = function (data, color) {
+
+	this.area = d3.svg.area().x(function (d) {
+		return d.dotX;
+	}).y0(this.chartHeight).y1(function (d) {
+		return d.dotY;
+	});
+
+	this.areaUnderLine = this.pad.append('g').attr('class', 'under-line-area-group').append('path').datum(data).attr('class', 'under-line-area').attr('fill', color).attr('d', this.area);
+};
+
+lineGraphClass.prototype.updateUnderArea = function (data, color) {
+
+	this.areaUnderLine.datum(data).transition().attr('d', this.area).attr('fill', color).style('opacity', 0.8);
+};
+
+lineGraphClass.prototype.isInvisible = function () {
+	if (this.linePath.style('opacity')) return true;else false;
+};
+
+lineGraphClass.prototype.hide = function () {
+	this.linePath.style('display', 'none');
+	this.lineDots.style('display', 'none');
+	return this;
+};
+
+lineGraphClass.prototype.beDisplayed = function () {
+	this.linePath.style('display', 'inline');
+	this.lineDots.style('display', 'inline');
+	return this;
+};
+
+lineGraphClass.prototype.isLineHidden = function () {
+
+	var displayStatus = this.linePath.style('display');
+
+	if (displayStatus === 'none') return true;else return false;
+};
+
+lineGraphClass.prototype.displayUnderArea = function () {
+	this.areaUnderLine.style('display', 'inline');
+	return this;
+};
+
+lineGraphClass.prototype.hideUnderArea = function () {
+	this.areaUnderLine.style('display', 'none');
+	return this;
+};
+
+lineGraphClass.prototype.empty = function () {
+
+	this.linePath = null;
+	this.lineDots = null;
+	this.areaUnderLine = null;
+
+	return this;
+};
+
+// Draw the markers on the graph.
+lineGraphClass.prototype.drawEvtMarkers = function () {
+
+	var url = 'https://spreadsheets.google.com/tq?key=',
+	    key = '1jAMtUHVlw_pqmlnyFrscqwy274CgmQQ9C0Kp3EXmoAY',
+	    query = '&tqx=out:csv';
+
+	var self = this,
+	    dots = this.lineDots[0].filter(function (obj) {
+		if (obj.tagName === 'circle') return obj;
+	});
+
+	this.readCSV(url + key + query).row(function (d, i) {
+		if (i !== 0) return d;
+	}).get(function (error, rows) {
+
+		// Some special judicial events happens on
+		var years = rows.map(function (d) {
+			return d["民國"];
+		});
+
+		// Filter the dots with the specific years
+		var dotsData = dots.map(function (dot) {
+			for (var j in years) {
+				if (dot.__data__["民國"] === years[j]) return dot.__data__;
+			}
+		}).filter(function (data) {
+			if (data) return data;
+		});
+
+		// Working-spot-1:
+		(function () {
+
+			for (var i in dots) {
+
+				// Get the rows
+				var r = rows.find(function (row) {
+					try {
+						dots[i].__data__['民國'];
+					} catch (e) {
+						if (e instanceof TypeError) return null;
+					}
+					return row['民國'] === dots[i].__data__['民國'];
+				});
+
+				if (r) {
+					// Attach the judicial events
+					dots[i].__data__['司法事記'] = r['司法事記'];
+					dots[i].__data__.tag = r['tag'];
+					dots[i].__data__.hasEvent = true;
+				} else {
+					dots[i].__data__.hasEvent = false;
+					dots[i].__data__.tag = '';
+				}
+			}
+		})();
+
+		// The end point of each lines.
+		var xAxisYPos = self.pad.select('g.x-axis').attr('transform').match(/\d+\.\d+/g);
+
+		// working-spot-1: attach the line on the dots with the event connection.
+		self.pad.append('g').attr('class', 'evt-marker-lines').selectAll('line').data(dotsData).enter().append('line')
+		// .attr('x1', function(d) { return d.dotX }) // Default setting
+		// .attr('y1', function(d) { return d.dotY })
+		// .attr('x2', function(d) { return d.dotX })
+		// .attr('y2', function(d) { return parseInt(xAxisYPos)})
+		.attr('x1', function (d) {
+			return d.dotX;
+		}) // Default setting
+		.attr('y1', function (d) {
+			return d.dotY;
+		}).attr('x2', function (d) {
+			return d.dotX;
+		}).attr('y2', function (d) {
+			if (d.dotY - 50 < 30) return d.dotY + 50;
+			return d.dotY - 50;
+		})
+		// .attr('stroke', 'black')
+		.attr('stroke', '#333').attr('stroke-width', 1)
+		// .attr('stroke-dasharray', "5, 5, 1, 5") // Default style setting
+		.each(function (d, i) {
+			// Append the tag info on the line
+
+			var _this = d3.select(this);
+
+			if (i === 0) self.pad.append('g').attr('class', 'evt-marker-names');
+
+			// Attach the text to the lines as integrating into a marker.
+			this.__data__.text = self.pad.select('g.evt-marker-names').append('text').attr('x', _this.attr('x2')).attr('y', _this.attr('y2')).text(_this.node().__data__.tag).attr('fill', '#08f');
+		}).call(function () {
+
+			var lines = this[0].filter(function (o) {
+				if (o.tagName === 'line') return o;
+			});
+
+			// Binding markers to the dots
+			for (var i in dots) {
+				if (dots[i].__data__.hasEvent) dots[i].__data__.line = d3.select(lines.shift());
+			}
+		});
+	});
+};
+
+lineGraphClass.prototype.isEvtMarkersExisted = function () {
+	return this.pad.select('g.evt-marker-lines').empty();
+};
+
+// Remove the event markers
+lineGraphClass.prototype.emptyEvtMarkers = function () {
+	this.pad.select('g.evt-marker-lines').remove();
+	this.pad.select('g.evt-marker-names').remove();
+};
+
+// working-spot-1
+lineGraphClass.prototype.updateEvtMarkers = function () {
+
+	d3.select('g.evt-marker-lines').selectAll('line').transition().duration(200).attr('x1', function (d) {
+		return d.dotX;
+	}).attr('y1', function (d) {
+		return d.dotY;
+	}).attr('x2', function (d) {
+		return d.dotX;
+	}).attr('y2', function (d) {
+		if (d.dotY - 50 < 30) return d.dotY + 50;
+		return d.dotY - 50;
+	});
+
+	// d3.select('.dots-cluster').selectAll('.dots').each(function(d) {
+	// 	console.log(d);
+	// 	// var line = this.__data__.line;
+
+	// 	// if (!line) {
+	// 	// 	line.transition()
+	// 	// 		.duration(200)
+	// 	// 			.attr('x1', function(d) { return d.dotX })
+	// 	// 			.attr('y1', function(d) { return d.dotY })
+	// 	// 			.attr('x2', function(d) { return d.dotX })
+	// 	// 			.attr('y2', function(d) {
+	// 	// 				if (d.dotY-50 < 30)
+	// 	// 					return d.dotY+50
+	// 	// 				return d.dotY-50
+	// 	// 			});
+	// 	// }
+	// });
+};
+
+/* A Class for ring chart */
+var ringGraphClass = function ringGraphClass() {
+
+	var self = this;
+
+	// Import ring graphClass into Graph Class
+	graphClass.call(this);
+
+	// Core radius of the ring sequence
+	this.coreRadius = 100;
+
+	// The drawing ring inner radius
+	this.ringInnerRadius = this.coreRadius;
+
+	// Delta of the ring radius
+	this.ringDelta = 0;
+
+	// The gap between each ring
+	this.ringGap = 2;
+
+	// Ring Group for collecting ring Objects
+	this.ringGroup = [];
+
+	// A variable for storing Year value in ROC
+	this.rocYr = null;
+
+	this.dataInfoView = {
+		textArea: null,
+		percentage: null,
+		categoryName: null,
+		itemName: null,
+		itemNumber: null
+	};
+
+	// A ring info board for displaying the chart detail.
+	this.ringInfoBoard = { // Use for displaying the quantitive of each parts
+		statsBoard: {
+			body: null,
+			scale: null,
+			info: [],
+			infoIdx: 0,
+
+			infoReset: function infoReset() {
+				this.info = [];
+				this.infoIdx = 0;
+				return this;
+			},
+
+			// Empty all the elemets
+			emptyAll: function emptyAll() {
+				this.body.remove();
+				this.scale = null;
+				this.infoReset();
+			},
+
+			setScale: function setScale() {
+
+				var boardWidth = parseInt(this.body.style('width').replace('px', ''));
+
+				this.scale = d3.scale.linear().domain([0, d3.max(this.info[this.infoIdx].values, function (d) {
+					return d.value;
+				})]).rangeRound([0, boardWidth * .5]);
+			},
+
+			// store the info
+			storeInfo: function storeInfo(titleName, idName, objs) {
+
+				var l = objs.length,
+				    infoData = {
+					name: titleName,
+					ringId: idName,
+					year: null,
+					values: []
+				};
+
+				for (var i = 0; i < l; ++i) {
+					// Access the information from root
+					if (parseInt(i) === 0) infoData.year = objs[i].__data__.name;else infoData.values.push({
+						name: objs[i].__data__.name,
+						value: objs[i].__data__.value
+					});
+				}
+
+				this.info.push(infoData);
+			},
+
+			// the the stats board do the animation after the data updated
+			update: function update() {
+
+				var board = this,
+				    data = this.info[this.infoIdx],
+				    menu = board.body.select('#' + data.ringId + '-menu'),
+				    svg = menu.select('svg');
+
+				// Reset the scale with new data for a proper view
+				board.setScale();
+
+				// Remove the text which show the older bars data
+				menu.selectAll('svg > text').remove();
+
+				menu.selectAll('rect').each(function (d, i) {
+					// Update the data for each bar
+					this.__data__ = data.values[i];
+				}).call(function () {
+
+					// Draw the updated results
+					this.transition().duration(600).attr('width', function (d, i) {
+						return board.scale(d.value);
+					}).each('end', function () {
+						board._markValText.call(this, { svg: svg });
+					});
+				});
+			},
+
+			// mark the data value after the bars and shift the text to correct positions.
+			_markValText: function _markValText() {
+				var svg = arguments[0].svg,
+				    rect = d3.select(this),
+				    rectD = this.__data__,
+				    rectW = parseInt(rect.attr('width').replace('px', '')),
+				    rectX = parseInt(rect.attr('x')),
+				    rectY = parseInt(rect.attr('y'));
+
+				svg.append('text').text(rectD.value).style('font-size', '0.8em').attr('x', rectX + rectW + 5).attr('y', rectY + 12).attr('fill', '#fff');
+
+				// Set the svg size after the last bar is rendered when the board is first rendered.
+				if (arguments[0].isInit && arguments[0].isLast) svg.attr('default-height', rectY + 30);
+			}
+		},
+		percentageBoard: { // Use for displaying the percentage of the part.
+			body: null,
+
+			emptyAll: function emptyAll() {
+				this.body.remove();
+			},
+
+			calVal: function calVal(val) {
+				var val = val * 100 > 0.0999999999 ? (val * 100).toFixed(1) : '<span style="font-size: 0.4em;">&lt;</span> 0.1';
+
+				this.body.select('.board-body-txt').html(val);
+				return this;
+			},
+
+			setTitle: function setTitle(topic, category) {
+
+				this.body.select('.board-body-title').text(topic + ':' + category);
+
+				return this;
+			}
+		}
+	};
+};
+
+/* Inherit the ringGraphClass from the graph */
+ringGraphClass.prototype = Object.create(graphClass.prototype);
+ringGraphClass.prototype.constructor = ringGraphClass;
+
+ringGraphClass.prototype.init = function () {
+
+	// Initial an outer Radius of the ring sequence
+	this.shellRadius = function (h, w) {
+		return Math.min(h, w) / 2;
+	}(this.padWidth - this.padPadding.left, this.padHeight - this.padPadding.top);
+
+	// Initial the board for stats
+	this.ringInfoBoard.statsBoard.body = d3.select('#DATABOARD-vizLayer').append('div').classed('board', true).attr('id', 'RING_STATS_BOARD').style('top', '7%').style('left', '7%');
+
+	// Initial the board for pecentage
+	this.ringInfoBoard.percentageBoard.body = d3.select('#DATABOARD-vizLayer').append('div').classed('board', true).attr('id', 'RING_PERCENTAGE_BOARD').style('bottom', '5%').style('left', '7%');
+
+	this.ringInfoBoard.percentageBoard.body.append('section').attr('class', 'board-body board-body--centering').style('height', '100%').call(function () {
+		this.append('div').attr('class', 'board-body-title');
+		this.append('div').attr('class', 'board-body-txt');
+	});
+
+	return this;
+};
+
+// A constructor for creating the rings for ring chart
+ringGraphClass.prototype.ringConstructor = function (idName, source, innerR, outerR) {
+
+	var ring = function ring(idName, iR, oR, s) {
+
+		// Let d3js select element easier.
+		this.idName = idName;
+
+		// Set the source of the data
+		this.dataSource = s;
+
+		// Define the basic of the ring
+		this.outerRadius = oR;
+		this.innerRadius = iR;
+
+		// Define the way we dipict the ring
+		this.partition = d3.layout.partition().sort(null).size([2 * Math.PI, this.outerRadius * this.outerRadius]).value(function (d) {
+			return d.value;
+		});
+
+		this.arc = d3.svg.arc().startAngle(function (d) {
+			return d.x;
+		}).endAngle(function (d) {
+			return d.x + d.dx;
+		}).innerRadius(this.innerRadius).outerRadius(this.outerRadius);
+
+		// Stores the position of the path of ring after rendering
+		this.pathOriginPos = [];
+	};
+
+	var r = new ring(idName, innerR, outerR, source);
+
+	return r;
+};
+
+// working spot-2: Trying to depart it into several modules.
+ringGraphClass.prototype._infoBoardRender = function (isUpdate) {
+
+	var self = this,
+	    statsBoard = this.ringInfoBoard.statsBoard,
+	    info = statsBoard.info,
+	    index = statsBoard.infoIdx,
+	    isUpdate = isUpdate ? true : false,
+	    boardWidth = parseInt(statsBoard.body.style('width').replace('px', '')),
+	   
+
+	// Load Color settings for current ring data from the color object.
+	colorSettings = colorObj.rings.find(function (d) {
+		if (d.name === info[index].name) return true;
+	});
+
+	statsBoard.setScale();
+
+	if (!isUpdate) {
+		statsBoard.body.append('div').attr('id', info[index].ringId + '-menu').attr('class', 'board-dropdown').html(function () {
+			return '<div class="board-dropdown-header">' + '<span class="title">' + info[index].name + '</span>' + '<span class="arrow">' + '<div class="arrow-left"></div>' + '<div class="arrow-right"></div>' + '</span>' + '</div>';
+		}).selectAll('div.board-dropdown').data([info[index]]).enter().append('div').attr('class', 'board-dropdown-menu').append('svg').selectAll('g').data(info[index].values).enter().append('g').append('text').text(function (d) {
+			return d.name;
+		}).attr('x', 0).attr('y', function (d, i) {
+			return 22.5 + 25 * (i > 0 ? i : 0) + 'px';
+		}).attr('font-size', '0.8em').attr('fill', '#fff').call(function (textObjs) {
+
+			// Find the max width of text and set it as the bars' offset x.
+			var barXOffset = function (d) {
+
+				var textWidths = [],
+				    dL = d.length;
+
+				for (var i = 0; i < dL; ++i) {
+					textWidths.push(parseInt(d3.select(d[i]).style('width').replace('px', '')));
+				}return Math.max.apply(null, textWidths);
+			}(textObjs[0]);
+
+			var svg = statsBoard.body.select('#' + info[index].ringId + '-menu svg');
+
+			// Draw the bars
+			svg.selectAll('rect').data(info[index].values).enter().append('rect').attr('height', 15).attr('width', function (d, i) {
+				return statsBoard.scale(d.value);
+			}).attr('default-color', function (d) {
+				return colorSettings.value[d.name];
+			}).attr('fill', function (d) {
+				return colorSettings.value[d.name];
+			}).attr('x', function (d, i) {
+				var paddingBefore = 20;
+				return 10 + barXOffset + 'px';
+			}).attr('y', function (d, i) {
+				return 10 + 25 * (i > 0 ? i : 0) + 'px';
+			})
+			// Mark the number after the bars
+			.call(function (rectObjs) {
+
+				var rects = rectObjs[0],
+				    rectsNumber = rects.length;
+
+				for (var i = 0; i < rectsNumber; i++) {
+
+					if (i === rectsNumber - 1) statsBoard._markValText.call(rects[i], {
+						svg: svg,
+						isInit: true,
+						isLast: true
+					});else statsBoard._markValText.call(rects[i], {
+						svg: svg,
+						isInit: true
+					});
+				}
+
+				// Let the most outer ring's menu be displayed
+				// Suspend issue.
+				if (info[index].ringId === 'RING_3') {
+
+					statsBoard.body.attr('current-ring-data', 'RING_3');
+
+					svg.attr('height', function () {
+						this.getAttribute('default-height');
+						return this.getAttribute('default-height') + 'px';
+					});
+				} else {
+
+					svg.attr('height', 0);
+
+					d3.select('#' + info[index].ringId + '-menu').style('display', 'none');
+				}
+			});
+		});
+
+		// If the dropdown menus are exist, redraw the bars and update the texts.
+	} else {
+
+			var ringData = statsBoard.info[statsBoard.infoIdx];
+			statsBoard.update();
+		}
+
+	statsBoard.infoIdx += 1;
+};
+
+ringGraphClass.prototype.calRadiusDelta = function (categoryNum) {
+
+	this.ringDelta = (this.shellRadius - this.coreRadius - (categoryNum - 1) * this.ringGap) / categoryNum;
+};
+
+/* Select the year in ROC */
+ringGraphClass.prototype.selectROCYr = function (yr) {
+
+	var date = new Date();
+
+	// The data of current year won't be published until the next year
+	this.rocYr = yr >= 75 && date.getFullYear() - 1911 - 1 > yr ? yr : null;
+	return this;
+};
+
+/* Row Index of data of ROC year */
+ringGraphClass.prototype.selectRow = function () {
+	if (this.rocYr) return this.rocYr - 75;else return null;
+};
+
+ringGraphClass.prototype.drawRing = function (ringObj) {
+
+	var self = this,
+	    isYrSelected = this.rocYr ? true : false,
+	    keywords = ringObj.dataSource.name;
+
+	this.readCSV(ringObj.dataSource.url).row(function (d, i) {
+		if (isYrSelected) if (i === self.selectRow()) return d;else return null;
+	}).get(function (err, selectedRows) {
+
+		var selectedRow = selectedRows.length === 1 ? selectedRows[0] : null;
+
+		var total = function (vals) {
+
+			var sum = 0;
+			for (var i in vals) {
+				sum += parseInt(vals[i]);
+			}return sum;
+		}(selectedRow);
+
+		if (selectedRow) {
+
+			selectedRow.pop = jsonPop;
+			selectedRow = transtoPartitonFormat(selectedRow, '民國');
+
+			self.pad.append('g').attr('id', ringObj.idName).attr('class', 'RING').attr('transform', function () {
+
+				// Put the ring at the center of the pad
+				return 'translate(' + (self.padWidth / 9 * 6 - self.padPadding.left) + ',' + (self.padHeight / 2 - self.padPadding.top) + ')';
+			}).style('stroke', '#fff').style('opacity', 0.6).on('mouseenter', function (d, i) {
+
+				self.ringInfoBoard.statsBoard.body.attr('current-ring-data', this.id);
+
+				__menuAnimation(this.id, "expand");
+			}).on('mouseleave', function (d, i) {
+
+				__menuAnimation(this.id, "collapse");
+			}).datum(selectedRow).selectAll('path').data(ringObj.partition.nodes).enter().append('path').attr('d', ringObj.arc)
+
+			// Store the data and initialize the info board.
+			.call(function (d) {
+				self.ringInfoBoard.statsBoard.storeInfo(keywords, ringObj.idName, d[0]);
+				self._infoBoardRender();
+			}).style('fill', function (d, i) {
+				var cIndex = colorObj.rings.findIndex(function (o) {
+					if (o.name === keywords) return true;
+				});
+				return colorObj.rings[cIndex].value[d.name];
+			}).style('fill-rule', 'evenodd').on('mouseenter', function (d, index) {
+
+				d3.select('#' + this.parentNode.id + '-menu').selectAll('rect').each(function (d, i) {
+					if (index === i + 1) d3.select(this).classed('selected', true);
+				});
+
+				d3.select(this).attr('stroke-width', '5px').attr('stroke', '#fff');
+
+				// Render the percentage number to the percentage board
+				self.ringInfoBoard.percentageBoard.calVal(d.value / total).setTitle(keywords, d.name);
+			}).on('mouseout', function (d, index) {
+
+				d3.select('#' + this.parentNode.id + '-menu').select('rect.selected').classed('selected', false);
+
+				d3.select(this).attr('stroke-width', null).attr('stroke', null);
+			}).call(function (pathCluster) {
+				ringObj.pathOriginPos = self._stashOriginPathPos(pathCluster[0]);
+			});
+		}
+
+		function __menuAnimation(ringId, evtName) {
+
+			var ringNumber = self.ringInfoBoard.statsBoard.info.length,
+			    innerRingId = self.ringInfoBoard.statsBoard.info[0].ringId,
+			    outerRingId = self.ringInfoBoard.statsBoard.info[ringNumber - 1].ringId,
+			    ring = d3.select('#' + ringId).node(),
+			    dropdownMenu = d3.select('#' + ringId + '-menu'),
+			    dropdownSVG = dropdownMenu.select('div.board-dropdown-menu').select('svg'),
+			    dropdownArrow = dropdownMenu.select('div.board-dropdown-header').select('span.arrow'),
+			    innerDropdownMenu = d3.select('#' + innerRingId + '-menu'),
+			    innerDropdownSvg = innerDropdownMenu.select('div.board-dropdown-menu').select('svg'),
+			    innerDropdownArrow = innerDropdownMenu.select('div.board-dropdown-header').select('span.arrow'),
+			    outerDropdownMenu = d3.select('#' + outerRingId + '-menu'),
+			    outerDropdownSvg = outerDropdownMenu.select('div.board-dropdown-menu').select('svg'),
+			    outerDropdownArrow = outerDropdownMenu.select('div.board-dropdown-header').select('span.arrow');
+
+			if (evtName === "expand") {
+
+				$v(ring, { opacity: 1.0 }, { duration: 400 });
+
+				if (ringId !== outerRingId && ringId !== innerRingId) {
+
+					if (innerDropdownMenu.style('display') === 'block') {
+						__collapseMenu(innerDropdownMenu, innerDropdownSvg, innerDropdownArrow);
+					} else if (outerDropdownMenu.style('display') === 'block') {
+						__collapseMenu(outerDropdownMenu, outerDropdownSvg, outerDropdownArrow);
+					}
+					__expandMenu(dropdownMenu, dropdownSVG, dropdownArrow);
+				} else if (ringId === outerRingId) {
+					__expandMenu(dropdownMenu, dropdownSVG, dropdownArrow);
+				} else if (ringId === innerRingId) {
+					__expandMenu(dropdownMenu, dropdownSVG, dropdownArrow);
+				}
+			} else if (evtName === "collapse") {
+
+				$v(ring, { opacity: 0.6 }, { duration: 400 });
+
+				if (ringId !== outerRingId && ringId !== innerRingId) {
+					__collapseMenu(dropdownMenu, dropdownSVG, dropdownArrow);
+				}
+			}
+
+			function __expandMenu(menu, svg, arrow) {
+
+				menu.style('display', 'block');
+
+				$v(svg.node(), { height: svg.attr('default-height') }, { duration: 400 });
+
+				$v(arrow.node(), { rotateZ: '180deg' }, { duration: 400 });
+			}
+
+			function __collapseMenu(menu, svg, arrow) {
+
+				menu.style('display', 'none');
+
+				$v(svg.node(), { height: 0 }, { duration: 400 });
+
+				$v(arrow.node(), { rotateZ: '0deg' }, { duration: 400 });
+			}
+		}
+	});
+};
+
+ringGraphClass.prototype.drawMultiRings = function (paths) {
+
+	var self = this,
+	    l = paths.length,
+	    _rings = [];
+
+	this.calRadiusDelta(l);
+
+	for (var i = 0; i < l; i++) {
+
+		_rings.push({
+
+			idName: 'RING_' + i,
+
+			path: paths[i],
+
+			innerRadius: this.coreRadius + (i - 1) * this.ringGap + (i - 1) * this.ringDelta,
+
+			outerRadius: this.coreRadius + (i - 1) * this.ringGap + i * this.ringDelta
+		});
+	}
+
+	var _rings_l = _rings.length;
+
+	for (var j = 0; j < _rings_l; ++j) {
+
+		var r = _rings.shift();
+
+		this.ringGroup.push(this.ringConstructor(r.idName, r.path, r.innerRadius, r.outerRadius));
+	}
+
+	for (var k = 0; k < this.ringGroup.length; ++k) {
+		this.drawRing(this.ringGroup[k]);
+	}
+};
+
+ringGraphClass.prototype.updateRings = function () {
+	var _iteratorNormalCompletion = true;
+	var _didIteratorError = false;
+	var _iteratorError = undefined;
+
+	try {
+
+		for (var _iterator = this.ringGroup[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+			var r = _step.value;
+
+			this.updateRing(r);
+		}
+	} catch (err) {
+		_didIteratorError = true;
+		_iteratorError = err;
+	} finally {
+		try {
+			if (!_iteratorNormalCompletion && _iterator.return) {
+				_iterator.return();
+			}
+		} finally {
+			if (_didIteratorError) {
+				throw _iteratorError;
+			}
+		}
+	}
+};
+
+ringGraphClass.prototype.updateRing = function (ringObj) {
+
+	var self = this,
+	    rowNumber = this.selectRow(),
+	    isYrSelected = this.rocYr ? true : false,
+	    keywords = ringObj.dataSource.name;
+
+	this.readCSV(ringObj.dataSource.url).row(function (d, i) {
+		if (isYrSelected) if (i === rowNumber) return d;else return null;
+	}).get(function (err, selectedRows) {
+		var selectedRow = selectedRows.length === 1 ? selectedRows[0] : null;
+
+		if (selectedRow) {
+
+			selectedRow.pop = jsonPop;
+			selectedRow = transtoPartitonFormat(selectedRow, '民國');
+
+			d3.select('#' + ringObj.idName).datum(selectedRow).selectAll('path').data(ringObj.partition.nodes).each(function (d, i) {
+				if (i !== 0 && i <= ringObj.pathOriginPos.length) {
+					d.x0 = ringObj.pathOriginPos[i - 1].x0;
+					d.dx0 = ringObj.pathOriginPos[i - 1].dx0;
+				}
+			})
+			// Reset the statsboard for updating.
+			.call(function (d) {
+
+				if (ringObj.idName == 'RING_0') // Clear the old data when running into the first ring.
+					self.ringInfoBoard.statsBoard.infoReset().storeInfo(keywords[0], ringObj.idName, d[0]);else self.ringInfoBoard.statsBoard.storeInfo(keywords[0], ringObj.idName, d[0]);
+
+				self._infoBoardRender(true);
+			}).transition().duration(500).call(function () {
+
+				var arcsData = this[0].map(function (arc, i) {
+					// Arcs are bounding with data
+					if (i > 0) // i == 0 is the total.
+						return {
+							name: arc.__data__.name,
+							value: arc.__data__.value
+						};
+				}).filter(function (e) {
+					if (e) return e;
+				}),
+				    ringNode = d3.select(this.node().parentNode);
+
+				// The ring will flash when the transition happens and flashout after the animation.
+				ringNode.transition().duration(500).style('opacity', 1.0).transition().duration(1000).style('opacity', 0.6);
+			}).attrTween('d', function (d, i, a) {
+				if (i > 0) {
+
+					var itp = d3.interpolate({ x: d.x0, dx: d.dx0 }, d);
+
+					// Step function for interpolation
+					return function (t) {
+
+						var b = itp(t);
+						d.x0 = b.x;
+						d.dx0 = b.dx;
+						return ringObj.arc(b);
+					};
+				}
+			})
+			// Stores the updated position
+			.call(function (pathCluster) {
+				ringObj.pathOriginPos = self._stashOriginPathPos(pathCluster[0]);
+			});
+		}
+	});
+};
+
+ringGraphClass.prototype._stashOriginPathPos = function (paths) {
+
+	var originPoses = [];
+
+	for (var i in paths) {
+		if (parseInt(i) > 0) originPoses.push({
+			x0: paths[i].__data__.x,
+			dx0: paths[i].__data__.dx
+		});
+	}return originPoses;
+};
+
+// Clear previos ring graph for updating.
+ringGraphClass.prototype.resetRings = function () {
+	this.ringGroup = [];
+	return this;
+};
+
+// remove the boards if they exist
+ringGraphClass.prototype.removeBoards = function () {
+	var statsBoard = this.ringInfoBoard.statsBoard,
+	    percentageBoard = this.ringInfoBoard.percentageBoard;
+	if (statsBoard.body) statsBoard.emptyAll();
+	if (percentageBoard.body) percentageBoard.emptyAll();
+};
+
+/* A class for tooltip */
+var tipClass = function tipClass() {
+
+	var panel = d3.select('#APP');
+
+	this.dotTip = panel ? panel.append('div').attr('id', 'DOT-TIP').attr('class', 'tip') : undefined;
+
+	this.barTip = panel ? panel.append('div').attr('id', 'BAR-TIP').attr('class', 'tip') : undefined;
+
+	/* These varaibles are designed for preventing any kinds of exceptional value of the node */
+	// The below two record the size value of tip and are used for checking the elements' resize.
+	this._bTipH = null;
+	this._bTipW = null;
+};
+
+tipClass.prototype.initTips = function () {
+	this.dotTip = d3.select('#APP').append('div').attr('id', 'DOT-TIP').attr('class', 'tip');
+	this.barTip = d3.select('#APP').append('div').attr('id', 'BAR-TIP').attr('class', 'tip');
+	return this;
+};
+
+tipClass.prototype.appendDotMouseOver = function (dOption) {
+
+	var self = this,
+	   
+
+	// Set up the origin of the dot tip
+	offset = this._setOffset('DOT-TIP');
+
+	d3.select('#SKETCHPAD').selectAll('.dots').on('mouseover', function (d) {
+
+		var posX = parseInt(this.getAttribute('cx')),
+		    posY = parseInt(this.getAttribute('cy'));
+
+		self.dotTip.classed('display', true)
+
+		// Make the tip's origin fixed at center of circles
+		.style('top', posY + offset.Y + 'px').style('left', posX + offset.X + 'px').html(function () {
+
+			// Display the specific events on dot chart.
+			var info = '民國 ' + d['民國'] + '<br>' + dOption + ': ' + d[dOption];
+			// working-spot-1
+			// Bug: Only the last dot does not display correctly, I will fix it later.
+			// if (d.tag.length == 0)
+			// 	return '<span id="DOT-INFO">' + info + '</span>'
+			// else {
+			// 	return '<span id="DOT-INFO">' + info + '</span>' +
+			// 				 '<span class="tag">' + d.tag + '</span>'
+			// }
+			return '<span id="DOT-INFO">' + info + '</span>';
+		}).call(function (d) {
+			self._correctPos('DOT-TIP');
+		});
+	}).on('mouseout', function (d) {
+		self.dotTip.classed('display', false);
+	});
+};
+
+tipClass.prototype.appendBarMouseOver = function (dOption) {
+
+	var self = this,
+	   
+	// Set up the origin of the bar tip
+	offset = this._setOffset('BAR-TIP');
+
+	d3.select('#SKETCHPAD').selectAll('.bar').on('mouseenter', function (d) {
+
+		var _this = d3.select(this),
+		    prevBar = this.previousSibling,
+		    diff = function (name) {
+			var r = _this.attr('diff-' + name);
+			if (r) return r;
+		}(dOption);
+
+		var posX = parseFloat(this.getAttribute('x')) + parseFloat(this.getAttribute('width') / 2),
+		    posY = parseFloat(this.getAttribute('y'));
+
+		self.barTip.classed('display', true)
+
+		// Make the tip's origin fixed at center of circles
+		.style('top', posY + offset.Y + 'px').style('left', posX + offset.X + 'px').html(function () {
+
+			// Check the current display data is a merged result or not.
+			var keys = Object.keys(d),
+			    isMergedResult = !(dOption in keys);
+
+			var info = '民國 ' + d['民國'] + '<br>' + dOption + ': ' + (
+			// Render the merged result if it is.
+			isMergedResult ? _this.attr('merged-result') : d[dOption]);
+
+			console.log(info);
+			if (diff) {
+				if (diff < 0) return '<span id="BAR-INFO">' + info + '</span>' + '<span>較去年同期：</span>' + '<span><span class="down-arrow align">' + '</span>' + '<span class="align">&nbsp;' + diff + '</span></span>';else diff > 0;
+				return '<span id="BAR-INFO">' + info + '</span>' + '<span>較去年同期：</span>' + '<span><span class="up-arrow align">' + '</span>' + '<span class="align">&nbsp;' + diff + '</span></span>';
+			} else if (diff === undefined && isMergedResult) {
+
+				if (prevBar) {
+
+					diff = parseInt(_this.attr('merged-result')) - parseInt(d3.select(prevBar).attr('merged-result'));
+
+					return '<span id="BAR-INFO">' + info + '</span>' + '<span>較去年同期：</span>' + '<span><span class="up-arrow align">' + '</span>' + '<span class="align">&nbsp;' + diff + '</span></span>';
+				}
+				return '<span id="BAR-INFO">' + info + '</span>';
+			} else return '<span id="BAR-INFO">' + info + '</span>';
+		}).call(function (d) {
+			self._correctPos('BAR-TIP')._nodeSizeCorrect('BAR-TIP');
+		});
+	}).on('mouseout', function (d) {
+		self.barTip.classed('display', false);
+	});
+};
+
+tipClass.prototype.appendStackBarMouseOver = function () {
+
+	var self = this,
+	    offset = this._setOffset('BAR-TIP');
+
+	d3.select('#SKETCHPAD').selectAll('rect.stackbar').on('mouseenter', function (d) {
+		var posX = parseFloat(this.getAttribute('x')) + parseFloat(this.getAttribute('width') / 2),
+		    posY = parseFloat(this.getAttribute('y'));
+
+		self.barTip.classed('display', true)
+
+		// Make the tip's origin fixed at center of circles
+		.style('top', posY + offset.Y + 'px').style('left', posX + offset.X + 'px').html(function () {
+
+			var info = '民國 ' + d.year + '<br>' + d.name + ': ' + d.value;
+
+			// If the percentage value is available.
+			if (d.pct) info += '<br>' + (parseFloat(d.pct) * 100).toFixed(2) + '%';
+
+			return '<span id="BAR-INFO">' + info + '</span>';
+		}).call(function (d) {
+			self._correctPos('BAR-TIP')._nodeSizeCorrect('BAR-TIP');
+		});
+	}).on('mouseout', function (d) {
+		self.barTip.classed('display', false);
+	});;
+};
+
+tipClass.prototype._setOffset = function (nodeId) {
+
+	// The origin of tip has to be the same as the origin of the sketchpad.
+	var dotTipNode = document.getElementById(nodeId),
+	    parentContainers = listAncestorNodes(dotTipNode),
+	    offset = calOffsetFromOrigins(parentContainers, dotTipNode),
+	    displayPanelWrapperStyle = window.getComputedStyle(document.getElementById('DATABOARD_WRAPPER')),
+	    displayPanelStyle = window.getComputedStyle(document.getElementById('DATABOARD-vizLayer')),
+	    svgPadStyle = window.getComputedStyle(document.getElementById('SKETCHPAD'), null),
+	    headerStyle = window.getComputedStyle(document.getElementById('HDR'), null);
+
+	offset.X += parseInt(displayPanelWrapperStyle['padding-left'].replace('px', '')) + parseInt(svgPadStyle['padding-left'].replace('px', '')) + parseInt(headerStyle['width'].replace('px', ''));
+	offset.Y += parseInt(displayPanelWrapperStyle['padding-top'].replace('px', '')) + parseInt(svgPadStyle['padding-top'].replace('px', ''));
+	return offset;
+};
+
+tipClass.prototype._correctPos = function (tipId) {
+
+	var self = this,
+	    tip = null,
+	    arrowHeight = 9,
+	    arrowHalfWidth = 9 / Math.sqrt(3);
+
+	(function () {
+		if (tipId === 'DOT-TIP') tip = self.dotTip;else if (tipId === 'BAR-TIP') tip = self.barTip;
+	})();
+
+	// Stores the node's offsetHeight property in case of tip resizing.
+	this._bTipH = tip.node().offsetHeight;
+	this._bTipW = tip.node().offsetWidth;
+
+	var originTop = parseInt(tip.node().style.top.replace('px', '')),
+	    originLeft = parseInt(tip.node().style.left.replace('px', ''));
+
+	var updatedTop = originTop - tip.node().offsetHeight - arrowHeight,
+	    updatedLeft = originLeft - tip.node().offsetWidth / 2 - arrowHalfWidth;
+
+	if (updatedTop > 0 && updatedLeft > 0) {
+
+		tip.classed('tip-before-display', false).classed('tip-after-display', true).style('top', updatedTop + 'px').style('left', updatedLeft + 'px');
+
+		/* When the tip is beyond the view we can see */
+	} else if (updatedTop < 0) {
+
+			updatedTop = originTop + arrowHeight;
+
+			tip.classed('tip-before-display', true).classed('tip-after-display', false).style('top', updatedTop + 'px').style('left', updatedLeft + 'px');
+		}
+	return this;
+};
+
+tipClass.prototype._nodeSizeCorrect = function (tipType) {
+
+	var self = this;
+
+	if (tipType === 'BAR-TIP') {
+
+		var nh = self.barTip.node().offsetHeight,
+		    nw = self.barTip.node().offsetWidth;
+
+		this.barTip.style('top', function () {
+
+			var t = this.style.top;
+
+			if (self._bTipH !== nh) {
+				var ot = parseInt(t.replace('px', ''));
+				return ot + self._bTipH - nh + 'px';
+			} else return t;
+		}).style('left', function () {
+
+			var l = this.style.left;
+
+			if (self._bTipW !== nw) {
+				var ol = parseInt(l.replace('px', ''));
+				return ol + self._bTipW / 2 - nw / 2 + 'px';
+			} else return l;
+		})
+		// fix the width to prevent the resizing.
+		.style('width', function () {
+			return nw + 'px';
+		});
+	} else if (tipType === 'DOT-TIP') console.log(this.dotTip.node().offsetHeight);
+
+	return this;
+};
+
+/* Additional Functions */
+/* 
+	A function for pinnig label at the middle bottom of the element space.
+	eleSpace: The width left for each element.
+	inPad: 
+		The abbreviation about "innerPadding", 
+		The padding between each bar
+		outPad:
+		The abbreviation about "outPadding"
+		meaning the padding space between the first bar and the y axis.
+*/
+function c_pinLbl2XAxisMidPt(xAxis, eleSpace, inPad, outPad) {
+	// xAxis is the same as "this"
+	xAxis.selectAll('.tick').attr('transform', function (d, i) {
+		return 'translate(' + (outPad + (2 * i + 1) * eleSpace / 2 + i * inPad) + ',0)';
+	});
+}
+
+/*  
+	A function for putting label with data value on each bar.
+	bars: 
+		the bars selected by previous defined seletor function
+	d:
+		displacement from the head position
+*/
+function c_placeValOnBarHdV(txt, d, eleSpace, inPad, outPad) {
+
+	var _txt = txt[0];
+
+	for (var i = 0; i < _txt.length; i++) {
+
+		var _txtBox = _txt[i].getBBox(),
+		    bWMidPt = _txtBox.width / 2,
+		    bHMidPt = _txtBox.height / 2,
+		   
+		// Displacement in X direction
+		xd = parseInt(_txt[i].getAttribute('x')),
+		   
+		// Displacement in Y direction
+		yd = parseInt(_txt[i].getAttribute('y')),
+		    delta = eleSpace / 2 < 2 * bHMidPt ? eleSpace / 2 - 0.5 * bHMidPt * 2 : eleSpace / 2 - bHMidPt / 2;
+
+		_txt[i].setAttribute('transform', 'rotate(90, ' + xd + ', ' + yd + ')' + 'translate(' + d + ',' + -1 * delta + ')');
+	}
+}
+
+function listAncestorNodes(node) {
+
+	var childNode = node,
+	    nodes = [];
+
+	while (childNode && childNode.parentNode) {
+
+		if (childNode.tagName !== 'BODY') {
+
+			nodes.push(childNode.parentNode);
+			childNode = childNode.parentNode;
+		} else childNode = null;
+	}
+	return nodes;
+}
+
+function calOffsetFromOrigins(containers, contextNode) {
+
+	var offsetX = 0,
+	    offsetY = 0,
+	    borderRex = /\d+px/;
+
+	for (var i in containers) {
+
+		var containerSpec = window.getComputedStyle(containers[i], null);
+
+		offsetX += parseInt(containerSpec['border-left'].match(borderRex)[0].replace('px', '')) + parseInt(containerSpec['padding-left'].replace('px', '')) + parseInt(containerSpec['margin-left'].replace('px', ''));
+
+		offsetY += parseInt(containerSpec['border-top'].match(borderRex)[0].replace('px', '')) + parseInt(containerSpec['padding-top'].replace('px', '')) + parseInt(containerSpec['margin-top'].replace('px', ''));
+	}
+	return { X: offsetX, Y: offsetY };
+}
+/* A function allows json data to pop a value with specific key. */
+function jsonPop(key) {
+
+	var type = Object.prototype.toString.call(this).slice(8, -1);
+
+	if (type === 'Object') {
+		for (var k in this) {
+			if (k === key) {
+
+				var val = this[k];
+
+				delete this[key];
+				return val;
+			}
+		}
+	} else return undefined;
+}
+
+/* 
+	A function construct the a data format ({parent: '...', children: '...'}) 
+	which is easily transformed into partitions 
+*/
+function transtoPartitonFormat(obj, popKey) {
+
+	return {
+		name: obj.pop(popKey),
+		children: function (d) {
+
+			var ary = [];
+
+			for (var key in d) {
+				var _d = {};
+				if (Object.prototype.toString.call(d[key]).slice(8, -1) !== 'Function') {
+					_d['name'] = key;
+					_d['value'] = parseInt(d[key]);
+					ary.push(_d);
+				}
+			}
+			return ary;
+		}(obj)
+	};
+}
+
+function colorAdjust(hex, colorDelta) {
+
+	// Make the stroke color slightly different from the bars.
+	var rgb = colorObj.hexToRgb(hex);
+
+	// Abjust one of the color.
+	if (255 - rgb.r > colorDelta) rgb.r += colorDelta;else {
+		if (255 - rgb.g > colorDelta) rgb.g += colorDelta;else {
+			if (255 - rgb.b > colorDelta) rgb.b += colorDelta;
+		}
+	}
+
+	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
+}
