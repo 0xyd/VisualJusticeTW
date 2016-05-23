@@ -1093,6 +1093,7 @@ const DataFilterStateTree = {
 							]
 						}
 					},
+					// 公共危險罪
 					{
 						dataset: '公共危險罪',
 						availableChartTypes: [
@@ -1151,6 +1152,7 @@ const DataFilterStateTree = {
 							]
 						}
 					},
+					// 貪污罪
 					{
 						dataset: '貪污罪',
 						availableChartTypes: [
@@ -1210,6 +1212,7 @@ const DataFilterStateTree = {
 							]
 						}
 					},
+					// 瀆職罪
 					{
 						dataset: '瀆職罪',
 						availableChartTypes: [
@@ -5264,7 +5267,7 @@ const DataBoard = React.createClass({
 	componentWillUpdate (nextProps, nextStates) {
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
-
+		
 		var 
 			// Renew the board when user switch dataset, chartTypes or 
 			// switch to the new data when reading in the detail story.
@@ -6102,7 +6105,7 @@ function setDropdownMenuStates(state, index) {
 
 // Update the dropdown menu. 
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
-
+	
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
@@ -6128,6 +6131,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 	const stateTree = DataFilterStateTree.state.get(theme);
 
 	const datasetIndex = DataFilterStateTree.findDatasetIndex(theme, optionName);
+	
 	
 	if (theme === 'police') 
 		return _FilterRenderDispatcher(state, theme, optionName, fieldsetIndex, datasetIndex);
@@ -6185,7 +6189,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		// Selecting the charttype which will affect the topics.
 		else if (fieldsetIndex === 2) {
-
+			
 			if (currentState.get('currentChartType') !== optionName) {
 
 				const newState = __chartTypeSwitchRendering(state, optionName, fieldsetIndex);
@@ -6204,6 +6208,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		// Selection the topic
 		else if (fieldsetIndex === 3) {
+
 			if (currentState.get('currentTopic') !== optionName) {
 
 				newTopic = setState('currentTopic', optionName);
@@ -6343,7 +6348,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			data: newData,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
-			// working-spot
 			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
@@ -6359,7 +6363,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					'filterDropdownMenus', 
 					updateTopicDropdownOption(state, null, chartType));
 
-		// workng-spot
 		const newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Update current topic
@@ -6368,7 +6371,7 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					newDropdownMenuStates
 						.get('filterDropdownMenus')
 							.get(fieldsetIndex+1)
-								.get('Options')[0]);
+								.get('Options').get(0));
 
 		return {
 			chartType: newChartType,
@@ -6477,13 +6480,13 @@ function selectTale(state, taleIndex, taleContext) {
 		setState(
 			'currentTopic', 
 			taleContext.topicName ? taleContext.topicName : state.get('currentTopic'));
-	console.log(state.get('filterDropdownMenus'));
+	
 	// Find out the topic depth
 	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
 	const topicDepth = topicList.findIndex((topic) => {
 		return taleContext.topicName === topic
 	});
-	console.log('topicDepth: ', topicDepth);
+	
 	const newTopicDepth = 
 		setState(
 			'currentTopicDepth', 
@@ -6608,8 +6611,9 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 			else if (props.menuIndex === 3) 
 				dispatch(selectDropdownOptionAC(
 					key, props.name, props.menuIndex, props.optionIdx, props.optionIdx));
-			else  
+			else {
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
+			}
 		}
 	}
 }
