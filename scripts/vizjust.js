@@ -245,7 +245,7 @@ graphClass.prototype.readCSV = function(path) {
 
 // To filter the data which are inproper for visualizing.
 graphClass.prototype._dataFiltering = function(d, i) {
-	console.log(d);
+	
 	// Iterate d's object. Once the value is "", deperciate the d.
 	for ( var key in d )
 		if ( d[key] === "" ) return null
@@ -753,7 +753,7 @@ barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
 	
 				stackData.push(temp); 
 			}
-			console.log(stackData);
+			
 			// working-spot-2
 			/* update the yScale with the new data. */
 			// merged the headers defined 
@@ -936,7 +936,7 @@ barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, m
 barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 
 	var self = this;
-	console.log(mHds);
+	
 	// Remove the old y axis.
 	this._removeYAxis();
 

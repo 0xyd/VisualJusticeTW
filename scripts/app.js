@@ -1270,126 +1270,7 @@ const DataFilterStateTree = {
 							]
 						}
 					},
-					{
-						dataset: '賭博罪',
-						availableChartTypes: [
-								'直方圖',
-								'趨勢圖'
-						],
-						content: {
-							data: [
-								{
-									name: '被告人數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													url: null,
-													headers: null
-												},
-												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
-												}
-											}, 
-											{
-												name: '各刑名統計',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
-												}
-											}, 
-											{
-												name: '各刑名百分比',
-												axes: {
-													x: '民國',
-													y: '百分比'
-												},
-												extl: {
-													url: null,
-													headers: null
-												},
-												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
-												}
-											}
-										],
-										[]
-									]
-								}
-							]
-						}
-					},
-					{
-						dataset: '重傷罪',
-						availableChartTypes: [
-								'直方圖',
-								'趨勢圖'
-						],
-						content: {
-							data: [
-								{
-									name: '被告人數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													url: null,
-													headers: null
-												},
-												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
-												}
-											}, 
-											{
-												name: '各刑名統計',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
-												}
-											}, 
-											{
-												name: '各刑名百分比',
-												axes: {
-													x: '民國',
-													y: '百分比'
-												},
-												extl: {
-													url: null,
-													headers: null
-												},
-												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
-												}
-											}
-										],
-										[]
-									]
-								}
-							]
-						}
-					},
+					// 詐欺罪
 					{
 						dataset: '詐欺罪',
 						availableChartTypes: [
@@ -1450,6 +1331,129 @@ const DataFilterStateTree = {
 							]
 						}
 					},
+					// 重傷罪
+					{
+						dataset: '重傷罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 強制性交罪
+					{
+						dataset: '強制性交罪',
+						availableChartTypes: [
+								'直方圖',
+								'趨勢圖'
+						],
+						content: {
+							data: [
+								{
+									name: '被告人數',
+									topics: [
+										[
+											{
+												name: '總數',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}, 
+											{
+												name: '各刑名統計',
+												axes: {
+													x: '民國',
+													y: '人數'
+												},
+												extl: {
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+												}
+											}, 
+											{
+												name: '各刑名百分比',
+												axes: {
+													x: '民國',
+													y: '百分比'
+												},
+												extl: {
+													url: null,
+													headers: null
+												},
+												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+												}
+											}
+										],
+										[]
+									]
+								}
+							]
+						}
+					},
+					// 偽造文書印文罪
 					{
 						dataset: '偽造文書印文罪',
 						availableChartTypes: [
@@ -1510,8 +1514,9 @@ const DataFilterStateTree = {
 							]
 						}
 					},
+					// 賭博罪
 					{
-						dataset: '強制性交罪',
+						dataset: '賭博罪',
 						availableChartTypes: [
 								'直方圖',
 								'趨勢圖'
@@ -1569,7 +1574,7 @@ const DataFilterStateTree = {
 								}
 							]
 						}
-					}
+					},
 				]))
 			// State of judicial data selector
 			.set('judicial',
@@ -2932,8 +2937,8 @@ class StoryTeller {
 				datasets: [
 					'殺人罪', '兒童及少年性交易防制條例', '竊盜罪', 
 					'擄人勒贖罪', '恐嚇罪', '槍砲彈藥刀械管制條例',
-					'公共危險罪', '貪污罪', '瀆職罪', '重傷罪', '詐欺罪',
-					'偽造文書印文罪', '強制性交罪'
+					'公共危險罪', '貪污罪', '瀆職罪', '詐欺罪',
+					'重傷罪', '強制性交罪', '偽造文書印文罪', '賭博罪'
 				],
 				data: '被告人數',
 				vizType: '直方圖',
@@ -3114,8 +3119,9 @@ class StoryTeller {
 			}
 		];
 
-		// working-spot: Tales for explain the chart.
+		// Tales for explain the chart.
 		this.taleChains = [
+			// 兒少法 (Prosecution)
 			{
 				// The first section of each topic is the main indicator.
 				dataset: '兒童及少年性交易防制條例',
@@ -3140,13 +3146,627 @@ class StoryTeller {
 								backgroundColor: '#3B8AE5'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoContext  : 
+							<span>
+							兒童及少年，是國家未來的主人翁，更是社會持續發展及進步的原動力，
+							確保我們的孩子在無憂無慮、安全健康的環境下成長，是我們責無旁貸的使命，
+							為此立法院立法<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawOldVer_Vaild.aspx?PCODE=D0050023'>
+								兒童及少年性交易防制條例</a>就是希望給予我們的下一代多一層保障。
+							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
-						topicName: '總數' 
+						topicName: '總數',
+						isEnd: false
 					},
 					{
-						
+						Container: {
+							pos : {
+								left: '4.5em',
+								top : '9em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '早年的粉紅色代表罰金，近年的黃色代表拘役，無論何者均是輕罪，為什麼呢？',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4.5em',
+								top : '9em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '因為此條例並不一定是涉及性交易才會被起訴，散步兒少相關猥褻資訊或向兒少散步猥褻資訊均是違反此條例的，但罪不至徒刑，故此。',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '民國91、92年很明顯被判有期徒刑人數遠勝前幾年，也比後幾年多出不少，為什麼呢？',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '目前我們也還沒找到合理的解釋，還請各位一同集思廣益囉',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: true
+					}
+				]
+			},
+			// 殺人罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '殺人罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '4em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : '殺人罪是古老之罪行，流傳千年之久，但社會關注度不曾減弱。',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '我們統計的殺人罪包含「殺人」、「殺人未遂」、「預備殺人」及「殺害直系尊親屬」不包含過失致死及相關罪行。',
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : '過去三十年台灣殺人犯的數量是逐年減少的，被求處最高刑罰（死刑）的現象亦趨罕見。特別的是，無罪的人數量也逐年遞減，應可解釋為科學辦案日新月異，減少因證據不足而判無罪的現象。',
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>以百分比來看，這張圖跟上張無異，有個案例發生於103年的藍「有罪免刑」(藍色表示)，為什麼呢？請看以下中國時報之
+								<a className='tale-body-link' href='http://www.chinatimes.com/realtimenews/20140605002800-260402'>報導</a>
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+			// 竊盜罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '竊盜罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>竊盜是古老的犯罪，相較於其他國家，台灣人普遍路不拾遺，東西掉了找回來的情況也多有所聞。不容忽視的是，竊盜罪歷年來被告人數是持續增長的，也長期佔據（2005年到2009年，根據法務部統計處資料）台灣三大常見犯罪第二名。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : <span>竊盜案一直都在你我身邊上演，下次隨手把東西放在桌上就要離開座位時，請再想一想確定要這麼做嘛?</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : <span>近10年來，因竊盜被判罰金的人數大幅減少，改用拘役取代之。不難理解，若非出於貧窮何須偷東西？要他們繳罰金又有什麼意義？</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>除了罰金、無罪人數減少外，被判有期徒刑之比例也是逐年遞減，盡以拘役處分。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>法務部近年防治犯罪的看法是「輕罪輕判、重罪重判」因為監獄是個大染缸，小賊進去出來往往變大尾，能避免入獄就避免。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '4em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>竊盜罪為本刑五年以下之罪，當屬法務部稱之輕罪。然而竊盜犯常常犯下不只一起案件。基於一罪一罰原則，常有聽聞慣竊遭判十年、二十年之徒刑。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: true
+					},
+				]
+			},
+			// 擄人勒贖罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '擄人勒贖罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '7em',
+								top : '6em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>千萬別以為90年過後治安敗壞。剛好相反，治安就是因為變好了才有這樣的圖表。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '7em',
+								top : '6em',
+							},
+							size: {
+								width : '350px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								二戰時期制定的&#60;&#60;
+									<a href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=懲治盜匪條例' className='tale-body-link'>懲治盜匪條例</a>&#62;&#62;
+									在民國90年廢止，故綁匪從91年起開始適用舊法，也就是刑法擄人勒贖罪，所以有91年起犯罪人數爆量的現象（但民國90年前也是有綁匪適用舊法的，關鍵在於特別法與普通法認定標準不一，有興趣的朋友可以自行比較）
+								</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '7em',
+								top : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : <span>雖然民國90年之前之此罪無罪人數甚高，但因犯案人數歷年都在30人以下，影響解釋變因過多，無須另作解釋。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '6.5em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>民國98年之後，擄人勒贖犯罪人數急墜，除了此罪被判重刑風險高之外，另一盛行的「輕罪」產生了替代效果，那就是詐欺。</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '6.5em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>謊詐綁走被害人之親屬，要求高額贖金，既不冒被抓之危險，也鮮少被重判，這麼「好賺」的行業，意外毀了綁匪的工作！</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: true
+					}
+				]
+			},
+			// 恐嚇罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '恐嚇罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+							恐嚇罪非重罪。被告出於義憤恐嚇被害人，並非出於恐嚇之意，通常可以和解或是罰金了事，
+							但若恐嚇案件涉及妨害自由、組織犯罪條例，甚至擄人勒贖，檢察官通常會擇一罪名起訴。
+							也因此，恐嚇本身罰責不重，但還是有人被處重判。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								恐嚇罪是個相形單純的罪，非徒刑即無罪，罰金、拘役幾乎不存在。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>恐嚇認定標準見仁見智，法官裁量標準很寬。無罪比例也很高</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					},
+
+				]
+			},
+			// 瀆職罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '瀆職罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
 						Container: {
 							pos : {
 								right: '2em',
@@ -3164,19 +3784,25 @@ class StoryTeller {
 								backgroundColor: '#3B8AE5'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna. Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Praesent commodo cursus magna.',
+						infoContext  : 
+							<span>
+								我們蒐集瀆職罪的資料本是認為犯下此罪之公務員人數應當不少，且跟貪污罪一樣會造成人民對社會的不信任，
+								但實際統計後才發現跟我們想的不一樣。被起訴的人不多，有罪的人更少。
+								因為「瀆職」的犯罪構成要件不好拿捏，公務員要有不作為，且對人民或社會造成傷害，此罪才會成立。
+							</span>,
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
 					},
 					{
-						
 						Container: {
 							pos : {
-								left: '5em',
-								top : '2em',
+								left: '3.5em',
+								top : '7em',
 							},
 							size: {
-								width : '250px',
+								width : '300px',
 								padding: '0.5em 1em'
 							}
 						},
@@ -3188,12 +3814,16 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod. Nullam id dolor id nibh ultricies vehicula ut id elit. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. ',
+						infoContext  : 
+							<span>
+								很明顯的，民國84年有瀆職罪不受理人數相當多的現象。
+							</span>,
 						infoAnimation: '',
-						isTopicFirstSec: false
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
 					},
 					{
-						// working-spot
 						Container: {
 							pos : {
 								left: '5em',
@@ -3212,64 +3842,419 @@ class StoryTeller {
 								backgroundColor: '#822979'
 							}
 						},
-						infoContext  : 'Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.',
+						infoContext  : 
+							<span>以比例而言，被判無罪的人也多。除此之外「其他」也多（免訴、撤回、管轄錯誤）可見瀆職罪之地位尷尬。</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
-						topicName: '刑名統計' 
-					},
-					{
-						Container: {
-							pos : {
-								left: '',
-								top : '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '',
-								top : '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: true,
-						topicName: '刑名百分比' 
-					},
-					{
-						Container: {
-							pos : {
-								left: '',
-								top : '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
-					},
-					{
-						Container: {
-							pos : {
-								left: '',
-								top : '',
-							}
-						},
-						infoContext  : '',
-						infoAnimation: '',
-						isTopicFirstSec: false
+						topicName: '各刑名百分比',
+						isEnd: true
 					}
 				]
-			}
+			},
+			// 槍砲 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '槍砲彈藥刀械管制條例',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '4em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								台灣黑槍氾濫嚴重?不嚴重? 可以確定的是，真正被槍打傷或是打死的人在台灣還是少數。
+								但無論如何，街頭駁火、幫派火拼，都是重大社會維安問題，也因此此條例對於持有槍械之人之刑度多在五年以上，不可謂之輕。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},					
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								值得注意的是，在無法確定有無殺傷力之前，外型仿真之空氣槍、瓦斯槍及BB槍持有者也有被此條例起訴的風險，這也可以解釋為什麼無罪之人這麼多。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext : 
+							<span>
+								按照「重罪重判、輕罪輕判」（參考竊盜罪）之標準，近年犯此條例被判拘役之人數也是被壓縮，畢竟五年本刑可不是輕罪。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					},
+
+				]
+			},
+			// 公共危險罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '公共危險罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								根據英國《太陽報》引用壓力團體「移民觀察」（Migration Watch）的研究，台灣是全世界人口密度第二高的國家，在這麼擁擠的地方居住，公眾居住環境安全維護是不容疏忽的，只要一丁點的不慎便有可能造成嚴重的後果。公共危險罪早些年約束縱火、失火的行為，加上台灣天災多，違背建築術成規也被視為公共危險罪的一環。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},			
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								近年來，酒駕肇事奪走多條人命，引發社會憤慨，經過兩次修法後，不能安全駕駛已然成為公共危險罪之大宗，2005年到2009年，公共危險罪一直是台灣入監服刑人數第三大罪名。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},	
+					{
+						Container: {
+							pos : {
+								left: '7em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								在1999年之前，單純的酒醉駕車乃是由警察以行政罰的方式為處罰，
+								為了有效嚇阻酒醉駕車，因此在1999年(民國88年)刑法修正時，立法者將原本僅屬於行政罰的酒駕與類似行為入罪化，
+								而增訂刑法第185條之3，即只要服用毒品、麻醉藥品、酒類或其他相類之物，致不能安全駕駛動力交通工具者，
+								即可處一年以下有期徒刑、拘役或三萬元以下罰金。所以民國89年公共危險罪才爆量
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								top : '2em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext : 
+							<span>
+								時死亡案件98年為397人， 99年、100年卻增為419人、439人，加上葉少爺事件引發社會憤怒，
+								立法院乃於102年5月31號修法參考德國、美國標準，將吐氣所含酒精濃度達每公升0.25毫克以上，認定為不能安全駕駛之標準，違者處2年以下有期徒刑，得併科20萬元以下罰金。
+								這是103年公共危險罪裁判確定人數暴量的原因。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+			// 貪污 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '貪污罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								貪污一向是國人最痛恨的犯罪手法之一，往往造成人民與對政府的不信任，也會導致巨大的經濟損失。
+								根據國際透明組織評比，台灣的「貪腐印象」從08年到15年維持在世界排名39到30名之間，雖不令人滿意，但尚可接受。
+								該組織排名主要是依據外商在跟各國政府打交道時的感受來統計，無法看出被起訴的貪瀆人數。但我們的資料可以！
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								統計圖為依&#60;&#60;貪污治罪條例&#62;&#62;被起訴人總數，並不是案件數。
+								有可能貪污案件減少，但每一案件涉案人數增加，造成整體貪污人數增加的現象
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								貪污治罪條例定罪率從99年到103年分別是84.8、75.1、74.1、72.7及70.3(資料來源:法務統計年報)。
+								相較於多數罪有高達九成的定罪率，貪瀆確實不易定罪。原因如下:
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '2em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								貪污治罪條例定罪率從99年到103年分別是84.8、75.1、74.1、72.7及70.3(資料來源:法務統計年報)。
+								相較於多數罪有高達九成的定罪率，貪瀆確實不易定罪。原因如下:
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '8em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								<ul>
+									<li>1.計算方式以人為本，不是以案為本，所以一案假設有五人被起訴，一人被定罪，縱使本案成立，定罪率卻只有20%。</li>
+									<li>2.貪瀆屬於高度智慧之白領犯罪，多數犯行早已計畫良久、證人稀少且證據隱密，檢調事後蒐集犯罪事實有其難度。</li>
+								</ul>
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '8em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext : 
+							<span>
+								<ul>
+									<li>3.貪污治罪條例法定刑度過高，以第四條第一項為例，竊取或侵占公用或公有器材、財物者處無期徒刑或十年以上有期徒刑，也就是說縱使只是公務員從辦公室攜帶橡皮擦回家而被起訴，法官最輕也要判十年，使得許多法官判不下去，只得判無罪。</li>
+									<li>4.同上述理由，罪責過重降低被告自白意願，也讓法官採取極度嚴格之採證標準，影響定罪率。</li>
+								</ul>
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						isEnd: true
+					}
+				]
+			},
 		];
 
 		// working-spot: The tale will
 		this.calTopicFirstTale = function() {
 			let tales = 
-				this._txtTale.sections.filter((section, i) => {
+				this._txtTaleChain.sections.filter((section, i) => {
 					return section.isTopicFirstSec === true
 				});
 			return tales
@@ -3287,11 +4272,10 @@ class StoryTeller {
 				
 			}
 			return style
-
 		};
 
 		// Store the current tale.
-		this._txtTale = null;
+		this._txtTaleChain = null;
 
 		// Store the current story chain.
 		this._vizStory = null;
@@ -3325,7 +4309,7 @@ class StoryTeller {
 	// working-spot: Decide which tales chain shoule be applied.
 	decideTaleChain(datasetName, dataName, vizTypeName) {
 
-		this._txtTale = this.taleChains.find((chain) => {
+		this._txtTaleChain = this.taleChains.find((chain) => {
 			return chain.dataset === datasetName && 
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
@@ -3388,11 +4372,19 @@ var IndexNavList = React.createClass({
 
 		return {
 			nav: [
-				<RR.Link to='/about_us'><img src="./src/aboutus.png" /></RR.Link>,
-				<RR.Link to='/main'><img src="./src/see.png" /></RR.Link>,
-				<RR.Link to='/special'><img src="./src/issue.png" /></RR.Link>,
-				<RR.Link to='/work_together'><img src="./src/work.png" /></RR.Link>,
-				<div>
+				<RR.Link to='/about_us'>
+					<img src="./src/aboutus.png" />
+				</RR.Link>,
+				<RR.Link to='/main'>
+					<img src="./src/see.png" />
+				</RR.Link>,
+				<RR.Link to='/special'>
+					<img src="./src/issue.png" />
+				</RR.Link>,
+				<RR.Link to='/work_together'>
+					<img src="./src/work.png" />
+				</RR.Link>,
+				<div className='social-group'>
 					<iframe id='githubStar' className='social-btn'
 						src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" 
 						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
@@ -3410,12 +4402,24 @@ var IndexNavList = React.createClass({
 		var listItems = [],
 			l = this.state.nav.length;
 
-		for ( var i=0; i<l; i++ ) 
-			listItems.push(
-				<IndexNavListItem 
-					key={i}
-					link={this.state.nav[i]} />
+		for ( var i=0; i<l; i++ ) {
+
+			if (i === l - 1) {
+				listItems.push(
+					<IndexNavListSocialItem 
+						key={i}
+						elements={ this.state.nav[i] }
+					/>
 				);
+			}
+			else {
+				listItems.push(
+					<IndexNavListItem 
+						key={i}
+						link={ this.state.nav[i] } />
+					);
+			}
+		}
 
 		return (
 			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
@@ -3430,10 +4434,41 @@ var IndexNavList = React.createClass({
 
 var IndexNavListItem = React.createClass({
 
+	getInitialState: function() {
+		return {
+			isHovered: false
+		}
+	},
+
+	mouseEnterItem: function() {
+		this.setState({ isHovered: true });
+	},
+	mouseLeaveItem: function() {
+		this.setState({ isHovered: false });
+	},
+
+	render: function() {
+		
+		return (
+			<li onMouseEnter={this.mouseEnterItem} 
+					onMouseLeave={this.mouseLeaveItem} 
+					className="nav-option b12-col-md-12 b12-row-md-2">
+					<span className='ver-helper'></span>
+					<div className={ this.state.isHovered ? 
+						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div>
+				{ this.props.link }
+			</li>
+		)
+	}
+});
+
+// working-spot
+var IndexNavListSocialItem = React.createClass({
 	render: function() {
 		return (
-			<li className="nav-option b12-col-md-12 b12-row-md-2">
-				{ this.props.link }
+			<li className="nav-option b12-col-md-12 b12-row-md-4">
+				<span className='ver-helper'></span>
+				{ this.props.elements }
 			</li>
 		)
 	}
@@ -3781,21 +4816,14 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	// Scrolling event update the text info and in some perticular moment, 
-	// it also refreshens the chart
-	// scrollReading(e) { // May not work well as expect.
-		
-	// },
-
-	// working-spot: 
 	DBTaleFactory() {
 
 		// temporary if statement
-		if (this.storyTeller._txtTale) {
+		if (this.storyTeller._txtTaleChain) {
 
 			const index = store.getState().get('currentTaleIndex');
-			const taleEle = this.storyTeller._txtTale.sections[index];
-			const containerStyle   = this.storyTeller._componentStyleFactory(
+			const taleEle = this.storyTeller._txtTaleChain.sections[index];
+			const containerStyle = this.storyTeller._componentStyleFactory(
 				[taleEle.Container.pos, taleEle.Container.size]);
 			let btnStyle = this.storyTeller._componentStyleFactory(
 				[taleEle.IndButton.pos, taleEle.IndButton.style]);
@@ -3809,10 +4837,49 @@ const DataBoard = React.createClass({
 				return (
 					<div className='tale-container' style={ containerStyle }>
 						<TaleBlock innerText={ taleEle.infoContext } style={ taleStyle }/>
-						<NextTaleBtn style={ btnStyle } />
+					  {/* The this.props here is the nextProps that prepared to render */}
+					  {
+					  	taleEle.isEnd ? 
+					  		<EndTaleBtn
+					  		 	topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="End &nbsp;&nbsp;"
+					  			indicator="&#8607;"
+					  			style={ btnStyle }
+					  		 /> :
+					  		<NextTaleBtn 
+					  			topic={ this.props.topic }
+					  			topicDepth={ this.props.topicDepth }
+					  			taleIndex={ this.props.taleIndex }
+					  			taleChain={ this.storyTeller._txtTaleChain }
+					  			msg="Next &nbsp;&nbsp;"
+					  			indicator="&raquo;"
+					  			style={ btnStyle }/> 
+					  }
 					</div>
 					)
 		}
+	},
+
+	DBTopicUpdate(nextProps) {
+		
+		// Produce the steps for topic explanation.
+		let steps = this.DBTopicStepsProducer(nextProps);
+			
+			// Use the topic name to find the taleIndex it corresponeds to
+			if (this.storyTeller._txtTaleChain) {
+				
+				let tName = nextProps.topic,
+						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
+							return t.topicName === tName
+						});
+				
+				store.dispatch(setTaleIndexAC(taleIndex));
+			}
+			
+			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 
 	/* React Native methods */
@@ -3826,7 +4893,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/竊盜案件.csv'
 						else 
-							return './police/p0.csv'
+							// return window.googleSheet + 
+							// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
+							// 		+ query
+							return '/police/p0.csv'
 					})(),
 				},
 				{
@@ -3835,7 +4905,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/暴力犯罪案件.csv'
 						else 
-							return './police/p2.csv'
+							// return window.googleSheet + 
+							// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
+							// 		+ query
+							return '/police/p2.csv'
 					})(),
 				},
 				{
@@ -3844,9 +4917,13 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/police/毒品案件.csv'
 						else 
-							return './police/p1.csv'
+							// return window.googleSheet + 
+							// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
+							// 		+ query
+							return '/police/p1.csv'
 					})(),
 				},
+
 				// Prosecution Data
 				{
 					name: '殺人罪',
@@ -3854,7 +4931,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/殺人罪.csv'
 						else 
-							return './prosecution/p0.csv'
+							// return window.googleSheet + 
+							// 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
+							// 		+ query
+							return '/prosecution/p0.csv'
 					})(),
 				},
 				{
@@ -3863,7 +4943,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/竊盜罪.csv'
 						else 
-							return './prosecution/p2.csv'
+							// return window.googleSheet + 
+							// 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
+							// 		+ query
+							return '/prosecution/p2.csv'
 					})(),
 				},
 				{
@@ -3872,7 +4955,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/擄人勒贖罪.csv'
 						else 
-							return './prosecution/p3.csv'
+							// return window.googleSheet + 
+							// 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
+							// 		+ query
+							return '/prosecution/p3.csv'
 					})(),
 				},
 				{
@@ -3881,7 +4967,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/恐嚇罪.csv'
 						else 
-							return './prosecution/p4.csv'
+							// return window.googleSheet + 
+							// 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
+							// 		+ query
+							return '/prosecution/p4.csv'
 					})(),
 				},
 				{
@@ -3890,7 +4979,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/槍砲彈藥刀械管制條例.csv'
 						else 
-							return './prosecution/p5.csv'
+							// return window.googleSheet + 
+							// 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
+							// 		+ query
+							return '/prosecution/p5.csv'
 					})(),
 				},
 				{
@@ -3899,7 +4991,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/兒童及少年性交易防制條例.csv'
 						else 
-							return './prosecution/p1.csv'
+							// return window.googleSheet + 
+							// 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
+							// 		+ query
+							return '/prosecution/p1.csv'
 					})(),
 				},
 				{
@@ -3908,7 +5003,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/公共危險罪.csv'
 						else 
-							return './prosecution/p6.csv'
+							// return window.googleSheet + 
+							// 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
+							// 		+ query
+							return '/prosecution/p6.csv'
 					})(),
 				},
 				{
@@ -3917,7 +5015,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/貪污罪.csv'
 						else 
-							return './prosecution/p7.csv'
+							// return window.googleSheet + 
+							// 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
+							// 		+ query
+							return '/prosecution/p7.csv'
 					})(),
 				},
 				{
@@ -3926,7 +5027,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/瀆職罪.csv'
 						else 
-							return './prosecution/p8.csv'
+							// return window.googleSheet + 
+							// 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
+							// 		+ query
+							return '/prosecution/p8.csv'
 					})(),
 				},
 				{
@@ -3935,16 +5039,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/賭博罪.csv'
 						else 
-							return './prosecution/p9.csv'
-					})(),
-				},
-				{
-					name: '重傷罪',
-					url: (function() {
-						if (isLocal)
-							return '/prosecution/重傷罪.csv'
-						else 
-							return './prosecution/p10.csv'
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p9.csv'
 					})(),
 				},
 				{
@@ -3953,16 +5051,22 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/詐欺罪.csv'
 						else 
-							return './prosecution/p11.csv'
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p11.csv'
 					})(),
 				},
 				{
-					name: '偽造文書印文罪',
+					name: '重傷罪',
 					url: (function() {
 						if (isLocal)
-							return '/prosecution/偽造文書印文罪.csv'
+							return '/prosecution/重傷罪.csv'
 						else 
-							return './prosecution/p12.csv'
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p10.csv'
 					})(),
 				},
 				{
@@ -3971,7 +5075,22 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/prosecution/強制性交罪.csv'
 						else 
-							return './prosecution/p13.csv'
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p13.csv'
+					})(),
+				},
+				{
+					name: '偽造文書印文罪',
+					url: (function() {
+						if (isLocal)
+							return '/prosecution/偽造文書印文罪.csv'
+						else 
+							// return window.googleSheet + 
+							// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
+							// 		+ query
+							return '/prosecution/p12賭博罪.csv'
 					})(),
 				},
 				// Judical Data 
@@ -3981,7 +5100,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/地方法院刑事案件收結情形.csv'
 						else 
-							return './judicial/c0.csv'
+							// return window.googleSheet + 
+							// 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
+							// 		+ query
+							return '/judicial/c0.csv'
 					})(),
 				},
 				{
@@ -3990,7 +5112,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/高等法院刑事案件收結情形.csv'
 						else 
-							return './judicial/c1.csv'
+							// return window.googleSheet + 
+							// 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
+							// 		+ query
+							return '/judicial/c1.csv'
 					})(),
 				},
 				{
@@ -3999,7 +5124,10 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/judicial/最高法院刑事案件收結情形.csv'
 						else 
-							return './judicial/c2.csv'
+							// return window.googleSheet + 
+							// 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
+							// 		+ query
+							return '/judicial/c2.csv'
 					})(),
 				},
 
@@ -4010,6 +5138,9 @@ const DataBoard = React.createClass({
 						if (isLocal)
 							return '/correction/監獄人數概況.csv'
 						else
+							// return window.googleSheet + 
+						 //  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
+						 //  		query
 							return './correction/c0.csv'
 					})(),
 				},
@@ -4047,18 +5178,30 @@ const DataBoard = React.createClass({
 										{
 											name: '新入監前家庭狀況',
 											url : '/correction/c1.csv'
+												// window.googleSheet +
+												// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監犯罪次數與種類.',
 											url : '/correction/c3.csv'
+												// window.googleSheet +
+												// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
+												// 		window.query
 										},
 										{
 											name: '新入監前教育程度',
 											url : '/correction/c2.csv'
+												// window.googleSheet +
+												// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
+												// 		window.query
 										},
 										{
 											name: '歷年新入監年齡歷年統計',
 											url : '/correction/c4.csv'
+												// window.googleSheet +
+												// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
+												// 		window.query
 										}
 									];
 									return urls
@@ -4069,10 +5212,36 @@ const DataBoard = React.createClass({
 				}
 	},
 
-	// working-spot
+	componentWillMount() {
+		// working-spot
+		this.storyTeller.decideVizStoryChain(
+			this.props.dataset, this.props.data, this.props.chartType);
+
+		// working-spot
+		// Select the tales chain
+		this.storyTeller.decideTaleChain(
+			this.props.dataset, this.props.data, this.props.chartType);
+	},
+
 	shouldComponentUpdate(nextProps) {
 
-		return nextProps.updateDataBoard
+		if (nextProps.updateDataBoard) {
+
+			// working-spot
+			// Select the chain 
+			this.storyTeller.decideVizStoryChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			// working-spot
+			// Select the tales chain
+			this.storyTeller.decideTaleChain(
+				nextProps.dataset, nextProps.data, nextProps.chartType);
+
+			return true
+		}
+
+		// working-spot
+		return false
 	},
 
 	// Initial Data Visualizing
@@ -4096,16 +5265,6 @@ const DataBoard = React.createClass({
 		
 		let dataSheet = this.findDataSheetIndex(nextProps);
 
-		// working-spot
-		// Select the chain 
-		this.storyTeller.decideVizStoryChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
-
-		// working-spot
-		// Select the tales chain
-		this.storyTeller.decideTaleChain(
-			nextProps.dataset, nextProps.data, nextProps.chartType);
-
 		var 
 			// Renew the board when user switch dataset, chartTypes or 
 			// switch to the new data when reading in the detail story.
@@ -4126,12 +5285,11 @@ const DataBoard = React.createClass({
 				(this.props.topic !== nextProps.topic && 
 				 this.props.dataset === nextProps.dataset &&
 				 this.props.data === nextProps.data) ? true : false,
-
-			// working-spot
-			// 
+			
+			// Switch to the next topic when reach the end of the above one.
 			isTopicSwitchingByTaleUd = (() => {
-				if (this.storyTeller._txtTale) {
-					return this.storyTeller._txtTale.sections[nextProps.taleIndex].isTopicFirstSec;
+				if (this.storyTeller._txtTaleChain) {
+					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
 				}
 				return false
 			})();
@@ -4161,27 +5319,19 @@ const DataBoard = React.createClass({
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
 		} else if (isTopicSwitching) { // Update when topic changing.
-
-			// Produce the steps for topic explanation.
-			let steps = this.DBTopicStepsProducer(nextProps);
-			// Select the chain 
-			// this.storyTeller.decideVizStoryChain(
-			// 	nextProps.dataset, nextProps.data, nextProps.chartType);
-			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
+			
+			this.DBTopicUpdate(nextProps);
 			
 		} else if (isTopicSwitchingByTaleUd) {
-			// working-spot
+
 			let steps = this.DBTopicStepsProducer(nextProps);
 
-			// working-spot: Try to figure out the relationship between tale index and topic depth.
-			let td = this.props.topicDepth,
+			// Find out the relationship between tale index and topic depth.
+			let incrementedTopicDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
 					tale = topicFirstTales.find((t, i) => {
-						console.log(t);
-						return i === td
+						return i === incrementedTopicDepth
 					});
-			console.log(tale.topicName);
-			store.dispatch(rollingTalesAC(tale.topicName, this.props.topicDepth));
 
 			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
 		}
@@ -4189,7 +5339,7 @@ const DataBoard = React.createClass({
 
 	render() {
 
-		// working-spot
+		// Create element tale for info displaying.
 		let tale = this.DBTaleFactory();
 		
 		return (
@@ -4197,29 +5347,26 @@ const DataBoard = React.createClass({
 				<div id='DATABOARD-vizLayer'></div>
 				{
 						/* Temp if statement */
-						this.storyTeller._txtTale ? 
+						this.storyTeller._txtTaleChain ? 
 							<TagentalIndicators 
-								currentIndex = { this.props.taleIndex }
-								indicators={ this.storyTeller._txtTale.sections } /> : null
+								currentIndex = { store.getState().get('currentTaleIndex') }
+								indicators={ this.storyTeller._txtTaleChain.sections } /> : null
 					}
-				{ /*
-					this.storyTeller._txtTale ?
-						<DataTxtBoard context={ this.storyTeller._txtTale }/> : 
-						<DataTxtBoard />
-				*/}
-			{/* working-spot */}
-				{ this.storyTeller._txtTale ? tale: null }
-				{ /*this.storyTeller._txtTale ? NextBtn: null*/ }
+				{ this.storyTeller._txtTaleChain ? tale : null }
 			</div>
 		)
 	}
 });
 
-// working-spot
 const TaleBlock = React.createClass({
 
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	// working-spot
+	shouldComponentUpdate(nextProps) {
+		return true
 	},
 
 	componentWillReceiveProps() {
@@ -4239,11 +5386,15 @@ const TaleBlock = React.createClass({
 	}
 });
 
-// working-spot
-const NextBtn = React.createClass({
+// Button for controlling the tales like going to the next or back to the top.
+const TaleBtn = React.createClass({
 
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
+	},
+
+	shouldComponentUpdate(nextProps) {
+		return true
 	},
 
 	componentWillUpdate() {
@@ -4255,94 +5406,61 @@ const NextBtn = React.createClass({
 	},
 
 	render() {
+
 		return (
 			<div 
 				className='nextbtn'
 				style={ this.props.style }
 				onClick={ this.props.nextTale } > 
 				<span className='ver-helper'></span>
-				<span>Next &nbsp;&nbsp;</span>
-				<span className='more-indicator'>&raquo;</span>
+				<span>{ this.props.msg }</span>
+				<span className='more-indicator'>{ this.props.indicator }</span>
 			</div>)
 	}
-
 });
 
-// working-spot
-// const DataTxtBoard = React.createClass({
-
-
-// 	render() {
-
-// 		// The number of sub layers are decided by the tale indicators
-// 		let txtLayers = [];
-
-// 		if (this.props.context) {
-// 			let i = 0;
-// 			for (let section of this.props.context.sections)
-// 				txtLayers.push(<DataTxtLayer key={ i++ } text={ section } />);
-// 		}
-// 		else {
-// 			console.log('testing');
-// 			txtLayers.push(<DataTxtLayer key={0}/>);
-// 			txtLayers.push(<DataTxtLayer key={1}/>);
-// 			console.log(txtLayers);
-// 		}
-
-// 		return (
-// 			<div id="DATABOARD-txtLayer" onScroll={ this.scrollReading } >
-// 					{ txtLayers }
-// 			</div>
-// 			)
-// 	}
-// });
-
-// const DataTxtLayer = React.createClass({
-
-// 	render() {
-// 		return (
-// 			<div className='subLayer'>
-// 			</div>
-// 			)
-// 	}
-// });
-
-
-// working-spot
 const TagentalIndicators = React.createClass({
+
+	componentDidMount() {
+		let indicatorsHeight = this.props.indicators.length * 25,
+				indicatorsTop = (window.innerHeight - indicatorsHeight) / 2;
+		let indicatorStyle = { top: indicatorsTop  + 'px' };
+
+		$v(ReactDOM.findDOMNode(this), { top: indicatorsHeight }, { duration: 1000 });
+	},
 
 	render() {
 
-		// working-spot: Tangetal Indicators should be dynamical position.
-
+		// Tangetal Indicators should be dynamical position.
 		let keyIndex = 0,
 				indicators = [];
 
 		for ( let ind of this.props.indicators ) {
 			indicators.push(
-				<TagentalIndicator
+				<TaleIndicator
 					currentIndex = { this.props.currentIndex }
 					indIndex = { keyIndex }
 					key={ keyIndex++ }
-					isSmall={ ind.isTopicFirstSec ? false : true } />);
+					context={ ind }
+					isSmall={ ind.isTopicFirstSec ? false : true }
+					/>);
 		}
 
+		const initStlye = { top: '100%' };
+
 		return (
-			<div className='indicators'>
+			<div className='indicators' style={ initStlye } >
 				{ indicators }
 			</div>
 			)
 	}
-
 });
 
-// working-spot
 const TagentalIndicator = React.createClass({
 
 	render() {
-		
 		return (
-			<div className='indicator-block'>
+			<div className='indicator-block' onClick={ this.props.selectTale } >
 				<div className={ this.props.isSmall ? 'indicator-small' : 'indicator'}>
 					<TagentalIndicatorMkr 
 						isActive={ this.props.indIndex === this.props.currentIndex ? true : false } 
@@ -4355,7 +5473,6 @@ const TagentalIndicator = React.createClass({
 });
 
 
-// working-spot
 const TagentalIndicatorMkr = React.createClass({
 
 	render() {
@@ -4628,16 +5745,24 @@ function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicD
 	}
 }
 
-// working-spot
-function rollingTalesAC(topic, depth) {
+/* Action creator for tales */
+function rollingTalesAC(topic, topicDepth, taleChain, taleIndex) {
 	return {
-		type: 'INCRE_TOPIC_DEPTH',
+		type: 'INCRE_TALE_IND',
 		topic: topic,
-		topicDepth: depth,
+		topicDepth: topicDepth,
+		taleIndex: taleIndex,
+		taleChain: taleChain
 	}
 }
 
-// working-spot
+function back2FirstTaleAC(taleChain) {
+	return {
+		type: 'BACK_TO_FIRST_TALE',
+		taleChain: taleChain
+	}
+}
+
 function setTaleIndexAC(index) {
 	return {
 		type: 'SET_TALE_INDEX',
@@ -4645,7 +5770,14 @@ function setTaleIndexAC(index) {
 	}
 }
 
-
+// working-spot
+function selectTaleAC(index, context) {
+	return {
+		type: 'SELECT_TALE',
+		taleIndex: index,
+		taleContext: context
+	}
+}
 
 /* ***** Reducers ***** */
 const INITIAL_STATE = Map();
@@ -4668,13 +5800,18 @@ function AppReducer(state = INITIAL_STATE, action) {
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
 
-		// working-spot
 		// Set the tale index
 		case 'SET_TALE_INDEX':
 			return setTaleIndex(state, action.taleIndex)
 
-		case 'INCRE_TOPIC_DEPTH':
-			 return rollingTales(state, action.topic, action.topicDepth)
+		case 'INCRE_TALE_IND':
+			 return rollingTales(state, action.topic, action.topicDepth, action.taleChain, action.taleIndex)
+
+		case 'BACK_TO_FIRST_TALE':
+			return back2FirstTale(state, action.taleChain)
+
+		case 'SELECT_TALE':
+			return selectTale(state, action.taleIndex, action.taleContext)
 
 		case 'SELECT_DROPDOWN_OPTION':
 			return selectDropdownOption(
@@ -4882,25 +6019,26 @@ function selectAppTheme(state, theme) {
 	// Set the default dropdown menus with initial state.
 	function _setDefaultDropdownMenus(theme) {
 			
+			// working-spot
 			const dropdownMenus = 
 				setState(
 					'filterDropdownMenus',
 					List([
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listDataset(theme))
+							List(DataFilterStateTree.listDataset(theme)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listData(theme, 0))
+							List(DataFilterStateTree.listData(theme, 0)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listCharttype(theme, 0))
+							List(DataFilterStateTree.listCharttype(theme, 0)))
 								.set('isDisplayed', false),
 						Map().set(
 							'Options', 
-							DataFilterStateTree.listTopic(theme, 0, 0, 0))
+							List(DataFilterStateTree.listTopic(theme, 0, 0, 0)))
 								.set('isDisplayed', false)
 						])
 					);
@@ -4926,14 +6064,14 @@ function setDropdownMenuStates(state, index) {
 					index, 
 					Map()
 						.set('isDisplayed', true)
-							.set('Options', originMenuOptions)
+							.set('Options', List(originMenuOptions))
 					);
 			} else {
 				Menus = Menus.set(
 					j, 
 					Map()
 						.set('isDisplayed', false)
-							.set('Options', originMenuOptions)
+							.set('Options', List(originMenuOptions))
 					);
 			}
 		}
@@ -4962,11 +6100,17 @@ function setDropdownMenuStates(state, index) {
 
 // Update the dropdown menu. 
 function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, topicDepth) {
+
 	let newDataset = null;
 	let newData = null;
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
+
+	// working-spot
+	let newTaleIndex = null;
+
+	let shoudDataBoardUpdate = setState('updateDataBoard', true);
 
 	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
@@ -5008,9 +6152,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.chartType, 
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates)
+
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate)
 				}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selecting data
@@ -5024,10 +6172,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data,
 						newState.topic,
 						newState.topicDepth,
-						newState.dropdownMenuStates
+						// working-spot
+						newState.taleIndex,
+						newState.dropdownMenuStates,
+						shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		}
 
 		// Selecting the charttype which will affect the topics.
@@ -5040,10 +6191,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				return state.merge(
 					newState.chartType,
 					newState.topic,
-					newState.dropdownMenuStates
+					// working-spot
+					newState.taleIndex,
+					newState.dropdownMenuStates,
+					shoudDataBoardUpdate
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
 		} 
 
 		// Selection the topic
@@ -5053,9 +6207,19 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				newTopic = setState('currentTopic', optionName);
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
-				return state.merge(newTopic, newTopicDepth, collapsedAllDropdownMenuStates)
+				// working-spot: The tale index should be correspond to the topic.
+				// We have to come up an idea to solve this.
+				newTaleIndex = setState('currentTaleIndex', 0);
+
+				return state.merge(
+					newTopic, 
+					newTopicDepth, 
+					// workng-spot
+					newTaleIndex,
+					collapsedAllDropdownMenuStates, 
+					shoudDataBoardUpdate)
 			}
-			return state.merge(collapsedAllDropdownMenuStates);
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate);
 		}
 
 		return state
@@ -5088,6 +6252,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		// Set the new topic depth to 0
 		let newTopicDepth = setState('currentTopicDepth', 0);
+
+		// working-spot
+		let newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Set up the states for the dropdowns.
 		let newDropdownMenuStates = 
@@ -5132,6 +6299,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			chartType: newChartType,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -5159,6 +6328,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
+		// working-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Switch data will change the available topics
 		const	newDropdownMenuStates = 
 			setState(
@@ -5169,6 +6341,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			data: newData,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -5183,6 +6357,9 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					'filterDropdownMenus', 
 					updateTopicDropdownOption(state, null, chartType));
 
+		// workng-spot
+		const newTaleIndex = setState('currentTaleIndex', 0);
+
 		// Update current topic
 		const newTopic = setState(
 					'currentTopic', 
@@ -5194,6 +6371,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		return {
 			chartType: newChartType,
 			topic: newTopic,
+			// working-spot
+			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
 	}
@@ -5249,8 +6428,7 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 			DataFilterStateTree.findChartTypeIndex(key, currentDataset, currentChartType);
 
 		const topics = 
-			DataFilterStateTree
-				.listTopic(key, datasetIndex, dataIndex, chartIndex);
+			List(DataFilterStateTree.listTopic(key, datasetIndex, dataIndex, chartIndex));
 
 		return Menus
 			.set(1,
@@ -5273,20 +6451,63 @@ function updateTopicDropdownOption(state, dataName, chartName) {
 	return newState
 }
 
-// working-spot
-function rollingTales(state, topic, topicDepth) {
-	const newTopicDepth = setState('currentTopicDepth', topicDepth+1);
-	const newTopic = setState('currentTopic', topic);
-	const updateDataBoard = setState('updateDataBoard', false);
-	return state.merge(newTopicDepth, newTopic, updateDataBoard)
+function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
+	
+	const newTaleIndex = setState('currentTaleIndex', taleIndex + 1);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	// Check up whether the next tale is the new topic's first tale.
+	const nextTale = taleChain.sections[taleIndex+1];
+
+	if (nextTale.isTopicFirstSec) {
+		const newTopic = setState('currentTopic', nextTale.topicName);
+		const newTopicDepth = setState('currentTopicDepth', state.get('currentTopicDepth') + 1);
+		return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+	}
+	else return state.merge(newTaleIndex, updateDataBoard);
 }
 
+// working-spot
+function selectTale(state, taleIndex, taleContext) {
+	
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	const newTopic = 
+		setState(
+			'currentTopic', 
+			taleContext.topicName ? taleContext.topicName : state.get('currentTopic'));
+	console.log(state.get('filterDropdownMenus'));
+	// Find out the topic depth
+	const topicList = state.get('filterDropdownMenus').get(3).get('Options').toArray();
+	const topicDepth = topicList.findIndex((topic) => {
+		return taleContext.topicName === topic
+	});
+	console.log('topicDepth: ', topicDepth);
+	const newTopicDepth = 
+		setState(
+			'currentTopicDepth', 
+			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+
+}
+
+function back2FirstTale(state, taleChain) {
+
+	const newTaleIndex = setState('currentTaleIndex', 0);
+	const newTopic = setState('currentTopic', taleChain.sections[0].topicName);
+	const newTopicDepth = setState('currentTopicDepth', 0);
+	const updateDataBoard = setState('updateDataBoard', true);
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard);
+}
 
 function setTaleIndex(state, taleIndex) {
-
-	const newState = setState('currentTaleIndex', taleIndex);
-
-	return state.merge(newState)
+	const newTaleIndex = setState('currentTaleIndex', taleIndex);
+	// working-spot
+	const updateDataBoard = setState('updateDataBoard', false);
+	return state.merge(newTaleIndex, updateDataBoard)
+	// return state.merge(newTaleIndex)
 }
 
 // Create a immutable Map object as state
@@ -5422,8 +6643,6 @@ const mapStateToDataBoardProps = (state) => {
 		topic    : state.get('currentTopic'),
 		topicDepth: state.get('currentTopicDepth'),
 		taleIndex : state.get('currentTaleIndex'),
-
-		// working-spot
 		updateDataBoard: state.get('updateDataBoard')
 	}
 }
@@ -5434,14 +6653,10 @@ const StatDataBoard = RRd.connect(
 	)(DataBoard);
 
 /* Connect more tale button */
-// working-spot
 const mapDispatchToNextBtn = (dispatch, props) => {
 	return {
 		nextTale: (e) => {
-			// working-spot
-			const taleIndex = store.getState().get('currentTaleIndex');
-
-			store.dispatch(setTaleIndexAC(taleIndex + 1));
+			dispatch(rollingTalesAC(props.topic, props.topicDepth, props.taleChain, props.taleIndex));
 		}
 	}
 }
@@ -5449,19 +6664,38 @@ const mapDispatchToNextBtn = (dispatch, props) => {
 const NextTaleBtn = RRd.connect(
 	null,
 	mapDispatchToNextBtn
-	)(NextBtn);
+	)(TaleBtn);
+
+const mapDispatchToEndBtn = (dispatch, props) => {
+	return {
+		nextTale: (e) => {
+			// working-spot: Back to start tale
+			dispatch(back2FirstTaleAC(props.taleChain));
+		}
+	}
+}
+
+const EndTaleBtn = RRd.connect(
+	null,
+	mapDispatchToEndBtn
+	)(TaleBtn);
 
 /* Connect Indicator */
 const mapDispatchToIndicators = (dispatch, props) => {
 
 	return {
-						
 		selectTale: (e) => {
-
+			// working-spot
+			dispatch(selectTaleAC(props.indIndex, props.context));
 		}
 	}	
 
 };
+
+const TaleIndicator = RRd.connect(
+	null,
+	mapDispatchToIndicators
+	)(TagentalIndicator);
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
