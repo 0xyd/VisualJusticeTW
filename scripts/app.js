@@ -4894,7 +4894,7 @@ var IndexNavList = React.createClass({
 				<img src="./src/work.png"  onClick={ this.pageHasNotFinished }/>,
 				<div className='social-group'>
 					<iframe id='githubStar' className='social-btn'
-						src="https://ghbtns.com/github-btn.html?user=twbs&repo=bootstrap&type=star&count=true" 
+						src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
 						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 				</div>
 			]
