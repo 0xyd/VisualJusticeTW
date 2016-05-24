@@ -372,16 +372,7 @@ var IndexNavListSocialItem=React.createClass({displayName:'IndexNavListSocialIte
 gpu:function(){return {barGraph:new barGraphClass(),lineGraph:new lineGraphClass(),ringGraph:new ringGraphClass()};}(),tip:new tipClass(), // Story teller is an explainer for deeper topic tranverse.
 storyTeller:new StoryTeller(), // Find the index of datasheet.
 findDataSheetIndex:function findDataSheetIndex(props){var dSheet=this.state.dataSheets.find(function(dataSheet){return dataSheet.name===props.dataset;});return dSheet;},DBfindTopic:function DBfindTopic(props){var themeKey=store.getState().get('theme');return DataFilterStateTree.findTopic(themeKey,props.dataset,props.data,props.chartType,props.topic);},DBfindData:function DBfindData(props){var themeKey=store.getState().get('theme');return DataFilterStateTree.findData(themeKey,props.dataset,props.data);}, // Visualizing data with bar chart
-vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);if(update){ // bG.update(
-// 	dataSheet.url, 
-// 	_topic.axes.x,
-// 	_topic.axes.y,
-// 	props.data
-// 	)
-// 	.then(function() {
-// 		t.appendBarMouseOver(props.data);
-// 	});
-bG.update( // dataSheet.url, 
+vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);if(update){bG.update( // dataSheet.url, 
 _topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendBarMouseOver(props.data);});}else {bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false, // _data.exceptHeaders
 _topic.intl.mHeaders).then(function(){t.initTips().appendBarMouseOver(props.data);});}}, // Visualizing data with bar chart
 vizDataWithLineChart:function vizDataWithLineChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var lG=this.gpu.lineGraph,t=this.tip;var _topic=this.DBfindTopic(props);if(update){lG.update(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendDotMouseOver(props.data);});}else {lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false).then(function(){t.initTips().appendDotMouseOver(props.data);});}}, // Visualizing data with ring chart
@@ -402,85 +393,10 @@ var taleStyle={opacity:0}; // Add the opacity for the next button to do the firs
 btnStyle['opacity']=0;return React.createElement('div',{className:'tale-container',style:containerStyle},React.createElement(TaleBlock,{innerText:taleEle.infoContext,style:taleStyle}),taleEle.isEnd?React.createElement(EndTaleBtn,{topic:this.props.topic,topicDepth:this.props.topicDepth,taleIndex:this.props.taleIndex,taleChain:this.storyTeller._txtTaleChain,msg:'End   ',indicator:'↟',style:btnStyle}):React.createElement(NextTaleBtn,{topic:this.props.topic,topicDepth:this.props.topicDepth,taleIndex:this.props.taleIndex,taleChain:this.storyTeller._txtTaleChain,msg:'Next   ',indicator:'»',style:btnStyle}));}},DBTopicUpdate:function DBTopicUpdate(nextProps){var _this2=this; // Produce the steps for topic explanation.
 var steps=this.DBTopicStepsProducer(nextProps); // Use the topic name to find the taleIndex it corresponeds to
 if(this.storyTeller._txtTaleChain){(function(){var tName=nextProps.topic,taleIndex=_this2.storyTeller._txtTaleChain.sections.findIndex(function(t,i){return t.topicName===tName;});store.dispatch(setTaleIndexAC(taleIndex));})();}this.storyTeller.toTell(this.props.topicDepth,nextProps.topicDepth,steps.fwd,steps.bwd);}, /* React Native methods */getInitialState:function getInitialState(){return {dataSheets:[ // Police Data
-{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else  // return window.googleSheet + 
-// 	'1Hh4neC6yeRM8_CI1s447S75fuTBznOZwafQK3AvWaKQ'
-// 		+ query
-return './police/p0.csv';}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else  // return window.googleSheet + 
-// 	'1mwTXShuHTBewW3KiyPwTgUaL6-8RIyuMiRCmugJd2D0'
-// 		+ query
-return './police/p2.csv';}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else  // return window.googleSheet + 
-// 	'1Ax81wm_4P2wNCiX4eYcYxudTbAlFpoKGUGWUXe4UuDI'
-// 		+ query
-return './police/p1.csv';}()}, // Prosecution Data
-{name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else  // return window.googleSheet + 
-// 	'1dj015G94qWVns0lTmV8E1oIH9MrxhZCBNB8mG7aEDoA'
-// 		+ query
-return './prosecution/p0.csv';}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else  // return window.googleSheet + 
-// 	'1QobB2PpmQcBVXnKwHLPo640P_GSkoFzkF9WXPTwIVuI'
-// 		+ query
-return './prosecution/p2.csv';}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else  // return window.googleSheet + 
-// 	'1nTKcutjNWduHzxnkcxigxOKnjTbVk9qPRRkNOE-3NiY'
-// 		+ query
-return './prosecution/p3.csv';}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else  // return window.googleSheet + 
-// 	'1yAanaOO-EexpwXPXmG1WVX2KRjGaOhqYlskX09NquHA'
-// 		+ query
-return './prosecution/p4.csv';}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else  // return window.googleSheet + 
-// 	'1-3Ss6m_2FYL_PZRDZ3UEQukCbD4U_yIZBwHM-QfyThM'
-// 		+ query
-return './prosecution/p5.csv';}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else  // return window.googleSheet + 
-// 	'1XhV5QHf4-jIR9oxmfjx_qoR4oQA2G-YdZQi99TzE3iY'
-// 		+ query
-return './prosecution/p1.csv';}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else  // return window.googleSheet + 
-// 	'1DwRetxP42og_RNNi3x3uaRWjydwMxBZRMvsPKu8uL9Q'
-// 		+ query
-return './prosecution/p6.csv';}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else  // return window.googleSheet + 
-// 	'1e21BqSPs3cOazIsnOKcf3l2CkYEpZ9O6GUYKykjO7m4'
-// 		+ query
-return './prosecution/p7.csv';}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else  // return window.googleSheet + 
-// 	'1rVLoQxICRwr8nKNy0JlSxPdtl3Ry-h94f37PDoA1Wjs'
-// 		+ query
-return './prosecution/p8.csv';}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else  // return window.googleSheet + 
-// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-// 		+ query
-return './prosecution/p9.csv';}()},{name:'詐欺罪',url:function(){if(isLocal)return '/prosecution/詐欺罪.csv';else  // return window.googleSheet + 
-// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-// 		+ query
-return './prosecution/p11.csv';}()},{name:'重傷罪',url:function(){if(isLocal)return '/prosecution/重傷罪.csv';else  // return window.googleSheet + 
-// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-// 		+ query
-return './prosecution/p10.csv';}()},{name:'強制性交罪',url:function(){if(isLocal)return '/prosecution/強制性交罪.csv';else  // return window.googleSheet + 
-// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-// 		+ query
-return './prosecution/p13.csv';}()},{name:'偽造文書印文罪',url:function(){if(isLocal)return '/prosecution/偽造文書印文罪.csv';else  // return window.googleSheet + 
-// 	'10HerzgG7Z6xdltfQeOpomI2NlJTl0g2xuyJZdbJYM1g'
-// 		+ query
-return './prosecution/p12賭博罪.csv';}()}, // Judical Data 
-{name:'地方法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/地方法院刑事案件收結情形.csv';else  // return window.googleSheet + 
-// 	'1jcvf4cO3AJoX3vMVfih5OP27g16Lgax3aKz2uWTjdww'
-// 		+ query
-return './judicial/c0.csv';}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else  // return window.googleSheet + 
-// 	'1I-RT9-AeS4vyaCV4mxa5MJviW01y-DkZzqNKNc7T7vM'
-// 		+ query
-return './judicial/c1.csv';}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else  // return window.googleSheet + 
-// 	'1lpNN8xU0jL8UJAh3gE51nFRbbGS6k0FPDPBrkfudyds'
-// 		+ query
-return './judicial/c2.csv';}()}, // Correction Data
-{name:'監獄人數概況',url:function(){if(isLocal)return '/correction/監獄人數概況.csv';else  // return window.googleSheet + 
-//  	'1zUyMPJbbW0GZ6KGwD-tCVSSHDlTDECX6s3vPnGJmP28' + 
-//  		query
-return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:'./correction/c1.csv' // window.googleSheet +
-// 	'1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg' + 
-// 		window.query
-},{name:'新入監犯罪次數與種類.',url:'./correction/c3.csv' // window.googleSheet +
-// 	'17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg' + 
-// 		window.query
-},{name:'新入監前教育程度',url:'./correction/c2.csv' // window.googleSheet +
-// 	'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8' + 
-// 		window.query
-},{name:'歷年新入監年齡歷年統計',url:'./correction/c4.csv' // window.googleSheet +
-// 	'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4' + 
-// 		window.query
-}];return urls;}}()}]};},componentWillMount:function componentWillMount(){ // working-spot
+{name:'竊盜案件',url:function(){if(isLocal)return '/police/竊盜案件.csv';else return './police/p0.csv';}()},{name:'暴力犯罪案件',url:function(){if(isLocal)return '/police/暴力犯罪案件.csv';else return './police/p2.csv';}()},{name:'毒品案件',url:function(){if(isLocal)return '/police/毒品案件.csv';else return './police/p1.csv';}()}, // Prosecution Data
+{name:'殺人罪',url:function(){if(isLocal)return '/prosecution/殺人罪.csv';else return './prosecution/p0.csv';}()},{name:'竊盜罪',url:function(){if(isLocal)return '/prosecution/竊盜罪.csv';else return './prosecution/p2.csv';}()},{name:'擄人勒贖罪',url:function(){if(isLocal)return '/prosecution/擄人勒贖罪.csv';else return './prosecution/p3.csv';}()},{name:'恐嚇罪',url:function(){if(isLocal)return '/prosecution/恐嚇罪.csv';else return './prosecution/p4.csv';}()},{name:'槍砲彈藥刀械管制條例',url:function(){if(isLocal)return '/prosecution/槍砲彈藥刀械管制條例.csv';else return './prosecution/p5.csv';}()},{name:'兒童及少年性交易防制條例',url:function(){if(isLocal)return '/prosecution/兒童及少年性交易防制條例.csv';else return './prosecution/p1.csv';}()},{name:'公共危險罪',url:function(){if(isLocal)return '/prosecution/公共危險罪.csv';else return './prosecution/p6.csv';}()},{name:'貪污罪',url:function(){if(isLocal)return '/prosecution/貪污罪.csv';else return './prosecution/p7.csv';}()},{name:'瀆職罪',url:function(){if(isLocal)return '/prosecution/瀆職罪.csv';else return './prosecution/p8.csv';}()},{name:'賭博罪',url:function(){if(isLocal)return '/prosecution/賭博罪.csv';else return './prosecution/p9.csv';}()},{name:'詐欺罪',url:function(){if(isLocal)return '/prosecution/詐欺罪.csv';else return './prosecution/p11.csv';}()},{name:'重傷罪',url:function(){if(isLocal)return '/prosecution/重傷罪.csv';else return './prosecution/p10.csv';}()},{name:'強制性交罪',url:function(){if(isLocal)return '/prosecution/強制性交罪.csv';else return './prosecution/p13.csv';}()},{name:'偽造文書印文罪',url:function(){if(isLocal)return '/prosecution/偽造文書印文罪.csv';else return './prosecution/p12賭博罪.csv';}()}, // Judical Data 
+{name:'地方法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/地方法院刑事案件收結情形.csv';else return './judicial/c0.csv';}()},{name:'高等法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/高等法院刑事案件收結情形.csv';else return './judicial/c1.csv';}()},{name:'最高法院刑事案件收結情形',url:function(){if(isLocal)return '/judicial/最高法院刑事案件收結情形.csv';else return './judicial/c2.csv';}()}, // Correction Data
+{name:'監獄人數概況',url:function(){if(isLocal)return '/correction/監獄人數概況.csv';else return './correction/c0.csv';}()},{name:'新入監資料概覽',keys:['1CvwvOSmEV681gY9GBFdQdGT9IpM3oH9ttfPmVTCshsg','17DykPlzpafA6ajXsOfwnNwDj4fTQvh-qtphw3I_A-Fg','1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8','1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'],urls:function(){if(isLocal)return [{name:'新入監前家庭狀況',url:'/correction/新入監前家庭狀況.csv'},{name:'新入監犯罪次數與種類',url:'/correction/新入監犯罪次數與種類.csv'},{name:'新入監前教育程度',url:'/correction/新入監前教育程度.csv'},{name:'歷年新入監年齡歷年統計',url:'/correction/歷年新入監年齡歷年統計.csv'}];else {var urls=[{name:'新入監前家庭狀況',url:'./correction/c1.csv'},{name:'新入監犯罪次數與種類.',url:'./correction/c3.csv'},{name:'新入監前教育程度',url:'./correction/c2.csv'},{name:'歷年新入監年齡歷年統計',url:'./correction/c4.csv'}];return urls;}}()}]};},componentWillMount:function componentWillMount(){ // working-spot
 this.storyTeller.decideVizStoryChain(this.props.dataset,this.props.data,this.props.chartType); // working-spot
 // Select the tales chain
 this.storyTeller.decideTaleChain(this.props.dataset,this.props.data,this.props.chartType);},shouldComponentUpdate:function shouldComponentUpdate(nextProps){if(nextProps.updateDataBoard){ // working-spot
