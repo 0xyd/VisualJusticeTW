@@ -4750,7 +4750,6 @@ class StoryTeller {
 			},
 		];
 
-		// working-spot: The tale will
 		this.calTopicFirstTale = function() {
 			let tales = 
 				this._txtTaleChain.sections.filter((section, i) => {
@@ -4805,7 +4804,7 @@ class StoryTeller {
 		})
 	}
 
-	// working-spot: Decide which tales chain shoule be applied.
+	// Decide which tales chain shoule be applied.
 	decideTaleChain(datasetName, dataName, vizTypeName) {
 
 		this._txtTaleChain = this.taleChains.find((chain) => {
@@ -4868,67 +4867,76 @@ class StoryTeller {
 var IndexNavList = React.createClass({
 
 	// Display a board to tell user that the page they want to go is not ready.
-	pageHasNotFinished: function() {
-		window.alert('即將推出，敬請期待。')
+	pageHasNotFinished() {
+		window.alert('即將推出，敬請期待。');
 	},
 
-	getInitialState: function() {
+	// working-spot: Try to depreciate the state and use the props imported from store instead.
+	// getInitialState: function() {
 
-		return {
-			nav: [
-				/*<RR.Link to='/about_us'>
-					<img src="./src/aboutus.png" />
-				</RR.Link>,
-				<RR.Link to='/main'>
-					<img src="./src/see.png" />
-				</RR.Link>,
-				<RR.Link to='/special'>
-					<img src="./src/issue.png" />
-				</RR.Link>,
-				<RR.Link to='/work_together'>
-					<img src="./src/work.png" />
-				</RR.Link>, */ 
-				<img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/see.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/issue.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/work.png"  onClick={ this.pageHasNotFinished }/>,
-				<div className='social-group'>
-					<iframe id='githubStar' className='social-btn'
-						src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-				</div>
-			]
-		}
-	},
+	// 	return {
+	// 		nav: [
+	// 			<RR.Link to='/aboutus' >
+	// 				<img src="./src/aboutus.png" />
+	// 			</RR.Link>,
+	// 			/* 
+	// 			<RR.Link to='/main'>
+	// 				<img src="./src/see.png" />
+	// 			</RR.Link>,
+	// 			<RR.Link to='/special'>
+	// 				<img src="./src/issue.png" />
+	// 			</RR.Link>,
+	// 			<RR.Link to='/work_together'>
+	// 				<img src="./src/work.png" />
+	// 			</RR.Link>, */ 
+	// 			// <img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
+	// 			<img src="./src/see.png"  onClick={ this.pageHasNotFinished }/>,
+	// 			<img src="./src/issue.png"  onClick={ this.pageHasNotFinished }/>,
+	// 			<img src="./src/work.png"  onClick={ this.pageHasNotFinished }/>,
+	// 			<div className='social-group'>
+	// 				<iframe id='githubStar' className='social-btn'
+	// 					src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+	// 					frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+	// 			</div>
+	// 		]
+	// 	}
+	// },
+
 
 	render: function() {
 
-		var listItems = [],
-			l = this.state.nav.length;
+		// let listItems = [],
+			// l = this.state.nav.length;
+		// for ( var i=0; i<l; i++ ) {
 
-		for ( var i=0; i<l; i++ ) {
+		// 	if (i === l - 1) {
+		// 		listItems.push(
+		// 			<IndexNavListSocialItem 
+		// 				key={i}
+		// 				elements={ this.state.nav[i] }
+		// 			/>
+		// 		);
+		// 	}
+		// 	else {
+		// 		listItems.push(
+		// 			<IndexNavListItem 
+		// 				key={i}
+		// 				link={ this.state.nav[i] } />
+		// 			);
+		// 	}
+		// }
+		let i = 0,
+				_items = [];
 
-			if (i === l - 1) {
-				listItems.push(
-					<IndexNavListSocialItem 
-						key={i}
-						elements={ this.state.nav[i] }
-					/>
-				);
-			}
-			else {
-				listItems.push(
-					<IndexNavListItem 
-						key={i}
-						link={ this.state.nav[i] } />
-					);
-			}
+		for ( let listItem of this.props.listItems ) {
+			_items.push(<IndexNavListItem key={i++} link={ listItem } />)
 		}
 
 		return (
 			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
 				<ul className="b12-col-md-12 b15-row-md-15">
-					{ listItems }
+					 { /*listItems*/ }
+					 { _items }
 				</ul>
 			</nav>
 		)
@@ -4966,17 +4974,17 @@ var IndexNavListItem = React.createClass({
 	}
 });
 
-// working-spot
-var IndexNavListSocialItem = React.createClass({
-	render: function() {
-		return (
-			<li className="nav-option b12-col-md-12 b12-row-md-4">
-				<span className='ver-helper'></span>
-				{ this.props.elements }
-			</li>
-		)
-	}
-});
+// working-spot: Can be depreciated later on.
+// var IndexNavListSocialItem = React.createClass({
+// 	render: function() {
+// 		return (
+// 			<li className="nav-option b12-col-md-12 b12-row-md-4">
+// 				<span className='ver-helper'></span>
+// 				{ this.props.elements }
+// 			</li>
+// 		)
+// 	}
+// });
 
 /* Major Themes are displaying on the index page. */
 var Theme = React.createClass({
@@ -5634,11 +5642,10 @@ const DataBoard = React.createClass({
 	},
 
 	componentWillMount() {
-		// working-spot
+		
 		this.storyTeller.decideVizStoryChain(
 			this.props.dataset, this.props.data, this.props.chartType);
 
-		// working-spot
 		// Select the tales chain
 		this.storyTeller.decideTaleChain(
 			this.props.dataset, this.props.data, this.props.chartType);
@@ -5648,12 +5655,10 @@ const DataBoard = React.createClass({
 
 		if (nextProps.updateDataBoard) {
 
-			// working-spot
 			// Select the chain 
 			this.storyTeller.decideVizStoryChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
 
-			// working-spot
 			// Select the tales chain
 			this.storyTeller.decideTaleChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
@@ -5661,7 +5666,6 @@ const DataBoard = React.createClass({
 			return true
 		}
 
-		// working-spot
 		return false
 	},
 
@@ -6129,6 +6133,14 @@ function setAppNavAC(components) {
 	}
 }
 
+// working-spot: set AppNavList
+function setAppNavListAC(components) {
+	return {
+		type: 'SET_APP_NAV_IDX',
+		components: components
+	}
+}
+
 function setAppMainAC(components) {
 	return {
 		type: 'SET_MAIN',
@@ -6146,6 +6158,13 @@ function selectThemeAC(name) {
 	return {
 		type: 'SELECT_THEME',
 		themeName: name
+	}
+}
+
+// working-spot
+function selectIntroAC() {
+	return {
+		type: 'SELECT_INTRO'
 	}
 }
 
@@ -6193,7 +6212,6 @@ function setTaleIndexAC(index) {
 	}
 }
 
-// working-spot
 function selectTaleAC(index, context) {
 	return {
 		type: 'SELECT_TALE',
@@ -6216,6 +6234,14 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'SET_THEMES':
 			return setAppMainThemes(state)
+
+		// working-spot
+		case 'SET_APP_NAV_IDX':
+			return setAppNavList(state, action.components)
+
+		// working-spot
+		case 'SELECT_INTRO':
+			return selectIntro(state)
 
 		case 'SELECT_THEME':
 			return selectAppTheme(state, action.themeName)
@@ -6249,6 +6275,12 @@ function AppReducer(state = INITIAL_STATE, action) {
 function setAppNavIndex(state, components) {
 	let navState = Map().set('Nav', components);
 	return state.merge(navState)
+}
+
+// working-spot
+function setAppNavList(state, components) {
+	let navListState = Map().set('navList', components)
+	return state.merge(navListState)
 }
 
 function setAppMainThemes(state) {
@@ -6318,6 +6350,11 @@ function setAppMainThemes(state) {
 	return state.merge(mainState)
 }
 
+// working-spot
+function selectIntro(state) {
+
+}
+
 
 function selectAppTheme(state, theme) {
 	
@@ -6343,7 +6380,6 @@ function selectAppTheme(state, theme) {
 	// Topic depth defines how deep the user drilling into the data.
 	let defaultTopicDepth = null;
 
-	// working-spot
 	// A control state to decide the viz data board refresh or not.
 	let defaultDataBoardUpdateSet = setState('updateDataBoard', true);
 
@@ -6442,7 +6478,6 @@ function selectAppTheme(state, theme) {
 	// Set the default dropdown menus with initial state.
 	function _setDefaultDropdownMenus(theme) {
 			
-			// working-spot
 			const dropdownMenus = 
 				setState(
 					'filterDropdownMenus',
@@ -6529,8 +6564,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
-
-	// working-spot
 	let newTaleIndex = null;
 
 	let shoudDataBoardUpdate = setState('updateDataBoard', true);
@@ -6576,8 +6609,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.chartType, 
 						newState.topic,
 						newState.topicDepth,
-
-						// working-spot
 						newState.taleIndex,
 						newState.dropdownMenuStates,
 						shoudDataBoardUpdate)
@@ -6596,7 +6627,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data,
 						newState.topic,
 						newState.topicDepth,
-						// working-spot
 						newState.taleIndex,
 						newState.dropdownMenuStates,
 						shoudDataBoardUpdate
@@ -6615,7 +6645,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				return state.merge(
 					newState.chartType,
 					newState.topic,
-					// working-spot
 					newState.taleIndex,
 					newState.dropdownMenuStates,
 					shoudDataBoardUpdate
@@ -6632,14 +6661,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				newTopic = setState('currentTopic', optionName);
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
-				// working-spot: The tale index should be correspond to the topic.
+				// The tale index should be correspond to the topic.
 				// We have to come up an idea to solve this.
 				newTaleIndex = setState('currentTaleIndex', 0);
 
 				return state.merge(
 					newTopic, 
 					newTopicDepth, 
-					// workng-spot
 					newTaleIndex,
 					collapsedAllDropdownMenuStates, 
 					shoudDataBoardUpdate)
@@ -6678,7 +6706,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		// Set the new topic depth to 0
 		let newTopicDepth = setState('currentTopicDepth', 0);
 
-		// working-spot
 		let newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Set up the states for the dropdowns.
@@ -6724,7 +6751,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			chartType: newChartType,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
-			// working-spot
 			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
@@ -6753,7 +6779,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
-		// working-spot
 		const newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Switch data will change the available topics
@@ -6794,7 +6819,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		return {
 			chartType: newChartType,
 			topic: newTopic,
-			// working-spot
 			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
@@ -6951,6 +6975,19 @@ const AppNav = RRd.connect(
 )(Nav);
 
 
+// working-spot
+/* Connect the redux's app state to IndexNavList Component. */
+const mapStateToAppNavList = (state) => {
+	return {
+		listItems: state.get('navList')
+	}
+}
+const AppNavList = RRd.connect(
+	mapStateToAppNavList,
+	null
+	)(IndexNavList);
+
+
 /* Connect the redux's app state to Main Component. */
 const mapStateToAppMainProps = (state) => {
 	return {
@@ -6982,7 +7019,6 @@ const StatTitle = RRd.connect(
 )(Title);
 
 /* Connect Fliter Component with redux app state. */
-
 /* Connect DropdownToggle */
 const mapDispatchToDropdownToggle = (dispatch, props) => {
 	return {
@@ -7133,18 +7169,76 @@ ReactDOM.render(
 					path='/' 
 					getComponents={(nextState, cb) => {
 
-						/*Set up the initial index page for nav side.*/
-						store.dispatch(setAppNavAC([
-							<Logo key='0'/>,
-							<IndexNavList key='1'/>,
-							<Sign key='2'/>,
-							<HomeLink key='3'/>
+						// worling-spot: Set the nav list for initializing index page.
+						store.dispatch(setAppNavListAC([
+							<RR.Link to='/aboutus' >
+								<img src="./src/aboutus.png" />
+							</RR.Link>,
+							/* 
+							<RR.Link to='/main'>
+								<img src="./src/see.png" />
+							</RR.Link>,
+							<RR.Link to='/special'>
+								<img src="./src/issue.png" />
+							</RR.Link>,
+							<RR.Link to='/work_together'>
+								<img src="./src/work.png" />
+							</RR.Link>, */ 
+							// <img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
+							<img src="./src/see.png" />,
+							<img src="./src/issue.png" />,
+							<img src="./src/work.png" />,
+								<div className='social-group'>
+									<iframe id='githubStar' className='social-btn'
+										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+								</div>
+						]));
+
+						/* Set up the initial index page for nav side. */
+						store.dispatch(
+							setAppNavAC([
+								<Logo key='0'/>,
+								// <IndexNavList key='1'/>,
+								<AppNavList key='1' />,
+								<Sign key='2'/>,
+								<HomeLink key='3'/>
 						]));
 
 						store.dispatch(setThemesAC());
 
 						cb(null, { nav: AppNav, main: AppMain });
 				}} />
+				<RR.Route 
+					path='/aboutus'
+					getComponents={(nextState, cb) => {
+
+						// working-spot: Set the nav list 
+						store.dispatch(
+							setAppNavListAC([
+								<img src='./src/foundstory-125px.png' />,
+								<img src='./src/logointro-125px.png' />,
+								<img src='./src/memberintro-125px.png' />,
+								<img src='./src/vision-125px.png' />,
+								<div className='social-group'>
+								<iframe id='githubStar' className='social-btn'
+									src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+									frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+								</div>
+							]));
+
+						// working-spot: set up the intro theme
+						store.dispatch(
+							setAppNavAC([
+								<Logo key='0' />,
+								<AppNavList key='1'/>,
+								<Sign key='2'/>,
+								<HomeLink key='3' />
+							]));
+
+						cb(null, { nav: AppNav, main: AppMain });
+					}}
+					/>
 				<RR.Route 
 					path='/police_stat' 
 					getComponents={(nextState, cb) => {
