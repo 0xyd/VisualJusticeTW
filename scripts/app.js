@@ -5025,6 +5025,25 @@ var ThemeBtn = React.createClass({
 	}
 });
 
+/* ***** Intro components: The components of the intro page  ***** */
+const IntroSection = React.createClass({
+	render() {
+		return (
+			<div className='introsec b12-col-md-12'>
+				<div className='introsec-wrapper b12-col-md-12'>
+					<div id={ this.props.sectionId } className='introsec-title b12-col-md-12'> 
+						<h2>{ this.props.sectionTitle }</h2> 
+					</div>
+					<div className='introsec-context b12-col-md-12'>
+						{ this.props.sectionContext }
+					</div>
+				</div>
+			</div>
+		)
+	}
+});
+
+
 /* ***** DataBoard components: The components render the visualized data  ***** */
 const DataBoard = React.createClass({
 
@@ -6353,6 +6372,51 @@ function setAppMainThemes(state) {
 // working-spot
 function selectIntro(state) {
 
+	let mainComponents = [
+		{
+			sectionId: 'VjtwTitle',
+			sectionTitle: '創辦故事',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p' >	我們正處在一個澎湃的資訊與社論時代，每一個人都有權利發表自己針對公眾議題的看法。尤其是發出不平之音的社論領袖們，在社群網路不斷轉載與分享之下，成為社會一股具有民意基礎且不可忽視的力量，進而主宰社會輿論的方向。</p>
+					<p className='introsec-context-p' >	洪仲丘命案、頂新集團導致的食安風暴、高頻率地隨機殺人與攻擊事件、執行死刑與廢除死刑之爭。許許多多司法議題成為輿論的焦點。社群的領袖、媒體的民嘴們也藉此紛紛重砲轟擊司法體系的愚拙與封閉，更出現以社群民意為依歸的雅典式民主審判機制或是臉書法官對各樣社會案件的網路公審。</p>
+					<p className='introsec-context-p' >	社群的輿論常常成為一面倒的態勢，當司法機關做出與此態勢相反的判決或是處分時，司法體系就成了眾矢之地，遭到口水無情的噴灑與淹沒。</p>
+					<p className='introsec-context-p' >	有沒有一個客觀與理性的標準？對我們來說，沒有任何意識形態與情感的資料數據是唯一能夠把慷慨激昂的人們帶回理性、客觀的唯一方式。</p>
+					<p className='introsec-context-p' >	政府克盡職守地將統計資料按月按年向社會大眾公布。然而生硬難懂的表格、難解其意的數字，設下了一道道大眾與政府溝通的藩籬。</p>
+					<p className='introsec-context-p' >	對此由感而發的兩位替代役役男，帶著對司法、社會議題的熱血，為著促使司法體系更透明與公開，著手進行本站的開發。將生硬難懂的統計數據，轉為各樣有互動式的圖形，輔以文字地分析與司法事件的統整，以Web為媒介，讓大眾能夠自由且免費的認識台灣的司法。</p>
+					<p className='introsec-context-p' >	看見思法因蘊而生，盼望藉著彙整好的數據與文獻，使接觸過後的每一位使用者，都能平靜下心，好好“思考”司法的問題。</p>
+				</div>
+		},
+		{
+			sectionId: 'LogoTitle',
+			sectionTitle: 'Logo',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p'>Logo的設計並非出自於專業的設計師，而是常陶醉於美麗使用者介面的阿德不斷Try and Error的結果。最終的定版也是在朋友一句Logo看起來煞有其事而拍板定案。</p>
+					<p className='introsec-context-p'>Logo顏色的設計以黑與白為基調，象徵司法針對各類刑事案件的黑白分明，沒有模糊地帶的一面。司法還無罪之人清白，定有罪人之刑則。</p>
+					<p className='introsec-context-p'>用大寫拼出JUSTICE VISUALIZING強調了將司法資料視覺化為專案最核心的目標，讓晦澀難懂的冰冷搖身一變成為一目了然且豐富逗趣的數據圖形。</p>
+					<p className='introsec-context-p'>裡面看似為光芒，其實是刻度的圓環，代表著司法嚴謹、針對案件，依照案情內容仔細的裁量與測度，最終給予犯罪者最為適切的懲處。</p>
+					<p className='introsec-context-p'>在圓環裡有一個羅馬造型的建築物圖示，代表著從司法行政到司法審判的各級機關，不僅有羅馬看重法律、務實的精神，其高長的圓柱，更表示司法的尊高與莊嚴。</p>
+					<p className='introsec-context-p'>最後裡面有著台灣形狀瞳孔的眼睛，象徵要給大眾一個更明亮的眼睛，以客觀理性的態度，檢視台灣司法遇到種種的困境與難題。</p>
+				</div>
+		}
+	];
+
+	let mainState = 
+		Map().set('Main', (() => {
+			let _ = [],
+					i = 0;
+			for ( let component of mainComponents ) {
+				_.push(<IntroSection 
+					key= {i++}
+					sectionId={ component.sectionId }
+					sectionTitle={ component.sectionTitle } 
+					sectionContext={ component.sectionContext } />)
+			}
+			return _
+		})());
+
+	return state.merge(mainState);
 }
 
 
@@ -6362,7 +6426,7 @@ function selectAppTheme(state, theme) {
 			<Logo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
 		mainComponents = [<StatDataBoard key='0' />];
 
-	const navState = Map().set('Nav', navComponents);
+	const navState  = Map().set('Nav', navComponents);
 	const mainState = Map().set('Main', mainComponents);
 
 	// The name of each filter field.
@@ -6974,7 +7038,6 @@ const AppNav = RRd.connect(
 	null
 )(Nav);
 
-
 // working-spot
 /* Connect the redux's app state to IndexNavList Component. */
 const mapStateToAppNavList = (state) => {
@@ -7160,7 +7223,6 @@ const TaleIndicator = RRd.connect(
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
 
-
 ReactDOM.render(
 	<RRd.Provider store={store}>
 		<RR.Router history={RR.hashHistory} >
@@ -7213,7 +7275,7 @@ ReactDOM.render(
 					path='/aboutus'
 					getComponents={(nextState, cb) => {
 
-						// working-spot: Set the nav list 
+						// Set the nav list for intro
 						store.dispatch(
 							setAppNavListAC([
 								<img src='./src/foundstory-125px.png' />,
@@ -7226,6 +7288,9 @@ ReactDOM.render(
 									frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
 								</div>
 							]));
+
+						// working-spot
+						store.dispatch(selectIntroAC());
 
 						// working-spot: set up the intro theme
 						store.dispatch(
