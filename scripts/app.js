@@ -6404,16 +6404,16 @@ function selectIntro(state) {
 
 	let mainState = 
 		Map().set('Main', (() => {
-			let _ = [],
+			let _mainCs = [],
 					i = 0;
 			for ( let component of mainComponents ) {
-				_.push(<IntroSection 
+				_mainCs.push(<IntroSection 
 					key= {i++}
 					sectionId={ component.sectionId }
 					sectionTitle={ component.sectionTitle } 
 					sectionContext={ component.sectionContext } />)
 			}
-			return _
+			return _mainCs
 		})());
 
 	return state.merge(mainState);
