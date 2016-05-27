@@ -5026,15 +5026,26 @@ var ThemeBtn = React.createClass({
 });
 
 /* ***** Intro components: The components of the intro page  ***** */
+const IntroSections = React.createClass({
+	render() {
+
+		return (
+			<div className='introsec-group b12-col-md-12'>
+				{ this.props.introSects }
+			</div>
+		)
+	}
+});
 const IntroSection = React.createClass({
 	render() {
 		return (
-			<div className='introsec b12-col-md-12'>
-				<div className='introsec-wrapper b12-col-md-12'>
+			<div className='introsec-wrapper b12-col-md-12'>
+				<div className='introsec b12-col-md-12'>
 					<div id={ this.props.sectionId } className='introsec-title b12-col-md-12'> 
 						<h2>{ this.props.sectionTitle }</h2> 
 					</div>
-					<div className='introsec-context b12-col-md-12'>
+					<div className='introsec-divline'></div>
+					<div className='introsec-context'>
 						{ this.props.sectionContext }
 					</div>
 				</div>
@@ -6399,6 +6410,256 @@ function selectIntro(state) {
 					<p className='introsec-context-p'>在圓環裡有一個羅馬造型的建築物圖示，代表著從司法行政到司法審判的各級機關，不僅有羅馬看重法律、務實的精神，其高長的圓柱，更表示司法的尊高與莊嚴。</p>
 					<p className='introsec-context-p'>最後裡面有著台灣形狀瞳孔的眼睛，象徵要給大眾一個更明亮的眼睛，以客觀理性的態度，檢視台灣司法遇到種種的困境與難題。</p>
 				</div>
+		},
+		{
+			sectionId: 'MemberTitle',
+			sectionTitle: '成員介紹',
+			sectionContext: 
+				<div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/yd-image1.jpg' />
+								<span id='yd-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>共同創辦人 / 工匠長</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Y.D Lin</span>&nbsp;&nbsp;<span>林育德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										創造新價值是阿德開發服務最大的信念。熱愛編程的他，常常沈浸其中難以自拔，也常常在母校廣程式實作與應用。
+										尤其對使用者介面有莫名的熱愛，冀望成為一名俱有視覺設計能力與前端工程實作的稀類。
+										看似技術宅的阿德也喜歡攝影與背包旅行，將視野向全世界拓展。
+										曾任Taipei.py的一日講者，也是PyCon APAC 2015的Program Officer，協助議程與公關的籌劃，也參與過不少微創的網路服務開發。
+									</p>
+									<p className='member-sect-intro-context'>
+										阿德在<strong>看見思法</strong>主導著系統的建構開發與使用者介面的設計，並且帶了一小撮熱愛資訊的學弟妹們跳坑，
+										他們常常睡眠不足，要熬夜收集資料、寫程式、設計UI，就是要積沙成塔，打造屬於人民的<strong>思法</strong>系統。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Danny Lai</span>&nbsp;&nbsp;<span>賴亮成</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										就讀大學之時，曾擔任學校校務、學務及總務會議學生代表以及招商會議	學生代表，代表學生和校方共同商議學校許多相關事務。
+										更曾為政治大學台北模擬聯合國大會2014/	05教科文組織最佳代表。
+										曾於紐約參與過社會企業創新競賽，對社會議題與公共政策有極大的熱情。
+									</p>
+									<p className='member-sect-intro-context'>
+										長期參與校園學生的自治組織，對公眾議題有獨到見解的亮成，決定了看見思法許多法律議題的走向。
+										因著好奇心的驅使下，鑽研法律頗有小成的亮成，用清晰的解釋，配合阿德所開發的程式，
+										將資料與議題做了完美的結合。
+									</p>
+								</div>
+							</div>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/danny-image1.jpg' />
+								<span id='dl-title' className='member-sect-media-banner'>
+									<div className='title-arrow left'></div>
+									<h4 className='member-title'>共同創辦人 / 企劃長</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-6">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-6">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<span className='ver-helper'></span>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/cd-image3.jpg' />
+								<span id='cd-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>核心成員 / 資料收集師</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>C.D Lai</span>&nbsp;&nbsp;<span>賴承德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										精熟LEGO機器人的架構的承德，在一次營隊中，用NXT-G寫出一個驚動全隊上下的解密碼遊戲。
+										承德更再接再厲，在WRO機器人競賽獲得優異的成績。
+										自身就喜歡編程的承德，有感於日益嚴重的青少年犯罪問題，因此加入了看見司法，希望能發揮自己的所長回饋社會。
+									</p>
+									<p className='member-sect-intro-context'>
+										承德協助團隊整理、收集大筆大筆關於警察與檢調的原生數據，將許多零散的資料彙整成方便程式操作的格式。
+										政府所釋出的原生資料，大多皆為pdf的格式，且印刷的不清導致難以使用OCR軟體進行解析，
+										承德於是乎就發揮苦幹實幹的精神，將資料一筆筆的鍵入系統的資料庫當中，奠定看見思法服務的基石。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<span className='ver-helper'></span>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Laxative Shieh</span>&nbsp;&nbsp;<span>賴承德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										中學時期接觸了前端工程,從此就種下與前端技術的不解之緣。
+										大學時代，求知若渴的耀賢,常常練習UVA,POJ等競賽題目來訓練自己的邏輯腦。
+										進取積極的耀賢，更是用相關競賽來反覆驗證自己是否離程式設計大神更近了一步。
+									</p>
+									<p className='member-sect-intro-context'>
+										耀賢是個百分之百的工程人，只要給他一張網頁設計的藍圖，他就能以百分之百的效率完成。
+										看見思法中，非資料視覺化的頁面，皆出於耀賢之手，是團隊工匠長最得力的助手。
+									</p>
+								</div>
+							</div>
+							<div className='member-sect-media b12-col-md-4'>
+								<img className='member-sect-media-photo' src='./src/laxative-image.jpg' />
+								<span id='ll-title' className='member-sect-media-banner'>
+									<div className='title-arrow left'></div>
+									<h4 className='member-title'>核心成員 / 二號工匠</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<img className='member-sect-media-photo' src='./src/juliana-image1.jpg' />
+								<span id='jj-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>核心成員 / 小設計師</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Juliana Chang </span>&nbsp;&nbsp;<span>張雅貴</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										擅長活動規劃的雅貴，精於設計流程以及活動內容，曾參與2016新竹城市浪人籌辦團。
+										雅貴也喜歡資訊與設計，渴望擁有屬於自己美美的部落站。
+										常參與資訊相關的志工活動，如擔任Facebook首次在台舉辦的Hack For A Cause活動志工、台灣第一屆AR/VR遊戲創作營志工等等。
+										非理工背景的雅貴，為了累積自身實力以及經驗，更是積極地參與微軟Coding Angel工作坊、Azure Workshop、2016 SITCON年會等。
+									</p>
+									<p className='member-sect-intro-context'>
+										看見思法給雅貴一個可以自由設計的地方。與阿德強調簡約、硬線條、樸素的設計風格著迥然不同，
+										高彩、活潑是雅貴的風格，每次的設計都讓全團耳目一新。
+										主體設計雖是阿德操刀，但是處處還是見得到雅式設計與林式設計的交融。
+										不同風格的碰撞，在看見思法中發揮了截長補短之效。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		},
+		{
+			sectionId: 'VisionTitle',
+			sectionTitle: '展望未來',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p'>
+						一個屬於人民的司法資料庫。
+					</p>
+					<p className='introsec-context-p'>
+						司法系統，對大眾來說，是一道高牆。高牆內的世界，外人難以參透。
+					</p>
+					<p className='introsec-context-p'>
+						保守的司法系統，一直以來都是人民呼求改革的對象。
+						人民對司法寄與厚望，無非是希望司法系統，
+						是公正無私，不會被人所操作，更不會淪為統治者的濫權、鞏固權力的工具。
+					</p>
+					<p className='introsec-context-p'>
+						<q className='introsec-context-p-quote'>知識就是力量。</q> -- Francis Bacon, 1st Viscount St Alban 
+					</p>
+					<p className='introsec-context-p'>
+						藉著一步步地將資料視覺化，從警察機關、調查局、檢察署、廉政署、法院甚至矯正機關，
+						生硬、拗口、難讀的資料，一筆筆地被來至各地的有志之士們所解開，為社會大眾所看見。
+						深藏在龐大的司法資料中的秘密，將攤在司法的陽光下而無所遁形，成就一個透明、公開的司法系統，將
+						也是人民最大的一個勝利。
+					</p>
+					<p className='introsec-context-p'>
+						看見思法以打造全亞洲第一個，全備的司法資料視覺平台為平台。更是華人社會首屈一指的司法開源專案。
+						期望專案的長大，一天一天，都能讓這社會更美好;一步一步，使台灣的司法能更加完善透明。
+					</p>
+					<p className='introsec-context-p'>
+						在不久的將來，看見思法不僅囊括刑事案件、社會犯罪的司法視覺資料庫，
+						與人名息息相關的民法、稅法法律資料，會將看見思法蛻變為一個更加完美的司法資料庫。
+					</p>
+				</div>	
 		}
 	];
 
@@ -6413,8 +6674,11 @@ function selectIntro(state) {
 					sectionTitle={ component.sectionTitle } 
 					sectionContext={ component.sectionContext } />)
 			}
-			return _mainCs
+
+			return <IntroSections introSects={_mainCs} />
 		})());
+
+
 
 	return state.merge(mainState);
 }
