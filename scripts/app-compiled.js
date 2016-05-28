@@ -357,23 +357,13 @@ if(s===startDepth)this._vizStory.fwdSteps[s].end=this._vizStory.fwdSteps[s].tran
 else if(endDepth-startDepth<0){for(var s=startDepth-1;s>=endDepth;--s){if(s===startDepth-1){this._vizStory.bwdSteps[s].end=this._vizStory.bwdSteps[s].transit(bwdOpParams[s]._,bwdOpParams[s].params);}else {this._vizStory.bwdSteps[s].end=this._vizStory.bwdSteps[s+1].end.then(this._vizStory.bwdSteps[s].transit.bind(null,bwdOpParams[s]._,bwdOpParams[s].params));}}}}}]);return StoryTeller;}(); /* ***** Elements for the Index Page ***** */var IndexNavList=React.createClass({displayName:'IndexNavList', // Display a board to tell user that the page they want to go is not ready.
 pageHasNotFinished:function pageHasNotFinished(){window.alert('即將推出，敬請期待。');}, // Mark the browsing list item on the nav list. 
 _currentListItemMarker:function _currentListItemMarker(containerSelector,elementSelector){var container=document.querySelector(containerSelector);var elements=document.querySelectorAll(elementSelector);var navListItems=document.querySelectorAll('.nav-option'); // Calculate the height of each items which corresponding to the nav list item
-var itemTops=function(eles){var _tops=[];for(var i=0;i<elements.length;i++){_tops.push(eles[i].offsetTop);}return _tops;}(elements); // Detect the scroll animation
-container.addEventListener('scroll',function(){var currentTop=this.scrollTop; // let currentIdx = 
-// 	itemTops.findIndex((top) => {
-// 		return currentTop === top
-// 	});
-console.log(itemTops);console.log(currentTop); // if (currentIdx !== -1) {
-// 	console.log('test');
-// 	// Make all hover marker none display
-// 	for (let j = 0; j < navListItems.length-1; j++){
-// 		navListItems[j]
-// 			.firstChild.nextSibling.className = 'nav-option-hovermarker';
-// 	}
-// 	// Set the current one's become visible.
-// 	navListItems[currentIdx]
-// 		.firstChild.nextSibling.className = 'nav-option-hovermarker active';	
-// }
-var l=itemTops.length;var index=function(){for(var i=0;i<l;i++){if(i===l-1&&itemTops[l-1]-currentTop<40)return l-1;else if(itemTops[i-1]<=currentTop&&itemTops[i]>=currentTop)return i-1;}}();for(var j=0;j<navListItems.length-1;j++){navListItems[j].firstChild.nextSibling.className='nav-option-hovermarker';}navListItems[index].firstChild.nextSibling.className='nav-option-hovermarker active';});}, // working-spot: Try to depreciate the state and use the props imported from store instead.
+var itemTops=function(eles){var _tops=[];for(var i=0;i<elements.length;i++){_tops.push(eles[i].offsetTop);}return _tops;}(elements); // Initial the first element with the current marker.
+navListItems[0].className='nav-option-hovermarker active'; // Detect the scroll animation
+container.addEventListener('scroll',function(){var currentTop=this.scrollTop;var l=itemTops.length;var index=function(){for(var i=0;i<l;i++){ // If the user approaching to the last element within 40 pixels,
+// switch to the last element.
+if(i===l-1&&itemTops[l-1]-currentTop<40)return l-1;else if(itemTops[i-1]<=currentTop&&itemTops[i]>=currentTop)return i-1;}}(); // Reset all the nav-options.
+for(var j=0;j<navListItems.length-1;j++){navListItems[j].firstChild.nextSibling.className='nav-option-hovermarker';} // Set the one user surfing on.
+navListItems[index].firstChild.nextSibling.className='nav-option-hovermarker active';});}, // working-spot: Try to depreciate the state and use the props imported from store instead.
 // getInitialState: function() {
 // 	return {
 // 		nav: [

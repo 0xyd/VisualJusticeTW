@@ -4889,6 +4889,9 @@ var IndexNavList = React.createClass({
 					
 					return _tops
 				})(elements);
+
+			// Initial the first element with the current marker.
+			navListItems[0].className = 'nav-option-hovermarker active';
 			
 			// Detect the scroll animation
 			container.addEventListener('scroll', function() {
@@ -4952,6 +4955,7 @@ var IndexNavList = React.createClass({
 	componentDidMount() {
 
 		if (this.props.listType === 'IntroNav') {
+
 			this._currentListItemMarker('.introsec-group', '.introsec-wrapper');
 		}
 		
