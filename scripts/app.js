@@ -4871,6 +4871,53 @@ var IndexNavList = React.createClass({
 		window.alert('即將推出，敬請期待。');
 	},
 
+	// Mark the browsing list item on the nav list. 
+	_currentListItemMarker(containerSelector, elementSelector) {
+
+			const container = document.querySelector(containerSelector);
+			const elements  = document.querySelectorAll(elementSelector);
+			const navListItems = document.querySelectorAll('.nav-option');
+			
+			// Calculate the height of each items which corresponding to the nav list item
+			let itemTops = 
+				((eles) => {
+
+					let _tops = [];
+					
+					for ( let i = 0; i < elements.length; i++ ) 
+						_tops.push(eles[i].offsetTop);
+					
+					return _tops
+				})(elements);
+			
+			// Detect the scroll animation
+			container.addEventListener('scroll', function() {
+
+				let currentTop = this.scrollTop;
+				let l = itemTops.length;
+				let index = (() => {
+					for ( let i = 0; i < l; i++ ) {
+						// If the user approaching to the last element within 40 pixels,
+						// switch to the last element.
+						if (i === l-1 && itemTops[l-1] - currentTop < 40)
+							return l-1
+						else if ( itemTops[i-1] <= currentTop && itemTops[i] >= currentTop )
+							return i-1
+					}
+				})();
+
+				// Reset all the nav-options.
+				for (let j = 0; j < navListItems.length-1; j++){ 
+					navListItems[j]
+						.firstChild.nextSibling.className = 'nav-option-hovermarker';
+				}
+
+				// Set the one user surfing on.
+				navListItems[index]
+					.firstChild.nextSibling.className = 'nav-option-hovermarker active';
+			});
+	},
+
 	// working-spot: Try to depreciate the state and use the props imported from store instead.
 	// getInitialState: function() {
 
@@ -4902,6 +4949,23 @@ var IndexNavList = React.createClass({
 	// 	}
 	// },
 
+	componentDidMount() {
+
+		if (this.props.listType === 'IntroNav') {
+			this._currentListItemMarker('.introsec-group', '.introsec-wrapper');
+		}
+		
+
+		// this._calHeightOfListItem(body);
+
+		// // Listen the scroll action on the BODY
+		// body.addEventListener('scroll', (e) => {
+		// 	console.log(body.scrollTop);
+		// 	// console.log(window.scrollY);
+		// 	// console.log(e);
+		// });
+
+	},
 
 	render: function() {
 
@@ -6163,10 +6227,12 @@ function setAppNavAC(components) {
 	}
 }
 
-// working-spot: set AppNavList
-function setAppNavListAC(components) {
+// AppNavList Setting
+function setAppNavListAC(listType, components) {
 	return {
 		type: 'SET_APP_NAV_IDX',
+		// working-spot
+		navListType: listType,
 		components: components
 	}
 }
@@ -6267,7 +6333,7 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		// working-spot
 		case 'SET_APP_NAV_IDX':
-			return setAppNavList(state, action.components)
+			return setAppNavList(state, action.navListType, action.components)
 
 		// working-spot
 		case 'SELECT_INTRO':
@@ -6308,8 +6374,9 @@ function setAppNavIndex(state, components) {
 }
 
 // working-spot
-function setAppNavList(state, components) {
-	let navListState = Map().set('navList', components)
+function setAppNavList(state, listType, components) {
+	const navListState = 
+		Map().set('navList', components).set('navListType', listType);
 	return state.merge(navListState)
 }
 
@@ -6380,7 +6447,6 @@ function setAppMainThemes(state) {
 	return state.merge(mainState)
 }
 
-// working-spot
 function selectIntro(state) {
 
 	let mainComponents = [
@@ -7306,6 +7372,7 @@ const AppNav = RRd.connect(
 /* Connect the redux's app state to IndexNavList Component. */
 const mapStateToAppNavList = (state) => {
 	return {
+		listType: state.get('navListType'),
 		listItems: state.get('navList')
 	}
 }
@@ -7495,31 +7562,35 @@ ReactDOM.render(
 					path='/' 
 					getComponents={(nextState, cb) => {
 
-						// worling-spot: Set the nav list for initializing index page.
-						store.dispatch(setAppNavListAC([
-							<RR.Link to='/aboutus' >
-								<img src="./src/aboutus.png" />
-							</RR.Link>,
-							/* 
-							<RR.Link to='/main'>
-								<img src="./src/see.png" />
-							</RR.Link>,
-							<RR.Link to='/special'>
-								<img src="./src/issue.png" />
-							</RR.Link>,
-							<RR.Link to='/work_together'>
-								<img src="./src/work.png" />
-							</RR.Link>, */ 
-							// <img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
-							<img src="./src/see.png" />,
-							<img src="./src/issue.png" />,
-							<img src="./src/work.png" />,
-								<div className='social-group'>
-									<iframe id='githubStar' className='social-btn'
-										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-								</div>
-						]));
+						// Set the nav list for initializing index page.
+						store.dispatch(
+							setAppNavListAC(
+								// working-spot
+								'IndexNav',
+								[
+									<RR.Link to='/aboutus' >
+										<img src="./src/aboutus.png" />
+									</RR.Link>,
+									/* 
+									<RR.Link to='/main'>
+										<img src="./src/see.png" />
+									</RR.Link>,
+									<RR.Link to='/special'>
+										<img src="./src/issue.png" />
+									</RR.Link>,
+									<RR.Link to='/work_together'>
+										<img src="./src/work.png" />
+									</RR.Link>, */ 
+									// <img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
+									<img src="./src/see.png" />,
+									<img src="./src/issue.png" />,
+									<img src="./src/work.png" />,
+										<div className='social-group'>
+												<iframe id='githubStar' className='social-btn'
+												src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+												frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+										</div>
+								]));
 
 						/* Set up the initial index page for nav side. */
 						store.dispatch(
@@ -7540,20 +7611,22 @@ ReactDOM.render(
 					getComponents={(nextState, cb) => {
 
 						// Set the nav list for intro
+						// working-spot: Add some keys to different
 						store.dispatch(
-							setAppNavListAC([
-								<img src='./src/foundstory-125px.png' />,
-								<img src='./src/logointro-125px.png' />,
-								<img src='./src/memberintro-125px.png' />,
-								<img src='./src/vision-125px.png' />,
-								<div className='social-group'>
-								<iframe id='githubStar' className='social-btn'
-									src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-									frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-								</div>
+							setAppNavListAC(
+								'IntroNav',
+								[
+									<img src='./src/foundstory-125px.png' />,
+									<img src='./src/logointro-125px.png' />,
+									<img src='./src/memberintro-125px.png' />,
+									<img src='./src/vision-125px.png' />,
+									<div className='social-group'>
+									<iframe id='githubStar' className='social-btn'
+										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+									</div>
 							]));
 
-						// working-spot
 						store.dispatch(selectIntroAC());
 
 						// working-spot: set up the intro theme
