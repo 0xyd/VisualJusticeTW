@@ -4812,7 +4812,6 @@ class StoryTeller {
 			},
 		];
 
-		// working-spot: The tale will
 		this.calTopicFirstTale = function() {
 			let tales = 
 				this._txtTaleChain.sections.filter((section, i) => {
@@ -4867,7 +4866,7 @@ class StoryTeller {
 		})
 	}
 
-	// working-spot: Decide which tales chain shoule be applied.
+	// Decide which tales chain shoule be applied.
 	decideTaleChain(datasetName, dataName, vizTypeName) {
 
 		this._txtTaleChain = this.taleChains.find((chain) => {
@@ -4930,67 +4929,121 @@ class StoryTeller {
 var IndexNavList = React.createClass({
 
 	// Display a board to tell user that the page they want to go is not ready.
-	pageHasNotFinished: function() {
-		window.alert('即將推出，敬請期待。')
+	pageHasNotFinished() {
+		window.alert('即將推出，敬請期待。');
 	},
 
-	getInitialState: function() {
+	// Mark the browsing list item on the nav list. 
+	_markCurrentListItem(containerSelector, elementSelector) {
 
-		return {
-			nav: [
-				/*<RR.Link to='/about_us'>
-					<img src="./src/aboutus.png" />
-				</RR.Link>,
-				<RR.Link to='/main'>
-					<img src="./src/see.png" />
-				</RR.Link>,
-				<RR.Link to='/special'>
-					<img src="./src/issue.png" />
-				</RR.Link>,
-				<RR.Link to='/work_together'>
-					<img src="./src/work.png" />
-				</RR.Link>, */ 
-				<img src="./src/aboutus.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/see.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/issue.png"  onClick={ this.pageHasNotFinished }/>,
-				<img src="./src/work.png"  onClick={ this.pageHasNotFinished }/>,
-				<div className='social-group'>
-					<iframe id='githubStar' className='social-btn'
-						src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-						frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-				</div>
-			]
+			const container = document.querySelector(containerSelector);
+			const elements  = document.querySelectorAll(elementSelector);
+			const navListItems = document.querySelectorAll('.nav-option');
+			
+			// Calculate the height of each items which corresponding to the nav list item
+			let itemTops = 
+				((eles) => {
+
+					let _tops = [];
+					
+					for ( let i = 0; i < elements.length; i++ ) 
+						_tops.push(eles[i].offsetTop);
+					
+					return _tops
+				})(elements);
+
+			// Initial the first element with the current marker.
+			navListItems[0]
+				.firstChild.nextSibling.className = 'nav-option-hovermarker active';
+			
+			// Detect the scroll animation
+			container.addEventListener('scroll', function() {
+
+				let currentTop = this.scrollTop;
+				let l = itemTops.length;
+				let index = (() => {
+					for ( let i = 0; i < l; i++ ) {
+						// If the user approaching to the last element within 40 pixels,
+						// switch to the last element.
+						if (i === l-1 && itemTops[l-1] - currentTop < 40)
+							return l-1
+						else if ( itemTops[i-1] <= currentTop && itemTops[i] >= currentTop )
+							return i-1
+					}
+				})();
+
+				// Reset all the nav-options.
+				for (let j = 0; j < navListItems.length-1; j++){ 
+					navListItems[j]
+						.firstChild.nextSibling.className = 'nav-option-hovermarker';
+				}
+
+				// Set the one user surfing on.
+				navListItems[index]
+					.firstChild.nextSibling.className = 'nav-option-hovermarker active';
+			});
+	},
+
+	// Reset every hover marker to inactive.
+	_resetAllListHoverMkr() {
+
+		const navOptions = document.querySelectorAll('.nav-option');
+
+		for ( let i = 0; i < navOptions.length; i++ ){
+			navOptions[i].firstChild.nextSibling.className = 'nav-option-hovermarker';
+		}
+	},
+
+	componentDidMount() {
+		if (this.props.listType === 'IntroNav') {
+			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
+		}
+	},
+
+	componentDidUpdate() {
+		
+		if (this.props.listType === 'IntroNav') {
+			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
+		}
+		else {
+			this._resetAllListHoverMkr();
 		}
 	},
 
 	render: function() {
 
-		var listItems = [],
-			l = this.state.nav.length;
+		// let listItems = [],
+			// l = this.state.nav.length;
+		// for ( var i=0; i<l; i++ ) {
 
-		for ( var i=0; i<l; i++ ) {
+		// 	if (i === l - 1) {
+		// 		listItems.push(
+		// 			<IndexNavListSocialItem 
+		// 				key={i}
+		// 				elements={ this.state.nav[i] }
+		// 			/>
+		// 		);
+		// 	}
+		// 	else {
+		// 		listItems.push(
+		// 			<IndexNavListItem 
+		// 				key={i}
+		// 				link={ this.state.nav[i] } />
+		// 			);
+		// 	}
+		// }
+		let i = 0,
+				_items = [];
 
-			if (i === l - 1) {
-				listItems.push(
-					<IndexNavListSocialItem 
-						key={i}
-						elements={ this.state.nav[i] }
-					/>
-				);
-			}
-			else {
-				listItems.push(
-					<IndexNavListItem 
-						key={i}
-						link={ this.state.nav[i] } />
-					);
-			}
+		for ( let listItem of this.props.listItems ) {
+			_items.push(<IndexNavListItem key={i++} link={ listItem } />)
 		}
 
 		return (
 			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
 				<ul className="b12-col-md-12 b15-row-md-15">
-					{ listItems }
+					 { /*listItems*/ }
+					 { _items }
 				</ul>
 			</nav>
 		)
@@ -5023,18 +5076,6 @@ var IndexNavListItem = React.createClass({
 					<div className={ this.state.isHovered ? 
 						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div>
 				{ this.props.link }
-			</li>
-		)
-	}
-});
-
-// working-spot
-var IndexNavListSocialItem = React.createClass({
-	render: function() {
-		return (
-			<li className="nav-option b12-col-md-12 b12-row-md-4">
-				<span className='ver-helper'></span>
-				{ this.props.elements }
 			</li>
 		)
 	}
@@ -5078,6 +5119,36 @@ var ThemeBtn = React.createClass({
 		)
 	}
 });
+
+/* ***** Intro components: The components of the intro page  ***** */
+const IntroSections = React.createClass({
+	render() {
+
+		return (
+			<div className='introsec-group b12-col-md-12'>
+				{ this.props.introSects }
+			</div>
+		)
+	}
+});
+const IntroSection = React.createClass({
+	render() {
+		return (
+			<div className='introsec-wrapper b12-col-md-12'>
+				<div className='introsec b12-col-md-12'>
+					<div id={ this.props.sectionId } className='introsec-title b12-col-md-12'> 
+						<h2>{ this.props.sectionTitle }</h2> 
+					</div>
+					<div className='introsec-divline'></div>
+					<div className='introsec-context'>
+						{ this.props.sectionContext }
+					</div>
+				</div>
+			</div>
+		)
+	}
+});
+
 
 /* ***** DataBoard components: The components render the visualized data  ***** */
 const DataBoard = React.createClass({
@@ -5705,11 +5776,10 @@ const DataBoard = React.createClass({
 	},
 
 	componentWillMount() {
-		// working-spot
+		
 		this.storyTeller.decideVizStoryChain(
 			this.props.dataset, this.props.data, this.props.chartType);
 
-		// working-spot
 		// Select the tales chain
 		this.storyTeller.decideTaleChain(
 			this.props.dataset, this.props.data, this.props.chartType);
@@ -5719,12 +5789,10 @@ const DataBoard = React.createClass({
 
 		if (nextProps.updateDataBoard) {
 
-			// working-spot
 			// Select the chain 
 			this.storyTeller.decideVizStoryChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
 
-			// working-spot
 			// Select the tales chain
 			this.storyTeller.decideTaleChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
@@ -5732,7 +5800,6 @@ const DataBoard = React.createClass({
 			return true
 		}
 
-		// working-spot
 		return false
 	},
 
@@ -5856,7 +5923,6 @@ const TaleBlock = React.createClass({
 		$v(ReactDOM.findDOMNode(this), { opacity: 1 }, { duration: 500 });
 	},
 
-	// working-spot
 	shouldComponentUpdate(nextProps) {
 		return true
 	},
@@ -6200,6 +6266,15 @@ function setAppNavAC(components) {
 	}
 }
 
+// AppNavList Setting
+function setAppNavListAC(listType, components) {
+	return {
+		type: 'SET_APP_NAV_IDX',
+		navListType: listType,
+		components: components
+	}
+}
+
 function setAppMainAC(components) {
 	return {
 		type: 'SET_MAIN',
@@ -6217,6 +6292,12 @@ function selectThemeAC(name) {
 	return {
 		type: 'SELECT_THEME',
 		themeName: name
+	}
+}
+
+function selectIntroAC() {
+	return {
+		type: 'SELECT_INTRO'
 	}
 }
 
@@ -6264,7 +6345,6 @@ function setTaleIndexAC(index) {
 	}
 }
 
-// working-spot
 function selectTaleAC(index, context) {
 	return {
 		type: 'SELECT_TALE',
@@ -6287,6 +6367,12 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'SET_THEMES':
 			return setAppMainThemes(state)
+
+		case 'SET_APP_NAV_IDX':
+			return setAppNavList(state, action.navListType, action.components)
+
+		case 'SELECT_INTRO':
+			return selectIntro(state)
 
 		case 'SELECT_THEME':
 			return selectAppTheme(state, action.themeName)
@@ -6320,6 +6406,12 @@ function AppReducer(state = INITIAL_STATE, action) {
 function setAppNavIndex(state, components) {
 	let navState = Map().set('Nav', components);
 	return state.merge(navState)
+}
+
+function setAppNavList(state, listType, components) {
+	const navListState = 
+		Map().set('navList', components).set('navListType', listType);
+	return state.merge(navListState)
 }
 
 function setAppMainThemes(state) {
@@ -6389,6 +6481,308 @@ function setAppMainThemes(state) {
 	return state.merge(mainState)
 }
 
+function selectIntro(state) {
+
+	let mainComponents = [
+		{
+			sectionId: 'VjtwTitle',
+			sectionTitle: '創辦故事',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p' >	我們正處在一個澎湃的資訊與社論時代，每一個人都有權利發表自己針對公眾議題的看法。尤其是發出不平之音的社論領袖們，在社群網路不斷轉載與分享之下，成為社會一股具有民意基礎且不可忽視的力量，進而主宰社會輿論的方向。</p>
+					<p className='introsec-context-p' >	洪仲丘命案、頂新集團導致的食安風暴、高頻率地隨機殺人與攻擊事件、執行死刑與廢除死刑之爭。許許多多司法議題成為輿論的焦點。社群的領袖、媒體的民嘴們也藉此紛紛重砲轟擊司法體系的愚拙與封閉，更出現以社群民意為依歸的雅典式民主審判機制或是臉書法官對各樣社會案件的網路公審。</p>
+					<p className='introsec-context-p' >	社群的輿論常常成為一面倒的態勢，當司法機關做出與此態勢相反的判決或是處分時，司法體系就成了眾矢之地，遭到口水無情的噴灑與淹沒。</p>
+					<p className='introsec-context-p' >	有沒有一個客觀與理性的標準？對我們來說，沒有任何意識形態與情感的資料數據是唯一能夠把慷慨激昂的人們帶回理性、客觀的唯一方式。</p>
+					<p className='introsec-context-p' >	政府克盡職守地將統計資料按月按年向社會大眾公布。然而生硬難懂的表格、難解其意的數字，設下了一道道大眾與政府溝通的藩籬。</p>
+					<p className='introsec-context-p' >	對此由感而發的兩位替代役役男，帶著對司法、社會議題的熱血，為著促使司法體系更透明與公開，著手進行本站的開發。將生硬難懂的統計數據，轉為各樣有互動式的圖形，輔以文字地分析與司法事件的統整，以Web為媒介，讓大眾能夠自由且免費的認識台灣的司法。</p>
+					<p className='introsec-context-p' >	看見思法因蘊而生，盼望藉著彙整好的數據與文獻，使接觸過後的每一位使用者，都能平靜下心，好好“思考”司法的問題。</p>
+				</div>
+		},
+		{
+			sectionId: 'LogoTitle',
+			sectionTitle: 'Logo',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p'>Logo的設計並非出自於專業的設計師，而是常陶醉於美麗使用者介面的阿德不斷Try and Error的結果。最終的定版也是在朋友一句Logo看起來煞有其事而拍板定案。</p>
+					<p className='introsec-context-p'>Logo顏色的設計以黑與白為基調，象徵司法針對各類刑事案件的黑白分明，沒有模糊地帶的一面。司法還無罪之人清白，定有罪人之刑則。</p>
+					<p className='introsec-context-p'>用大寫拼出JUSTICE VISUALIZING強調了將司法資料視覺化為專案最核心的目標，讓晦澀難懂的冰冷搖身一變成為一目了然且豐富逗趣的數據圖形。</p>
+					<p className='introsec-context-p'>裡面看似為光芒，其實是刻度的圓環，代表著司法嚴謹、針對案件，依照案情內容仔細的裁量與測度，最終給予犯罪者最為適切的懲處。</p>
+					<p className='introsec-context-p'>在圓環裡有一個羅馬造型的建築物圖示，代表著從司法行政到司法審判的各級機關，不僅有羅馬看重法律、務實的精神，其高長的圓柱，更表示司法的尊高與莊嚴。</p>
+					<p className='introsec-context-p'>最後裡面有著台灣形狀瞳孔的眼睛，象徵要給大眾一個更明亮的眼睛，以客觀理性的態度，檢視台灣司法遇到種種的困境與難題。</p>
+				</div>
+		},
+		{
+			sectionId: 'MemberTitle',
+			sectionTitle: '成員介紹',
+			sectionContext: 
+				<div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/yd-image1.jpg' />
+								<span id='yd-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>共同創辦人 / 工匠長</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Y.D Lin</span>&nbsp;&nbsp;<span>林育德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										創造新價值是阿德開發服務最大的信念。熱愛編程的他，常常沈浸其中難以自拔，也常常在母校廣程式實作與應用。
+										尤其對使用者介面有莫名的熱愛，冀望成為一名俱有視覺設計能力與前端工程實作的稀類。
+										看似技術宅的阿德也喜歡攝影與背包旅行，將視野向全世界拓展。
+										曾任Taipei.py的一日講者，也是PyCon APAC 2015的Program Officer，協助議程與公關的籌劃，也參與過不少微創的網路服務開發。
+									</p>
+									<p className='member-sect-intro-context'>
+										阿德在<strong>看見思法</strong>主導著系統的建構開發與使用者介面的設計，並且帶了一小撮熱愛資訊的學弟妹們跳坑，
+										他們常常睡眠不足，要熬夜收集資料、寫程式、設計UI，就是要積沙成塔，打造屬於人民的<strong>思法</strong>系統。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Danny Lai</span>&nbsp;&nbsp;<span>賴亮成</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										就讀大學之時，曾擔任學校校務、學務及總務會議學生代表以及招商會議	學生代表，代表學生和校方共同商議學校許多相關事務。
+										更曾為政治大學台北模擬聯合國大會2014/	05教科文組織最佳代表。
+										曾於紐約參與過社會企業創新競賽，對社會議題與公共政策有極大的熱情。
+									</p>
+									<p className='member-sect-intro-context'>
+										長期參與校園學生的自治組織，對公眾議題有獨到見解的亮成，決定了看見思法許多法律議題的走向。
+										因著好奇心的驅使下，鑽研法律頗有小成的亮成，用清晰的解釋，配合阿德所開發的程式，
+										將資料與議題做了完美的結合。
+									</p>
+								</div>
+							</div>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/danny-image1.jpg' />
+								<span id='dl-title' className='member-sect-media-banner'>
+									<div className='title-arrow left'></div>
+									<h4 className='member-title'>共同創辦人 / 企劃長</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-6">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-6">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<span className='ver-helper'></span>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<span className='ver-helper'></span>
+								<img className='member-sect-media-photo' src='./src/cd-image3.jpg' />
+								<span id='cd-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>核心成員 / 資料收集師</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>C.D Lai</span>&nbsp;&nbsp;<span>賴承德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										精熟LEGO機器人的架構的承德，在一次營隊中，用NXT-G寫出一個驚動全隊上下的解密碼遊戲。
+										承德更再接再厲，在WRO機器人競賽獲得優異的成績。
+										自身就喜歡編程的承德，有感於日益嚴重的青少年犯罪問題，因此加入了看見司法，希望能發揮自己的所長回饋社會。
+									</p>
+									<p className='member-sect-intro-context'>
+										承德協助團隊整理、收集大筆大筆關於警察與檢調的原生數據，將許多零散的資料彙整成方便程式操作的格式。
+										政府所釋出的原生資料，大多皆為pdf的格式，且印刷的不清導致難以使用OCR軟體進行解析，
+										承德於是乎就發揮苦幹實幹的精神，將資料一筆筆的鍵入系統的資料庫當中，奠定看見思法服務的基石。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<span className='ver-helper'></span>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Laxative Shieh</span>&nbsp;&nbsp;<span>賴承德</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										中學時期接觸了前端工程,從此就種下與前端技術的不解之緣。
+										大學時代，求知若渴的耀賢,常常練習UVA,POJ等競賽題目來訓練自己的邏輯腦。
+										進取積極的耀賢，更是用相關競賽來反覆驗證自己是否離程式設計大神更近了一步。
+									</p>
+									<p className='member-sect-intro-context'>
+										耀賢是個百分之百的工程人，只要給他一張網頁設計的藍圖，他就能以百分之百的效率完成。
+										看見思法中，非資料視覺化的頁面，皆出於耀賢之手，是團隊工匠長最得力的助手。
+									</p>
+								</div>
+							</div>
+							<div className='member-sect-media b12-col-md-4'>
+								<img className='member-sect-media-photo' src='./src/laxative-image.jpg' />
+								<span id='ll-title' className='member-sect-media-banner'>
+									<div className='title-arrow left'></div>
+									<h4 className='member-title'>核心成員 / 二號工匠</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className='member-sect-wrappper b12-col-md-12'>
+						<div className='member-sect b12-col-md-12'>
+							<span className='ver-helper'></span>
+							<div className='member-sect-media b12-col-md-4'>
+								<img className='member-sect-media-photo' src='./src/juliana-image1.jpg' />
+								<span id='jj-title' className='member-sect-media-banner'>
+									<div className='title-arrow right'></div>
+									<h4 className='member-title'>核心成員 / 小設計師</h4>
+								</span>
+								<div className="member-social b12-col-md-12">
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/In-2C-28px-R.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/FB-f-Logo__blue_28.png" />
+									</div>
+									<div className="member-social-iconwrapper b12-col-md-4">
+										<img className="social-icon" src="./src/GitHub-Mark-28px.png" />
+									</div>
+								</div>
+							</div>
+							<div className='member-sect-intro b12-col-md-8'>
+								<span className='ver-helper'></span>
+								<div className='member-sect-intro-elementwrapper'>
+									<h2 className='member-sect-intro-name'>
+										<span>Juliana Chang </span>&nbsp;&nbsp;<span>張雅貴</span>
+									</h2>
+									<p className='member-sect-intro-context'>
+										擅長活動規劃的雅貴，精於設計流程以及活動內容，曾參與2016新竹城市浪人籌辦團。
+										雅貴也喜歡資訊與設計，渴望擁有屬於自己美美的部落站。
+										常參與資訊相關的志工活動，如擔任Facebook首次在台舉辦的Hack For A Cause活動志工、台灣第一屆AR/VR遊戲創作營志工等等。
+										非理工背景的雅貴，為了累積自身實力以及經驗，更是積極地參與微軟Coding Angel工作坊、Azure Workshop、2016 SITCON年會等。
+									</p>
+									<p className='member-sect-intro-context'>
+										看見思法給雅貴一個可以自由設計的地方。與阿德強調簡約、硬線條、樸素的設計風格著迥然不同，
+										高彩、活潑是雅貴的風格，每次的設計都讓全團耳目一新。
+										主體設計雖是阿德操刀，但是處處還是見得到雅式設計與林式設計的交融。
+										不同風格的碰撞，在看見思法中發揮了截長補短之效。
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+		},
+		{
+			sectionId: 'VisionTitle',
+			sectionTitle: '展望未來',
+			sectionContext: 
+				<div>
+					<p className='introsec-context-p'>
+						一個屬於人民的司法資料庫。
+					</p>
+					<p className='introsec-context-p'>
+						司法系統，對大眾來說，是一道高牆。高牆內的世界，外人難以參透。
+					</p>
+					<p className='introsec-context-p'>
+						保守的司法系統，一直以來都是人民呼求改革的對象。
+						人民對司法寄與厚望，無非是希望司法系統，
+						是公正無私，不會被人所操作，更不會淪為統治者的濫權、鞏固權力的工具。
+					</p>
+					<p className='introsec-context-p'>
+						<q className='introsec-context-p-quote'>知識就是力量。</q> -- Francis Bacon, 1st Viscount St Alban 
+					</p>
+					<p className='introsec-context-p'>
+						藉著一步步地將資料視覺化，從警察機關、調查局、檢察署、廉政署、法院甚至矯正機關，
+						生硬、拗口、難讀的資料，一筆筆地被來至各地的有志之士們所解開，為社會大眾所看見。
+						深藏在龐大的司法資料中的秘密，將攤在司法的陽光下而無所遁形，成就一個透明、公開的司法系統，將
+						也是人民最大的一個勝利。
+					</p>
+					<p className='introsec-context-p'>
+						看見思法以打造全亞洲第一個，全備的司法資料視覺平台為平台。更是華人社會首屈一指的司法開源專案。
+						期望專案的長大，一天一天，都能讓這社會更美好;一步一步，使台灣的司法能更加完善透明。
+					</p>
+					<p className='introsec-context-p'>
+						在不久的將來，看見思法不僅囊括刑事案件、社會犯罪的司法視覺資料庫，
+						與人名息息相關的民法、稅法法律資料，會將看見思法蛻變為一個更加完美的司法資料庫。
+					</p>
+				</div>	
+		}
+	];
+
+	let mainState = 
+		Map().set('Main', (() => {
+			let _mainCs = [],
+					i = 0;
+			for ( let component of mainComponents ) {
+				_mainCs.push(<IntroSection 
+					key= {i++}
+					sectionId={ component.sectionId }
+					sectionTitle={ component.sectionTitle } 
+					sectionContext={ component.sectionContext } />)
+			}
+
+			return <IntroSections introSects={_mainCs} />
+		})());
+
+
+
+	return state.merge(mainState);
+}
+
 
 function selectAppTheme(state, theme) {
 	
@@ -6396,7 +6790,7 @@ function selectAppTheme(state, theme) {
 			<Logo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
 		mainComponents = [<StatDataBoard key='0' />];
 
-	const navState = Map().set('Nav', navComponents);
+	const navState  = Map().set('Nav', navComponents);
 	const mainState = Map().set('Main', mainComponents);
 
 	// The name of each filter field.
@@ -6414,7 +6808,6 @@ function selectAppTheme(state, theme) {
 	// Topic depth defines how deep the user drilling into the data.
 	let defaultTopicDepth = null;
 
-	// working-spot
 	// A control state to decide the viz data board refresh or not.
 	let defaultDataBoardUpdateSet = setState('updateDataBoard', true);
 
@@ -6513,7 +6906,6 @@ function selectAppTheme(state, theme) {
 	// Set the default dropdown menus with initial state.
 	function _setDefaultDropdownMenus(theme) {
 			
-			// working-spot
 			const dropdownMenus = 
 				setState(
 					'filterDropdownMenus',
@@ -6600,8 +6992,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 	let newChartType = null;
 	let newTopic = null;
 	let newDropdownMenuStates = null;
-
-	// working-spot
 	let newTaleIndex = null;
 
 	let shoudDataBoardUpdate = setState('updateDataBoard', true);
@@ -6647,8 +7037,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.chartType, 
 						newState.topic,
 						newState.topicDepth,
-
-						// working-spot
 						newState.taleIndex,
 						newState.dropdownMenuStates,
 						shoudDataBoardUpdate)
@@ -6667,7 +7055,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.data,
 						newState.topic,
 						newState.topicDepth,
-						// working-spot
 						newState.taleIndex,
 						newState.dropdownMenuStates,
 						shoudDataBoardUpdate
@@ -6686,7 +7073,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				return state.merge(
 					newState.chartType,
 					newState.topic,
-					// working-spot
 					newState.taleIndex,
 					newState.dropdownMenuStates,
 					shoudDataBoardUpdate
@@ -6703,14 +7089,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 				newTopic = setState('currentTopic', optionName);
 				newTopicDepth = setState('currentTopicDepth', topicDepth);
 
-				// working-spot: The tale index should be correspond to the topic.
+				// The tale index should be correspond to the topic.
 				// We have to come up an idea to solve this.
 				newTaleIndex = setState('currentTaleIndex', 0);
 
 				return state.merge(
 					newTopic, 
 					newTopicDepth, 
-					// workng-spot
 					newTaleIndex,
 					collapsedAllDropdownMenuStates, 
 					shoudDataBoardUpdate)
@@ -6749,7 +7134,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		// Set the new topic depth to 0
 		let newTopicDepth = setState('currentTopicDepth', 0);
 
-		// working-spot
 		let newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Set up the states for the dropdowns.
@@ -6795,7 +7179,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			chartType: newChartType,
 			topic: newTopic,
 			topicDepth: newTopicDepth,
-			// working-spot
 			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
@@ -6824,7 +7207,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 		const newTopicDepth = setState('currentTopicDepth', 0);
 
-		// working-spot
 		const newTaleIndex = setState('currentTaleIndex', 0);
 
 		// Switch data will change the available topics
@@ -6865,7 +7247,6 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 		return {
 			chartType: newChartType,
 			topic: newTopic,
-			// working-spot
 			taleIndex: newTaleIndex,
 			dropdownMenuStates: newDropdownMenuStates
 		}
@@ -6961,7 +7342,6 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 	else return state.merge(newTaleIndex, updateDataBoard);
 }
 
-// working-spot
 function selectTale(state, taleIndex, taleContext) {
 	
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
@@ -6998,10 +7378,8 @@ function back2FirstTale(state, taleChain) {
 
 function setTaleIndex(state, taleIndex) {
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
-	// working-spot
 	const updateDataBoard = setState('updateDataBoard', false);
 	return state.merge(newTaleIndex, updateDataBoard)
-	// return state.merge(newTaleIndex)
 }
 
 // Create a immutable Map object as state
@@ -7020,6 +7398,18 @@ const AppNav = RRd.connect(
 	mapStateToAppNavProps,
 	null
 )(Nav);
+
+/* Connect the redux's app state to IndexNavList Component. */
+const mapStateToAppNavList = (state) => {
+	return {
+		listType: state.get('navListType'),
+		listItems: state.get('navList')
+	}
+}
+const AppNavList = RRd.connect(
+	mapStateToAppNavList,
+	null
+	)(IndexNavList);
 
 
 /* Connect the redux's app state to Main Component. */
@@ -7053,7 +7443,6 @@ const StatTitle = RRd.connect(
 )(Title);
 
 /* Connect Fliter Component with redux app state. */
-
 /* Connect DropdownToggle */
 const mapDispatchToDropdownToggle = (dispatch, props) => {
 	return {
@@ -7164,7 +7553,7 @@ const NextTaleBtn = RRd.connect(
 const mapDispatchToEndBtn = (dispatch, props) => {
 	return {
 		nextTale: (e) => {
-			// working-spot: Back to start tale
+			// Back to start tale
 			dispatch(back2FirstTaleAC(props.taleChain));
 		}
 	}
@@ -7180,7 +7569,6 @@ const mapDispatchToIndicators = (dispatch, props) => {
 
 	return {
 		selectTale: (e) => {
-			// working-spot
 			dispatch(selectTaleAC(props.indIndex, props.context));
 		}
 	}	
@@ -7195,7 +7583,6 @@ const TaleIndicator = RRd.connect(
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
 
-
 ReactDOM.render(
 	<RRd.Provider store={store}>
 		<RR.Router history={RR.hashHistory} >
@@ -7204,18 +7591,71 @@ ReactDOM.render(
 					path='/' 
 					getComponents={(nextState, cb) => {
 
-						/*Set up the initial index page for nav side.*/
-						store.dispatch(setAppNavAC([
-							<Logo key='0'/>,
-							<IndexNavList key='1'/>,
-							<Sign key='2'/>,
-							<HomeLink key='3'/>
+						// Set the nav list for initializing index page.
+						store.dispatch(
+							setAppNavListAC(
+								'IndexNav',
+								[
+									<RR.Link to='/aboutus' >
+										<img src="./src/aboutus.png" />
+									</RR.Link>,
+									<img src="./src/see.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
+									<img src="./src/issue.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
+									<img src="./src/work.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
+										<div className='social-group'>
+												<iframe id='githubStar' className='social-btn'
+												src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+												frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+										</div>
+								]));
+
+						/* Set up the initial index page for nav side. */
+						store.dispatch(
+							setAppNavAC([
+								<Logo key='0'/>,
+								<AppNavList key='1' />,
+								<Sign key='2'/>,
+								<HomeLink key='3'/>
 						]));
 
 						store.dispatch(setThemesAC());
 
 						cb(null, { nav: AppNav, main: AppMain });
 				}} />
+				<RR.Route 
+					path='/aboutus'
+					getComponents={(nextState, cb) => {
+
+						// Set the nav list for intro
+						store.dispatch(
+							setAppNavListAC(
+								'IntroNav',
+								[
+									<a href='#VjtwTitle'><img src='./src/foundstory-125px.png' /></a>,
+									<a href='#LogoTitle'><img src='./src/logointro-125px.png' /></a>,
+									<a href='#MemberTitle'><img src='./src/memberintro-125px.png' /></a>,
+									<a href='#VisionTitle'><img src='./src/vision-125px.png' /></a>,
+									<div className='social-group'>
+									<iframe id='githubStar' className='social-btn'
+										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
+									</div>
+							]));
+
+						store.dispatch(selectIntroAC());
+
+						// Set up the intro theme
+						store.dispatch(
+							setAppNavAC([
+								<Logo key='0' />,
+								<AppNavList key='1'/>,
+								<Sign key='2'/>,
+								<HomeLink key='3' />
+							]));
+
+						cb(null, { nav: AppNav, main: AppMain });
+					}}
+					/>
 				<RR.Route 
 					path='/police_stat' 
 					getComponents={(nextState, cb) => {
