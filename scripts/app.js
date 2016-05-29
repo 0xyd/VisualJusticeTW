@@ -6648,7 +6648,7 @@ function selectIntro(state) {
 								<span className='ver-helper'></span>
 								<div className='member-sect-intro-elementwrapper'>
 									<h2 className='member-sect-intro-name'>
-										<span>Laxative Shieh</span>&nbsp;&nbsp;<span>賴承德</span>
+										<span>Laxative Shieh</span>&nbsp;&nbsp;<span>謝耀賢</span>
 									</h2>
 									<p className='member-sect-intro-context'>
 										中學時期接觸了前端工程,從此就種下與前端技術的不解之緣。
