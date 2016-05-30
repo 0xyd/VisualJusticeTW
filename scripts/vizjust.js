@@ -3180,15 +3180,23 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 						// Check the current display data is a merged result or not.
 						var keys = Object.keys(d),
-								isMergedResult = !(dOption in keys);
+								// isMergedResult = !(dOption in keys);
+								isMergedResult = (function() {
+									for (var i = 0; i < keys.length; i++){
+										if (keys[i] === dOption)
+											return false
+									} 
+									return true
+								})();	
 
 						var info = 
 							'民國 ' + d['民國'] + '<br>' +
 						   		dOption + ': ' + 
 						   			// Render the merged result if it is.
 						   			(isMergedResult ? _this.attr('merged-result') : d[dOption]);
-
+						
 						if (diff) {
+							console.log('here?');
 							if (diff < 0) 
 								return '<span id="BAR-INFO">' + info + '</span>' + 
 											 '<span>較去年同期：</span>' +
