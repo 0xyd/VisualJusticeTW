@@ -4810,6 +4810,101 @@ class StoryTeller {
 					}
 				]
 			},
+			// 詐欺罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '詐欺罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								此罪堪稱近期最受矚目的罪，但其實此罪從10年前便大行其道。
+								雖然被判決有罪之人年年增長，但犯罪手法卻也層出不窮，使檢警疲於奔命，
+								加上網路跟通訊科技日新月異，大幅增加追捕難度。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								雖然詐欺犯犯罪不法所得可謂日進斗金，但判決結果大多不到六月個，拘役的也不在少數。
+								未來如何延長刑度、加重刑罰，值得好好商榷
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								從圖形可以看見民國91年之前詐欺被判無罪的人相當的多，但從92年之後便逐年減少。有期徒刑人數則在96年達到高峰，之後略微下降，近6年則持平。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+
 		];
 
 		this.calTopicFirstTale = function() {
