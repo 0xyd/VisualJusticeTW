@@ -4810,6 +4810,385 @@ class StoryTeller {
 					}
 				]
 			},
+			// 詐欺罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '詐欺罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								此罪堪稱近期最受矚目的罪，但其實此罪從10年前便大行其道。
+								雖然被判決有罪之人年年增長，但犯罪手法卻也層出不窮，使檢警疲於奔命，
+								加上網路跟通訊科技日新月異，大幅增加追捕難度。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								雖然詐欺犯犯罪不法所得可謂日進斗金，但判決結果大多不到六月個，拘役的也不在少數。
+								未來如何延長刑度、加重刑罰，值得好好商榷
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								從圖形可以看見民國91年之前詐欺被判無罪的人相當的多，但從92年之後便逐年減少。有期徒刑人數則在96年達到高峰，之後略微下降，近6年則持平。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+			// 賭博罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '賭博罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								臺灣人過年總喜歡賭一把，親朋好友聚在家裡，關起門來摸個三五圈，自然不成問題，
+								但是別忘了小賭怡情、大賭傷性的原則，更需要注意的是，不要吃上官司。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '6em',
+								top : '2em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								根據刑法賭博罪，在公共場所或公眾得出入之場所賭博財物者便犯了賭博罪，
+								不過被抓到的話，賭客大多可以併科罰金，只有供給賭博場所者較需擔心徒刑問題。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '6em',
+								top : '4em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								賭博罪是我們蒐集眾多罪刑中，唯一以罰金為主要懲罰方式的罪，雖然賭博並不是重罪，但還是會留下前科，能避面即避免之。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+			// 重傷罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '重傷罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								重傷罪聽起來很嚴重，事實上刑法對重傷的定義也很嚴格，所以被以重傷罪起訴的人並不算多。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								不過，法務部在統計重傷罪的時候，把重傷害跟傷害致死合併統計了，
+								所以實際上被起訴的人也不少，但判決呈現重傷害多處五年以下，
+								傷害致死多處五年以上的分化現象。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								歷年來被判有期徒刑、無罪或是不受理的現象十分穩定，是個沒什麼變化的罪。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+			// 強制性交罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '強制性交罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								強制性交包含強姦及強姦殺人，後來隨著時代進步，
+								認定男女皆有可能成為被害者，於是乎將強姦及強姦殺人改成強制性交及強制性交殺人，
+								但不影響我們統計的基礎。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								過去性侵受害者多半 不敢報警，深怕被報復或是被社會瞧不起，
+								也造成過去強制性交罪被告人數被低估之現象。
+								雖然看見此罪被告人數逐年成長令人心憂，
+								卻也代表著有越來越多的受害者站出來伸張自己的權益。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								過去強制性交罪要成立最常見的問題便是「證據不足」
+								或是無法證明被害人「不是出於自願的」在當時如此的社會氛圍下，
+								許多案件最後不了了之。從民國90年之前大片灰色長期佔據圖表可見一般。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
+
 		];
 
 		this.calTopicFirstTale = function() {
@@ -5089,6 +5468,7 @@ var Theme = React.createClass({
 		return (
 			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
 				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
+					<span className="ver-helper"></span>
 					<img className="sect-part-img" src={this.props.themeImg} />
 				</div>
 				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
