@@ -6360,11 +6360,19 @@ const TaleBtn = React.createClass({
 const TagentalIndicators = React.createClass({
 
 	componentDidMount() {
-		let indicatorsHeight = this.props.indicators.length * 25,
-				indicatorsTop = (window.innerHeight - indicatorsHeight) / 2;
+		let indicatorsLength = this.props.indicators.length * 25,
+				indicatorsTop = (window.innerHeight - indicatorsLength) / 2;
 		let indicatorStyle = { top: indicatorsTop  + 'px' };
 
-		$v(ReactDOM.findDOMNode(this), { top: indicatorsHeight }, { duration: 1000 });
+		$v(ReactDOM.findDOMNode(this), indicatorStyle, { duration: 1000 });
+	},
+
+	componentDidUpdate() {
+		let indicatorsLength = this.props.indicators.length * 25,
+				indicatorsTop = (window.innerHeight - indicatorsLength) / 2;
+		let indicatorStyle = { top: indicatorsTop  + 'px' };
+
+		$v(ReactDOM.findDOMNode(this), indicatorStyle, { duration: 1000 });
 	},
 
 	render() {
