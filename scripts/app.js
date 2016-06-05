@@ -5468,6 +5468,7 @@ var Theme = React.createClass({
 		return (
 			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
 				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
+					<span className="ver-helper"></span>
 					<img className="sect-part-img" src={this.props.themeImg} />
 				</div>
 				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
