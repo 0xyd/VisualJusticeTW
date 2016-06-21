@@ -2518,6 +2518,7 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 										return statsBoard.scale(d.value)
 									})
 									.attr('default-color', function(d) {
+										console.log(d);	
 										return colorSettings.value[d.name]
 									})
 									.attr('fill', function(d) {
