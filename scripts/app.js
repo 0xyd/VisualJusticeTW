@@ -6137,7 +6137,7 @@ const DataBoard = React.createClass({
 											url : './correction/c1.csv'
 										},
 										{
-											name: '新入監犯罪次數與種類.',
+											name: '新入監犯罪次數與種類',
 											url : './correction/c3.csv'
 										},
 										{
