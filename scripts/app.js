@@ -5469,7 +5469,9 @@ var Theme = React.createClass({
 			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
 				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
 					<span className="ver-helper"></span>
-					<img className="sect-part-img" src={this.props.themeImg} />
+					<RR.Link to={ this.props.path }>
+						<img className="sect-part-img" src={this.props.themeImg} />
+					</RR.Link>
 				</div>
 				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
 					<span className="ver-helper"></span>
@@ -5492,7 +5494,7 @@ var ThemeBtn = React.createClass({
 
 		return (
 			<div className="sect-part-btn"  >
-				<RR.Link to={this.props.path}>
+				<RR.Link to={ this.props.path }>
 					<img className="sect-part-btn-img" src={this.props.btnTxtSrc}/> 
 				</RR.Link>
 			</div>
