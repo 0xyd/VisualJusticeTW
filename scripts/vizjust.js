@@ -2629,7 +2629,7 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 			else return null
 		})
 		.get(function(err, selectedRows) {
-
+			console.log('selectedRows: ', selectedRows);
 			var selectedRow = 
 					selectedRows.length === 1 ? 
 						selectedRows[0]: null;
