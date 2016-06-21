@@ -2441,6 +2441,7 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 		// Load Color settings for current ring data from the color object.
 		colorSettings = 
 			colorObj.rings.find(function(d) {
+				console.log(info[index].name);
 				if (d.name === info[index].name) 
 					return true
 			});
