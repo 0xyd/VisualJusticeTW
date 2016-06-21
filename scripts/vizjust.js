@@ -2441,7 +2441,6 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 		// Load Color settings for current ring data from the color object.
 		colorSettings = 
 			colorObj.rings.find(function(d) {
-				console.log(info[index].name);
 				if (d.name === info[index].name) 
 					return true
 			});
@@ -2519,7 +2518,6 @@ ringGraphClass.prototype._infoBoardRender = function(isUpdate) {
 										return statsBoard.scale(d.value)
 									})
 									.attr('default-color', function(d) {
-										console.log(d);	
 										return colorSettings.value[d.name]
 									})
 									.attr('fill', function(d) {
@@ -2630,7 +2628,6 @@ ringGraphClass.prototype.drawRing = function(ringObj) {
 			else return null
 		})
 		.get(function(err, selectedRows) {
-			console.log('selectedRows: ', selectedRows);
 			var selectedRow = 
 					selectedRows.length === 1 ? 
 						selectedRows[0]: null;
@@ -3198,7 +3195,6 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 						   			(isMergedResult ? _this.attr('merged-result') : d[dOption]);
 						
 						if (diff) {
-							console.log('here?');
 							if (diff < 0) 
 								return '<span id="BAR-INFO">' + info + '</span>' + 
 											 '<span>較去年同期：</span>' +

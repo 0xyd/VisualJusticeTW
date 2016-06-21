@@ -2181,7 +2181,6 @@ ringGraphClass.prototype.drawRing = function (ringObj) {
 	this.readCSV(ringObj.dataSource.url).row(function (d, i) {
 		if (isYrSelected) if (i === self.selectRow()) return d;else return null;
 	}).get(function (err, selectedRows) {
-
 		var selectedRow = selectedRows.length === 1 ? selectedRows[0] : null;
 
 		var total = function (vals) {
@@ -2560,7 +2559,6 @@ tipClass.prototype.appendBarMouseOver = function (dOption) {
 			isMergedResult ? _this.attr('merged-result') : d[dOption]);
 
 			if (diff) {
-				console.log('here?');
 				if (diff < 0) return '<span id="BAR-INFO">' + info + '</span>' + '<span>較去年同期：</span>' + '<span><span class="down-arrow align">' + '</span>' + '<span class="align">&nbsp;' + diff + '</span></span>';else diff > 0;
 				return '<span id="BAR-INFO">' + info + '</span>' + '<span>較去年同期：</span>' + '<span><span class="up-arrow align">' + '</span>' + '<span class="align">&nbsp;' + diff + '</span></span>';
 			} else if (diff === undefined && isMergedResult) {
