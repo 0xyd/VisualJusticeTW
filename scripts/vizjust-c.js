@@ -3,6 +3,10 @@
 /* Import Velocity library to control the non-svg elements */
 // Simplified Velocity function
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var $v = Velocity;
 
 /* Queuing process */
@@ -181,6 +185,7 @@ colorClass.prototype.hexToRgb = function (hex) {
 
 var colorObj = new colorClass();
 
+// Reference
 /* Graph is the mother of the charts */
 var graphClass = function graphClass() {
 
@@ -2828,3 +2833,38 @@ function colorAdjust(hex, colorDelta) {
 
 	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')';
 }
+
+/*** The below part is all written in ES6 rule. ***/
+/* The circle chart class */
+
+var CircleChart = function () {
+	function CircleChart(dataSource, xLabel, yLabel) {
+		_classCallCheck(this, CircleChart);
+
+		// The graphClass has not written in ES6 yet, so we instantiated a graph object
+		var g = new graphClass();
+
+		this.pad = g.initializeAPad();
+
+		this.xAxis = xLabel;
+		this.yAxis = yLabel;
+
+		this.soruce = dataSource;
+
+		// The data retreived to be used or calculated
+		this.data = null;
+	}
+
+	_createClass(CircleChart, [{
+		key: 'mappingData',
+		value: function mappingData() {}
+	}]);
+
+	return CircleChart;
+}();
+
+/* The script for testing circle chart */
+// let c = new CircleChart(null, 'testing', 'testing');
+
+// console.log(c);
+// console.log(c.pad);

@@ -189,7 +189,7 @@ colorClass.prototype.hexToRgb = function(hex) {
 
 var colorObj = new colorClass();
 
-
+// Reference
 /* Graph is the mother of the charts */
 var graphClass = function() {
 	
@@ -255,6 +255,19 @@ graphClass.prototype._dataFiltering = function(d, i) {
 	// return d
 }
 
+// Set up the x scale in linear
+graphClass.prototype._setLinearXScale = function(dataset, dOption) {
+
+	this.xScale = d3.scale.linear()
+		.domain(
+			[0, d3.max(
+					dataset, 
+					function(d) { return dOption ? parseFloat(d[dOption]): d})
+			])
+		.rangeRound([this.chartHeight, 0]);
+
+}
+
 graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
 
 	this.xScale = d3.scale.ordinal()
@@ -264,6 +277,7 @@ graphClass.prototype._setOrdinalXScale = function(dataset, xLabel) {
 		.rangeBands([0, this.chartWidth]);
 }
 
+// Set the x axis generator
 graphClass.prototype._setXAxis = function(pos) {
 
 	if ( typeof pos === 'string' && 
@@ -292,6 +306,7 @@ graphClass.prototype._setYPctScale = function(dataset, dOption) {
 		.domain([0, 100]).rangeRound([this.chartHeight, 0]);
 }
 
+// Set up the y axis generator
 graphClass.prototype._setYAxis = function(pos, values, specKey) {
 
 	if ( typeof pos === 'string' && 
@@ -3567,4 +3582,55 @@ function colorAdjust(hex, colorDelta) {
 
 	return 'rgb(' + rgb.r + ', ' + rgb.g + ', ' + rgb.b + ')' 
 }
+
+
+
+/*** The below part is all written in ES6 rule. ***/
+/* The circle chart class */
+class CircleChart {
+
+	constructor() {
+
+		// The graphClass has not written in ES6 yet, so we instantiated a graph object
+		let g = new graphClass();
+
+		this.graph = g.initializeAPad();
+
+		
+	}
+
+	mappingData(dataSource, xLabel, yLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false) {
+
+		this.graph.readCSV();
+		/* Set up the x axis */
+		if (isXOrdinal) {
+			g._setOrdinalXScale();
+		} else if (isXPCT) {
+			// No function has been developed yet
+		} else g._setLinearXScale();
+		
+		g._setXAxis();
+
+		/* Set up the y axis */
+		if (isYOrdinal) {
+			// No function has been developed yet
+		} else if (isYPCT) {
+			g._setY
+		} else {
+			
+		}
+
+		g._setYAxis();
+	}
+
+
+
+}
+
+/* The script for testing circle chart */
+// let c = new CircleChart(null, 'testing', 'testing');
+
+// console.log(c);
+// console.log(c.pad);
+
 
