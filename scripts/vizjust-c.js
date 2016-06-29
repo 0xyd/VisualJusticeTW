@@ -241,6 +241,14 @@ graphClass.prototype._dataFiltering = function (d, i) {
 	// return d
 };
 
+// Set up the x scale in linear
+graphClass.prototype._setLinearXScale = function (dataset, dOption) {
+
+	this.xScale = d3.scale.linear().domain([0, d3.max(dataset, function (d) {
+		return dOption ? parseFloat(d[dOption]) : d;
+	})]).rangeRound([this.chartHeight, 0]);
+};
+
 graphClass.prototype._setOrdinalXScale = function (dataset, xLabel) {
 
 	this.xScale = d3.scale.ordinal().domain(dataset.map(function (d) {
@@ -248,6 +256,7 @@ graphClass.prototype._setOrdinalXScale = function (dataset, xLabel) {
 	})).rangeBands([0, this.chartWidth]);
 };
 
+// Set the x axis generator
 graphClass.prototype._setXAxis = function (pos) {
 
 	if (typeof pos === 'string' && pos === 'right' || 'left' || 'bottom' || 'top') {
@@ -268,6 +277,7 @@ graphClass.prototype._setYPctScale = function (dataset, dOption) {
 	this.yScale = d3.scale.linear().domain([0, 100]).rangeRound([this.chartHeight, 0]);
 };
 
+// Set up the y axis generator
 graphClass.prototype._setYAxis = function (pos, values, specKey) {
 
 	if (typeof pos === 'string' && pos === 'right' || 'left' || 'bottom' || 'top') {
@@ -2835,36 +2845,54 @@ function colorAdjust(hex, colorDelta) {
 }
 
 /*** The below part is all written in ES6 rule. ***/
-/* The circle chart class */
+/* The Scatter Plot class */
 
-var CircleChart = function () {
-	function CircleChart(dataSource, xLabel, yLabel) {
-		_classCallCheck(this, CircleChart);
+var ScatterPlotClass = function () {
+	function ScatterPlotClass() {
+		_classCallCheck(this, ScatterPlotClass);
 
 		// The graphClass has not written in ES6 yet, so we instantiated a graph object
 		var g = new graphClass();
 
-		this.pad = g.initializeAPad();
-
-		this.xAxis = xLabel;
-		this.yAxis = yLabel;
-
-		this.soruce = dataSource;
-
-		// The data retreived to be used or calculated
-		this.data = null;
+		// this.graph = g.initializeAPad();
 	}
 
-	_createClass(CircleChart, [{
+	_createClass(ScatterPlotClass, [{
 		key: 'mappingData',
-		value: function mappingData() {}
+		value: function mappingData(dataSource, xLabel, yLabel) {
+			var isXOrdinal = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+			var isYOrdinal = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+			var isXPCT = arguments.length <= 5 || arguments[5] === undefined ? false : arguments[5];
+			var isYPCT = arguments.length <= 6 || arguments[6] === undefined ? false : arguments[6];
+
+			this.graph.readCSV(dataSource).row(function (d, i) {
+				if (true) return d;
+			}).get(function (err, rows) {
+
+				console.log(rows);
+
+				// /* Set up the x axis */
+				// if (isXOrdinal) {
+				// 	g._setOrdinalXScale();
+				// } else if (isXPCT) {
+				// 	// No function has been developed yet
+				// } else g._setLinearXScale();
+
+				// g._setXAxis();
+
+				// /* Set up the y axis */
+				// if (isYOrdinal) {
+				// 	// No function has been developed yet
+				// } else if (isYPCT) {
+				// 	g._setY
+				// } else {
+
+				// }
+
+				// g._setYAxis();
+			});
+		}
 	}]);
 
-	return CircleChart;
+	return ScatterPlotClass;
 }();
-
-/* The script for testing circle chart */
-// let c = new CircleChart(null, 'testing', 'testing');
-
-// console.log(c);
-// console.log(c.pad);

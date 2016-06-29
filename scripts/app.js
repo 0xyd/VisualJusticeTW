@@ -3076,7 +3076,44 @@ const DataFilterStateTree = {
 								}
 							]
 						}
-					}	
+					},
+					{
+						dataset: '戒護人力概況',
+						availableChartTypes: [
+							'散佈圖'
+						],
+						content: {
+							data: [
+								{
+									name: '戒護人力情形',
+									topics: [
+										[
+											{
+												name: '全國矯正機關',
+												axes: {
+													x: '戒護人力',
+													y: '收容人數量'
+												},
+												intl: {
+													headers: [
+														'機關類別', 
+														'收容人人數', 
+														'基礎戒護人力', 
+														'可能之戒護人力',	
+														'基礎戒護人力比', 
+														'可能之戒護人力比'
+													]
+												},
+												extl: {
+													url: null
+												}
+											}
+										]
+									]
+								}
+							]
+						}
+					}
 				]	
 			)
 		),
@@ -3677,7 +3714,11 @@ class StoryTeller {
 						end: null
 					}
 				]
-			}
+			},
+			// {
+			// 	dataset: '戒護人力概況',
+			// 	data: 
+			// }
 		];
 
 		// Tales for explain the chart.
@@ -5541,7 +5582,8 @@ const DataBoard = React.createClass({
 		return {
 			barGraph  : new barGraphClass(),
 			lineGraph : new lineGraphClass(),
-			ringGraph : new ringGraphClass()
+			ringGraph : new ringGraphClass(),
+			scatterPlot: new ScatterPlotClass()
 		}
 	})(),
 
@@ -5670,6 +5712,21 @@ const DataBoard = React.createClass({
 						.drawMultiRings(
 							dataSheet.urls);
 		}
+	},
+
+	// working-spot
+	// Visualizing data with Scatter plot
+	vizDataWithScatterPlot(props, dataSheet, update = false) {
+
+		let sG = this.gpu.scatterPlot;
+
+		console.log('props');
+		console.log(props);
+		console.log('dataSheet');
+		console.log(dataSheet);
+
+		sG.mappingData(dataSheet);
+
 	},
 
 	// DBUpdateBar allows bar graph display different data in the same dataset.
@@ -6109,7 +6166,7 @@ const DataBoard = React.createClass({
 						'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8',
 						'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'
 					],
-							urls: (function() {
+					urls: (function() {
 
 								if (isLocal) 
 									return ([
@@ -6151,10 +6208,19 @@ const DataBoard = React.createClass({
 									];
 									return urls
 								}
-							})()
-						}
-					] 
+					})()
+				},
+				{
+					name: '戒護人力概況',
+					url: (function() {
+						if (isLocal)
+							return '/correction/103矯正機關戒護人力比.csv'
+						else
+							return './correction/c0.csv'
+					})(),
 				}
+			]
+		}
 	},
 
 	componentWillMount() {
@@ -6248,6 +6314,9 @@ const DataBoard = React.createClass({
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet)
+			// working-spot
+			else if (nextProps.chartType === '散佈圖')
+				this.vizDataWithScatterPlot(nextProps, dataSheet);
 
 		} else if (shouldUpdate) {
 

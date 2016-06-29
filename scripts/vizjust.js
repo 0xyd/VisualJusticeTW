@@ -3586,51 +3586,51 @@ function colorAdjust(hex, colorDelta) {
 
 
 /*** The below part is all written in ES6 rule. ***/
-/* The circle chart class */
-class CircleChart {
+/* The Scatter Plot class */
+class ScatterPlotClass {
 
 	constructor() {
 
 		// The graphClass has not written in ES6 yet, so we instantiated a graph object
 		let g = new graphClass();
 
-		this.graph = g.initializeAPad();
+		// this.graph = g.initializeAPad();
 
 		
 	}
 
 	mappingData(dataSource, xLabel, yLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false) {
 
-		this.graph.readCSV();
-		/* Set up the x axis */
-		if (isXOrdinal) {
-			g._setOrdinalXScale();
-		} else if (isXPCT) {
-			// No function has been developed yet
-		} else g._setLinearXScale();
+		this.graph.readCSV(dataSource)
+			.row((d, i) => { if (true) return d })
+			.get((err, rows) => {
+
+				console.log(rows);
+
+
+				// /* Set up the x axis */
+				// if (isXOrdinal) {
+				// 	g._setOrdinalXScale();
+				// } else if (isXPCT) {
+				// 	// No function has been developed yet
+				// } else g._setLinearXScale();
 		
-		g._setXAxis();
+				// g._setXAxis();
 
-		/* Set up the y axis */
-		if (isYOrdinal) {
-			// No function has been developed yet
-		} else if (isYPCT) {
-			g._setY
-		} else {
-			
-		}
+				// /* Set up the y axis */
+				// if (isYOrdinal) {
+				// 	// No function has been developed yet
+				// } else if (isYPCT) {
+				// 	g._setY
+				// } else {
+					
+				// }
 
-		g._setYAxis();
+				// g._setYAxis();
+			});
+		
 	}
 
-
-
 }
-
-/* The script for testing circle chart */
-// let c = new CircleChart(null, 'testing', 'testing');
-
-// console.log(c);
-// console.log(c.pad);
 
 
