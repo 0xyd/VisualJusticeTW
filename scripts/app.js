@@ -3091,17 +3091,22 @@ const DataFilterStateTree = {
 											{
 												name: '全國矯正機關',
 												axes: {
-													x: '戒護人力',
-													y: '收容人數量'
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '矯正機關類型'
 												},
 												intl: {
 													headers: [
-														'機關類別', 
-														'收容人人數', 
-														'基礎戒護人力', 
-														'可能之戒護人力',	
-														'基礎戒護人力比', 
-														'可能之戒護人力比'
+														'矯正機關類別',
+														'矯正機關名稱',
+														'矯正機關機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
 													]
 												},
 												extl: {
@@ -5720,12 +5725,12 @@ const DataBoard = React.createClass({
 
 		let sG = this.gpu.scatterPlot;
 
-		console.log('props');
-		console.log(props);
-		console.log('dataSheet');
-		console.log(dataSheet);
-
-		sG.mappingData(dataSheet);
+		// Find the topic.
+		const _topic = this.DBfindTopic(props);
+		
+		sG.initializeAPad().setChartSize()
+			.mappingData(
+				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c);
 
 	},
 
@@ -6212,12 +6217,7 @@ const DataBoard = React.createClass({
 				},
 				{
 					name: '戒護人力概況',
-					url: (function() {
-						if (isLocal)
-							return '/correction/103矯正機關戒護人力比.csv'
-						else
-							return './correction/c0.csv'
-					})(),
+					url: './correction/103-security-ratio.json'
 				}
 			]
 		}

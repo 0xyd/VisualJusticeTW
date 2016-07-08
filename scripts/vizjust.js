@@ -80,8 +80,6 @@ var colorClass = function() {
 		// For 兒童及少年性交易防制條例 (Prosecution),
 		'被告人數': '#FC7B29',
 		'死刑': '#C20446',
-		// '無期徒刑': '#E5404C',
-		// '有期徒刑': '#FD9C3C',
 		'無期徒刑': '#FD9C3C',
 		'有期徒刑': '#E5404C',
 		'拘役': '#FFB14A',
@@ -117,8 +115,8 @@ var colorClass = function() {
 		'累犯': '#E5404C',
 		'再犯': '#F16B23',
 		'初犯': '#F68989'
-		
 	},
+
 	this.line = {
 		// For 監獄人數概況 (Correction)
 		'本年執行人數': '#BA0F30',
@@ -128,6 +126,18 @@ var colorClass = function() {
 		'本年出獄人數': '#F16B23',
 		'本年年底留監人數': '#55B5DF'
 	},
+
+	this.scatterPlot = {
+		// For 矯正機關分類 (Types of correctional institutions)
+		'監獄': '#ED4E34',
+		'看守所': '#FA7F21',
+		'技能訓練所': '#5BC0FF',
+		'戒治所': '#9BC53D',
+		'少年觀護所': '#40C53D',
+		'少年輔育院': '#2AA30C',
+		'矯正學校': '#FDE74C'
+	},
+
 	this.rings = [
 		{
 			name: '新入監前家庭狀況',
@@ -264,7 +274,7 @@ graphClass.prototype._setLinearXScale = function(dataset, dOption) {
 					dataset, 
 					function(d) { return dOption ? parseFloat(d[dOption]): d})
 			])
-		.rangeRound([this.chartHeight, 0]);
+		.rangeRound([0, this.chartWidth]);
 
 }
 
@@ -282,7 +292,6 @@ graphClass.prototype._setXAxis = function(pos) {
 
 	if ( typeof pos === 'string' && 
 		pos === 'right' || 'left' || 'bottom' || 'top' ) {
-
 		this.xAxis = d3.svg.axis()
 			.scale(this.xScale).orient(pos);		
 	} 
@@ -375,19 +384,33 @@ graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, ou
 
 	var self = this;
 
-	this.pad
-		.append('g')
-			.attr('class', 'x-axis')
-			.attr('transform', 'translate(0,' + this.chartHeight + ')')
-			.call(this.xAxis)
-			.call(c_pinLbl2XAxisMidPt, horSpace, step, outPadding)
-		.append('text')
-			.attr('class', 'axis-name')
-			.attr('x', function() {
-				return dataset.length*(horSpace+step)+outPadding
-			})
-			.attr('y', '25')
-		.text(xLabel);
+	if (horSpace) {
+		this.pad
+			.append('g')
+				.attr('class', 'x-axis')
+				.attr('transform', 'translate(0,' + this.chartHeight + ')')
+				.call(this.xAxis)
+				.call(c_pinLbl2XAxisMidPt, horSpace, step, outPadding)
+			.append('text')
+				.attr('class', 'axis-name')
+				.attr('x', function() {
+					return dataset.length*(horSpace+step)+outPadding
+				})
+				.attr('y', '25')
+			.text(xLabel);
+	}
+	else {
+		this.pad
+			.append('g')
+				.attr('class', 'x-axis')
+				.attr('transform', 'translate(0,' + this.chartHeight + ')')
+				.call(this.xAxis)
+			.append('text')
+				.attr('class', 'axis-name')
+				.attr('transform', 'translate(' + ( this.chartWidth - 60)+ ', 20)')
+			.text(xLabel);
+	}
+	
 }
 
 graphClass.prototype._createYAxis = function(yLabel) {
@@ -399,6 +422,16 @@ graphClass.prototype._createYAxis = function(yLabel) {
 			.attr('class', 'axis-name')
 			.attr('transform', 'rotate(90) translate(0, -10)')
 			.text(yLabel);
+}
+
+// working-spot: Set the circle radius to log unit 
+graphClass.prototype._rScale = function(data, rLabel) {
+
+	let _d_min = d3.min(data, (d) => { return d[rLabel] }),
+			_d_max = d3.max(data, (d) => { return d[rLabel] });
+
+	this.rScale = 
+		d3.scale.linear().domain([_d_min, _d_max]).range([10, 40]);
 }
 
 
@@ -3590,23 +3623,65 @@ function colorAdjust(hex, colorDelta) {
 class ScatterPlotClass {
 
 	constructor() {
-
 		// The graphClass has not written in ES6 yet, so we instantiated a graph object
-		let g = new graphClass();
-
-		// this.graph = g.initializeAPad();
-
-		
+		this.g = new graphClass();
 	}
 
-	mappingData(dataSource, xLabel, yLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false) {
+	initializeAPad() {
+		this.g.initializeAPad();
+		return this
+	}
 
-		this.graph.readCSV(dataSource)
-			.row((d, i) => { if (true) return d })
-			.get((err, rows) => {
+	setChartSize() {
 
-				console.log(rows);
+		this.g.chartHeight = 
+			this.g.padHeight - this.g.padPadding.top - this.g.padPadding.bottom;
+		this.g.chartWidth = 
+			this.g.padWidth - this.g.padPadding.left - this.g.padPadding.right;
+		
+		return this
+	}
 
+	// working-spot
+	/* 
+		rLabel: The data selection applied to map the data
+		cLabel: The data selection applied to fill the color 
+	*/
+	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false) {
+
+		let self = this;
+		
+		d3.json(dataSource, (data) => {
+
+			// Create x-axis
+			if (isXOrdinal)
+				self.g._setOrdinalXScale();
+			else
+				self.g._setLinearXScale(data, xLabel);
+
+			self.g._setXAxis('bottom');
+			self.g._createXAxis(data, xLabel); 
+
+			// Create y-axis
+			self.g._setLinearYScale(data, yLabel);
+			self.g._setYAxis('left', data, yLabel);
+			self.g._createYAxis(yLabel);
+
+			// if (isRLog)
+			self.g._rScale(data, rLabel);
+
+			self.g.pad.append('g')
+				.selectAll('circle')
+					.data(data).enter()
+						.append('circle').attr({
+							cx: function(d) { return self.g.xScale(d[xLabel]) },
+							cy: function(d) { return self.g.yScale(d[yLabel]) },
+							r : function(d) { return self.g.rScale(d[rLabel]) },
+							fill: function(d) { return colorObj.scatterPlot[d[cLabel]] },
+							stroke: '#000',
+							'stroke-width': '1.5'
+						});
+		});
 
 				// /* Set up the x axis */
 				// if (isXOrdinal) {
@@ -3627,10 +3702,9 @@ class ScatterPlotClass {
 				// }
 
 				// g._setYAxis();
-			});
+			// });
 		
 	}
-
 }
 
 
