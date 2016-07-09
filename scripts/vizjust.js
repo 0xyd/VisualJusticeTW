@@ -332,6 +332,12 @@ graphClass.prototype._setYAxis = function(pos, values, specKey) {
 			return parseInt(value)
 		});
 
+		var dmin = d3.min(values, function(value) {
+			if (specKey)
+				return parseInt(value[specKey])
+			return parseInt(value)
+		});
+
 		// The maximum defines the tick format and the number of ticks.
 		if (dmax > 100000) {
 			tickDiv = 100000;
@@ -347,7 +353,7 @@ graphClass.prototype._setYAxis = function(pos, values, specKey) {
 		else if (dmax < 2000 && dmax > 1000) {
 			tickDiv = 500;
 		}
-		else if (dmax < 1000) {
+		else if (dmax < 1000 && dmax > 100) {
 			tickDiv = 200;
 		}
 		else if (dmax < 100) {
@@ -431,7 +437,7 @@ graphClass.prototype._rScale = function(data, rLabel) {
 			_d_max = d3.max(data, (d) => { return d[rLabel] });
 
 	this.rScale = 
-		d3.scale.linear().domain([_d_min, _d_max]).range([10, 40]);
+		d3.scale.linear().domain([_d_min, _d_max]).range([2, 45]);
 }
 
 

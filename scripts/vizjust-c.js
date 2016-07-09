@@ -298,6 +298,16 @@ graphClass.prototype._setYAxis = function (pos, values, specKey) {
 			return parseInt(value);
 		});
 
+		var dmin = d3.min(values, function (value) {
+			if (specKey) return parseInt(value[specKey]);
+			return parseInt(value);
+		});
+
+		console.log('dmax:');
+		console.log(dmax);
+		console.log('dmin:');
+		console.log(dmin);
+
 		// The maximum defines the tick format and the number of ticks.
 		if (dmax > 100000) {
 			tickDiv = 100000;
@@ -309,7 +319,7 @@ graphClass.prototype._setYAxis = function (pos, values, specKey) {
 			tickDiv = 1000;
 		} else if (dmax < 2000 && dmax > 1000) {
 			tickDiv = 500;
-		} else if (dmax < 1000) {
+		} else if (dmax < 1000 && dmax > 100) {
 			tickDiv = 200;
 		} else if (dmax < 100) {
 			tickDiv = 10;
@@ -362,7 +372,7 @@ graphClass.prototype._rScale = function (data, rLabel) {
 		return d[rLabel];
 	});
 
-	this.rScale = d3.scale.linear().domain([_d_min, _d_max]).range([10, 40]);
+	this.rScale = d3.scale.linear().domain([_d_min, _d_max]).range([2, 45]);
 };
 
 graphClass.prototype._removeYAxis = function () {
@@ -2941,7 +2951,6 @@ var ScatterPlotClass = function () {
 					},
 					stroke: '#000',
 					'stroke-width': '1.5'
-
 				});
 			});
 
