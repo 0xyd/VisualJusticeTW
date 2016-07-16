@@ -3142,6 +3142,7 @@ var tipClass = function() {
 }
 
 tipClass.prototype.initTips = function() {
+
 	this.dotTip = 
 		d3.select('#APP')
 			.append('div')
@@ -3150,6 +3151,14 @@ tipClass.prototype.initTips = function() {
 		d3.select('#APP')
 			.append('div')
 				.attr('id', 'BAR-TIP').attr('class', 'tip');
+
+	// working-spot
+	this.circleTip = 
+		d3.select('#APP')
+			.append('div')
+				.attr('id', 'CIRCLE-TIP').classed('tip', true);
+
+
 	return this 
 }
 
@@ -3348,7 +3357,37 @@ tipClass.prototype.appendStackBarMouseOver = function() {
 		);;
 }
 
+// working-spot
+tipClass.prototype.appendCircleMouseOver = function(format) {
 
+	let self = this,
+			offset = this._setOffset();
+	
+	d3.selectAll('circle')
+		.on('mouseenter', function(d) {
+		
+			let c = d3.select(this);
+
+			self.circleTip
+				.style('display', 'inline-block')
+				.style('top',  offset.Y + parseInt(c.attr('cy')) + 'px')
+				.style('left', offset.X + parseInt(c.attr('cx')) + 'px')
+				.html(function() {
+
+					let info = '';
+	
+					// Concating the list of message
+					for ( let item of format.items ) 
+						info += '<span>' + item.name + ': ' +  d[item.name] + '</span>'
+					
+	
+					return '<span>' + d[format.title] + '</span>' + info
+				});
+		})
+		.on('mouseleave', function(d) {
+			self.circleTip.style('display', 'none');
+		});
+}
 
 tipClass.prototype._setOffset = function(nodeId) {
 
@@ -3379,7 +3418,6 @@ tipClass.prototype._setOffset = function(nodeId) {
 				parseInt(displayPanelWrapperStyle['padding-top'].replace('px', '')) +
 					parseInt(svgPadStyle['padding-top'].replace('px', ''));
 	return offset
-
 }
 
 
@@ -3658,7 +3696,6 @@ class ScatterPlotClass {
 		return this
 	}
 
-	// working-spot
 	/* 
 		rLabel: The data selection applied to map the data
 		cLabel: The data selection applied to fill the color 
@@ -3667,102 +3704,109 @@ class ScatterPlotClass {
 	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, tLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false) {
 
 		let self = this;
-		
-		d3.json(dataSource, (data) => {
 
-			// Create x-axis
-			if (isXOrdinal)
-				self.g._setOrdinalXScale();
-			else
-				self.g._setLinearXScale(data, xLabel);
+		const p = new Promise(function(resolve, reject) {
 
-			self.g._setXAxis('bottom');
-			self.g._createXAxis(data, xLabel); 
+			d3.json(dataSource, (data) => {
 
-			// Create y-axis
-			self.g._setLinearYScale(data, yLabel);
-			self.g._setYAxis('left', data, yLabel);
-			self.g._createYAxis(yLabel);
+				// Create x-axis
+				if (isXOrdinal)
+					self.g._setOrdinalXScale();
+				else
+					self.g._setLinearXScale(data, xLabel);
 
-			// if (isRLog)
-			self.g._rScale(data, rLabel);
+				self.g._setXAxis('bottom');
+				self.g._createXAxis(data, xLabel); 
 
-			self.g.pad.append('g')
-				.selectAll('circle')
+				// Create y-axis
+				self.g._setLinearYScale(data, yLabel);
+				self.g._setYAxis('left', data, yLabel);
+				self.g._createYAxis(yLabel);
+
+				// if (isRLog)
+				self.g._rScale(data, rLabel);
+
+				self.g.pad.append('g')
+					.selectAll('circle')
 					.data(data).enter()
-						.append('circle').attr({
-							cx: function(d) { return self.g.xScale(d[xLabel]) },
-							cy: function(d) { return self.g.yScale(d[yLabel]) },
-							r : function(d) { return self.g.rScale(d[rLabel]) },
-							fill: function(d) { return colorObj.scatterPlot[d[cLabel]] },
-							stroke: '#000',
-							'stroke-width': '1.5'
-						});
-
-			// Mark the extreme value
-			self.g.pad.append('g')
-				.classed('circle-label-group', true)
-				.selectAll('text')
-					.data(data).enter()
-						.append('text').text(function(d) { return d[tLabel] })
-						.attr({
-							x: function(d) { return self.g.xScale(d[xLabel]) },
-							y: function(d) { return self.g.yScale(d[yLabel]) },
-						})
-						.style({ display: 'none'})
-						.call(function(d) {
-
-							// find out the extremely maximum value's index of x.
-							let _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
-
-							// find out the extremely maximum value's index of y.
-							let _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
-
-							// find out the extremely maximum value's index of x.
-							let _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
-
-							// find out the extremely maximum value's index of y.
-							let _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
-
-							/* Present the text of extreme value */
-							// The indices we used to list the items.
-							let indices = [_maxX, _maxY, _minX, _minY].sort(function(a, b) { return a-b });
-							
-							// Picks up the extreme
-							let texts = d[0].filter(function(d, i) { 
-								return i === _maxX ||
-									i === _maxY ||
-									i === _minX ||
-									i === _minY  
+							.append('circle').attr({
+								cx: function(d) { return self.g.xScale(d[xLabel]) },
+								cy: function(d) { return self.g.yScale(d[yLabel]) },
+								r : function(d) { return self.g.rScale(d[rLabel]) },
+								fill: function(d) { return colorObj.scatterPlot[d[cLabel]] },
+								stroke: '#000',
+								'stroke-width': '1.5'
 							});
 
-							for ( let text of texts ) {
-								d3.select(text).style('display', 'inline-block');
-							}
+				// Mark the extreme value
+				self.g.pad.append('g')
+					.classed('circle-label-group', true)
+					.selectAll('text')
+						.data(data).enter()
+							.append('text').text(function(d) { return d[tLabel] })
+							.attr({
+								x: function(d) { return self.g.xScale(d[xLabel]) },
+								y: function(d) { return self.g.yScale(d[yLabel]) },
+							})
+							.style({ display: 'none'})
+							.call(function(d) {
 
-							// Find the index of extreme value 
-							function findExtremeValIndex(data, select, isMin) {
+								// find out the extremely maximum value's index of x.
+								let _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
 
-								let _ = data.map((d) => { return d.__data__[select]});
+								// find out the extremely maximum value's index of y.
+								let _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
 
-								if (isMin) {
-									let _min = 0;
-									for (let i = 0; i < _.length; i++) {
-										if (_[i] < _[_min])
-											_min = i;
-									}
-									return _min
-								} 
+								// find out the extremely maximum value's index of x.
+								let _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
 
-								let _max = 0;
-								for ( let i = 0; i < _.length; i++ ) {
-									if ( _[i] > _[_max])
-										_max = i;
+								// find out the extremely maximum value's index of y.
+								let _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
+
+								/* Present the text of extreme value */
+								// The indices we used to list the items.
+								let indices = [_maxX, _maxY, _minX, _minY].sort(function(a, b) { return a-b });
+								
+								// Picks up the extreme
+								let texts = d[0].filter(function(d, i) { 
+									return i === _maxX ||
+										i === _maxY ||
+										i === _minX ||
+										i === _minY  
+								});
+
+								for ( let text of texts ) {
+									d3.select(text).style('display', 'inline-block');
 								}
-								return _max
-							}
-						});
+
+								// Find the index of extreme value 
+								function findExtremeValIndex(data, select, isMin) {
+
+									let _ = data.map((d) => { return d.__data__[select]});
+
+									if (isMin) {
+										let _min = 0;
+										for (let i = 0; i < _.length; i++) {
+											if (_[i] < _[_min])
+												_min = i;
+										}
+										return _min
+									} 
+
+									let _max = 0;
+									for ( let i = 0; i < _.length; i++ ) {
+										if ( _[i] > _[_max])
+										_max = i;
+									}
+									return _max
+								}
+							});
+
+				resolve();
+			});
 		});
+		
+		return p
 	}
 
 	update(filterSets, xLabel, yLabel) {
@@ -3826,7 +3870,10 @@ class ScatterPlotClass {
 		
 			// working-spot
 			// Select the texts 
-			d3.select('g.circle-label-group');
+			d3.select('g.circle-label-group')
+				.selectAll('text');
+
+			resolve();
 
 		});
 

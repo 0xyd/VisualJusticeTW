@@ -3099,9 +3099,9 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: [
-														'矯正機關類別',
+														'矯正機關類型',
 														'矯正機關名稱',
-														'矯正機關機關戒護人力',
+														'矯正機關戒護人力',
 														'合署辦公機關',
 														'合署辦公機關戒護人力',
 														'矯正機關法定容額',
@@ -3112,6 +3112,30 @@ const DataFilterStateTree = {
 												},
 												extl: {
 													url: null
+												},
+												// working-spot: Tip format
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '矯正機關類型'
+														},
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
 												}
 											},
 											{
@@ -3127,7 +3151,7 @@ const DataFilterStateTree = {
 													headers: [
 														'矯正機關類型',
 														'矯正機關名稱',
-														'矯正機關機關戒護人力',
+														'矯正機關戒護人力',
 														'合署辦公機關',
 														'合署辦公機關戒護人力',
 														'矯正機關法定容額',
@@ -3141,10 +3165,31 @@ const DataFilterStateTree = {
 															type : '矯正機關類型',
 															value: '監獄'
 														}
-													]
+													],
 												},
 												extl: {
 													url: null
+												},
+												// working-spot: Tip format
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
 												}
 											}
 										]
@@ -5778,15 +5823,18 @@ const DataBoard = React.createClass({
 	// Visualizing data with Scatter plot
 	vizDataWithScatterPlot(props, dataSheet, update = false) {
 
-		let sG = this.gpu.scatterPlot;
+		let sG = this.gpu.scatterPlot,
+				t  = this.tip;
 
 		// Find the topic.
 		const _topic = this.DBfindTopic(props);
 		
 		sG.initializeAPad().setChartSize()
 			.mappingData(
-				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t);
-
+				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t)
+			.then(function() {
+				t.appendCircleMouseOver(_topic.tipFormat);
+			});
 	},
 
 	// DBUpdateBar allows bar graph display different data in the same dataset.
@@ -5896,10 +5944,12 @@ const DataBoard = React.createClass({
 	// Update the Scatter Plot
 	DBUpdateScatterPlot(props) {
 
-		let sG = this.gpu.scatterPlot;
+		let sG = this.gpu.scatterPlot,
+				t = this.tip;
 		const _topic = this.DBfindTopic(props);
-		
+
 		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y)
+			.then(function() { t.appendCircleMouseOver(_topic.tipFormat); })
 
 	},
 

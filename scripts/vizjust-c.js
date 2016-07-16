@@ -2529,8 +2529,13 @@ var tipClass = function tipClass() {
 };
 
 tipClass.prototype.initTips = function () {
+
 	this.dotTip = d3.select('#APP').append('div').attr('id', 'DOT-TIP').attr('class', 'tip');
 	this.barTip = d3.select('#APP').append('div').attr('id', 'BAR-TIP').attr('class', 'tip');
+
+	// working-spot
+	this.circleTip = d3.select('#APP').append('div').attr('id', 'CIRCLE-TIP').classed('tip', true);
+
 	return this;
 };
 
@@ -2657,6 +2662,53 @@ tipClass.prototype.appendStackBarMouseOver = function () {
 	}).on('mouseout', function (d) {
 		self.barTip.classed('display', false);
 	});;
+};
+
+// working-spot
+tipClass.prototype.appendCircleMouseOver = function (format) {
+
+	var self = this,
+	    offset = this._setOffset();
+
+	d3.selectAll('circle').on('mouseenter', function (d) {
+
+		var c = d3.select(this);
+
+		self.circleTip.style('display', 'inline-block').style('top', offset.Y + parseInt(c.attr('cy')) + 'px').style('left', offset.X + parseInt(c.attr('cx')) + 'px').html(function () {
+
+			var info = '';
+
+			// Concating the list of message
+			var _iteratorNormalCompletion2 = true;
+			var _didIteratorError2 = false;
+			var _iteratorError2 = undefined;
+
+			try {
+				for (var _iterator2 = format.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+					var item = _step2.value;
+
+					info += '<span>' + item.name + ': ' + d[item.name] + '</span>';
+				}
+			} catch (err) {
+				_didIteratorError2 = true;
+				_iteratorError2 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion2 && _iterator2.return) {
+						_iterator2.return();
+					}
+				} finally {
+					if (_didIteratorError2) {
+						throw _iteratorError2;
+					}
+				}
+			}
+
+			return '<span>' + d[format.title] + '</span>' + info;
+		});
+	}).on('mouseleave', function (d) {
+		self.circleTip.style('display', 'none');
+	});
 };
 
 tipClass.prototype._setOffset = function (nodeId) {
@@ -2908,7 +2960,6 @@ var ScatterPlotClass = function () {
 			return this;
 		}
 
-		// working-spot
 		/* 
   	rLabel: The data selection applied to map the data
   	cLabel: The data selection applied to fill the color 
@@ -2926,127 +2977,131 @@ var ScatterPlotClass = function () {
 
 			var self = this;
 
-			d3.json(dataSource, function (data) {
+			var p = new Promise(function (resolve, reject) {
 
-				// Create x-axis
-				if (isXOrdinal) self.g._setOrdinalXScale();else self.g._setLinearXScale(data, xLabel);
+				d3.json(dataSource, function (data) {
 
-				self.g._setXAxis('bottom');
-				self.g._createXAxis(data, xLabel);
+					// Create x-axis
+					if (isXOrdinal) self.g._setOrdinalXScale();else self.g._setLinearXScale(data, xLabel);
 
-				// Create y-axis
-				self.g._setLinearYScale(data, yLabel);
-				self.g._setYAxis('left', data, yLabel);
-				self.g._createYAxis(yLabel);
+					self.g._setXAxis('bottom');
+					self.g._createXAxis(data, xLabel);
 
-				// if (isRLog)
-				self.g._rScale(data, rLabel);
+					// Create y-axis
+					self.g._setLinearYScale(data, yLabel);
+					self.g._setYAxis('left', data, yLabel);
+					self.g._createYAxis(yLabel);
 
-				self.g.pad.append('g').selectAll('circle').data(data).enter().append('circle').attr({
-					cx: function cx(d) {
-						return self.g.xScale(d[xLabel]);
-					},
-					cy: function cy(d) {
-						return self.g.yScale(d[yLabel]);
-					},
-					r: function r(d) {
-						return self.g.rScale(d[rLabel]);
-					},
-					fill: function fill(d) {
-						return colorObj.scatterPlot[d[cLabel]];
-					},
-					stroke: '#000',
-					'stroke-width': '1.5'
-				});
+					// if (isRLog)
+					self.g._rScale(data, rLabel);
 
-				// Mark the extreme value
-				self.g.pad.append('g').selectAll('text').data(data).enter().append('text').text(function (d) {
-					return d[tLabel];
-				}).attr({
-					x: function x(d) {
-						return self.g.xScale(d[xLabel]);
-					},
-					y: function y(d) {
-						return self.g.yScale(d[yLabel]);
-					}
-				}).style({ display: 'none' }).call(function (d) {
-
-					// find out the extremely maximum value's index of x.
-					var _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
-
-					// find out the extremely maximum value's index of y.
-					var _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
-
-					// find out the extremely maximum value's index of x.
-					var _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
-
-					// find out the extremely maximum value's index of y.
-					var _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
-
-					/* Present the text of extreme value */
-					// The indices we used to list the items.
-					var indices = [_maxX, _maxY, _minX, _minY].sort(function (a, b) {
-						return a - b;
+					self.g.pad.append('g').selectAll('circle').data(data).enter().append('circle').attr({
+						cx: function cx(d) {
+							return self.g.xScale(d[xLabel]);
+						},
+						cy: function cy(d) {
+							return self.g.yScale(d[yLabel]);
+						},
+						r: function r(d) {
+							return self.g.rScale(d[rLabel]);
+						},
+						fill: function fill(d) {
+							return colorObj.scatterPlot[d[cLabel]];
+						},
+						stroke: '#000',
+						'stroke-width': '1.5'
 					});
 
-					// Picks up the extreme
-					var texts = d[0].filter(function (d, i) {
-						return i === _maxX || i === _maxY || i === _minX || i === _minY;
-					});
-
-					var _iteratorNormalCompletion2 = true;
-					var _didIteratorError2 = false;
-					var _iteratorError2 = undefined;
-
-					try {
-						for (var _iterator2 = texts[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-							var text = _step2.value;
-
-							d3.select(text).style('display', 'inline-block');
+					// Mark the extreme value
+					self.g.pad.append('g').classed('circle-label-group', true).selectAll('text').data(data).enter().append('text').text(function (d) {
+						return d[tLabel];
+					}).attr({
+						x: function x(d) {
+							return self.g.xScale(d[xLabel]);
+						},
+						y: function y(d) {
+							return self.g.yScale(d[yLabel]);
 						}
+					}).style({ display: 'none' }).call(function (d) {
 
-						// Find the index of extreme value
-					} catch (err) {
-						_didIteratorError2 = true;
-						_iteratorError2 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion2 && _iterator2.return) {
-								_iterator2.return();
-							}
-						} finally {
-							if (_didIteratorError2) {
-								throw _iteratorError2;
-							}
-						}
-					}
+						// find out the extremely maximum value's index of x.
+						var _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
 
-					function findExtremeValIndex(data, select, isMin) {
+						// find out the extremely maximum value's index of y.
+						var _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
 
-						var _ = data.map(function (d) {
-							return d.__data__[select];
+						// find out the extremely maximum value's index of x.
+						var _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
+
+						// find out the extremely maximum value's index of y.
+						var _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
+
+						/* Present the text of extreme value */
+						// The indices we used to list the items.
+						var indices = [_maxX, _maxY, _minX, _minY].sort(function (a, b) {
+							return a - b;
 						});
 
-						if (isMin) {
-							var _min = 0;
-							for (var i = 0; i < _.length; i++) {
-								if (_[i] < _[_min]) _min = i;
+						// Picks up the extreme
+						var texts = d[0].filter(function (d, i) {
+							return i === _maxX || i === _maxY || i === _minX || i === _minY;
+						});
+
+						var _iteratorNormalCompletion3 = true;
+						var _didIteratorError3 = false;
+						var _iteratorError3 = undefined;
+
+						try {
+							for (var _iterator3 = texts[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+								var text = _step3.value;
+
+								d3.select(text).style('display', 'inline-block');
 							}
-							return _min;
+
+							// Find the index of extreme value
+						} catch (err) {
+							_didIteratorError3 = true;
+							_iteratorError3 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion3 && _iterator3.return) {
+									_iterator3.return();
+								}
+							} finally {
+								if (_didIteratorError3) {
+									throw _iteratorError3;
+								}
+							}
 						}
 
-						var _max = 0;
-						for (var i = 0; i < _.length; i++) {
-							if (_[i] > _[_max]) _max = i;
+						function findExtremeValIndex(data, select, isMin) {
+
+							var _ = data.map(function (d) {
+								return d.__data__[select];
+							});
+
+							if (isMin) {
+								var _min = 0;
+								for (var i = 0; i < _.length; i++) {
+									if (_[i] < _[_min]) _min = i;
+								}
+								return _min;
+							}
+
+							var _max = 0;
+							for (var i = 0; i < _.length; i++) {
+								if (_[i] > _[_max]) _max = i;
+							}
+							return _max;
 						}
-						return _max;
-					}
+					});
+
+					resolve();
 				});
 			});
+
+			return p;
 		}
-
-		// working-spot
-
 	}, {
 		key: 'update',
 		value: function update(filterSets, xLabel, yLabel) {
@@ -3069,13 +3124,13 @@ var ScatterPlotClass = function () {
 					var isSelected = false;
 
 					// Iterative though the filter setting to get the chosen circles
-					var _iteratorNormalCompletion3 = true;
-					var _didIteratorError3 = false;
-					var _iteratorError3 = undefined;
+					var _iteratorNormalCompletion4 = true;
+					var _didIteratorError4 = false;
+					var _iteratorError4 = undefined;
 
 					try {
-						for (var _iterator3 = filterSets[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-							var set = _step3.value;
+						for (var _iterator4 = filterSets[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+							var set = _step4.value;
 
 							if (d[set.type] === set.value) {
 								_circles.push(this);
@@ -3085,16 +3140,16 @@ var ScatterPlotClass = function () {
 
 						// Select those are not picked out.
 					} catch (err) {
-						_didIteratorError3 = true;
-						_iteratorError3 = err;
+						_didIteratorError4 = true;
+						_iteratorError4 = err;
 					} finally {
 						try {
-							if (!_iteratorNormalCompletion3 && _iterator3.return) {
-								_iterator3.return();
+							if (!_iteratorNormalCompletion4 && _iterator4.return) {
+								_iterator4.return();
 							}
 						} finally {
-							if (_didIteratorError3) {
-								throw _iteratorError3;
+							if (_didIteratorError4) {
+								throw _iteratorError4;
 							}
 						}
 					}
@@ -3117,13 +3172,13 @@ var ScatterPlotClass = function () {
 					self.g.updateYAxis();
 
 					// Shift the circles to the new positions
-					var _iteratorNormalCompletion4 = true;
-					var _didIteratorError4 = false;
-					var _iteratorError4 = undefined;
+					var _iteratorNormalCompletion5 = true;
+					var _didIteratorError5 = false;
+					var _iteratorError5 = undefined;
 
 					try {
-						for (var _iterator4 = _circles[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-							var c = _step4.value;
+						for (var _iterator5 = _circles[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+							var c = _step5.value;
 
 							d3.select(c).transition().duration(1000).attr({
 								cx: function cx(_d) {
@@ -3136,31 +3191,6 @@ var ScatterPlotClass = function () {
 						}
 
 						// Hide those are not seleted.
-					} catch (err) {
-						_didIteratorError4 = true;
-						_iteratorError4 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion4 && _iterator4.return) {
-								_iterator4.return();
-							}
-						} finally {
-							if (_didIteratorError4) {
-								throw _iteratorError4;
-							}
-						}
-					}
-
-					var _iteratorNormalCompletion5 = true;
-					var _didIteratorError5 = false;
-					var _iteratorError5 = undefined;
-
-					try {
-						for (var _iterator5 = _r_circles[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-							var c = _step5.value;
-
-							d3.select(c).transition().duration(1000).attr('opacity', 0);
-						}
 					} catch (err) {
 						_didIteratorError5 = true;
 						_iteratorError5 = err;
@@ -3175,9 +3205,38 @@ var ScatterPlotClass = function () {
 							}
 						}
 					}
+
+					var _iteratorNormalCompletion6 = true;
+					var _didIteratorError6 = false;
+					var _iteratorError6 = undefined;
+
+					try {
+						for (var _iterator6 = _r_circles[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+							var c = _step6.value;
+
+							d3.select(c).transition().duration(1000).attr('opacity', 0);
+						}
+					} catch (err) {
+						_didIteratorError6 = true;
+						_iteratorError6 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion6 && _iterator6.return) {
+								_iterator6.return();
+							}
+						} finally {
+							if (_didIteratorError6) {
+								throw _iteratorError6;
+							}
+						}
+					}
 				});
 
+				// working-spot
 				// Select the texts
+				d3.select('g.circle-label-group').selectAll('text');
+
+				resolve();
 			});
 
 			return p;
