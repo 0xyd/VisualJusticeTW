@@ -3094,7 +3094,8 @@ const DataFilterStateTree = {
 													x: '總戒護人力',
 													y: '戒護人力比',
 													r: '收容人數',
-													c: '矯正機關類型'
+													c: '矯正機關類型',
+													t: '矯正機關名稱'
 												},
 												intl: {
 													headers: [
@@ -3107,6 +3108,39 @@ const DataFilterStateTree = {
 														'收容人數', 
 														'超收率',
 														'戒護人力比'
+													]
+												},
+												extl: {
+													url: null
+												}
+											},
+											{
+												name: '全國監獄',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '矯正機關類型',
+													t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													// working-spot
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '監獄'
+														}
 													]
 												},
 												extl: {
@@ -3720,10 +3754,32 @@ class StoryTeller {
 					}
 				]
 			},
-			// {
-			// 	dataset: '戒護人力概況',
-			// 	data: 
-			// }
+			// working-spot
+			{
+				dataset: '103年戒護人力概況',
+				data: '戒護人力情形',
+				vizType: '散佈圖',
+				fwdSteps: [
+					{
+						goto: '監獄',
+						transit: function(_this, params) {
+							
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+							// return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					}
+				],
+				bwdSteps: [
+					{
+						goto: '全國矯正機關',
+						transit: function(_this, params) {
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					}
+				]
+			}
 		];
 
 		// Tales for explain the chart.
@@ -5289,6 +5345,7 @@ class StoryTeller {
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
 		})
+		
 	}
 
 	// Decide which tales chain shoule be applied.
@@ -5299,7 +5356,6 @@ class StoryTeller {
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
 		});
-
 	}
 	
 	// toTell interates through the animation processes.
@@ -5314,7 +5370,7 @@ class StoryTeller {
 		if (endDepth - startDepth > 0) {
 
 			for (let s = startDepth; s < endDepth; ++s) {
-				
+
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
 					this._vizStory.fwdSteps[s].end = 
@@ -5719,7 +5775,6 @@ const DataBoard = React.createClass({
 		}
 	},
 
-	// working-spot
 	// Visualizing data with Scatter plot
 	vizDataWithScatterPlot(props, dataSheet, update = false) {
 
@@ -5730,7 +5785,7 @@ const DataBoard = React.createClass({
 		
 		sG.initializeAPad().setChartSize()
 			.mappingData(
-				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c);
+				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t);
 
 	},
 
@@ -5835,6 +5890,17 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
+	},
+
+	// working-spot
+	// Update the Scatter Plot
+	DBUpdateScatterPlot(props) {
+
+		let sG = this.gpu.scatterPlot;
+		const _topic = this.DBfindTopic(props);
+		
+		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y)
+
 	},
 
 	// Produce the params for forward steps and backward steps.
@@ -5948,10 +6014,9 @@ const DataBoard = React.createClass({
 						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
 							return t.topicName === tName
 						});
-				
 				store.dispatch(setTaleIndexAC(taleIndex));
 			}
-			
+			// working-spot
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 
@@ -6236,11 +6301,11 @@ const DataBoard = React.createClass({
 	shouldComponentUpdate(nextProps) {
 
 		if (nextProps.updateDataBoard) {
-
+			
 			// Select the chain 
 			this.storyTeller.decideVizStoryChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
-
+			
 			// Select the tales chain
 			this.storyTeller.decideTaleChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
@@ -6332,7 +6397,7 @@ const DataBoard = React.createClass({
 			
 			this.DBTopicUpdate(nextProps);
 			
-		} else if (isTopicSwitchingByTaleUd) {
+		} else if (isTopicSwitchingByTaleUd) { 
 
 			let steps = this.DBTopicStepsProducer(nextProps);
 
@@ -7236,8 +7301,6 @@ function selectIntro(state) {
 
 			return <IntroSections introSects={_mainCs} />
 		})());
-
-
 
 	return state.merge(mainState);
 }

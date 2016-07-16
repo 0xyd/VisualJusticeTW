@@ -272,7 +272,8 @@ graphClass.prototype._setLinearXScale = function(dataset, dOption) {
 		.domain(
 			[0, d3.max(
 					dataset, 
-					function(d) { return dOption ? parseFloat(d[dOption]): d})
+					function(d) { 
+						return dOption ? 1.05 * parseFloat(d[dOption]) : 1.05 * d })
 			])
 		.rangeRound([0, this.chartWidth]);
 
@@ -303,7 +304,7 @@ graphClass.prototype._setLinearYScale = function(dataset, dOption) {
 		.domain(
 			[0, d3.max(
 					dataset, 
-					function(d) { return dOption ? parseFloat(d[dOption]): d})
+					function(d) { return dOption ? 1.05 * parseFloat(d[dOption]): 1.05 * d})
 			])
 		.rangeRound([this.chartHeight, 0]);
 
@@ -416,7 +417,16 @@ graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, ou
 				.attr('transform', 'translate(' + ( this.chartWidth - 60)+ ', 20)')
 			.text(xLabel);
 	}
-	
+}
+
+// Update x axis
+graphClass.prototype.updateXAxis = function() {
+	this.pad.select('.x-axis').transition().duration(1000).call(this.xAxis);
+}
+
+// Update y axis
+graphClass.prototype.updateYAxis = function() {
+	this.pad.select('.y-axis').transition().duration(1000).call(this.yAxis);
 }
 
 graphClass.prototype._createYAxis = function(yLabel) {
@@ -430,7 +440,7 @@ graphClass.prototype._createYAxis = function(yLabel) {
 			.text(yLabel);
 }
 
-// working-spot: Set the circle radius to log unit 
+// Set the circle radius to log unit 
 graphClass.prototype._rScale = function(data, rLabel) {
 
 	let _d_min = d3.min(data, (d) => { return d[rLabel] }),
@@ -3652,8 +3662,9 @@ class ScatterPlotClass {
 	/* 
 		rLabel: The data selection applied to map the data
 		cLabel: The data selection applied to fill the color 
+		tLabel: The data selection applied the text
 	*/
-	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false) {
+	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, tLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false) {
 
 		let self = this;
 		
@@ -3687,30 +3698,141 @@ class ScatterPlotClass {
 							stroke: '#000',
 							'stroke-width': '1.5'
 						});
+
+			// Mark the extreme value
+			self.g.pad.append('g')
+				.classed('circle-label-group', true)
+				.selectAll('text')
+					.data(data).enter()
+						.append('text').text(function(d) { return d[tLabel] })
+						.attr({
+							x: function(d) { return self.g.xScale(d[xLabel]) },
+							y: function(d) { return self.g.yScale(d[yLabel]) },
+						})
+						.style({ display: 'none'})
+						.call(function(d) {
+
+							// find out the extremely maximum value's index of x.
+							let _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
+
+							// find out the extremely maximum value's index of y.
+							let _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
+
+							// find out the extremely maximum value's index of x.
+							let _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
+
+							// find out the extremely maximum value's index of y.
+							let _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
+
+							/* Present the text of extreme value */
+							// The indices we used to list the items.
+							let indices = [_maxX, _maxY, _minX, _minY].sort(function(a, b) { return a-b });
+							
+							// Picks up the extreme
+							let texts = d[0].filter(function(d, i) { 
+								return i === _maxX ||
+									i === _maxY ||
+									i === _minX ||
+									i === _minY  
+							});
+
+							for ( let text of texts ) {
+								d3.select(text).style('display', 'inline-block');
+							}
+
+							// Find the index of extreme value 
+							function findExtremeValIndex(data, select, isMin) {
+
+								let _ = data.map((d) => { return d.__data__[select]});
+
+								if (isMin) {
+									let _min = 0;
+									for (let i = 0; i < _.length; i++) {
+										if (_[i] < _[_min])
+											_min = i;
+									}
+									return _min
+								} 
+
+								let _max = 0;
+								for ( let i = 0; i < _.length; i++ ) {
+									if ( _[i] > _[_max])
+										_max = i;
+								}
+								return _max
+							}
+						});
+		});
+	}
+
+	update(filterSets, xLabel, yLabel) {
+
+		const self = this;
+
+		let p = new Promise((resolve, reject) => {
+			
+			let _circles = [],	 // Initial a circles selected set
+					_r_circles = [], // The circles are not selected
+					_texts = [],     // Initial a texts selected set
+					_r_texts = [];	 // The texts are not selected
+
+			// Select the circles with the special data range
+			d3.selectAll('circle')
+				.each(function(d, i) {
+
+					let isSelected = false;
+					
+					// Iterative though the filter setting to get the chosen circles
+					for ( let set of filterSets) {
+						if (d[set.type] === set.value) {
+							_circles.push(this);
+							isSelected = true;
+						}
+					}
+
+					// Select those are not picked out.
+					if (!isSelected) 
+						_r_circles.push(this);
+
+				})
+				.call(function(circles) {
+					
+					let _data = _circles.map((c) => { return c.__data__ });
+
+					// Reset the x scale
+					self.g._setLinearXScale(_data, xLabel);
+					self.g._setXAxis('bottom');
+					self.g.updateXAxis();
+
+					// Reset the y scale
+					self.g._setLinearYScale(_data, yLabel);
+					self.g._setYAxis('left', _data, yLabel);
+					self.g.updateYAxis();
+					
+					// Shift the circles to the new positions
+					for ( let c of _circles ) {
+						d3.select(c).transition().duration(1000)
+							.attr({
+								cx: function(_d) { return self.g.xScale(_d[xLabel]) },
+								cy: function(_d) { return self.g.yScale(_d[yLabel]) }
+							});
+					}
+
+					// Hide those are not seleted.
+					for ( let c of _r_circles ) 
+						d3.select(c).transition().duration(1000)
+							.attr('opacity', 0);
+				});
+		
+			// working-spot
+			// Select the texts 
+			d3.select('g.circle-label-group');
+
 		});
 
-				// /* Set up the x axis */
-				// if (isXOrdinal) {
-				// 	g._setOrdinalXScale();
-				// } else if (isXPCT) {
-				// 	// No function has been developed yet
-				// } else g._setLinearXScale();
-		
-				// g._setXAxis();
-
-				// /* Set up the y axis */
-				// if (isYOrdinal) {
-				// 	// No function has been developed yet
-				// } else if (isYPCT) {
-				// 	g._setY
-				// } else {
-					
-				// }
-
-				// g._setYAxis();
-			// });
-		
+		return p	
 	}
+
 }
 
 
