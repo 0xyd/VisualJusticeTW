@@ -128,6 +128,7 @@ var colorClass = function() {
 	},
 
 	this.scatterPlot = {
+
 		// For 矯正機關分類 (Types of correctional institutions)
 		'監獄': '#ED4E34',
 		'看守所': '#FA7F21',
@@ -135,7 +136,24 @@ var colorClass = function() {
 		'戒治所': '#9BC53D',
 		'少年觀護所': '#40C53D',
 		'少年輔育院': '#2AA30C',
-		'矯正學校': '#FDE74C'
+		'矯正學校': '#FDE74C',
+
+		
+		'超收率': {
+			'監獄': {
+				colorRange: ['#F9D423', '#ED4E34'] // For 監獄's linear color gradient
+			},
+			'看守所': {
+				colorRange: ['#FFD400', '#FA7F21'] // For 看守所's linear color gradient
+			},
+			'戒治所': {
+				colorRange: ['#FFD400', '#9BC53D']
+			},
+			'少年矯正機關': {
+				colorRange: ['#9BC53D', '#2AA30C']
+			}
+		}
+
 	},
 
 	this.rings = [
@@ -273,7 +291,7 @@ graphClass.prototype._setLinearXScale = function(dataset, dOption) {
 			[0, d3.max(
 					dataset, 
 					function(d) { 
-						return dOption ? 1.05 * parseFloat(d[dOption]) : 1.05 * d })
+						return dOption ? 1.2 * parseFloat(d[dOption]) : 1.2 * d })
 			])
 		.rangeRound([0, this.chartWidth]);
 
@@ -414,7 +432,7 @@ graphClass.prototype._createXAxis = function(dataset, xLabel, horSpace, step, ou
 				.call(this.xAxis)
 			.append('text')
 				.attr('class', 'axis-name')
-				.attr('transform', 'translate(' + ( this.chartWidth - 60)+ ', 20)')
+				.attr('transform', 'translate(' + ( this.chartWidth - 60)+ ', 40)')
 			.text(xLabel);
 	}
 }
@@ -441,7 +459,7 @@ graphClass.prototype._createYAxis = function(yLabel) {
 }
 
 // Set the circle radius to log unit 
-graphClass.prototype._rScale = function(data, rLabel) {
+graphClass.prototype._setRScale = function(data, rLabel) {
 
 	let _d_min = d3.min(data, (d) => { return d[rLabel] }),
 			_d_max = d3.max(data, (d) => { return d[rLabel] });
@@ -3724,83 +3742,88 @@ class ScatterPlotClass {
 				self.g._createYAxis(yLabel);
 
 				// if (isRLog)
-				self.g._rScale(data, rLabel);
+				self.g._setRScale(data, rLabel);
 
-				self.g.pad.append('g')
-					.selectAll('circle')
-					.data(data).enter()
-							.append('circle').attr({
-								cx: function(d) { return self.g.xScale(d[xLabel]) },
-								cy: function(d) { return self.g.yScale(d[yLabel]) },
-								r : function(d) { return self.g.rScale(d[rLabel]) },
-								fill: function(d) { return colorObj.scatterPlot[d[cLabel]] },
-								stroke: '#000',
-								'stroke-width': '1.5'
-							});
-
-				// Mark the extreme value
-				self.g.pad.append('g')
-					.classed('circle-label-group', true)
-					.selectAll('text')
-						.data(data).enter()
-							.append('text').text(function(d) { return d[tLabel] })
-							.attr({
-								x: function(d) { return self.g.xScale(d[xLabel]) },
-								y: function(d) { return self.g.yScale(d[yLabel]) },
-							})
-							.style({ display: 'none'})
-							.call(function(d) {
-
-								// find out the extremely maximum value's index of x.
-								let _maxX = findExtremeValIndex.apply(null, [d[0], xLabel, false]);
-
-								// find out the extremely maximum value's index of y.
-								let _maxY = findExtremeValIndex.apply(null, [d[0], yLabel, false]);
-
-								// find out the extremely maximum value's index of x.
-								let _minX = findExtremeValIndex.apply(null, [d[0], xLabel, true]);
-
-								// find out the extremely maximum value's index of y.
-								let _minY = findExtremeValIndex.apply(null, [d[0], yLabel, true]);
-
-								/* Present the text of extreme value */
-								// The indices we used to list the items.
-								let indices = [_maxX, _maxY, _minX, _minY].sort(function(a, b) { return a-b });
-								
-								// Picks up the extreme
-								let texts = d[0].filter(function(d, i) { 
-									return i === _maxX ||
-										i === _maxY ||
-										i === _minX ||
-										i === _minY  
+				const circles = 
+					self.g.pad.append('g').classed('scatter-plot-group', true)
+						.selectAll('circle')
+							.data(data).enter()
+								.append('circle').attr({
+									cx: function(d) { return self.g.xScale(d[xLabel]) },
+									cy: function(d) { return self.g.yScale(d[yLabel]) },
+									r : function(d) { return self.g.rScale(d[rLabel]) },
+									fill: function(d) { return colorObj.scatterPlot[d[cLabel]] },
+									stroke: '#fff',
+									'stroke-width': '0.5'
 								});
 
-								for ( let text of texts ) {
-									d3.select(text).style('display', 'inline-block');
-								}
+				// Mark the extreme value
+				// self.g.pad.append('g')
+				// 	.classed('circle-label-group', true)
+				// 	.selectAll('text')
+				// 		.data(data).enter()
+				// 			.append('text').text(function(d) { return d[tLabel] })
+				// 			.attr({
+				// 				x: function(d) { return self.g.xScale(d[xLabel]) },
+				// 				y: function(d) { return self.g.yScale(d[yLabel]) },
+				// 			})
+				// 			.style({ display: 'none'})
+				// 			.call(function(texts) {
 
-								// Find the index of extreme value 
-								function findExtremeValIndex(data, select, isMin) {
+				// 				/* Labeling the text on circle once the space is appropriate */
+				// 				self._labelCircles(circles[0], texts[0]);
 
-									let _ = data.map((d) => { return d.__data__[select]});
+				// 				/* Label the extreme value */
+				// 				// find out the extremely maximum value's index of x.
+				// 				let _maxX = findExtremeValIndex.apply(null, [texts[0], xLabel, false]);
 
-									if (isMin) {
-										let _min = 0;
-										for (let i = 0; i < _.length; i++) {
-											if (_[i] < _[_min])
-												_min = i;
-										}
-										return _min
-									} 
+				// 				// find out the extremely maximum value's index of y.
+				// 				let _maxY = findExtremeValIndex.apply(null, [texts[0], yLabel, false]);
 
-									let _max = 0;
-									for ( let i = 0; i < _.length; i++ ) {
-										if ( _[i] > _[_max])
-										_max = i;
-									}
-									return _max
-								}
-							});
+				// 				// find out the extremely maximum value's index of x.
+				// 				let _minX = findExtremeValIndex.apply(null, [texts[0], xLabel, true]);
+
+				// 				// find out the extremely maximum value's index of y.
+				// 				let _minY = findExtremeValIndex.apply(null, [texts[0], yLabel, true]);
+
+				// 				/* Present the text of extreme value */
+				// 				// The indices we used to list the items.
+				// 				let indices = [_maxX, _maxY, _minX, _minY].sort(function(a, b) { return a-b });
+								
+				// 				// Picks up the extreme
+				// 				let _texts = texts[0].filter(function(d, i) { 
+				// 					return i === _maxX ||
+				// 						i === _maxY ||
+				// 						i === _minX ||
+				// 						i === _minY  
+				// 				});
+
+				// 				for ( let _text of _texts ) {
+				// 					d3.select(_text).style('display', 'inline-block');
+				// 				}
+
+				// 				// Find the index of extreme value 
+				// 				function findExtremeValIndex(data, select, isMin) {
+
+				// 					let _ = data.map((d) => { return d.__data__[select]});
+
+				// 					if (isMin) {
+				// 						let _min = 0;
+				// 						for (let i = 0; i < _.length; i++) {
+				// 							if (_[i] < _[_min])
+				// 								_min = i;
+				// 						}
+				// 						return _min
+				// 					} 
+
+				// 					let _max = 0;
+				// 					for ( let i = 0; i < _.length; i++ ) {
+				// 						if ( _[i] > _[_max])
+				// 						_max = i;
+				// 					}
+				// 					return _max
+				// 				}
+				// 			});
 
 				resolve();
 			});
@@ -3809,40 +3832,60 @@ class ScatterPlotClass {
 		return p
 	}
 
-	update(filterSets, xLabel, yLabel) {
-
+	update(filterSets, xLabel, yLabel, rLabel, cLabel) {
+		
 		const self = this;
+		const selectAll = !filterSets ? true : false;
 
 		let p = new Promise((resolve, reject) => {
 			
 			let _circles = [],	 // Initial a circles selected set
 					_r_circles = [], // The circles are not selected
 					_texts = [],     // Initial a texts selected set
-					_r_texts = [];	 // The texts are not selected
+					_r_texts = [],	 // The texts are not selected
+					colorLinearCat = null; // If the color linear is used, set up the color linear category.
 
 			// Select the circles with the special data range
 			d3.selectAll('circle')
 				.each(function(d, i) {
 
 					let isSelected = false;
-					
-					// Iterative though the filter setting to get the chosen circles
-					for ( let set of filterSets) {
-						if (d[set.type] === set.value) {
-							_circles.push(this);
-							isSelected = true;
+
+					// Select the whole circles
+					if (selectAll) 
+						_circles.push(this);
+
+					else {
+
+						// Iterative though the filter setting to get the chosen circles
+						for ( let set of filterSets) {
+							if (d[set.type] === set.value) {
+								_circles.push(this);
+								isSelected = true;
+							}
+
+							// Set up the linear gradient color category if needed.
+							if (set.type === 'colorLinearGradient')
+								colorLinearCat = set.value;
 						}
+
+						// Select those are not picked out.
+						if (!isSelected) 
+							_r_circles.push(this);
 					}
-
-					// Select those are not picked out.
-					if (!isSelected) 
-						_r_circles.push(this);
-
 				})
 				.call(function(circles) {
 					
-					let _data = _circles.map((c) => { return c.__data__ });
-
+					let _data = _circles.map((c) => { return c.__data__ }),
+							colorScale = 
+								colorLinearCat ? d3.scale.linear()
+									.domain(
+										[
+											d3.min(circles[0], function(c) { return c.__data__[cLabel] }), 
+											d3.max(circles[0], function(c) { return c.__data__[cLabel] })
+										])
+									.range(colorObj.scatterPlot[cLabel][colorLinearCat].colorRange) : null;
+					
 					// Reset the x scale
 					self.g._setLinearXScale(_data, xLabel);
 					self.g._setXAxis('bottom');
@@ -3852,34 +3895,198 @@ class ScatterPlotClass {
 					self.g._setLinearYScale(_data, yLabel);
 					self.g._setYAxis('left', _data, yLabel);
 					self.g.updateYAxis();
+
+					// Reset the r scale
+					self.g._setRScale(_data, rLabel);
 					
 					// Shift the circles to the new positions
 					for ( let c of _circles ) {
 						d3.select(c).transition().duration(1000)
+							.style('display', 'inline-block')
 							.attr({
+								r : function(_d) { return self.g.rScale(_d[rLabel]) },
 								cx: function(_d) { return self.g.xScale(_d[xLabel]) },
-								cy: function(_d) { return self.g.yScale(_d[yLabel]) }
+								cy: function(_d) { return self.g.yScale(_d[yLabel]) },
+								fill: function(_d) { 
+									return colorLinearCat ? colorScale(_d[cLabel]) : colorObj.scatterPlot[_d[cLabel]] },
 							});
 					}
 
 					// Hide those are not seleted.
 					for ( let c of _r_circles ) 
-						d3.select(c).transition().duration(1000)
-							.attr('opacity', 0);
-				});
-		
-			// working-spot
-			// Select the texts 
-			d3.select('g.circle-label-group')
-				.selectAll('text');
+						d3.select(c).transition().duration(1000).style('display', 'none');
 
-			resolve();
+					// Select the texts 
+				// 	d3.select('g.circle-label-group').selectAll('text')
+				// 		.each(function(d, i) {
+
+				// 			let isSelected = false;
+
+				// 			for ( let set of filterSets ) {
+
+				// 				if (d[set.type] === set.value) {
+				// 					_texts.push(this);
+				// 					isSelected = true;
+				// 				}
+				// 			}
+
+				// 			// Select those inselected
+				// 			if (!isSelected) _r_texts.push(this);
+							
+				// 		})
+				// 		.call(function(texts) {
+
+				// 			// Select the whole texts
+				// 			if (selectAll) 
+				// 				_texts.push(this);
+
+				// 			else {
+
+				// 				// Label circles for the best view.
+				// 				// let lblObj = self._labelCircles(_circles, _texts);
+
+				// 				// // Shift the texts to the new positions
+				// 				// for ( let label of lblObj.labels ) {
+				// 				// 	d3.select(label).transition().duration(1000)
+				// 				// 		.style('display', 'inline-block')
+				// 				// 		.attr({
+				// 				// 			x: function(_d) { return self.g.xScale(_d[xLabel]) },
+				// 				// 			y: function(_d) { return self.g.yScale(_d[yLabel]) }
+				// 				// 		});
+				// 				// }
+
+				// 				// // Hide those are not selected
+				// 				// for ( let text of _r_texts ) 
+				// 				// 	d3.select(text).style('display', 'none');
+				// 			}
+							
+				// 		});
+				});
+
+			// resolve({ c: _circles, t: _texts, r_t: _r_texts });
+			resolve()
 
 		});
 
-		return p	
+		// return p.then((o) => {
+			// Suspeneded
+			// Label circles for the best view.
+		// 						let lblObj = self._labelCircles(o.c, o.t);
+
+		// 						// Shift the texts to the new positions
+		// 						for ( let label of lblObj.labels ) {
+		// 							d3.select(label).transition().duration(1000)
+		// 								.style('display', 'inline-block')
+		// 								.attr({
+		// 									x: function(_d) { return self.g.xScale(_d[xLabel]) },
+		// 									y: function(_d) { return self.g.yScale(_d[yLabel]) }
+		// 								});
+		// 						}
+
+		// 						// Hide those are not selected
+		// 						for ( let text of o.r_t ) 
+		// 							d3.select(text).style('display', 'none');
+		// })	
+		return p
 	}
 
+	// working-spot: suspended
+	// Append the labels and prevent the collisions with others.
+	_labelCircles(circles, texts) {
+
+		console.log(circles);
+		console.log(circles.length);
+		console.log(texts);
+		console.log(texts.length);
+		
+		// Sort the circles according to x positions
+		let _circles = 
+			(() => {
+
+				let _ = circles,
+						l = _.length;
+
+				// Add the indices to the circles
+				for ( let i = 0; i < l; i++ ) 
+					_[i].__data__['index'] = i;
+				
+				return _.slice(0, l).sort(function(a, b) {
+					return parseFloat(d3.select(a).attr('cx')) - parseFloat(d3.select(b).attr('cx'))
+				});
+			})();
+		
+		// Delete those circles who might overlap or be too close to their neighbor circles.
+		_circles = (() => {
+
+			let i = 0,
+					_ = [];
+
+			for ( let _c of _circles ) {
+
+				let c = d3.select(_c),
+						r = parseFloat(c.attr('r')),
+						x = parseFloat(c.attr('cx')),
+						y = parseFloat(c.attr('cy')),
+						s = 10, // The space left for 'space'
+						isDistant = true;
+
+				for ( let j = 0; j < _circles.length; j++ ) {
+					
+					if (j !== i) {
+
+						// let isXclosed = false,
+							// isYclosed = false,
+						let
+							_next_c = d3.select(_circles[j]),
+							_nc_r = parseFloat(_next_c.attr('r')),
+							_nc_x = parseFloat(_next_c.attr('cx')),
+							_nc_y = parseFloat(_next_c.attr('cy'));	
+
+							// Check if the x ordinate of the circle is too close to the next.
+							// if ( Math.abs(x - _nc_x) < r + _nc_r + 2.6*s ) isXclosed = true;
+
+							// Check if the x ordinate of the circle is too close to the next.
+							// if ( Math.abs(y - _nc_y) < r + _nc_r + 0.5*s ) isYclosed = true;
+
+							// if ( isXclosed && isYclosed ) isDistant = false;
+							
+							if ( Math.sqrt(Math.pow(x - _nc_x, 2) + Math.pow(y - _nc_y, 2)) < r + _nc_r + s )
+								isDistant = false;
+					}
+				}
+				
+				if (isDistant) _.push(_c);
+				
+				i++;
+			}
+			return _.sort((a, b) => { return a.__data__.index - b.__data__.index })
+
+		})();
+
+		/* Mark the texts for the circles that are distant from the clusters. */
+		let t = [],
+				_t = [],
+				count = 0, // Count how many circles has been labeled.
+				limit = _circles.length; 
+		
+		texts.forEach((text, i) => {
+
+			if (count < limit) {
+				if (i === _circles[count].__data__.index) {
+					d3.select(text).style('display', 'inline-block');
+					t.push(text);
+					count++;
+				}
+				else
+					_t.push(text)
+			}
+		});
+
+		
+
+		return { labels: t, unlabels: _t }
+
+	}
 }
 
 

@@ -3108,12 +3108,13 @@ const DataFilterStateTree = {
 														'收容人數', 
 														'超收率',
 														'戒護人力比'
-													]
+													],
+													filterSets: null
 												},
+												
 												extl: {
 													url: null
 												},
-												// working-spot: Tip format
 												tipFormat: {
 													title: '矯正機關名稱',
 													items: [
@@ -3144,8 +3145,8 @@ const DataFilterStateTree = {
 													x: '總戒護人力',
 													y: '戒護人力比',
 													r: '收容人數',
-													c: '矯正機關類型',
-													t: '矯正機關名稱'
+													c: '超收率',
+													// t: '矯正機關名稱'
 												},
 												intl: {
 													headers: [
@@ -3159,10 +3160,13 @@ const DataFilterStateTree = {
 														'超收率',
 														'戒護人力比'
 													],
-													// working-spot
 													filterSets: [
 														{
 															type : '矯正機關類型',
+															value: '監獄'
+														},
+														{
+															type: 'colorLinearGradient',
 															value: '監獄'
 														}
 													],
@@ -3170,7 +3174,6 @@ const DataFilterStateTree = {
 												extl: {
 													url: null
 												},
-												// working-spot: Tip format
 												tipFormat: {
 													title: '矯正機關名稱',
 													items: [
@@ -3191,7 +3194,183 @@ const DataFilterStateTree = {
 														}
 													]
 												}
-											}
+											},
+											{
+												name: '全國看守所',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '看守所'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '看守所'
+														}
+													],
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國戒治所',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													// t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '戒治所'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '戒治所'
+														}
+													]
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國少年矯正機關',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													// t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '少年觀護所'
+														},
+														{
+															type : '矯正機關類型',
+															value: '矯正學校'
+														},
+														{
+															type : '矯正機關類型',
+															value: '少年輔育院'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '少年矯正機關'
+														}
+													]
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
 										]
 									]
 								}
@@ -3806,22 +3985,57 @@ class StoryTeller {
 				vizType: '散佈圖',
 				fwdSteps: [
 					{
-						goto: '監獄',
+						goto: '全國監獄',
 						transit: function(_this, params) {
-							
 							return _this.DBUpdateScatterPlot.apply(_this, params);
-							// return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
+					},
+					{
+						goto: '全國看守所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國戒治所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國少年矯正機關',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
 					}
 				],
 				bwdSteps: [
 					{
 						goto: '全國矯正機關',
 						transit: function(_this, params) {
-							return _this.DBtransStackBarToBar.apply(_this, params);
+							return _this.DBUpdateScatterPlot.apply(_this, params);
 						},
 						end: null
+					},
+					{
+						goto: '全國監獄',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '全國看守所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國戒治所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
 					}
 				]
 			}
@@ -5948,8 +6162,10 @@ const DataBoard = React.createClass({
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
 
-		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y)
-			.then(function() { t.appendCircleMouseOver(_topic.tipFormat); })
+		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
+			.then(function() { 
+				t.appendCircleMouseOver(_topic.tipFormat); 
+			})
 
 	},
 
