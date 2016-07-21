@@ -6015,6 +6015,7 @@ const DataBoard = React.createClass({
 
 	// Visualizing data with ring chart
 	vizDataWithRingChart(props, dataSheet, update = false) {
+
 		let rG = this.gpu.ringGraph;
 
 		if (update) {
@@ -6942,11 +6943,13 @@ const DropdownMenu = React.createClass({
 		for (let option of this.props.options) 
 			menuItems.push(<StatFilterDropdownMenuItem
 				key={++key} optionIdx={optionIdx++} name={option} menuIndex={this.props.menuIndex}/>)
-		
 
 		return (
-			<ul className={this.props.isDisplayed ? 
-				'dropdown-menu displayed' : 'dropdown-menu'}>
+			<ul 
+				onMouseLeave={ this.props.collapseMenu } // working-spot
+				className={
+					this.props.isDisplayed ? 
+						'dropdown-menu displayed' : 'dropdown-menu'}>
 					{ menuItems }
 			</ul>
 		)
@@ -7098,6 +7101,14 @@ function expandDropdownAC(dropdownIndex) {
 	}
 }
 
+// working-spot
+function dropdownMenuCollapseAC(dropdownIndex) {
+	return {
+		type: 'COLLAPSE_DROPDOWN',
+		dropdownIndex: dropdownIndex
+	}
+}
+
 
 function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicDepth) {
 	return {
@@ -7169,6 +7180,10 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
+
+		// working-spot
+		case 'COLLAPSE_DROPDOWN':
+			return setDropdownMenuCollapse(state, action.dropdownIndex)
 
 		// Set the tale index
 		case 'SET_TALE_INDEX':
@@ -7754,6 +7769,24 @@ function setDropdownMenuStates(state, index) {
 	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
 }
 
+function setDropdownMenuCollapse(state, dropdownIndex) {
+
+	let newState = state.get('filterDropdownMenus')
+		.update((menus) => {
+
+			const originalOptions = menus.get(dropdownIndex).get('Options');
+
+			return menus.set(
+				dropdownIndex, 
+				Map()
+					.set('isDisplayed', false)
+					.set('Options', originalOptions))
+		});
+	
+	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
+
+}
+
 /* Option selecting reducser and its related function. */
 /* Basic selecting option reducer:
 		state:
@@ -8255,10 +8288,20 @@ const mapStateToDropdownMenuProps = (state, props) => {
 					.get('isDisplayed')
 	}
 }
+// working-spot
+const mapDispatchToDropdownMenu = (dispatch, props) => {
+	return {
+		collapseMenu: (e) => {
+			console.log('props:');
+			console.log(props);
+			dispatch(dropdownMenuCollapseAC(props.menuIndex));
+		}
+	}
+}
 
 const StatFilterDropdownMenu = RRd.connect(
 	mapStateToDropdownMenuProps,
-	null
+	mapDispatchToDropdownMenu
 )(DropdownMenu);
 
 /* Connect DropdownMenuItem */
