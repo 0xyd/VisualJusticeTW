@@ -8467,7 +8467,9 @@ ReactDOM.render(
 									<iframe id='githubStar' className='social-btn'
 										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
 										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-									</div>
+									<iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fvizjust.tw&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=1750136755257522" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+									</div>,
+									
 							]));
 
 						store.dispatch(selectIntroAC());
