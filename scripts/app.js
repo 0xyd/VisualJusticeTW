@@ -5754,7 +5754,7 @@ var IndexNavList = React.createClass({
 
 		let i = 0,
 				_items = [];
-		console.log(this.props.listItems);
+		
 		for ( let listItem of this.props.listItems ) {
 			_items.push(
 				<IndexNavListItem 
@@ -8437,6 +8437,9 @@ ReactDOM.render(
 								<HomeLink key='3'/>
 						]));
 
+						// Reload the facebook button.
+						FB.XFBML.parse();
+
 						store.dispatch(setThemesAC());
 
 						cb(null, { nav: AppNav, main: AppMain });
@@ -8485,6 +8488,16 @@ ReactDOM.render(
 					path='/police_stat' 
 					getComponents={(nextState, cb) => {
 						store.dispatch(selectThemeAC('POLICE_STAT'));
+						// (function(d, s, id) {
+						// 	console.log(d);
+						// 	console.log(s);
+						// 	console.log(id);
+  				// 		var js, fjs = d.getElementsByTagName(s)[0];
+  				// 		if (d.getElementById(id)) return;
+  				// 		js = d.createElement(s); js.id = id;
+  				// 		js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.7&appId=1750136755257522";
+  				// 		fjs.parentNode.insertBefore(js, fjs);
+						// }(document, 'script', 'facebook-jssdk'));
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 				<RR.Route 
