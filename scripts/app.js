@@ -12,6 +12,9 @@ const Map  = Immutable.Map,
 // window.isLocal = 
 // 	document.URL.match(/127.0.0.1/)[0] === '127.0.0.1' ? true : false;
 
+// FB Library
+window.FB = undefined;
+
 window.isLocal = document.URL.match(/127.0.0.1/) ? true : false;
 
 // window.isLocal = false;
@@ -5735,9 +5738,15 @@ var IndexNavList = React.createClass({
 	},
 
 	componentDidMount() {
+
 		if (this.props.listType === 'IntroNav') {
 			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
 		}
+		
+		// Reload the facebook button
+		// However, the FB functions are not available until the initial page loading successfully.
+		FB !== undefined ? FB.XFBML.parse() : null;
+		
 	},
 
 	componentDidUpdate() {
@@ -8437,7 +8446,7 @@ ReactDOM.render(
 								<HomeLink key='3'/>
 						]));
 
-						// Reload the facebook button.
+						
 						// FB.XFBML.parse();
 
 						store.dispatch(setThemesAC());
@@ -8482,22 +8491,14 @@ ReactDOM.render(
 							]));
 
 						cb(null, { nav: AppNav, main: AppMain });
+
+
 					}}
 					/>
 				<RR.Route 
 					path='/police_stat' 
 					getComponents={(nextState, cb) => {
 						store.dispatch(selectThemeAC('POLICE_STAT'));
-						// (function(d, s, id) {
-						// 	console.log(d);
-						// 	console.log(s);
-						// 	console.log(id);
-  				// 		var js, fjs = d.getElementsByTagName(s)[0];
-  				// 		if (d.getElementById(id)) return;
-  				// 		js = d.createElement(s); js.id = id;
-  				// 		js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.7&appId=1750136755257522";
-  				// 		fjs.parentNode.insertBefore(js, fjs);
-						// }(document, 'script', 'facebook-jssdk'));
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 				<RR.Route 
@@ -8525,3 +8526,4 @@ ReactDOM.render(
 		</RR.Router>
 	</RRd.Provider>, 
 	document.getElementById('CONTAINER'))
+
