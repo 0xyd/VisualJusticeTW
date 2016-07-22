@@ -8438,7 +8438,7 @@ ReactDOM.render(
 						]));
 
 						// Reload the facebook button.
-						FB.XFBML.parse();
+						// FB.XFBML.parse();
 
 						store.dispatch(setThemesAC());
 
