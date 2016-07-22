@@ -6637,11 +6637,11 @@ const DataBoard = React.createClass({
 
 			d3.select('#SKETCHPAD').remove();
 
-			if (nextProps.chartType === '直方圖') { 
-				if (this.props.chartType === '圓環比例圖') 
-					this.gpu.ringGraph.removeBoards();
+			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
+				this.gpu.ringGraph.removeBoards();
+
+			if (nextProps.chartType === '直方圖')
 				this.vizDataWithBarChart(nextProps, dataSheet)
-			}
 			else if (nextProps.chartType === '趨勢圖')
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
@@ -6946,7 +6946,7 @@ const DropdownMenu = React.createClass({
 
 		return (
 			<ul 
-				onMouseLeave={ this.props.collapseMenu } // working-spot
+				onMouseLeave={ this.props.collapseMenu }
 				className={
 					this.props.isDisplayed ? 
 						'dropdown-menu displayed' : 'dropdown-menu'}>
@@ -7101,7 +7101,6 @@ function expandDropdownAC(dropdownIndex) {
 	}
 }
 
-// working-spot
 function dropdownMenuCollapseAC(dropdownIndex) {
 	return {
 		type: 'COLLAPSE_DROPDOWN',
@@ -7181,7 +7180,6 @@ function AppReducer(state = INITIAL_STATE, action) {
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
 
-		// working-spot
 		case 'COLLAPSE_DROPDOWN':
 			return setDropdownMenuCollapse(state, action.dropdownIndex)
 
@@ -8288,7 +8286,6 @@ const mapStateToDropdownMenuProps = (state, props) => {
 					.get('isDisplayed')
 	}
 }
-// working-spot
 const mapDispatchToDropdownMenu = (dispatch, props) => {
 	return {
 		collapseMenu: (e) => {
