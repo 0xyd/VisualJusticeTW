@@ -5729,7 +5729,7 @@ var IndexNavList = React.createClass({
 
 		const navOptions = document.querySelectorAll('.nav-option');
 
-		for ( let i = 0; i < navOptions.length; i++ ){
+		for ( let i = 0; i < navOptions.length - 2; i++ ){
 			navOptions[i].firstChild.nextSibling.className = 'nav-option-hovermarker';
 		}
 	},
@@ -5752,37 +5752,20 @@ var IndexNavList = React.createClass({
 
 	render: function() {
 
-		// let listItems = [],
-			// l = this.state.nav.length;
-		// for ( var i=0; i<l; i++ ) {
-
-		// 	if (i === l - 1) {
-		// 		listItems.push(
-		// 			<IndexNavListSocialItem 
-		// 				key={i}
-		// 				elements={ this.state.nav[i] }
-		// 			/>
-		// 		);
-		// 	}
-		// 	else {
-		// 		listItems.push(
-		// 			<IndexNavListItem 
-		// 				key={i}
-		// 				link={ this.state.nav[i] } />
-		// 			);
-		// 	}
-		// }
 		let i = 0,
 				_items = [];
-
+		console.log(this.props.listItems);
 		for ( let listItem of this.props.listItems ) {
-			_items.push(<IndexNavListItem key={i++} link={ listItem } />)
+			_items.push(
+				<IndexNavListItem 
+					index={i}
+					key={i++} link={ listItem } 
+					listLength={ this.props.listItems.length }/>)
 		}
 
 		return (
 			<nav id="NAV" className="b12-col-md-12 b15-row-md-9">
 				<ul className="b12-col-md-12 b15-row-md-15">
-					 { /*listItems*/ }
 					 { _items }
 				</ul>
 			</nav>
@@ -5812,9 +5795,13 @@ var IndexNavListItem = React.createClass({
 			<li onMouseEnter={this.mouseEnterItem} 
 					onMouseLeave={this.mouseLeaveItem} 
 					className="nav-option b12-col-md-12 b12-row-md-2">
-					<span className='ver-helper'></span>
+				<span className='ver-helper'></span>
+
+				{ this.props.index < this.props.listLength - 2 ?
 					<div className={ this.state.isHovered ? 
-						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div>
+						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div> :
+					null
+				}
 				{ this.props.link }
 			</li>
 		)
@@ -8289,8 +8276,6 @@ const mapStateToDropdownMenuProps = (state, props) => {
 const mapDispatchToDropdownMenu = (dispatch, props) => {
 	return {
 		collapseMenu: (e) => {
-			console.log('props:');
-			console.log(props);
 			dispatch(dropdownMenuCollapseAC(props.menuIndex));
 		}
 	}
@@ -8430,11 +8415,17 @@ ReactDOM.render(
 									<img src="./src/see.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
 									<img src="./src/issue.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
 									<img src="./src/work.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
-										<div className='social-group'>
-												<iframe id='githubStar' className='social-btn'
-												src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-												frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-										</div>
+									<div className='social-group'>
+										<iframe id='githubStar' className='social-btn'
+											src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+											frameborder="0" scrolling="0" width="170px" height="20px">
+										</iframe>
+									</div>,
+									<div className="fb-like social-group" 
+										data-href="http://vizjust.tw" data-width="20px" 
+										data-layout="button_count" data-action="like" 
+										data-size="small" data-show-faces="true" data-share="true">
+									</div>
 								]));
 
 						/* Set up the initial index page for nav side. */
@@ -8464,12 +8455,16 @@ ReactDOM.render(
 									<a href='#MemberTitle'><img src='./src/memberintro-125px.png' /></a>,
 									<a href='#VisionTitle'><img src='./src/vision-125px.png' /></a>,
 									<div className='social-group'>
-									<iframe id='githubStar' className='social-btn'
-										src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
-										frameborder="0" scrolling="0" width="170px" height="20px"></iframe>
-									<iframe src="https://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fvizjust.tw&width=450&layout=standard&action=like&size=small&show_faces=true&share=true&height=80&appId=1750136755257522" width="450" height="80" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+										<iframe id='githubStar' className='social-btn'
+											src="https://ghbtns.com/github-btn.html?user=yudazilian&repo=VisualJusticeTW&type=star&count=true" 
+											frameborder="0" scrolling="0" width="170px" height="20px">
+										</iframe>
 									</div>,
-									
+									<div className="fb-like social-group" 
+										data-href="http://vizjust.tw" data-width="20px" 
+										data-layout="button_count" data-action="like" 
+										data-size="small" data-show-faces="true" data-share="true">
+									</div>
 							]));
 
 						store.dispatch(selectIntroAC());
