@@ -3076,7 +3076,307 @@ const DataFilterStateTree = {
 								}
 							]
 						}
-					}	
+					},
+					{
+						dataset: '103年戒護人力概況',
+						availableChartTypes: [
+							'散佈圖'
+						],
+						content: {
+							data: [
+								{
+									name: '戒護人力情形',
+									topics: [
+										[
+											{
+												name: '全國矯正機關',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '矯正機關類型',
+													t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: null
+												},
+												
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '矯正機關類型'
+														},
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國監獄',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													// t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '監獄'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '監獄'
+														}
+													],
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國看守所',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '看守所'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '看守所'
+														}
+													],
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國戒治所',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													// t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '戒治所'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '戒治所'
+														}
+													]
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+											{
+												name: '全國少年矯正機關',
+												axes: {
+													x: '總戒護人力',
+													y: '戒護人力比',
+													r: '收容人數',
+													c: '超收率',
+													// t: '矯正機關名稱'
+												},
+												intl: {
+													headers: [
+														'矯正機關類型',
+														'矯正機關名稱',
+														'矯正機關戒護人力',
+														'合署辦公機關',
+														'合署辦公機關戒護人力',
+														'矯正機關法定容額',
+														'收容人數', 
+														'超收率',
+														'戒護人力比'
+													],
+													filterSets: [
+														{
+															type : '矯正機關類型',
+															value: '少年觀護所'
+														},
+														{
+															type : '矯正機關類型',
+															value: '矯正學校'
+														},
+														{
+															type : '矯正機關類型',
+															value: '少年輔育院'
+														},
+														{
+															type: 'colorLinearGradient',
+															value: '少年矯正機關'
+														}
+													]
+												},
+												extl: {
+													url: null
+												},
+												tipFormat: {
+													title: '矯正機關名稱',
+													items: [
+														{
+															name: '收容人數'
+														},
+														{
+															name: '矯正機關法定容額'
+														},
+														{
+															name: '超收率'
+														},
+														{
+															name: '矯正機關戒護人力'
+														},
+														{
+															name: '戒護人力比'
+														}
+													]
+												}
+											},
+										]
+									]
+								}
+							]
+						}
+					}
 				]	
 			)
 		),
@@ -3675,6 +3975,67 @@ class StoryTeller {
 							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
+					}
+				]
+			},
+			// working-spot
+			{
+				dataset: '103年戒護人力概況',
+				data: '戒護人力情形',
+				vizType: '散佈圖',
+				fwdSteps: [
+					{
+						goto: '全國監獄',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '全國看守所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國戒治所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國少年矯正機關',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					}
+				],
+				bwdSteps: [
+					{
+						goto: '全國矯正機關',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '全國監獄',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '全國看守所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
+					},
+					{
+						goto: '全國戒治所',
+						transit: function(_this, params) {
+							return _this.DBUpdateScatterPlot.apply(_this, params);
+						}
 					}
 				]
 			}
@@ -5243,6 +5604,7 @@ class StoryTeller {
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
 		})
+		
 	}
 
 	// Decide which tales chain shoule be applied.
@@ -5253,7 +5615,6 @@ class StoryTeller {
 					chain.data === dataName && 
 					chain.vizType === vizTypeName
 		});
-
 	}
 	
 	// toTell interates through the animation processes.
@@ -5268,7 +5629,7 @@ class StoryTeller {
 		if (endDepth - startDepth > 0) {
 
 			for (let s = startDepth; s < endDepth; ++s) {
-				
+
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) 
 					this._vizStory.fwdSteps[s].end = 
@@ -5541,7 +5902,8 @@ const DataBoard = React.createClass({
 		return {
 			barGraph  : new barGraphClass(),
 			lineGraph : new lineGraphClass(),
-			ringGraph : new ringGraphClass()
+			ringGraph : new ringGraphClass(),
+			scatterPlot: new ScatterPlotClass()
 		}
 	})(),
 
@@ -5653,6 +6015,7 @@ const DataBoard = React.createClass({
 
 	// Visualizing data with ring chart
 	vizDataWithRingChart(props, dataSheet, update = false) {
+
 		let rG = this.gpu.ringGraph;
 
 		if (update) {
@@ -5670,6 +6033,23 @@ const DataBoard = React.createClass({
 						.drawMultiRings(
 							dataSheet.urls);
 		}
+	},
+
+	// Visualizing data with Scatter plot
+	vizDataWithScatterPlot(props, dataSheet, update = false) {
+
+		let sG = this.gpu.scatterPlot,
+				t  = this.tip;
+
+		// Find the topic.
+		const _topic = this.DBfindTopic(props);
+		
+		sG.initializeAPad().setChartSize()
+			.mappingData(
+				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t)
+			.then(function() {
+				t.appendCircleMouseOver(_topic.tipFormat);
+			});
 	},
 
 	// DBUpdateBar allows bar graph display different data in the same dataset.
@@ -5773,6 +6153,21 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
+	},
+
+	// working-spot
+	// Update the Scatter Plot
+	DBUpdateScatterPlot(props) {
+
+		let sG = this.gpu.scatterPlot,
+				t = this.tip;
+		const _topic = this.DBfindTopic(props);
+
+		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
+			.then(function() { 
+				t.appendCircleMouseOver(_topic.tipFormat); 
+			})
+
 	},
 
 	// Produce the params for forward steps and backward steps.
@@ -5886,10 +6281,9 @@ const DataBoard = React.createClass({
 						taleIndex = this.storyTeller._txtTaleChain.sections.findIndex((t, i) => {
 							return t.topicName === tName
 						});
-				
 				store.dispatch(setTaleIndexAC(taleIndex));
 			}
-			
+			// working-spot
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 
@@ -6109,7 +6503,7 @@ const DataBoard = React.createClass({
 						'1qz5R2oAgh-KGjxIPZrXUMrUeeRGnVwkLDWzjnlzoSV8',
 						'1IyFpSljBLk6XrP59di75M5Xy7lGd0KqEicraZCHCt-4'
 					],
-							urls: (function() {
+					urls: (function() {
 
 								if (isLocal) 
 									return ([
@@ -6151,10 +6545,14 @@ const DataBoard = React.createClass({
 									];
 									return urls
 								}
-							})()
-						}
-					] 
+					})()
+				},
+				{
+					name: '103年戒護人力概況',
+					url: './correction/103-security-ratio.json'
 				}
+			]
+		}
 	},
 
 	componentWillMount() {
@@ -6170,11 +6568,11 @@ const DataBoard = React.createClass({
 	shouldComponentUpdate(nextProps) {
 
 		if (nextProps.updateDataBoard) {
-
+			
 			// Select the chain 
 			this.storyTeller.decideVizStoryChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
-
+			
 			// Select the tales chain
 			this.storyTeller.decideTaleChain(
 				nextProps.dataset, nextProps.data, nextProps.chartType);
@@ -6239,15 +6637,18 @@ const DataBoard = React.createClass({
 
 			d3.select('#SKETCHPAD').remove();
 
-			if (nextProps.chartType === '直方圖') { 
-				if (this.props.chartType === '圓環比例圖') 
-					this.gpu.ringGraph.removeBoards();
+			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
+				this.gpu.ringGraph.removeBoards();
+
+			if (nextProps.chartType === '直方圖')
 				this.vizDataWithBarChart(nextProps, dataSheet)
-			}
 			else if (nextProps.chartType === '趨勢圖')
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet)
+			// working-spot
+			else if (nextProps.chartType === '散佈圖')
+				this.vizDataWithScatterPlot(nextProps, dataSheet);
 
 		} else if (shouldUpdate) {
 
@@ -6263,7 +6664,7 @@ const DataBoard = React.createClass({
 			
 			this.DBTopicUpdate(nextProps);
 			
-		} else if (isTopicSwitchingByTaleUd) {
+		} else if (isTopicSwitchingByTaleUd) { 
 
 			let steps = this.DBTopicStepsProducer(nextProps);
 
@@ -6542,11 +6943,13 @@ const DropdownMenu = React.createClass({
 		for (let option of this.props.options) 
 			menuItems.push(<StatFilterDropdownMenuItem
 				key={++key} optionIdx={optionIdx++} name={option} menuIndex={this.props.menuIndex}/>)
-		
 
 		return (
-			<ul className={this.props.isDisplayed ? 
-				'dropdown-menu displayed' : 'dropdown-menu'}>
+			<ul 
+				onMouseLeave={ this.props.collapseMenu }
+				className={
+					this.props.isDisplayed ? 
+						'dropdown-menu displayed' : 'dropdown-menu'}>
 					{ menuItems }
 			</ul>
 		)
@@ -6698,6 +7101,13 @@ function expandDropdownAC(dropdownIndex) {
 	}
 }
 
+function dropdownMenuCollapseAC(dropdownIndex) {
+	return {
+		type: 'COLLAPSE_DROPDOWN',
+		dropdownIndex: dropdownIndex
+	}
+}
+
 
 function selectDropdownOptionAC(theme, optionName, fieldsetIndex, dIndex, topicDepth) {
 	return {
@@ -6769,6 +7179,9 @@ function AppReducer(state = INITIAL_STATE, action) {
 
 		case 'EXPAND_DROPDOWN':
 			return setDropdownMenuStates(state, action.dropdownIndex)
+
+		case 'COLLAPSE_DROPDOWN':
+			return setDropdownMenuCollapse(state, action.dropdownIndex)
 
 		// Set the tale index
 		case 'SET_TALE_INDEX':
@@ -7168,8 +7581,6 @@ function selectIntro(state) {
 			return <IntroSections introSects={_mainCs} />
 		})());
 
-
-
 	return state.merge(mainState);
 }
 
@@ -7354,6 +7765,24 @@ function setDropdownMenuStates(state, index) {
 		return Menus
 	});
 	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
+}
+
+function setDropdownMenuCollapse(state, dropdownIndex) {
+
+	let newState = state.get('filterDropdownMenus')
+		.update((menus) => {
+
+			const originalOptions = menus.get(dropdownIndex).get('Options');
+
+			return menus.set(
+				dropdownIndex, 
+				Map()
+					.set('isDisplayed', false)
+					.set('Options', originalOptions))
+		});
+	
+	return state.delete('filterDropdownMenus').merge(Map().set('filterDropdownMenus', newState))
+
 }
 
 /* Option selecting reducser and its related function. */
@@ -7857,10 +8286,19 @@ const mapStateToDropdownMenuProps = (state, props) => {
 					.get('isDisplayed')
 	}
 }
+const mapDispatchToDropdownMenu = (dispatch, props) => {
+	return {
+		collapseMenu: (e) => {
+			console.log('props:');
+			console.log(props);
+			dispatch(dropdownMenuCollapseAC(props.menuIndex));
+		}
+	}
+}
 
 const StatFilterDropdownMenu = RRd.connect(
 	mapStateToDropdownMenuProps,
-	null
+	mapDispatchToDropdownMenu
 )(DropdownMenu);
 
 /* Connect DropdownMenuItem */
