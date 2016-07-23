@@ -1,8 +1,8 @@
 # Visualize Justice 看見思法
 
-<div style="text-align: center;">
+<p align="center">
 	<img src="https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/gh-pages/src/JusticeVisualizingLOGO_3_400x400.png" />
-</div>
+</p>
 
 視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))
 
