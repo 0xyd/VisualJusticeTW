@@ -5739,14 +5739,16 @@ var IndexNavList = React.createClass({
 
 	componentDidMount() {
 
+		console.log(Date.now());
+
 		if (this.props.listType === 'IntroNav') {
 			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
 		}
-		
+
 		// Reload the facebook button
 		// However, the FB functions are not available until the initial page loading successfully.
 		FB !== undefined ? FB.XFBML.parse() : null;
-		
+
 	},
 
 	componentDidUpdate() {
@@ -5833,10 +5835,27 @@ var IndexNavListItem = React.createClass({
 /* Major Themes are displaying on the index page. */
 var Theme = React.createClass({
 
+	// working-spot
+	componentWillMount() {
+		console.log('componentWillMount');
+		console.log(Date.now());
+		console.log(this.props.index);
+	},
+
+	// working-spot
+	componentDidMount() {
+		console.log('componentDidMount');
+		console.log(Date.now());
+		$v(ReactDOM.findDOMNode(this), { left: '0%' }, { duration: 2000 });
+	},
+
 	render: function() {
 
+		let style = { 
+			left: ((i) => { return -25 * (i+1) + '%' })(this.props.index) };
+
 		return (
-			<div id="" className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
+			<div style={ style } className="b12-col-md-3 b12-row-md-12 sect-part sect-part--box bd-right ">
 				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
 					<span className="ver-helper"></span>
 					<RR.Link to={ this.props.path }>
@@ -5884,6 +5903,7 @@ const IntroSections = React.createClass({
 	}
 });
 const IntroSection = React.createClass({
+
 	render() {
 		return (
 			<div className='introsec-wrapper b12-col-md-12'>
@@ -7049,6 +7069,17 @@ var Nav = React.createClass({
 
 var Main = React.createClass({
 
+	// working-spot
+	componentWillMount() { 
+		console.log('Main componemt will mount');
+		console.log(Date.now());
+	},
+
+	componentDidMount() { 
+		console.log('Main componemt did mount');
+		console.log(Date.now());
+	},
+
 	render: function() {
 		return (
 			<section id="BODY" className="b20-col-md-16 b12-row-md-12">
@@ -7273,12 +7304,14 @@ function setAppMainThemes(state) {
 	mainState = Immutable.Map().set(
 		'Main',
 		(() => {
-			let themeSections = [];
+			let themeSections = [],
+					i = 0;
 
 			for (let theme of themes) {
 				themeSections.push(
 					<Theme 
 						key={theme.key} 
+						index={i++}
 						info={theme.infoTxtImg}
 						path={theme.path}
 						style={theme.style}
@@ -8458,10 +8491,7 @@ ReactDOM.render(
 								<Sign key='2'/>,
 								<HomeLink key='3'/>
 						]));
-
 						
-						// FB.XFBML.parse();
-
 						store.dispatch(setThemesAC());
 
 						cb(null, { nav: AppNav, main: AppMain });
