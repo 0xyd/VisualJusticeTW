@@ -2,7 +2,7 @@
 
 ![Logo](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/gh-pages/src/JusticeVisualizingLOGO_3_400x400.png)
 
-視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))
+<div style="text-align: center;">視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))</div>
 
 ## 壹、宗旨
 
