@@ -1,7 +1,9 @@
-# Visualize Justice 看見思法
+# Visualize Justice [看見思法](http://vizjust.tw)
 
 <p align="center">
-	<img src="https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/gh-pages/src/JusticeVisualizingLOGO_3_400x400.png" />
+	<a href="http://vizjust.tw">
+		<img src="https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/gh-pages/src/JusticeVisualizingLOGO_3_400x400.png" />
+	</a>
 </p>
 
 視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))
