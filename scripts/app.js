@@ -5803,15 +5803,28 @@ var IndexNavListItem = React.createClass({
 		return (
 			<li onMouseEnter={this.mouseEnterItem} 
 					onMouseLeave={this.mouseLeaveItem} 
-					className="nav-option b12-col-md-12 b12-row-md-2">
-				<span className='ver-helper'></span>
-
-				{ this.props.index < this.props.listLength - 2 ?
-					<div className={ this.state.isHovered ? 
-						'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div> :
-					null
+					className={ 
+						this.props.index <  this.props.listLength - 2 ? 
+							'nav-option b12-col-md-12 b12-row-md-2' : 'nav-option b12-col-md-12'}>
+				{/* For the usual items */}
+				{
+					this.props.index < this.props.listLength - 2 ? 
+						<span className='ver-helper'></span> : null
 				}
-				{ this.props.link }
+				{ 
+					this.props.index < this.props.listLength - 2 ?
+						<div className={ 
+							this.state.isHovered ? 
+								'nav-option-hovermarker active' : 'nav-option-hovermarker'}></div> : null
+				}
+				{
+					this.props.index < this.props.listLength - 2 ? <span>{ this.props.link }</span> : null
+				}
+				{/* For the last two social buttons */}
+				{
+					this.props.index >= this.props.listLength - 2 ?
+						<div className='b12-col-md-12 b12-row-md-12'>{ this.props.link }</div> : null
+				}
 			</li>
 		)
 	}
