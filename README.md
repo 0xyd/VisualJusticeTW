@@ -31,8 +31,14 @@
 * 四、矯正統計：因判決定讞而移送矯正機關執行刑期之人數，假釋或期滿之收容人人數，各項犯罪之統計人數。
 * 五、調查統計：調查局以偵辦槍械、毒品、資訊以及經濟犯罪最為知名。(即將推出。)
   
-  
-## 參、資料來源
+## 肆、更多的資訊：
+
+* g0v tw hackath19n — 提案— 看見思法：屬於人民的視覺司法資料庫 [投影片](http://www.slideshare.net/YuDeLin2/g0v-63193288)
+* g0v tw hackath19n — 提案— 看見思法：屬於人民的視覺司法資料庫 [youtube影片](https://www.youtube.com/watch?v=CSpus99gmno)
+* 一秒搞懂政府網站創意競賽[英雄榜](https://wdc.tca.org.tw/index.html)
+
+
+## 伍、資料來源
 
 * [司法院統計處](http://www.judicial.gov.tw/juds/)
 * [中華民國法務部](http://www.rjsd.moj.gov.tw/rjsdweb/)
