@@ -1,4 +1,6 @@
-# Visualize Justice [看見思法](http://vizjust.tw)
+# Visualize Justice 看見思法
+
+視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))
 
 <p align="center">
 	<a href="http://vizjust.tw">
@@ -6,15 +8,29 @@
 	</a>
 </p>
 
-視覺化的台灣司法資料([vizjust.tw](http://vizjust.tw))
+<div id="fb-root"></div>
+<script type="text/javascript">
+	(function(d, s, id) {
+  		var js, fjs = d.getElementsByTagName(s)[0];
+  		if (d.getElementById(id)) return;
+  		js = d.createElement(s); js.id = id;
+  			js.asyc = true;
+  		js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.7&appId=1750136755257522";
+  		fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="fb-like" data-href="http://vizjust.tw" data-layout="standard" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+
 
 ## 壹、宗旨
 
-鑒於台灣司法資料之艱澀，民眾不易得知台灣司法體系之概況。故有志將台灣法務部公開之相關資料，使用前端工程與設計美學，建置兼具互動性與設計感之視覺化資料，讓全體國人能夠藉由一覽台灣法律事務處理之概況。開放政府資料是本世紀資訊的潮流，筆者也自我期許本專案成為台灣司法資料開放的重要一員。
+鑒於台灣司法資料之艱澀，民眾不易得知台灣司法體系之概況。故有志將台灣法務部公開之相關資料，使用前端工程與設計美學，建置兼具互動性與設計感之視覺化資料，讓全體國人能夠藉由一覽台灣法律事務處理之概況。開放政府資料是本世紀資訊的潮流，作者也自我期許本專案成為司法資料開放的重要一員。
+
+在不久的將來，也要成立非政府組織，致力於司法資料的開放與透明，以保障人權並改革司法。
 
 ## 貳、科技
 
-看見思法是一個藉著資料視覺化，將台灣司法系統從過去到現在的運作情形，以數據的角度切入並詮釋。目前網站的所有的程式碼，都分毫不少的放在github上，歡迎所有有興趣的人去瀏覽，甚至貢獻。
+看見思法是一個藉著資料視覺化，將台灣司法系統從過去到現在的運作情形，以數據的角度切入並詮釋。目前網站的所有的程式碼，都分毫不少的放在github上，歡迎所有有興趣的人去研究或者是貢獻。
 
 我們採用許多知名的前端技術，我們採用的資料視覺化工具為[d3js](https://d3js.org)，[Reactjs](https://facebook.github.io/react/)實行UI元件的實作，[Reduxjs](http://redux.js.org)則是App state概念的實踐。除此之外，我們也用[React-router](https://github.com/reactjs/react-router)使我們的Web App在沒有後端的支持下，能用異步的方式達到Routing的效果。
 
