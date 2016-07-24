@@ -5837,15 +5837,10 @@ var Theme = React.createClass({
 
 	// working-spot
 	componentWillMount() {
-		console.log('componentWillMount');
-		console.log(Date.now());
-		console.log(this.props.index);
 	},
 
 	// working-spot
 	componentDidMount() {
-		console.log('componentDidMount');
-		console.log(Date.now());
 		$v(ReactDOM.findDOMNode(this), { left: '0%' }, { duration: 2000 });
 	},
 
@@ -6998,11 +6993,49 @@ const DropdownMenuItem = React.createClass({
 
 /* ***** Basic components: The components that are used almost everywhere. ***** */
 const Logo = React.createClass({
+
+	rotate(dir) {
+
+		let logoBadgeNd = 
+				ReactDOM
+					.findDOMNode(this)
+					.firstChild.firstChild,
+				logoLightNd =
+					logoBadgeNd.nextSibling; 
+		
+		if ( dir === 'inv' ) {
+			$v(logoBadgeNd, { rotateZ: '360deg' }, { easing: "ease", duration: 3000 });
+			$v(logoLightNd, { rotateZ: '-360deg' }, { easing: "ease", duration: 3000 });
+		} else if ( dir === 'direct' ) {
+			$v(logoBadgeNd, { rotateZ: '-360deg' }, { easing: "ease", duration: 3000 });
+			$v(logoLightNd, { rotateZ: '360deg' }, { easing: "ease", duration: 3000 });
+		}
+
+		logoBadgeNd.style.transfrom = null;
+		logoLightNd.style.transfrom = null;
+	},
+
+
+	componentWillReceiveProps(nextProps) {
+		console.log('nextProps: ', nextProps);
+		this.rotate(nextProps.rotateState);
+	},
+
+
+	shouldComponentUpdate() {
+		return true
+	},
+
 	render: function() {
 		return (
 			<div id="LOGO-WRAPPER" className="b12-col-md-12 b15-row-md-5">
 				<RR.Link to='/'>
-					<div id="LOGO" className="b12-col-md-12 b12-row-md-12"></div>
+					<div id="LOGO-badge" className="b12-col-md-12 b12-row-md-12"></div>
+					<div id="LOGO-light" className="b12-col-md-12 b12-row-md-12"></div>
+					<div id="LOGO-court" className="b12-col-md-12 b12-row-md-12"></div>
+					<div id="LOGO-eye" className="b12-col-md-12 b12-row-md-12"></div>
+					<div id="LOGO-shadow" className="b12-col-md-12 b12-row-md-12">
+					</div>
 				</RR.Link>
 			</div>
 		)
@@ -7069,15 +7102,11 @@ var Nav = React.createClass({
 
 var Main = React.createClass({
 
-	// working-spot
 	componentWillMount() { 
-		console.log('Main componemt will mount');
-		console.log(Date.now());
 	},
 
 	componentDidMount() { 
-		console.log('Main componemt did mount');
-		console.log(Date.now());
+		
 	},
 
 	render: function() {
@@ -7091,6 +7120,12 @@ var Main = React.createClass({
 
 /* ***** Action Creators ***** */
 /* "AC" is the postfix for action creators */
+function setLogoRotationAC() {
+	return {
+		type: 'ROTATE_LOGO'
+	}
+}
+
 
 function setAppNavAC(components) {
 	return {
@@ -7205,6 +7240,9 @@ function AppReducer(state = INITIAL_STATE, action) {
 		case 'SET_MAIN':
 			return setAppMainIndex(state, action.components)
 
+		case 'ROTATE_LOGO':
+			return setLogoRotation(state)
+
 		case 'SET_THEMES':
 			return setAppMainThemes(state)
 
@@ -7258,6 +7296,7 @@ function setAppNavList(state, listType, components) {
 }
 
 function setAppMainThemes(state) {
+
 	// The 4 major themes on the Index page.
 	let themes = [
 		{
@@ -7324,6 +7363,15 @@ function setAppMainThemes(state) {
 				})()
 		);
 	return state.merge(mainState)
+}
+
+function setLogoRotation(state) {
+	
+	const currentState = state.get('logoRotateState');
+	const logoState = 
+		Map().set('logoRotateState', currentState === 'inv' ? 'direct' : 'inv');
+	
+	return state.merge(logoState)
 }
 
 function selectIntro(state) {
@@ -7630,7 +7678,7 @@ function selectIntro(state) {
 function selectAppTheme(state, theme) {
 	
 	let navComponents  = [
-			<Logo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
+			<ActiveLogo key='0'/>, <StatTitle key='1'/>, <StatFilter key='2'/>, <HomeLink key='3'/>],
 		mainComponents = [<StatDataBoard key='0' />];
 
 	const navState  = Map().set('Nav', navComponents);
@@ -7714,7 +7762,7 @@ function selectAppTheme(state, theme) {
 			defaultFilterDropdownMenus = _setDefaultDropdownMenus('judicial');
 
 			return state.merge(
-				navState, mainState,
+				navState, mainState, 
 				themeState, statTitle, filterNames, 
 				defaultDataset, defaultData, defaultChartType, 
 				defaultTopic, defaultTopicDepth, defaultFilterDropdownMenus, 
@@ -8250,6 +8298,39 @@ function setState(key, value) {
 
 /* ***** Mapping the things from container components to prsentational components ***** */
 /* Connect the redux's app state to Nav Component. */
+const mapStateToLogo = (state) => {
+	return { 
+		rotateState: state.get('logoRotateState') 
+	}
+}
+// const mapDispatchToLogo = (dispatch, props) => {
+// 	return {
+// 		rotateAnimate: (e) => {
+// 			console.log(e);
+// 			console.log('Rotate the logo');
+
+// 			let logoNd = 
+// 				ReactDOM
+// 					.findDOMNode(this)
+// 					.firstChild.firstChild,
+// 				logoBadgeNd = logoNd.firstChild,
+// 				logoLightNd = logoBadgeNd.firstChild,
+// 				logoCourtNd = logoLightNd.firstChild,
+// 				logoEyeNd   = logoCourtNd.firstChild;
+
+// 			$v(logoBadgeNd, { rotateZ: '360deg' }, "ease");
+// 			$v(logoLightNd, { rotateZ: '-360deg' }, "ease");
+// 		}
+// 	}
+// }
+
+const ActiveLogo = RRd.connect(
+	mapStateToLogo,
+	// mapDispatchToLogo
+	null
+)(Logo);
+
+/* Connect the redux's app state to Nav Component. */
 const mapStateToAppNavProps = (state) => {
 	return {
 		childrenComponents: state.get('Nav')
@@ -8448,6 +8529,8 @@ const TaleIndicator = RRd.connect(
 	mapDispatchToIndicators
 	)(TagentalIndicator);
 
+
+
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
 
@@ -8486,15 +8569,17 @@ ReactDOM.render(
 						/* Set up the initial index page for nav side. */
 						store.dispatch(
 							setAppNavAC([
-								<Logo key='0'/>,
+								<ActiveLogo key='0'/>,
 								<AppNavList key='1' />,
 								<Sign key='2'/>,
 								<HomeLink key='3'/>
 						]));
 						
 						store.dispatch(setThemesAC());
+						store.dispatch(setLogoRotationAC());
 
 						cb(null, { nav: AppNav, main: AppMain });
+						
 				}} />
 				<RR.Route 
 					path='/aboutus'
@@ -8523,37 +8608,38 @@ ReactDOM.render(
 							]));
 
 						store.dispatch(selectIntroAC());
-
+						store.dispatch(setLogoRotationAC());
 						// Set up the intro theme
 						store.dispatch(
 							setAppNavAC([
-								<Logo key='0' />,
+								<ActiveLogo key='0' />,
 								<AppNavList key='1'/>,
 								<Sign key='2'/>,
 								<HomeLink key='3' />
 							]));
 
 						cb(null, { nav: AppNav, main: AppMain });
-
-
 					}}
 					/>
 				<RR.Route 
 					path='/police_stat' 
 					getComponents={(nextState, cb) => {
 						store.dispatch(selectThemeAC('POLICE_STAT'));
+						store.dispatch(setLogoRotationAC());
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 				<RR.Route 
 					path='/prosecute_stat' 
 					getComponents={(nextState, cb) => {
 						store.dispatch(selectThemeAC('PROSECUTION_STAT'));
+						store.dispatch(setLogoRotationAC());
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 				<RR.Route 
 					path='/judicial_stat' 
 					getComponents={(nextState, cb) => {
 						store.dispatch(selectThemeAC('JUDICIAL_STAT'));
+						store.dispatch(setLogoRotationAC());
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 				<RR.Route 
@@ -8562,11 +8648,11 @@ ReactDOM.render(
 
 						/* Routes to the correction statistic page when the url match. */
 						store.dispatch(selectThemeAC('CORRECTION_STAT'));
-
+						store.dispatch(setLogoRotationAC());
 						cb(null, { nav: AppNav, main: AppMain });
 					}}/>
 			</RR.Route>
 		</RR.Router>
 	</RRd.Provider>, 
-	document.getElementById('CONTAINER'))
+	document.getElementById('CONTAINER'));
 
