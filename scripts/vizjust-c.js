@@ -5,6 +5,8 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var $v = Velocity;
@@ -63,9 +65,13 @@ var colorClass = function colorClass() {
 
 		'重大竊盜破獲件數': '#9BC53D',
 		'重大竊盜尚未破獲件數': '#E55934',
+		'重大竊盜嫌疑犯人數': '#F24B48',
+		'重大竊盜破獲率': '#EDAFB8',
 
 		'普通竊盜破獲件數': '#5BC0EB',
 		'普通竊盜尚未破獲件數': '#FA7921',
+		'普通竊盜嫌疑犯人數': '#DB8A62',
+		'普通竊盜破獲率': '#E56322',
 
 		'汽機車竊盜案件': '#00A8E8',
 
@@ -77,6 +83,8 @@ var colorClass = function colorClass() {
 		'機車竊盜破獲件數': '#35C3D6',
 		'機車竊盜尚未破獲件數': '#FF1654',
 		'機車竊盜嫌疑犯人數': '#FFD000',
+
+		'非汽機車竊盜發生件數': '#AD0625',
 
 		// For 殺人罪 (Prosecution)
 
@@ -1248,16 +1256,25 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 	// Rows for max combined value
 	return rowData.map(function (row, i) {
 
-		var maxVal = 0;
+		var mergedVal = 0;
 
 		for (var i in mergedCols) {
-			maxVal += parseFloat(row[mergedCols[i]]);
-		}return maxVal;
+			mergedVal += parseFloat(row[mergedCols[i]]);
+		}return mergedVal;
 	});
 };
+/* 
+	cOption: 
+		the option for color selecting, 
+		most of the time, the dOption is used to pick up the color value.
+		However, dOption may not be useful in some circumstances like the combined header selection.
+		The circumstance like this needs cOption for filling color.
 
-// barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
-barGraphClass.prototype.update = function (xLabel, yLabel, dOption) {
+*/
+// working-spot: accept the multiple options.
+barGraphClass.prototype.update = function (xLabel, yLabel, dOption, cOption) {
+
+	console.log('cOption: ', cOption);
 
 	var self = this;
 
@@ -1283,15 +1300,61 @@ barGraphClass.prototype.update = function (xLabel, yLabel, dOption) {
 		// The positions of bars after update
 		c_Pos = [];
 
-		// working-spot-2: store the data from the bars
+		// store the data from the bars
 		var data = [];
 
-		_bars.each(function (d, i) {
-			data.push(d);
-		});
+		/* Combined options have to apply combined value for data presenting */
+		var isCombinedOpts = (typeof dOption === 'undefined' ? 'undefined' : _typeof(dOption)) === 'object' ? true : false;
 
-		self._setLinearYScale(data, dOption);
-		self._setYAxis('left', data, dOption);
+		if (!isCombinedOpts) {
+
+			// Access the data of each bar.
+			_bars.each(function (d, i) {
+
+				data.push(d);
+			});
+
+			self._setLinearYScale(data, dOption);
+			self._setYAxis('left', data, dOption);
+		} else {
+
+			// Store the combined value of multiple options.
+			_bars.call(function (rects) {
+
+				var rectsData = [];
+
+				var _iteratorNormalCompletion = true;
+				var _didIteratorError = false;
+				var _iteratorError = undefined;
+
+				try {
+					for (var _iterator = rects[0][Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+						var rect = _step.value;
+
+						rectsData.push(rect.__data__);
+					}
+				} catch (err) {
+					_didIteratorError = true;
+					_iteratorError = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion && _iterator.return) {
+							_iterator.return();
+						}
+					} finally {
+						if (_didIteratorError) {
+							throw _iteratorError;
+						}
+					}
+				}
+
+				data = self._mergedColVal(rectsData, dOption);
+
+				// Reset the ycale for combined values.
+				self._setLinearYScale(data, null);
+				self._setYAxis('left', data, null);
+			});
+		}
 
 		// set xy axes' labels.
 		self._updateXAxisLabel(xLabel);
@@ -1305,20 +1368,29 @@ barGraphClass.prototype.update = function (xLabel, yLabel, dOption) {
 			y: function y(d, i) {
 
 				// get current positions of bars which will use for bar transition animations.
-				c_Pos.push({
-					x: this.getAttribute('x'),
-					y: self.yScale(parseFloat(d[dOption]))
-				});
+				if (!isCombinedOpts) {
+					c_Pos.push({
+						x: this.getAttribute('x'),
+						y: self.yScale(parseFloat(d[dOption]))
+					});
+				} else {
+					c_Pos.push({
+						x: this.getAttribute('x'),
+						y: self.yScale(data[i])
+					});
+				}
+
 				return c_Pos[i].y;
 			},
 
-			height: function height(d) {
+			height: function height(d, i) {
 
-				return self.chartHeight - self.yScale(parseFloat(d[dOption]));
+				if (!isCombinedOpts) return self.chartHeight - self.yScale(parseFloat(d[dOption]));else return self.chartHeight - self.yScale(parseFloat(data[i]));
 			},
 
 			fill: function fill(d, i) {
-				return colorObj.bar[dOption];
+				console.log(colorObj.bar[cOption]);
+				return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption];
 			}
 		}).each('end', function (d, i) {
 
@@ -1342,8 +1414,8 @@ barGraphClass.prototype.update = function (xLabel, yLabel, dOption) {
 		.attr('x', function (d, i) {
 			var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
 			return parseInt(this.getAttribute('x')) + deltaX;
-		}).text(function (d) {
-			return d[dOption];
+		}).text(function (d, i) {
+			return isCombinedOpts ? data[i] : d[dOption];
 		});
 
 		// Update Y axis
@@ -2408,28 +2480,28 @@ ringGraphClass.prototype.drawMultiRings = function (paths) {
 };
 
 ringGraphClass.prototype.updateRings = function () {
-	var _iteratorNormalCompletion = true;
-	var _didIteratorError = false;
-	var _iteratorError = undefined;
+	var _iteratorNormalCompletion2 = true;
+	var _didIteratorError2 = false;
+	var _iteratorError2 = undefined;
 
 	try {
 
-		for (var _iterator = this.ringGroup[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-			var r = _step.value;
+		for (var _iterator2 = this.ringGroup[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+			var r = _step2.value;
 
 			this.updateRing(r);
 		}
 	} catch (err) {
-		_didIteratorError = true;
-		_iteratorError = err;
+		_didIteratorError2 = true;
+		_iteratorError2 = err;
 	} finally {
 		try {
-			if (!_iteratorNormalCompletion && _iterator.return) {
-				_iterator.return();
+			if (!_iteratorNormalCompletion2 && _iterator2.return) {
+				_iterator2.return();
 			}
 		} finally {
-			if (_didIteratorError) {
-				throw _iteratorError;
+			if (_didIteratorError2) {
+				throw _iteratorError2;
 			}
 		}
 	}
@@ -2696,27 +2768,27 @@ tipClass.prototype.appendCircleMouseOver = function (format) {
 			var info = '';
 
 			// Concating the list of message
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
+			var _iteratorNormalCompletion3 = true;
+			var _didIteratorError3 = false;
+			var _iteratorError3 = undefined;
 
 			try {
-				for (var _iterator2 = format.items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var item = _step2.value;
+				for (var _iterator3 = format.items[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+					var item = _step3.value;
 
 					info += '<span>' + item.name + ': ' + d[item.name] + '</span>';
 				}
 			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
+				_didIteratorError3 = true;
+				_iteratorError3 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
+					if (!_iteratorNormalCompletion3 && _iterator3.return) {
+						_iterator3.return();
 					}
 				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
+					if (_didIteratorError3) {
+						throw _iteratorError3;
 					}
 				}
 			}
@@ -3131,13 +3203,13 @@ var ScatterPlotClass = function () {
 					if (selectAll) _circles.push(this);else {
 
 						// Iterative though the filter setting to get the chosen circles
-						var _iteratorNormalCompletion3 = true;
-						var _didIteratorError3 = false;
-						var _iteratorError3 = undefined;
+						var _iteratorNormalCompletion4 = true;
+						var _didIteratorError4 = false;
+						var _iteratorError4 = undefined;
 
 						try {
-							for (var _iterator3 = filterSets[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-								var set = _step3.value;
+							for (var _iterator4 = filterSets[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+								var set = _step4.value;
 
 								if (d[set.type] === set.value) {
 									_circles.push(this);
@@ -3150,16 +3222,16 @@ var ScatterPlotClass = function () {
 
 							// Select those are not picked out.
 						} catch (err) {
-							_didIteratorError3 = true;
-							_iteratorError3 = err;
+							_didIteratorError4 = true;
+							_iteratorError4 = err;
 						} finally {
 							try {
-								if (!_iteratorNormalCompletion3 && _iterator3.return) {
-									_iterator3.return();
+								if (!_iteratorNormalCompletion4 && _iterator4.return) {
+									_iterator4.return();
 								}
 							} finally {
-								if (_didIteratorError3) {
-									throw _iteratorError3;
+								if (_didIteratorError4) {
+									throw _iteratorError4;
 								}
 							}
 						}
@@ -3191,13 +3263,13 @@ var ScatterPlotClass = function () {
 					self.g._setRScale(_data, rLabel);
 
 					// Shift the circles to the new positions
-					var _iteratorNormalCompletion4 = true;
-					var _didIteratorError4 = false;
-					var _iteratorError4 = undefined;
+					var _iteratorNormalCompletion5 = true;
+					var _didIteratorError5 = false;
+					var _iteratorError5 = undefined;
 
 					try {
-						for (var _iterator4 = _circles[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-							var c = _step4.value;
+						for (var _iterator5 = _circles[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+							var c = _step5.value;
 
 							d3.select(c).transition().duration(1000).style('display', 'inline-block').attr({
 								r: function r(_d) {
@@ -3217,27 +3289,27 @@ var ScatterPlotClass = function () {
 
 						// Hide those are not seleted.
 					} catch (err) {
-						_didIteratorError4 = true;
-						_iteratorError4 = err;
+						_didIteratorError5 = true;
+						_iteratorError5 = err;
 					} finally {
 						try {
-							if (!_iteratorNormalCompletion4 && _iterator4.return) {
-								_iterator4.return();
+							if (!_iteratorNormalCompletion5 && _iterator5.return) {
+								_iterator5.return();
 							}
 						} finally {
-							if (_didIteratorError4) {
-								throw _iteratorError4;
+							if (_didIteratorError5) {
+								throw _iteratorError5;
 							}
 						}
 					}
 
-					var _iteratorNormalCompletion5 = true;
-					var _didIteratorError5 = false;
-					var _iteratorError5 = undefined;
+					var _iteratorNormalCompletion6 = true;
+					var _didIteratorError6 = false;
+					var _iteratorError6 = undefined;
 
 					try {
-						for (var _iterator5 = _r_circles[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-							var c = _step5.value;
+						for (var _iterator6 = _r_circles[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+							var c = _step6.value;
 
 							d3.select(c).transition().duration(1000).style('display', 'none');
 						} // Select the texts
@@ -3286,16 +3358,16 @@ var ScatterPlotClass = function () {
 
 						// 		});
 					} catch (err) {
-						_didIteratorError5 = true;
-						_iteratorError5 = err;
+						_didIteratorError6 = true;
+						_iteratorError6 = err;
 					} finally {
 						try {
-							if (!_iteratorNormalCompletion5 && _iterator5.return) {
-								_iterator5.return();
+							if (!_iteratorNormalCompletion6 && _iterator6.return) {
+								_iterator6.return();
 							}
 						} finally {
-							if (_didIteratorError5) {
-								throw _iteratorError5;
+							if (_didIteratorError6) {
+								throw _iteratorError6;
 							}
 						}
 					}
@@ -3359,13 +3431,13 @@ var ScatterPlotClass = function () {
 				var i = 0,
 				    _ = [];
 
-				var _iteratorNormalCompletion6 = true;
-				var _didIteratorError6 = false;
-				var _iteratorError6 = undefined;
+				var _iteratorNormalCompletion7 = true;
+				var _didIteratorError7 = false;
+				var _iteratorError7 = undefined;
 
 				try {
-					for (var _iterator6 = _circles[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-						var _c = _step6.value;
+					for (var _iterator7 = _circles[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+						var _c = _step7.value;
 
 						var c = d3.select(_c),
 						    r = parseFloat(c.attr('r')),
@@ -3403,16 +3475,16 @@ var ScatterPlotClass = function () {
 						i++;
 					}
 				} catch (err) {
-					_didIteratorError6 = true;
-					_iteratorError6 = err;
+					_didIteratorError7 = true;
+					_iteratorError7 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion6 && _iterator6.return) {
-							_iterator6.return();
+						if (!_iteratorNormalCompletion7 && _iterator7.return) {
+							_iterator7.return();
 						}
 					} finally {
-						if (_didIteratorError6) {
-							throw _iteratorError6;
+						if (_didIteratorError7) {
+							throw _iteratorError7;
 						}
 					}
 				}

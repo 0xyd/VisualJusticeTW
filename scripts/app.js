@@ -289,21 +289,22 @@ const DataFilterStateTree = {
 								{
 									name: '非汽機車竊盜發生件數',
 									topics: [
-										{
-											name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數']
-												}
-										},
-										{
+										[
+											{
+												name: '總數',
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: ['重大竊盜發生件數', '普通竊盜發生件數'],
+														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數']
+													}
+											},
+											{
 												name: '重大竊盜案件數',
 												axes: {
 													x: '民國',
@@ -313,7 +314,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
+													header: ['重大竊盜發生件數'],
 													headers: ['重大竊盜發生件數']
 												}
 											},
@@ -333,17 +334,17 @@ const DataFilterStateTree = {
 											},
 											{
 												name: '重大竊盜破獲與否件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
-												}
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
+													}
 											},
 											{
 												name: '重大竊盜案破獲率',
@@ -357,64 +358,65 @@ const DataFilterStateTree = {
 												intl: {
 													header: '',
 													headers: ['重大竊盜破獲率']
+													}
+												},
+												{
+													name: '普通竊盜案件數',
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['普通竊盜發生件數']
+													}
+												},
+												{
+													name: '普通竊盜嫌疑犯人數',
+													axes: {
+														x: '民國',
+														y: '人數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['普通竊盜嫌疑犯人數']
+													}
+												},
+												{
+													name: '普通竊盜破獲與否件數',
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
+													}
+												},
+												{
+													name: '普通竊盜案破獲率',
+													axes: {
+														x: '民國',
+														y: '破獲率'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['普通竊盜破獲率']
+													}
 												}
-											},
-											{
-												name: '普通竊盜案件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜發生件數']
-												}
-											},
-											{
-												name: '普通竊盜嫌疑犯人數',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜嫌疑犯人數']
-												}
-											},
-											{
-												name: '普通竊盜破獲與否件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
-												}
-											},
-											{
-												name: '普通竊盜案破獲率',
-												axes: {
-													x: '民國',
-													y: '破獲率'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜破獲率']
-												}
-											}
+										]
 									],
 								},
 
@@ -3498,11 +3500,20 @@ const DataFilterStateTree = {
 	// Find topic
 	findTopic: function(key, datasetName, dataName, chartTypeName, topicName) {
 
+		// working-spot
+		console.log(datasetName);
+		console.log(dataName);
+		console.log(chartTypeName);
 		const state = this.selectState(key);
 
 		const _datasetIndex = this.findDatasetIndex(key, datasetName);
 		const _dataIndex = this.findDataIndex(key, datasetName, dataName);
 		const _chartTypeIndex = this.findChartTypeIndex(key, datasetName, chartTypeName);
+
+		// working-spot
+		console.log(_datasetIndex);
+		console.log(_dataIndex);
+		console.log(_chartTypeIndex);
 
 		return state.get(_datasetIndex)
 				.content.data[_dataIndex].topics[_chartTypeIndex]
@@ -3587,60 +3598,127 @@ class StoryTeller {
 					{
 						goto: '重大竊盜發生件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('重大竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
-						goto: '重大竊盜嫌疑人數',
+						goto: '重大竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('重大竊盜嫌疑犯人數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '重大竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBupdateStackBars.apply(_this, params);
+							params.push('重大竊盜破獲與否件數');
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '重大竊盜案破獲率',
-						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+						transit: (_this, params) => {
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜發生件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('普通竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},{
 						goto: '普通竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('普通竊盜嫌疑犯人數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBupdateStackBars.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					}
 				],
-				bwdSteps: []
+				// working-spot
+				bwdSteps: [
+					{
+						goto: '總數',
+						transit: (_this, params) => {	
+							params.push(['重大竊盜發生件數', '普通竊盜發生件數'], '非汽機車竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜發生件數',
+						transit: (_this, params) => {	
+							params.push('重大竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜嫌疑犯人數',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜案破獲率',
+						transit: (_this, params) => {
+							params.push('重大竊盜破獲率');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜發生件數',
+						transit: (_this, params) => {	
+							params.push('普通竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},{
+						goto: '普通竊盜嫌疑犯人數',
+						transit: (_this, params) => {	
+							params.push('普通竊盜嫌疑犯人數');
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					}
+				]
 			},
 			{
 				dataset: '竊盜案件',
@@ -3981,7 +4059,6 @@ class StoryTeller {
 					}
 				]
 			},
-			// working-spot
 			{
 				dataset: '103年戒護人力概況',
 				data: '戒護人力情形',
@@ -5739,8 +5816,6 @@ var IndexNavList = React.createClass({
 
 	componentDidMount() {
 
-		console.log(Date.now());
-
 		if (this.props.listType === 'IntroNav') {
 			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
 		}
@@ -5835,11 +5910,9 @@ var IndexNavListItem = React.createClass({
 /* Major Themes are displaying on the index page. */
 var Theme = React.createClass({
 
-	// working-spot
 	componentWillMount() {
 	},
 
-	// working-spot
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { left: '0%' }, { duration: 2000 });
 	},
@@ -5991,6 +6064,7 @@ const DataBoard = React.createClass({
 					false,
 					false,
 					// _data.exceptHeaders
+					// working-spot
 					_topic.intl.mHeaders
 				)
 				.then(function() {
@@ -6077,17 +6151,19 @@ const DataBoard = React.createClass({
 	},
 
 	// DBUpdateBar allows bar graph display different data in the same dataset.
-	DBUpdateBar(props, header) {
+	DBUpdateBar(props, header, colorOption) {
 		
 		let bG = this.gpu.barGraph,
 				t  = this.tip;
 		
+		// working-spot
 		const _topic = this.DBfindTopic(props);
-
+		
 		return bG.update(
 			_topic.axes.x,
 			_topic.axes.y,
-			props.data === header ? props.data : header
+			props.data === header ? props.data : header,
+			!colorOption ?  null : colorOption
 			)
 			.then(function() {
 				t.appendBarMouseOver(props.data);
@@ -6097,7 +6173,7 @@ const DataBoard = React.createClass({
 
 	// Transform from bar to stack bars.
 	DBtransBarToStackBar(props) {
-
+		console.log(props);
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
@@ -6670,7 +6746,6 @@ const DataBoard = React.createClass({
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet)
-			// working-spot
 			else if (nextProps.chartType === '散佈圖')
 				this.vizDataWithScatterPlot(nextProps, dataSheet);
 
@@ -7017,7 +7092,6 @@ const Logo = React.createClass({
 
 
 	componentWillReceiveProps(nextProps) {
-		console.log('nextProps: ', nextProps);
 		this.rotate(nextProps.rotateState);
 	},
 
@@ -8303,30 +8377,9 @@ const mapStateToLogo = (state) => {
 		rotateState: state.get('logoRotateState') 
 	}
 }
-// const mapDispatchToLogo = (dispatch, props) => {
-// 	return {
-// 		rotateAnimate: (e) => {
-// 			console.log(e);
-// 			console.log('Rotate the logo');
-
-// 			let logoNd = 
-// 				ReactDOM
-// 					.findDOMNode(this)
-// 					.firstChild.firstChild,
-// 				logoBadgeNd = logoNd.firstChild,
-// 				logoLightNd = logoBadgeNd.firstChild,
-// 				logoCourtNd = logoLightNd.firstChild,
-// 				logoEyeNd   = logoCourtNd.firstChild;
-
-// 			$v(logoBadgeNd, { rotateZ: '360deg' }, "ease");
-// 			$v(logoLightNd, { rotateZ: '-360deg' }, "ease");
-// 		}
-// 	}
-// }
 
 const ActiveLogo = RRd.connect(
 	mapStateToLogo,
-	// mapDispatchToLogo
 	null
 )(Logo);
 
@@ -8528,8 +8581,6 @@ const TaleIndicator = RRd.connect(
 	null,
 	mapDispatchToIndicators
 	)(TagentalIndicator);
-
-
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);
