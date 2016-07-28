@@ -294,13 +294,14 @@ const DataFilterStateTree = {
 												name: '總數',
 													axes: {
 														x: '民國',
-														y: '案件數'
+														y: '案件數',
+														c: '非汽機車竊盜發生件數'
 													},
 													extl: {
 														headers: null
 													},
 													intl: {
-														header: ['重大竊盜發生件數', '普通竊盜發生件數'],
+														headers: ['重大竊盜發生件數', '普通竊盜發生件數'],
 														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數']
 													}
 											},
@@ -816,8 +817,8 @@ const DataFilterStateTree = {
 					{
 						dataset: '殺人罪',
 						availableChartTypes: [
-							'直方圖',
-							'趨勢圖'
+							'直方圖'
+							// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -836,6 +837,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
+													headers: [],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
@@ -1747,7 +1749,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: null,
+													// headers: null,
+													headers: [],
 													mHeaders: ['舊受', '新受']
 												}
 											},
@@ -1952,7 +1955,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: null,
+													headers: [],
 													mHeaders: ['舊受', '新受']
 												}
 											},
@@ -2028,6 +2031,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													header: '終結案件中平均一件所需日數',
 													headers: ['終結', '未結'] 
 												}
 											}
@@ -2088,7 +2092,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '上訴案件維持率',
+													headers: [] 
 												}
 											}
 										],
@@ -2117,7 +2122,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '抗告案件維持率',
+													headers: [] 
 												}
 											}
 										],
@@ -2157,7 +2163,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '舊受',
+													headers: [] 
 												}
 											}
 										],
@@ -2186,7 +2193,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '新受',
+													headers: [] 
 												}
 											}
 										],
@@ -2201,7 +2209,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: [] 
 												}
 											}
 										]
@@ -2222,7 +2230,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結',
+													headers: [] 
 												}
 											}
 										],
@@ -2251,7 +2260,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '未結',
+													headers: [] 
 												}
 											}
 										],
@@ -2281,7 +2291,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結案件中平均一件所需日數',
+													headers: [] 
 												}
 											}
 										],
@@ -2311,7 +2322,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [] 
 												}
 										}]
 										,
@@ -2326,7 +2338,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: [] 
 												}
 											}
 										]
@@ -2358,7 +2370,8 @@ const DataFilterStateTree = {
 													y: '人數'
 												},
 												intl: {
-													headers: ['本年執行人數']
+													header: '本年執行人數',
+													headers: []
 												},
 												extl: {
 													url: null
@@ -2417,6 +2430,7 @@ const DataFilterStateTree = {
 													headers: []
 												},
 												intl: {
+													header: '本年入監人數',
 													headers: []
 												}
 											}, 
@@ -2456,6 +2470,7 @@ const DataFilterStateTree = {
 													headers: []
 												},
 												intl: {
+													header: '新入監人數',
 													headers: []
 												}
 											}, 
@@ -2488,7 +2503,8 @@ const DataFilterStateTree = {
 													headers: ['初犯', '再犯', '累犯']
 												},
 												intl: {
-													headers: null,
+													headers: []
+													// headers: null,
 												}
 											}
 										],
@@ -2517,7 +2533,9 @@ const DataFilterStateTree = {
 													headers: null,
 												},
 												intl: {
-													headers: null,
+													header: '本年出獄人數',
+													// headers: null,
+													headers: []
 												}
 											}, 
 											// Next new task
@@ -2560,7 +2578,9 @@ const DataFilterStateTree = {
 													headers: null,
 												},
 												intl: {
-													headers: null,
+													header: '本年年底留監人數',
+													// headers: null,
+													headers: []
 												}
 											}
 										],
@@ -3500,20 +3520,11 @@ const DataFilterStateTree = {
 	// Find topic
 	findTopic: function(key, datasetName, dataName, chartTypeName, topicName) {
 
-		// working-spot
-		console.log(datasetName);
-		console.log(dataName);
-		console.log(chartTypeName);
 		const state = this.selectState(key);
 
 		const _datasetIndex = this.findDatasetIndex(key, datasetName);
 		const _dataIndex = this.findDataIndex(key, datasetName, dataName);
 		const _chartTypeIndex = this.findChartTypeIndex(key, datasetName, chartTypeName);
-
-		// working-spot
-		console.log(_datasetIndex);
-		console.log(_dataIndex);
-		console.log(_chartTypeIndex);
 
 		return state.get(_datasetIndex)
 				.content.data[_dataIndex].topics[_chartTypeIndex]
@@ -3656,11 +3667,11 @@ class StoryTeller {
 						end: null
 					}
 				],
-				// working-spot
 				bwdSteps: [
 					{
 						goto: '總數',
-						transit: (_this, params) => {	
+						transit: (_this, params) => {
+
 							params.push(['重大竊盜發生件數', '普通竊盜發生件數'], '非汽機車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
@@ -6040,14 +6051,15 @@ const DataBoard = React.createClass({
 		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
-
+		console.log(_topic);
 		if (update) {
 			
+			// working-spot
 			bG.update(
-				// dataSheet.url, 
 				_topic.axes.x,
 				_topic.axes.y,
-				props.data
+				// props.data 
+				_topic.intl.headers.length ? _topic.intl.headers : _topic.intl.header
 				)
 				.then(function() {
 					t.appendBarMouseOver(props.data);
