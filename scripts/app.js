@@ -1751,7 +1751,7 @@ const DataFilterStateTree = {
 												intl: {
 													// headers: null,
 													headers: [],
-													mHeaders: ['舊受', '新受']
+													mHeaders: ['舊受', '新受'],
 												}
 											},
 											{
@@ -1764,7 +1764,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
 												}
 											},
 											{
@@ -1826,7 +1826,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結案件中平均一件所需日數',
+													headers: [] 
 												}
 											},
 
@@ -1856,7 +1857,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [] 
 												}
 											}
 										],
@@ -1885,7 +1887,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '上訴案件維持率',
+													headers: [] 
 												}
 											}
 										],
@@ -1914,7 +1917,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '抗告案件維持率',
+													headers: [] 
 												}
 											}
 										]
@@ -2032,7 +2036,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '終結案件中平均一件所需日數',
-													headers: ['終結', '未結'] 
+													headers: [] 
 												}
 											}
 										],
@@ -2062,7 +2066,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [] 
 												}
 											}
 										]
@@ -6073,6 +6078,7 @@ const DataBoard = React.createClass({
 					_topic.axes.x,
 					_topic.axes.y,
 					props.data,
+					// _topic.intl.headers.length ? _topic.intl.headers : _topic.intl.header,
 					false,
 					false,
 					// _data.exceptHeaders
