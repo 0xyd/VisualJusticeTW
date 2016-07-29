@@ -838,7 +838,8 @@ const DataFilterStateTree = {
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
 													headers: [],
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -852,9 +853,9 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
-											}
-												, 
+											}, 
 											{
 												name: '各刑名百分比',
 												axes: {
@@ -866,7 +867,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -897,7 +899,9 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
+
 												}
 											}, 
 											{
@@ -911,6 +915,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -924,7 +929,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -955,7 +961,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -968,7 +975,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -983,7 +991,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1014,7 +1023,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1027,7 +1037,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1042,7 +1053,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1073,7 +1085,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1086,7 +1099,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1101,7 +1115,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 												}
 											}
 										],
@@ -1135,7 +1150,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1148,7 +1164,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1163,7 +1180,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1195,7 +1213,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1208,7 +1227,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1222,7 +1242,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1254,7 +1275,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1267,7 +1289,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1282,7 +1305,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1316,7 +1340,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1329,7 +1354,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1343,7 +1369,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1377,7 +1404,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1390,7 +1418,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1404,7 +1433,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1438,7 +1468,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1451,7 +1482,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1465,7 +1497,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1499,7 +1532,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1512,7 +1546,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1526,7 +1561,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1560,7 +1596,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1573,7 +1610,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1587,7 +1625,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1621,7 +1660,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader : '被告人數'
 												}
 											}, 
 											{
@@ -1634,7 +1674,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1648,7 +1689,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1682,7 +1724,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader : '被告人數'
 												}
 											}, 
 											{
@@ -1695,7 +1738,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1709,7 +1753,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1733,10 +1778,6 @@ const DataFilterStateTree = {
 							data: [
 								{
 									name: '案件數',
-									// exceptHeaders: [
-									// 	'民國', '終結', '未結', '終結案件中平均一件所需日數', 
-									// 	'平均每法官每月辦結件數', '上訴案件維持率', '抗告案件維持率'
-									// ],
 									topics: [
 										[
 											{
@@ -1752,6 +1793,8 @@ const DataFilterStateTree = {
 													// headers: null,
 													headers: [],
 													mHeaders: ['舊受', '新受'],
+													// working-spot
+													cHeader: '案件數'
 												}
 											},
 											{
@@ -1765,6 +1808,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['舊受', '新受'],
+													// working-spot
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1777,7 +1822,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													// working-spot
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1790,7 +1837,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													// working-spot
+													cHeaders: ['終結', '未結']
 												}
 											},
 											{
@@ -1803,7 +1852,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													// working-spot
+													cHeaders: ['終結', '未結']
 												}
 											}
 										],
@@ -1827,7 +1878,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '終結案件中平均一件所需日數',
-													headers: [] 
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											},
 
@@ -1858,7 +1910,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '平均每法官每月辦結件數',
-													headers: [] 
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 											}
 										],
@@ -1888,7 +1941,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '上訴案件維持率',
-													headers: [] 
+													headers: [],
+													cHeader: '上訴案件維持率'
 												}
 											}
 										],
@@ -1918,7 +1972,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '抗告案件維持率',
-													headers: [] 
+													headers: [],
+													cHeader: '抗告案件維持率'
 												}
 											}
 										]
@@ -1960,7 +2015,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: [],
-													mHeaders: ['舊受', '新受']
+													mHeaders: ['舊受', '新受'],
+													cHeader: '案件數'
 												}
 											},
 											{
@@ -1973,7 +2029,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1986,7 +2043,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1999,7 +2057,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結']
 												}
 											},
 											{
@@ -2012,7 +2071,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結'] 
 												}
 											}
 										],
@@ -2036,7 +2096,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '終結案件中平均一件所需日數',
-													headers: [] 
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											}
 										],
@@ -2067,7 +2128,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '平均每法官每月辦結件數',
-													headers: [] 
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 											}
 										]
@@ -2098,7 +2160,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '上訴案件維持率',
-													headers: [] 
+													headers: [],
+													cHeader: '上訴案件維持率',
 												}
 											}
 										],
@@ -2128,7 +2191,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '抗告案件維持率',
-													headers: [] 
+													headers: [],
+													cHeader: '抗告案件維持率'
 												}
 											}
 										],
@@ -2169,7 +2233,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '舊受',
-													headers: [] 
+													headers: [],
+													cHeader: '舊受'
 												}
 											}
 										],
@@ -2199,7 +2264,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '新受',
-													headers: [] 
+													headers: [],
+													cHeader: '新受'
 												}
 											}
 										],
@@ -2236,7 +2302,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '終結',
-													headers: [] 
+													headers: [],
+													cHeader: '終結'
 												}
 											}
 										],
@@ -2266,7 +2333,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '未結',
-													headers: [] 
+													headers: [],
+													cHeader: '未結'
 												}
 											}
 										],
@@ -2297,7 +2365,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '終結案件中平均一件所需日數',
-													headers: [] 
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											}
 										],
@@ -2328,7 +2397,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '平均每法官每月辦結件數',
-													headers: [] 
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 										}]
 										,
@@ -2376,7 +2446,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '本年執行人數',
-													headers: []
+													headers: [],
+													cHeader: '本年執行人數'
 												},
 												extl: {
 													url: null
@@ -2389,7 +2460,8 @@ const DataFilterStateTree = {
 													y: '人數'
 												},
 												intl: {
-													headers: ['上年底留監人數', '本年入監人數']
+													headers: ['上年底留監人數', '本年入監人數'],
+													cHeaders: ['上年底留監人數', '本年入監人數']
 												},
 												extl: {
 													url: null
@@ -2402,7 +2474,8 @@ const DataFilterStateTree = {
 													y: '百分比'
 												},
 												intl: {
-													headers: ['上年底留監人數', '本年入監人數']
+													headers: ['上年底留監人數', '本年入監人數'],
+													cHeaders: ['上年底留監人數', '本年入監人數']
 												},
 												extl: {
 													url: null
@@ -2436,7 +2509,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '本年入監人數',
-													headers: []
+													headers: [],
+													cHeader: '本年入監人數'
 												}
 											}, 
 											// For the next version
@@ -2476,7 +2550,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '新入監人數',
-													headers: []
+													headers: [],
+													cHeader: '新入監人數'
 												}
 											}, 
 											{
@@ -2492,7 +2567,8 @@ const DataFilterStateTree = {
 														else
 															return './correction/c3.csv'
 													})(),
-													headers: ['初犯', '再犯', '累犯']
+													headers: ['初犯', '再犯', '累犯'],
+													cHeaders: ['初犯', '再犯', '累犯']
 												},
 												intl: {
 													headers: [],
@@ -2505,7 +2581,8 @@ const DataFilterStateTree = {
 													y: '百分比'
 												},
 												extl: {
-													headers: ['初犯', '再犯', '累犯']
+													headers: ['初犯', '再犯', '累犯'],
+													cHeaders: ['初犯', '再犯', '累犯']
 												},
 												intl: {
 													headers: []
@@ -2540,7 +2617,8 @@ const DataFilterStateTree = {
 												intl: {
 													header: '本年出獄人數',
 													// headers: null,
-													headers: []
+													headers: [],
+													cHeader: '本年出獄人數'
 												}
 											}, 
 											// Next new task
@@ -2585,7 +2663,8 @@ const DataFilterStateTree = {
 												intl: {
 													header: '本年年底留監人數',
 													// headers: null,
-													headers: []
+													headers: [],
+													cHeader: '本年年底留監人數'
 												}
 											}
 										],
@@ -6056,7 +6135,9 @@ const DataBoard = React.createClass({
 		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
+
 		console.log(_topic);
+		
 		if (update) {
 			
 			// working-spot
@@ -6064,26 +6145,36 @@ const DataBoard = React.createClass({
 				_topic.axes.x,
 				_topic.axes.y,
 				// props.data 
-				_topic.intl.headers.length ? _topic.intl.headers : _topic.intl.header
+				_topic.intl.mHeaders ?
+						 _topic.intl.mHeaders : _topic.intl.headers.length ?
+						 		_topic.intl.headers : _topic.intl.header,
+				_topic.intl.cHeaders ? 
+						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
 					t.appendBarMouseOver(props.data);
 				});
 		} else {
-			
+
+
+			// working-spot
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 				.mappingData(
 					dataSheet.url, 
 					_topic.axes.x,
 					_topic.axes.y,
-					props.data,
+					// props.data,
 					// _topic.intl.headers.length ? _topic.intl.headers : _topic.intl.header,
+					_topic.intl.mHeaders ?
+						 _topic.intl.mHeaders : _topic.intl.headers.length ?
+						 		_topic.intl.headers : _topic.intl.header,
 					false,
 					false,
-					// _data.exceptHeaders
 					// working-spot
-					_topic.intl.mHeaders
+					// _topic.intl.mHeaders
+					_topic.intl.cHeaders ? 
+						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
 					t.initTips().appendBarMouseOver(props.data);

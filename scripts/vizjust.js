@@ -609,7 +609,8 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 		parseInt((this.chartWidth-this.outPadding-this.step*dataset.length) / dataset.length);
 }
 
-barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit) {
+// working-spot
+barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit, colorSet) {
 	
 	var self = this;
 
@@ -649,7 +650,8 @@ barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, 
 							self.chartHeight - self.yScale(parseFloat(d[dOption]))
 				},
 				fill: function(d, i) {
-					return colorObj.bar[dOption]
+					// return colorObj.bar[dOption]
+					return colorObj.bar[colorSet]
 				}
 			}
 
@@ -1313,6 +1315,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 	return p
 }
 
+// working-spot
 // Transit the percentage stack bar to bar.
 barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
 	
@@ -1389,7 +1392,8 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
+// working-spot
+barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, colorSet) {
 	
 	var self = this;
 	
@@ -1400,10 +1404,13 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 			.get(function(errors, rows) {
 
 				// The option maybe the combined columns of data.
-				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+				// var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+				let shouldMergeCols = typeof defaultCol === 'object' ? true : false;
 				
 				// Get the available headers in specific. 
-				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
+				// var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
+				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, defaultCol) : [];
+
 				self._setBarWidth(rows);
 
 				// Set the scale
@@ -1424,7 +1431,8 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
-				self._createBars(rows, defaultCol, _mrows, true);
+				// self._createBars(rows, defaultCol, _mrows, true);
+				self._createBars(rows, defaultCol, _mrows, true, colorSet);
 				self._markValOnBar(rows, defaultCol, _mrows);
 
 				resolve({
@@ -1443,9 +1451,12 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 // working-spot-3: Rename it with a better name
 // To check if the selected option is merged results.
 barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
+
 	if (rowData) {
 		var ks = Object.keys(rowData[0]);
 		for (var i in ks)
+			// If the opt name is not in the dataset,
+			// it is a merged column.
 			if (ks[i] === opt) return false
 	}
 	return true
@@ -1469,17 +1480,17 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 				
 }
 /* 
-	cOption: 
+	colorSet: 
 		the option for color selecting, 
 		most of the time, the dOption is used to pick up the color value.
 		However, dOption may not be useful in some circumstances like the combined header selection.
-		The circumstance like this needs cOption for filling color.
+		The circumstance like this needs colorSet for filling color.
 
 */
 // working-spot: accept the multiple options.
-barGraphClass.prototype.update = function(xLabel, yLabel, dOption, cOption) {
+barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
 
-	console.log('cOption: ', cOption);
+	console.log('colorSet: ', colorSet);
 
 	var self = this;
 
@@ -1585,8 +1596,9 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption, cOption) {
 							},
 
 							fill :function(d, i) {
-								console.log(colorObj.bar[cOption]);
-								return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption]
+								// console.log(colorObj.bar[cOption]);
+								// return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption]
+								return colorObj.bar[colorSet]
 							}
 						})
 					.each(
