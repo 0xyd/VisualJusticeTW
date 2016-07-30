@@ -64,7 +64,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '合計發生件數',
-													headers: ['合計發生件數']
+													headers: ['合計發生件數'],
+													cHeader: '合計發生件數'
 												}
 											},
 											{
@@ -78,7 +79,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -92,7 +94,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 										], 
@@ -130,7 +133,8 @@ const DataFilterStateTree = {
 												intl: {
 													header: '',
 													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
-													mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
+													mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeader: '汽機車竊盜案件'
 												}
 											},
 											{
@@ -144,7 +148,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													headers:  ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -158,7 +163,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -172,9 +178,10 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														// headers: ['汽車竊盜發生件數'],
-														mHeaders: ['汽車竊盜發生件數'],
+														header: '汽車竊盜發生件數',
+														headers: [],
+														mHeaders: [],
+														cHeader: '汽車竊盜發生件數'
 													}
 												},
 												{
@@ -188,8 +195,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers: ['汽車竊盜嫌疑犯人數']
+														header: '汽車竊盜嫌疑犯人數',
+														headers: [],
+														cHeader: '汽車竊盜嫌疑犯人數'
 													}
 												},
 												{
@@ -205,7 +213,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														header: '',
-														headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+														headers:  ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數'],
+														cHeaders: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
 													}
 												},
 												{
@@ -220,7 +229,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														header: '',
-														headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+														headers:  ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數'],
+														cHeaders: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
 													}
 												},
 												{
@@ -234,8 +244,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers: ['機車竊盜發生件數']
+														header: '機車竊盜發生件數',
+														headers: [],
+														cHeader: '機車竊盜發生件數'
 													}
 												},
 												{
@@ -249,8 +260,9 @@ const DataFilterStateTree = {
 													url: null
 												},
 												intl: {
-													header: '',
-													headers: ['機車竊盜嫌疑犯人數']
+													header: '機車竊盜嫌疑犯人數',
+													headers: [],
+													cHeader: '機車竊盜嫌疑犯人數'
 												}
 											},
 											{
@@ -265,7 +277,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
+													headers:  ['機車竊盜破獲件數', '機車竊盜尚未破獲件數'],
+													cHeaders: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
 												}
 											},
 											{
@@ -279,7 +292,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['機車竊盜破獲率']
+													headers: ['機車竊盜破獲率'],
+													cHeader: '機車竊盜破獲率'
 												}
 											}
 										],
@@ -302,7 +316,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														headers: ['重大竊盜發生件數', '普通竊盜發生件數'],
-														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數']
+														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數'],
+														cHeader: '非汽機車竊盜發生件數'
 													}
 											},
 											{
@@ -315,8 +330,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: ['重大竊盜發生件數'],
-													headers: ['重大竊盜發生件數']
+													header: '重大竊盜發生件數',
+													headers: [],
+													cHeader: '重大竊盜發生件數'
 												}
 											},
 											{
@@ -329,8 +345,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
-													headers: ['重大竊盜嫌疑犯人數']
+													header: '重大竊盜嫌疑犯人數',
+													headers: [],
+													cHeader: '重大竊盜嫌疑犯人數'
 												}
 											},
 											{
@@ -344,7 +361,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														header: '',
-														headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
+														headers:  ['重大竊盜破獲件數', '重大竊盜尚未破獲件數'],
+														cHeaders: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
 													}
 											},
 											{
@@ -357,8 +375,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
-													headers: ['重大竊盜破獲率']
+													header: '重大竊盜破獲率',
+													headers: [],
+													cHeader: '重大竊盜破獲率'
 													}
 												},
 												{
@@ -371,8 +390,9 @@ const DataFilterStateTree = {
 														headers: null
 													},
 													intl: {
-														header: '',
-														headers: ['普通竊盜發生件數']
+														header: '普通竊盜發生件數',
+														headers: [],
+														cHeader: '普通竊盜發生件數'
 													}
 												},
 												{
@@ -385,8 +405,9 @@ const DataFilterStateTree = {
 														headers: null
 													},
 													intl: {
-														header: '',
-														headers: ['普通竊盜嫌疑犯人數']
+														header: '普通竊盜嫌疑犯人數',
+														headers: [],
+														cHeader: '普通竊盜嫌疑犯人數'
 													}
 												},
 												{
@@ -400,7 +421,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														header: '',
-														headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
+														headers:  ['普通竊盜破獲件數', '普通竊盜尚未破獲件數'],
+														cHeaders: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
 													}
 												},
 												{
@@ -413,8 +435,9 @@ const DataFilterStateTree = {
 														headers: null
 													},
 													intl: {
-														header: '',
-														headers: ['普通竊盜破獲率']
+														header: '普通竊盜破獲率',
+														headers: [],
+														cHeader: '普通竊盜破獲率'
 													}
 												}
 										]
@@ -3709,7 +3732,7 @@ class StoryTeller {
 					{
 						goto: '重大竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							params.push('重大竊盜破獲與否件數');
+							// params.push('重大竊盜破獲與否件數');
 							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
@@ -3786,7 +3809,7 @@ class StoryTeller {
 					{
 						goto: '重大竊盜案破獲率',
 						transit: (_this, params) => {
-							params.push('重大竊盜破獲率');
+							// params.push('重大竊盜破獲率');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3866,15 +3889,18 @@ class StoryTeller {
 					},
 					{
 						goto: '機車竊盜發生件數',
-						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+						transit: (_this, params) => {
+							// working-spot: Tracing a bug.
+							console.log('debugging');	
+							return _this.DBtransPCTStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToBar.apply(_this, params);
+							// return _this.DBtransStackBarToBar.apply(_this, params);
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -3918,7 +3944,7 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜發生件數',
 						transit: (_this, params) => {	
-							params.push('汽車竊盜發生件數');
+							// params.push('汽車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3947,7 +3973,8 @@ class StoryTeller {
 					{
 						goto: '機車竊盜發生件數',
 						transit: (_this, params) => {	
-							params.push('機車竊盜發生件數');
+							// params.push('機車竊盜發生件數');
+							console.log('debugging');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -6136,8 +6163,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		console.log(_topic);
-		
 		if (update) {
 			
 			// working-spot
@@ -6260,22 +6285,24 @@ const DataBoard = React.createClass({
 	},
 
 	// DBUpdateBar allows bar graph display different data in the same dataset.
-	DBUpdateBar(props, header, colorOption) {
+	DBUpdateBar(props, header) {
 		
 		let bG = this.gpu.barGraph,
 				t  = this.tip;
-		
-		// working-spot
+
 		const _topic = this.DBfindTopic(props);
 		
 		return bG.update(
 			_topic.axes.x,
 			_topic.axes.y,
-			props.data === header ? props.data : header,
-			!colorOption ?  null : colorOption
+			// working-spot
+			// props.data === header ? props.data : header,
+			_topic.intl.header,
+			_topic.intl.cHeader
 			)
 			.then(function() {
-				t.appendBarMouseOver(props.data);
+				// t.appendBarMouseOver(props.data);
+				t.appendBarMouseOver(_topic.intl.header);
 			});
 
 	},
@@ -6294,11 +6321,11 @@ const DataBoard = React.createClass({
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
-
+		// working-spot: depreciate the mHds param.
+		console.log('Test here');
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
-
-		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _topic.intl.mHeaders);
+		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl/*, _topic.intl.mHeaders*/);
 	},
 
 	// Transform from bar to stack bars.
@@ -6310,13 +6337,15 @@ const DataBoard = React.createClass({
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
 
+		// working-spot
 		return bG.transitStackBarToBar(
-			// If the intl have only one header, the header is the data user wants to know.
-			_topic.intl.headers === undefined ? props.data : 
-				_topic.intl.headers.length === 1 ? _topic.intl.headers[0] : props.data,
-				_topic.intl.mHeaders, _topic.axes.y)
+			// Pass the muliple headers for bar to merge the stacks.
+			_topic.intl.headers.length ?
+				_topic.intl.headers : _topic.intl.header,
+				_topic.intl.cHeader, // Bar graph only has one color.
+				_topic.axes.y)
 			.then(function() {
-				t.appendBarMouseOver(props.data);
+				t.appendBarMouseOver(_topic.intl.header);
 			});
 	},
 
@@ -6354,7 +6383,12 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		
 		return bG.transitPCTSBarToBar(
-			_topic.axes.y, props.data, _topic.intl, _topic.extl, _topic.intl.mHeaders)
+			_topic.axes.y, 
+			_topic.intl.headers.length ? 
+				_topic.intl.headers :  _topic.intl.header,
+			_topic.intl, 
+			_topic.extl
+			/*_topic.intl.mHeaders*/)
 	},
 
 	DBupdateStackBars(props) {

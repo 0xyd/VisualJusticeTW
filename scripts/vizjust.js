@@ -75,6 +75,7 @@ var colorClass = function() {
 		'汽車竊盜破獲率': '#0CCA4A',
 		'汽車竊盜嫌疑犯人數': '#F24B48',
 
+		'機車竊盜案件數': '#A04D20',
 		'機車竊盜破獲件數': '#35C3D6',
 		'機車竊盜尚未破獲件數': '#FF1654',
 		'機車竊盜嫌疑犯人數': '#FFD000',
@@ -609,7 +610,11 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 		parseInt((this.chartWidth-this.outPadding-this.step*dataset.length) / dataset.length);
 }
 
-// working-spot
+/*
+	dataset: the data imported from source.
+	dOption: the condition for data selection
+
+*/
 barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit, colorSet) {
 	
 	var self = this;
@@ -967,8 +972,8 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 				y: function(d, i) {
 					return d.y0
 				},
-				fill: function(d) {
-					return colorObj.bar[d.name]
+				fill: function(d, i) {
+					return colorObj.bar[intl.cHeaders[i]]
 				},
 				width: self.barWidth,
 				height: 0
@@ -1019,19 +1024,22 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 	return p
 }
 
+// working-spot: Consider to delete mHds.
 // Transit the bar to percentage stack bar
-barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
+// barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
+barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl) {
 
 	var self = this;
 
 	return this.transitBarToStack(yLabel, intl, extl).then(function() {
-		self.transitPCTStackBar(yLabel, mHds);
+		self.transitPCTStackBar(yLabel);
 	})
 
 }
-
+// working-spot: Consider to delete mHds.
 // Transit the stack bar in percentage unit. (PCT = Percent abbr)
-barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
+// barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
+barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 
 	var self = this;
 	
@@ -1148,8 +1156,8 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 }
 
 // Transit the stack bar to origin bar.
-barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
-
+barGraphClass.prototype.transitStackBarToBar = function(header, cHeader, yLabel) {
+	
 	var self = this;
 
 	// Grape the data from stack.
@@ -1162,14 +1170,18 @@ barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 			data.push(this.__data__);
 
 			// Check if the header is a merged result.
-			var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
+			// var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
 					// selected headers for the merged.
 					// selectedHds = isHeaderMerged ? 
 					// 	self._avlHeaders(data, mHdrs) : [],
-					selectedHds = isHeaderMerged ? 
-						mHdrs : [],
+				let 
+					isHeaderMerged = 
+						(typeof header === 'object') ? 
+							true : false,
+					// selectedHds = isHeaderMerged ? 
+					// 	mHdrs : [],
 					mergedData	= isHeaderMerged ? 
-						self._mergedColVal(data, selectedHds) : [];
+						self._mergedColVal(data, head) : [];
 
 			// Collpase the stack bars inside the stack group.
 			d3.select(this).selectAll('rect.stackbar')
@@ -1209,7 +1221,8 @@ barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 
 		self._createYAxis(yLabel);
 
-		self._createBars(data, header, r.mergedData, false);
+		// working-spot
+		self._createBars(data, header, r.mergedData, false, cHeader);
 		self._markValOnBar(data, header, r.mergedData);
 	})
 	
@@ -1315,8 +1328,9 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 	return p
 }
 
-// working-spot
+// working-spot: Depreciate the mHdrs
 // Transit the percentage stack bar to bar.
+// barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
 barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
 	
 	// Fetch the rows data from the g.stack
@@ -1329,11 +1343,13 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 	this.stackGroup.remove();
 
 	// The option maybe the combined columns of data.
-	var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+	// var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+	let shouldMergeCols = typeof dOption === 'object' ? true : false;
 
 	// Get the available headers in specific. 
 	// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
-	var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+	// var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+	let _mrows = shouldMergeCols ? this._mergedColVal(rows, dOption) : [];
 	
 	// Set the scale
 	this._setLinearYScale(
@@ -1350,7 +1366,7 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 	this._createYAxis(yLabel);
 
 	// dataset, dOption, mergedDataset, isInit
-	this._createBars(rows, dOption, _mrows, true);
+	this._createBars(rows, dOption, _mrows, true, intl.cHeader);
 	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
 
 	return new Promise(function(resolve, reject) { resolve(); })
@@ -1364,7 +1380,8 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 	var self = this;
 
 	// Mergeddataset has higher priority for data rendering 
-	var beMergedDataset = mergedDataset.length > 0 ? true : false; 
+	// var beMergedDataset = mergedDataset.length > 0 ? true : false; 
+	let beMergedDataset = mergedDataset ? true : false; 
 	
 	this.barTxtGroup = 
 		this.pad.append('g')
@@ -1433,7 +1450,7 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 
 				// self._createBars(rows, defaultCol, _mrows, true);
 				self._createBars(rows, defaultCol, _mrows, true, colorSet);
-				self._markValOnBar(rows, defaultCol, _mrows);
+				self._markValOnBar(rows, defaultCol, _mrows.length ? _mrows : null);
 
 				resolve({
 					data: rows,
@@ -1489,8 +1506,6 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 */
 // working-spot: accept the multiple options.
 barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
-
-	console.log('colorSet: ', colorSet);
 
 	var self = this;
 
