@@ -908,6 +908,12 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 				[].concat(intl.headers, extl.headers)
 					.filter(function(d) { 
 						return (d !== null && d !== undefined )
+					}),
+			// working-spot
+			cHeaders = 
+				[].concat(intl.cHeaders, extl.cHeaders)
+					.filter(function(d) { 
+						return (d !== null && d !== undefined )
 					});
 	
 	var p = new Promise(function(resolve, reject) {
@@ -973,7 +979,8 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 					return d.y0
 				},
 				fill: function(d, i) {
-					return colorObj.bar[intl.cHeaders[i]]
+					// return colorObj.bar[intl.cHeaders[i]]
+					return colorObj.bar[cHeaders[i]]
 				},
 				width: self.barWidth,
 				height: 0

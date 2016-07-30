@@ -447,221 +447,222 @@ const DataFilterStateTree = {
 							]
 						}
 					},
-					{
-						dataset: '暴力犯罪案件',
-						availableChartTypes: [
-							'直方圖',
-							// '趨勢圖'
-						],
-						content: {
-							data: [
-								{
-									name: '故意殺人發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// Next version
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '擄人勒贖發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '強盜發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '搶奪發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '重傷害發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '恐嚇取財發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '強制性交發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											},
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								}
-							]
-						}
-					},
+					// Collpased 暴力案件
+					// {
+					// 	dataset: '暴力犯罪案件',
+					// 	availableChartTypes: [
+					// 		'直方圖',
+					// 		// '趨勢圖'
+					// 	],
+					// 	content: {
+					// 		data: [
+					// 			{
+					// 				name: '故意殺人發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// Next version
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '擄人勒贖發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '強盜發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '搶奪發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '重傷害發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '恐嚇取財發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '強制性交發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						},
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			}
+					// 		]
+					// 	}
+					// },
 					// Collapsed 毒品案件
 					// {
 					// 	dataset: '毒品案件',
@@ -6292,7 +6293,7 @@ const DataBoard = React.createClass({
 
 	// Transform from bar to stack bars.
 	DBtransBarToStackBar(props) {
-		console.log(props);
+		
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
@@ -6307,7 +6308,7 @@ const DataBoard = React.createClass({
 		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
-		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl/*, _topic.intl.mHeaders*/);
+		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
 	// Transform from bar to stack bars.
