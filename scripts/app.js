@@ -64,7 +64,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '合計發生件數',
-													headers: ['合計發生件數']
+													headers: ['合計發生件數'],
+													cHeader: '合計發生件數'
 												}
 											},
 											{
@@ -78,7 +79,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -92,7 +94,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['重大竊盜發生件數', '普通竊盜發生件數', '汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 										], 
@@ -130,7 +133,8 @@ const DataFilterStateTree = {
 												intl: {
 													header: '',
 													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
-													mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
+													mHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeader: '汽機車竊盜案件'
 												}
 											},
 											{
@@ -144,7 +148,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													headers:  ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -158,7 +163,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['汽車竊盜發生件數', '機車竊盜發生件數']
+													headers:  ['汽車竊盜發生件數', '機車竊盜發生件數'],
+													cHeaders: ['汽車竊盜發生件數', '機車竊盜發生件數']
 												}
 											},
 											{
@@ -172,9 +178,10 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														// headers: ['汽車竊盜發生件數'],
-														mHeaders: ['汽車竊盜發生件數'],
+														header: '汽車竊盜發生件數',
+														headers: [],
+														mHeaders: [],
+														cHeader: '汽車竊盜發生件數'
 													}
 												},
 												{
@@ -188,8 +195,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers: ['汽車竊盜嫌疑犯人數']
+														header: '汽車竊盜嫌疑犯人數',
+														headers: [],
+														cHeader: '汽車竊盜嫌疑犯人數'
 													}
 												},
 												{
@@ -205,7 +213,8 @@ const DataFilterStateTree = {
 													},
 													intl: {
 														header: '',
-														headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+														headers:  ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數'],
+														cHeaders: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
 													}
 												},
 												{
@@ -219,8 +228,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+														header: '汽車竊盜破獲率',
+														headers:  [],
+														cHeader: '汽車竊盜破獲率'
 													}
 												},
 												{
@@ -234,8 +244,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers: ['機車竊盜發生件數']
+														header: '機車竊盜發生件數',
+														headers: [],
+														cHeader: '機車竊盜發生件數'
 													}
 												},
 												{
@@ -249,8 +260,9 @@ const DataFilterStateTree = {
 													url: null
 												},
 												intl: {
-													header: '',
-													headers: ['機車竊盜嫌疑犯人數']
+													header: '機車竊盜嫌疑犯人數',
+													headers: [],
+													cHeader: '機車竊盜嫌疑犯人數'
 												}
 											},
 											{
@@ -265,7 +277,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
+													headers:  ['機車竊盜破獲件數', '機車竊盜尚未破獲件數'],
+													cHeaders: ['機車竊盜破獲件數', '機車竊盜尚未破獲件數']
 												}
 											},
 											{
@@ -279,7 +292,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													header: '',
-													headers: ['機車竊盜破獲率']
+													headers: ['機車竊盜破獲率'],
+													cHeader: '機車竊盜破獲率'
 												}
 											}
 										],
@@ -289,21 +303,24 @@ const DataFilterStateTree = {
 								{
 									name: '非汽機車竊盜發生件數',
 									topics: [
-										{
-											name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數']
-												}
-										},
-										{
+										[
+											{
+												name: '總數',
+													axes: {
+														x: '民國',
+														y: '案件數',
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers: ['重大竊盜發生件數', '普通竊盜發生件數'],
+														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數'],
+														cHeader: '非汽機車竊盜發生件數'
+													}
+											},
+											{
 												name: '重大竊盜案件數',
 												axes: {
 													x: '民國',
@@ -313,8 +330,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
-													headers: ['重大竊盜發生件數']
+													header: '重大竊盜發生件數',
+													headers: [],
+													cHeader: '重大竊盜發生件數'
 												}
 											},
 											{
@@ -327,23 +345,25 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
-													headers: ['重大竊盜嫌疑犯人數']
+													header: '重大竊盜嫌疑犯人數',
+													headers: [],
+													cHeader: '重大竊盜嫌疑犯人數'
 												}
 											},
 											{
 												name: '重大竊盜破獲與否件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
-												}
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers:  ['重大竊盜破獲件數', '重大竊盜尚未破獲件數'],
+														cHeaders: ['重大竊盜破獲件數', '重大竊盜尚未破獲件數']
+													}
 											},
 											{
 												name: '重大竊盜案破獲率',
@@ -355,287 +375,294 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													header: '',
-													headers: ['重大竊盜破獲率']
+													header: '重大竊盜破獲率',
+													headers: [],
+													cHeader: '重大竊盜破獲率'
+													}
+												},
+												{
+													name: '普通竊盜案件數',
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '普通竊盜發生件數',
+														headers: [],
+														cHeader: '普通竊盜發生件數'
+													}
+												},
+												{
+													name: '普通竊盜嫌疑犯人數',
+													axes: {
+														x: '民國',
+														y: '人數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '普通竊盜嫌疑犯人數',
+														headers: [],
+														cHeader: '普通竊盜嫌疑犯人數'
+													}
+												},
+												{
+													name: '普通竊盜破獲與否件數',
+													axes: {
+														x: '民國',
+														y: '案件數'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '',
+														headers:  ['普通竊盜破獲件數', '普通竊盜尚未破獲件數'],
+														cHeaders: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
+													}
+												},
+												{
+													name: '普通竊盜案破獲率',
+													axes: {
+														x: '民國',
+														y: '破獲率'
+													},
+													extl: {
+														headers: null
+													},
+													intl: {
+														header: '普通竊盜破獲率',
+														headers: [],
+														cHeader: '普通竊盜破獲率'
+													}
 												}
-											},
-											{
-												name: '普通竊盜案件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜發生件數']
-												}
-											},
-											{
-												name: '普通竊盜嫌疑犯人數',
-												axes: {
-													x: '民國',
-													y: '人數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜嫌疑犯人數']
-												}
-											},
-											{
-												name: '普通竊盜破獲與否件數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜破獲件數', '普通竊盜尚未破獲件數']
-												}
-											},
-											{
-												name: '普通竊盜案破獲率',
-												axes: {
-													x: '民國',
-													y: '破獲率'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-													headers: ['普通竊盜破獲率']
-												}
-											}
+										]
 									],
 								},
 
 							]
 						}
 					},
-					{
-						dataset: '暴力犯罪案件',
-						availableChartTypes: [
-							'直方圖',
-							// '趨勢圖'
-						],
-						content: {
-							data: [
-								{
-									name: '故意殺人發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// Next version
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '擄人勒贖發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '強盜發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										[
-											{
-												name: '趨勢',
-												axes: {
-													x: '民國',
-													y: '人數'
-												}
-											}
-										]
-									]
-								},
-								{
-									name: '搶奪發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '重傷害發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '恐嚇取財發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											}
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								},
-								{
-									name: '強制性交發生件數',
-									topics: [
-										[
-											{
-												name: '總數',
-												axes: {
-													x: '民國',
-													y: '案件數'
-												},
-												extl: {
-													headers: null
-												},
-												intl: {
-													header: '',
-												}
-											},
-										],
-										// [
-										// 	{
-										// 		name: '趨勢',
-										// 		axes: {
-										// 			x: '民國',
-										// 			y: '人數'
-										// 		}
-										// 	}
-										// ]
-									]
-								}
-							]
-						}
-					},
+					// Collpased 暴力案件
+					// {
+					// 	dataset: '暴力犯罪案件',
+					// 	availableChartTypes: [
+					// 		'直方圖',
+					// 		// '趨勢圖'
+					// 	],
+					// 	content: {
+					// 		data: [
+					// 			{
+					// 				name: '故意殺人發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// Next version
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '擄人勒贖發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '強盜發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					[
+					// 						{
+					// 							name: '趨勢',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '人數'
+					// 							}
+					// 						}
+					// 					]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '搶奪發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '重傷害發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '恐嚇取財發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						}
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			},
+					// 			{
+					// 				name: '強制性交發生件數',
+					// 				topics: [
+					// 					[
+					// 						{
+					// 							name: '總數',
+					// 							axes: {
+					// 								x: '民國',
+					// 								y: '案件數'
+					// 							},
+					// 							extl: {
+					// 								headers: null
+					// 							},
+					// 							intl: {
+					// 								header: '',
+					// 							}
+					// 						},
+					// 					],
+					// 					// [
+					// 					// 	{
+					// 					// 		name: '趨勢',
+					// 					// 		axes: {
+					// 					// 			x: '民國',
+					// 					// 			y: '人數'
+					// 					// 		}
+					// 					// 	}
+					// 					// ]
+					// 				]
+					// 			}
+					// 		]
+					// 	}
+					// },
 					// Collapsed 毒品案件
 					// {
 					// 	dataset: '毒品案件',
@@ -814,8 +841,8 @@ const DataFilterStateTree = {
 					{
 						dataset: '殺人罪',
 						availableChartTypes: [
-							'直方圖',
-							'趨勢圖'
+							'直方圖'
+							// '趨勢圖'
 						],
 						content: {
 							data: [
@@ -834,7 +861,10 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													header: '',
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -848,9 +878,9 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
-											}
-												, 
+											}, 
 											{
 												name: '各刑名百分比',
 												axes: {
@@ -862,7 +892,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -893,7 +924,9 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
+
 												}
 											}, 
 											{
@@ -907,6 +940,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -920,7 +954,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -951,7 +986,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -964,7 +1000,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -979,7 +1016,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1010,7 +1048,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1023,7 +1062,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1038,7 +1078,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1069,7 +1110,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1082,7 +1124,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1097,7 +1140,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 												}
 											}
 										],
@@ -1131,7 +1175,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1144,7 +1189,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1159,7 +1205,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1191,7 +1238,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1204,7 +1252,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1218,7 +1267,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1250,7 +1300,8 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1263,7 +1314,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 												, 
@@ -1278,7 +1330,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1312,7 +1365,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1325,7 +1379,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1339,7 +1394,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1373,7 +1429,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1386,7 +1443,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1400,7 +1458,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1434,7 +1493,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1447,7 +1507,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1461,7 +1522,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1495,7 +1557,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1508,7 +1571,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1522,7 +1586,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1556,7 +1621,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader: '被告人數'
 												}
 											}, 
 											{
@@ -1569,7 +1635,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1583,7 +1650,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1617,7 +1685,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader : '被告人數'
 												}
 											}, 
 											{
@@ -1630,7 +1699,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1644,7 +1714,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1678,7 +1749,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeader : '被告人數'
 												}
 											}, 
 											{
@@ -1691,7 +1763,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}, 
 											{
@@ -1705,7 +1778,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
+													headers:  ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
+													cHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他']
 												}
 											}
 										],
@@ -1729,10 +1803,6 @@ const DataFilterStateTree = {
 							data: [
 								{
 									name: '案件數',
-									// exceptHeaders: [
-									// 	'民國', '終結', '未結', '終結案件中平均一件所需日數', 
-									// 	'平均每法官每月辦結件數', '上訴案件維持率', '抗告案件維持率'
-									// ],
 									topics: [
 										[
 											{
@@ -1745,8 +1815,10 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: null,
-													mHeaders: ['舊受', '新受']
+													header: '',
+													headers: ['舊受', '新受'],
+													mHeaders: ['舊受', '新受'],
+													cHeader: '案件數'
 												}
 											},
 											{
@@ -1759,7 +1831,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1772,7 +1845,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1785,7 +1859,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結']
 												}
 											},
 											{
@@ -1798,7 +1873,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結']
 												}
 											}
 										],
@@ -1821,7 +1897,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結案件中平均一件所需日數',
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											},
 
@@ -1851,7 +1929,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 											}
 										],
@@ -1880,7 +1960,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '上訴案件維持率',
+													headers: [],
+													cHeader: '上訴案件維持率'
 												}
 											}
 										],
@@ -1909,7 +1991,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '抗告案件維持率',
+													headers: [],
+													cHeader: '抗告案件維持率'
 												}
 											}
 										]
@@ -1950,8 +2034,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: null,
-													mHeaders: ['舊受', '新受']
+													headers: [],
+													mHeaders: ['舊受', '新受'],
+													cHeader: '案件數'
 												}
 											},
 											{
@@ -1964,7 +2049,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1977,7 +2063,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['舊受', '新受'] 
+													headers: ['舊受', '新受'],
+													cHeaders: ['舊受', '新受']
 												}
 											},
 											{
@@ -1990,7 +2077,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結']
 												}
 											},
 											{
@@ -2003,7 +2091,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: ['終結', '未結'],
+													cHeaders: ['終結', '未結'] 
 												}
 											}
 										],
@@ -2026,7 +2115,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結案件中平均一件所需日數',
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											}
 										],
@@ -2056,7 +2147,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 											}
 										]
@@ -2086,7 +2179,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '上訴案件維持率',
+													headers: [],
+													cHeader: '上訴案件維持率',
 												}
 											}
 										],
@@ -2115,7 +2210,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '抗告案件維持率',
+													headers: [],
+													cHeader: '抗告案件維持率'
 												}
 											}
 										],
@@ -2155,7 +2252,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '舊受',
+													headers: [],
+													cHeader: '舊受'
 												}
 											}
 										],
@@ -2184,7 +2283,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '新受',
+													headers: [],
+													cHeader: '新受'
 												}
 											}
 										],
@@ -2199,7 +2300,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: [] 
 												}
 											}
 										]
@@ -2220,7 +2321,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結',
+													headers: [],
+													cHeader: '終結'
 												}
 											}
 										],
@@ -2249,7 +2352,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '未結',
+													headers: [],
+													cHeader: '未結'
 												}
 											}
 										],
@@ -2279,7 +2384,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '終結案件中平均一件所需日數',
+													headers: [],
+													cHeader: '終結案件中平均一件所需日數'
 												}
 											}
 										],
@@ -2309,7 +2416,9 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													header: '平均每法官每月辦結件數',
+													headers: [],
+													cHeader: '平均每法官每月辦結件數'
 												}
 										}]
 										,
@@ -2324,7 +2433,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: ['終結', '未結'] 
+													headers: [] 
 												}
 											}
 										]
@@ -2356,7 +2465,9 @@ const DataFilterStateTree = {
 													y: '人數'
 												},
 												intl: {
-													headers: ['本年執行人數']
+													header: '本年執行人數',
+													headers: [],
+													cHeader: '本年執行人數'
 												},
 												extl: {
 													url: null
@@ -2369,7 +2480,8 @@ const DataFilterStateTree = {
 													y: '人數'
 												},
 												intl: {
-													headers: ['上年底留監人數', '本年入監人數']
+													headers: ['上年底留監人數', '本年入監人數'],
+													cHeaders: ['上年底留監人數', '本年入監人數']
 												},
 												extl: {
 													url: null
@@ -2382,7 +2494,8 @@ const DataFilterStateTree = {
 													y: '百分比'
 												},
 												intl: {
-													headers: ['上年底留監人數', '本年入監人數']
+													headers: ['上年底留監人數', '本年入監人數'],
+													cHeaders: ['上年底留監人數', '本年入監人數']
 												},
 												extl: {
 													url: null
@@ -2415,7 +2528,9 @@ const DataFilterStateTree = {
 													headers: []
 												},
 												intl: {
-													headers: []
+													header: '本年入監人數',
+													headers: [],
+													cHeader: '本年入監人數'
 												}
 											}, 
 											// For the next version
@@ -2454,7 +2569,9 @@ const DataFilterStateTree = {
 													headers: []
 												},
 												intl: {
-													headers: []
+													header: '新入監人數',
+													headers: [],
+													cHeader: '新入監人數'
 												}
 											}, 
 											{
@@ -2470,7 +2587,8 @@ const DataFilterStateTree = {
 														else
 															return './correction/c3.csv'
 													})(),
-													headers: ['初犯', '再犯', '累犯']
+													headers: ['初犯', '再犯', '累犯'],
+													cHeaders: ['初犯', '再犯', '累犯']
 												},
 												intl: {
 													headers: [],
@@ -2483,10 +2601,12 @@ const DataFilterStateTree = {
 													y: '百分比'
 												},
 												extl: {
-													headers: ['初犯', '再犯', '累犯']
+													headers: ['初犯', '再犯', '累犯'],
+													cHeaders: ['初犯', '再犯', '累犯']
 												},
 												intl: {
-													headers: null,
+													headers: []
+													// headers: null,
 												}
 											}
 										],
@@ -2515,7 +2635,10 @@ const DataFilterStateTree = {
 													headers: null,
 												},
 												intl: {
-													headers: null,
+													header: '本年出獄人數',
+													// headers: null,
+													headers: [],
+													cHeader: '本年出獄人數'
 												}
 											}, 
 											// Next new task
@@ -2558,7 +2681,10 @@ const DataFilterStateTree = {
 													headers: null,
 												},
 												intl: {
-													headers: null,
+													header: '本年年底留監人數',
+													// headers: null,
+													headers: [],
+													cHeader: '本年年底留監人數'
 												}
 											}
 										],
@@ -3587,60 +3713,126 @@ class StoryTeller {
 					{
 						goto: '重大竊盜發生件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('重大竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
-						goto: '重大竊盜嫌疑人數',
+						goto: '重大竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('重大竊盜嫌疑犯人數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '重大竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBupdateStackBars.apply(_this, params);
+							// params.push('重大竊盜破獲與否件數');
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '重大竊盜案破獲率',
-						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+						transit: (_this, params) => {
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜發生件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('普通竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},{
 						goto: '普通竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							params.push('普通竊盜嫌疑犯人數');
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBupdateStackBars.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '普通竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					}
 				],
-				bwdSteps: []
+				bwdSteps: [
+					{
+						goto: '總數',
+						transit: (_this, params) => {
+							// params.push(['重大竊盜發生件數', '普通竊盜發生件數'], '非汽機車竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜發生件數',
+						transit: (_this, params) => {	
+							// params.push('重大竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜嫌疑犯人數',
+						transit: (_this, params) => {	
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '重大竊盜案破獲率',
+						transit: (_this, params) => {
+							// params.push('重大竊盜破獲率');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜發生件數',
+						transit: (_this, params) => {	
+							params.push('普通竊盜發生件數');
+							return _this.DBUpdateBar.apply(_this, params);
+						},
+						end: null
+					},{
+						goto: '普通竊盜嫌疑犯人數',
+						transit: (_this, params) => {	
+							params.push('普通竊盜嫌疑犯人數');
+							return _this.DBtransStackBarToBar.apply(_this, params);
+						},
+						end: null
+					},
+					{
+						goto: '普通竊盜破獲與否件數',
+						transit: (_this, params) => {	
+							return _this.DBtransBarToStackBar.apply(_this, params);
+						},
+						end: null
+					}
+				]
 			},
 			{
 				dataset: '竊盜案件',
@@ -3687,21 +3879,22 @@ class StoryTeller {
 
 						goto: '汽車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜發生件數',
-						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+						transit: (_this, params) => {
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜嫌疑犯人數',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToBar.apply(_this, params);
+							// return _this.DBtransStackBarToBar.apply(_this, params);
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -3715,7 +3908,7 @@ class StoryTeller {
 					{
 						goto: '機車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -3745,7 +3938,7 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜發生件數',
 						transit: (_this, params) => {	
-							params.push('汽車竊盜發生件數');
+							// params.push('汽車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3760,21 +3953,20 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '汽車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransBarToPCTStackBar.apply(_this, params);
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜發生件數',
 						transit: (_this, params) => {	
-							params.push('機車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3789,7 +3981,7 @@ class StoryTeller {
 					{
 						goto: '機車竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					}
@@ -3981,7 +4173,6 @@ class StoryTeller {
 					}
 				]
 			},
-			// working-spot
 			{
 				dataset: '103年戒護人力概況',
 				data: '戒護人力情形',
@@ -5739,8 +5930,6 @@ var IndexNavList = React.createClass({
 
 	componentDidMount() {
 
-		console.log(Date.now());
-
 		if (this.props.listType === 'IntroNav') {
 			this._markCurrentListItem('.introsec-group', '.introsec-wrapper');
 		}
@@ -5835,11 +6024,9 @@ var IndexNavListItem = React.createClass({
 /* Major Themes are displaying on the index page. */
 var Theme = React.createClass({
 
-	// working-spot
 	componentWillMount() {
 	},
 
-	// working-spot
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { left: '0%' }, { duration: 2000 });
 	},
@@ -5971,27 +6158,32 @@ const DataBoard = React.createClass({
 		if (update) {
 			
 			bG.update(
-				// dataSheet.url, 
 				_topic.axes.x,
 				_topic.axes.y,
-				props.data
+				_topic.intl.mHeaders ?
+						 _topic.intl.mHeaders : _topic.intl.headers.length ?
+						 		_topic.intl.headers : _topic.intl.header,
+				_topic.intl.cHeaders ? 
+						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
 					t.appendBarMouseOver(props.data);
 				});
 		} else {
-			
+
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 				.mappingData(
 					dataSheet.url, 
 					_topic.axes.x,
 					_topic.axes.y,
-					props.data,
+					_topic.intl.mHeaders ?
+						 _topic.intl.mHeaders : _topic.intl.headers.length ?
+						 		_topic.intl.headers : _topic.intl.header,
 					false,
 					false,
-					// _data.exceptHeaders
-					_topic.intl.mHeaders
+					_topic.intl.cHeaders ? 
+						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
 					t.initTips().appendBarMouseOver(props.data);
@@ -6081,23 +6273,26 @@ const DataBoard = React.createClass({
 		
 		let bG = this.gpu.barGraph,
 				t  = this.tip;
-		
-		const _topic = this.DBfindTopic(props);
 
+		const _topic = this.DBfindTopic(props);
+		
 		return bG.update(
 			_topic.axes.x,
 			_topic.axes.y,
-			props.data === header ? props.data : header
+			_topic.intl.headers.length ? 
+				_topic.intl.headers : _topic.intl.header,
+			_topic.intl.cHeader
 			)
 			.then(function() {
-				t.appendBarMouseOver(props.data);
+				// t.appendBarMouseOver(props.data);
+				t.appendBarMouseOver(_topic.intl.header);
 			});
 
 	},
 
 	// Transform from bar to stack bars.
 	DBtransBarToStackBar(props) {
-
+		
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
@@ -6109,11 +6304,10 @@ const DataBoard = React.createClass({
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
-
+		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
-
-		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl, _topic.intl.mHeaders);
+		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
 	// Transform from bar to stack bars.
@@ -6126,12 +6320,13 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 
 		return bG.transitStackBarToBar(
-			// If the intl have only one header, the header is the data user wants to know.
-			_topic.intl.headers === undefined ? props.data : 
-				_topic.intl.headers.length === 1 ? _topic.intl.headers[0] : props.data,
-				_topic.intl.mHeaders, _topic.axes.y)
+			// Pass the muliple headers for bar to merge the stacks.
+			_topic.intl.headers.length ?
+				_topic.intl.headers : _topic.intl.header,
+				_topic.intl.cHeader, // Bar graph only has one color.
+				_topic.axes.y)
 			.then(function() {
-				t.appendBarMouseOver(props.data);
+				t.appendBarMouseOver(_topic.intl.header);
 			});
 	},
 
@@ -6169,7 +6364,12 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		
 		return bG.transitPCTSBarToBar(
-			_topic.axes.y, props.data, _topic.intl, _topic.extl, _topic.intl.mHeaders)
+			_topic.axes.y, 
+			_topic.intl.headers.length ? 
+				_topic.intl.headers :  _topic.intl.header,
+			_topic.intl, 
+			_topic.extl
+			/*_topic.intl.mHeaders*/)
 	},
 
 	DBupdateStackBars(props) {
@@ -6179,7 +6379,6 @@ const DataBoard = React.createClass({
 		return bG.updateStackBars(_topic.intl, _topic.extl)
 	},
 
-	// working-spot
 	// Update the Scatter Plot
 	DBUpdateScatterPlot(props) {
 
@@ -6307,7 +6506,6 @@ const DataBoard = React.createClass({
 						});
 				store.dispatch(setTaleIndexAC(taleIndex));
 			}
-			// working-spot
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 
@@ -6670,7 +6868,6 @@ const DataBoard = React.createClass({
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet)
-			// working-spot
 			else if (nextProps.chartType === '散佈圖')
 				this.vizDataWithScatterPlot(nextProps, dataSheet);
 
@@ -7017,7 +7214,6 @@ const Logo = React.createClass({
 
 
 	componentWillReceiveProps(nextProps) {
-		console.log('nextProps: ', nextProps);
 		this.rotate(nextProps.rotateState);
 	},
 
@@ -8303,30 +8499,9 @@ const mapStateToLogo = (state) => {
 		rotateState: state.get('logoRotateState') 
 	}
 }
-// const mapDispatchToLogo = (dispatch, props) => {
-// 	return {
-// 		rotateAnimate: (e) => {
-// 			console.log(e);
-// 			console.log('Rotate the logo');
-
-// 			let logoNd = 
-// 				ReactDOM
-// 					.findDOMNode(this)
-// 					.firstChild.firstChild,
-// 				logoBadgeNd = logoNd.firstChild,
-// 				logoLightNd = logoBadgeNd.firstChild,
-// 				logoCourtNd = logoLightNd.firstChild,
-// 				logoEyeNd   = logoCourtNd.firstChild;
-
-// 			$v(logoBadgeNd, { rotateZ: '360deg' }, "ease");
-// 			$v(logoLightNd, { rotateZ: '-360deg' }, "ease");
-// 		}
-// 	}
-// }
 
 const ActiveLogo = RRd.connect(
 	mapStateToLogo,
-	// mapDispatchToLogo
 	null
 )(Logo);
 
@@ -8528,8 +8703,6 @@ const TaleIndicator = RRd.connect(
 	null,
 	mapDispatchToIndicators
 	)(TagentalIndicator);
-
-
 
 /* ***** Store: For handling the states of the App.***** */
 let store = Re.createStore(AppReducer);

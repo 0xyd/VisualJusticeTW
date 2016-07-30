@@ -60,9 +60,13 @@ var colorClass = function() {
 
 		'重大竊盜破獲件數': '#9BC53D',
 		'重大竊盜尚未破獲件數': '#E55934',
+		'重大竊盜嫌疑犯人數': '#F24B48',
+		'重大竊盜破獲率': '#EDAFB8',
 
 		'普通竊盜破獲件數': '#5BC0EB',
 		'普通竊盜尚未破獲件數': '#FA7921',
+		'普通竊盜嫌疑犯人數': '#DB8A62',
+		'普通竊盜破獲率': '#E56322',
 
 		'汽機車竊盜案件': '#00A8E8',
 
@@ -71,9 +75,13 @@ var colorClass = function() {
 		'汽車竊盜破獲率': '#0CCA4A',
 		'汽車竊盜嫌疑犯人數': '#F24B48',
 
+		'機車竊盜案件數': '#A04D20',
 		'機車竊盜破獲件數': '#35C3D6',
 		'機車竊盜尚未破獲件數': '#FF1654',
 		'機車竊盜嫌疑犯人數': '#FFD000',
+		'機車竊盜破獲率': '#C1292E',
+
+		'非汽機車竊盜發生件數': '#AD0625',
 
 		// For 殺人罪 (Prosecution)
 
@@ -603,7 +611,12 @@ barGraphClass.prototype._setBarWidth = function(dataset) {
 		parseInt((this.chartWidth-this.outPadding-this.step*dataset.length) / dataset.length);
 }
 
-barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit) {
+/*
+	dataset: the data imported from source.
+	dOption: the condition for data selection
+
+*/
+barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, isInit, colorSet) {
 	
 	var self = this;
 
@@ -643,7 +656,8 @@ barGraphClass.prototype._createBars = function(dataset, dOption, mergedDataset, 
 							self.chartHeight - self.yScale(parseFloat(d[dOption]))
 				},
 				fill: function(d, i) {
-					return colorObj.bar[dOption]
+					// return colorObj.bar[dOption]
+					return colorObj.bar[colorSet]
 				}
 			}
 
@@ -895,6 +909,12 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 				[].concat(intl.headers, extl.headers)
 					.filter(function(d) { 
 						return (d !== null && d !== undefined )
+					}),
+			// working-spot
+			cHeaders = 
+				[].concat(intl.cHeaders, extl.cHeaders)
+					.filter(function(d) { 
+						return (d !== null && d !== undefined )
 					});
 	
 	var p = new Promise(function(resolve, reject) {
@@ -959,8 +979,9 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 				y: function(d, i) {
 					return d.y0
 				},
-				fill: function(d) {
-					return colorObj.bar[d.name]
+				fill: function(d, i) {
+					// return colorObj.bar[intl.cHeaders[i]]
+					return colorObj.bar[cHeaders[i]]
 				},
 				width: self.barWidth,
 				height: 0
@@ -1012,18 +1033,17 @@ barGraphClass.prototype._stackBarProducer = function(intl, extl) {
 }
 
 // Transit the bar to percentage stack bar
-barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
+barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl) {
 
 	var self = this;
 
 	return this.transitBarToStack(yLabel, intl, extl).then(function() {
-		self.transitPCTStackBar(yLabel, mHds);
+		self.transitPCTStackBar(yLabel);
 	})
 
 }
-
 // Transit the stack bar in percentage unit. (PCT = Percent abbr)
-barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
+barGraphClass.prototype.transitPCTStackBar = function(yLabel) {
 
 	var self = this;
 	
@@ -1140,8 +1160,8 @@ barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
 }
 
 // Transit the stack bar to origin bar.
-barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
-
+barGraphClass.prototype.transitStackBarToBar = function(header, cHeader, yLabel) {
+	
 	var self = this;
 
 	// Grape the data from stack.
@@ -1154,14 +1174,12 @@ barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 			data.push(this.__data__);
 
 			// Check if the header is a merged result.
-			var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
-					// selected headers for the merged.
-					// selectedHds = isHeaderMerged ? 
-					// 	self._avlHeaders(data, mHdrs) : [],
-					selectedHds = isHeaderMerged ? 
-						mHdrs : [],
+				let 
+					isHeaderMerged = 
+						(typeof header === 'object') ? 
+							true : false,
 					mergedData	= isHeaderMerged ? 
-						self._mergedColVal(data, selectedHds) : [];
+						self._mergedColVal(data, header) : [];
 
 			// Collpase the stack bars inside the stack group.
 			d3.select(this).selectAll('rect.stackbar')
@@ -1200,9 +1218,14 @@ barGraphClass.prototype.transitStackBarToBar = function(header, mHdrs, yLabel) {
 			);
 
 		self._createYAxis(yLabel);
-
-		self._createBars(data, header, r.mergedData, false);
-		self._markValOnBar(data, header, r.mergedData);
+		console.log('check here!');
+		// self._createBars(dataset, dOption, mergedDataset, false, colorSet)
+		console.log(data);
+		console.log(header);
+		console.log(r.mergedData);
+		console.log(cHeader);
+		self._createBars(data, header, r.mergedData, false, cHeader);
+		self._markValOnBar(data, header, r.mergedData.length ? r.mergedData : null);
 	})
 	
 	return p
@@ -1308,7 +1331,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 }
 
 // Transit the percentage stack bar to bar.
-barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
+barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl) {
 	
 	// Fetch the rows data from the g.stack
 	var rows = [];
@@ -1320,11 +1343,10 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 	this.stackGroup.remove();
 
 	// The option maybe the combined columns of data.
-	var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
+	let shouldMergeCols = typeof dOption === 'object' ? true : false;
 
 	// Get the available headers in specific. 
-	// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
-	var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
+	let _mrows = shouldMergeCols ? this._mergedColVal(rows, dOption) : [];
 	
 	// Set the scale
 	this._setLinearYScale(
@@ -1341,7 +1363,8 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 	this._createYAxis(yLabel);
 
 	// dataset, dOption, mergedDataset, isInit
-	this._createBars(rows, dOption, _mrows, true);
+	this._createBars(rows, dOption, _mrows, true, intl.cHeader);
+
 	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
 
 	return new Promise(function(resolve, reject) { resolve(); })
@@ -1355,7 +1378,8 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 	var self = this;
 
 	// Mergeddataset has higher priority for data rendering 
-	var beMergedDataset = mergedDataset.length > 0 ? true : false; 
+	// var beMergedDataset = mergedDataset.length > 0 ? true : false; 
+	let beMergedDataset = mergedDataset ? true : false; 
 	
 	this.barTxtGroup = 
 		this.pad.append('g')
@@ -1383,7 +1407,7 @@ barGraphClass.prototype._markValOnBar = function(dataset, dOption, mergedDataset
 			.call(c_placeValOnBarHdV, 10, this.barWidth, this.step, this.outPadding);
 }
 
-barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, mHdrs) {
+barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol, isStacked, isGrouped, colorSet) {
 	
 	var self = this;
 	
@@ -1392,12 +1416,13 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 		self.readCSV(path)
 			.row(self._dataFiltering)
 			.get(function(errors, rows) {
-				
+
 				// The option maybe the combined columns of data.
-				var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+				let shouldMergeCols = typeof defaultCol === 'object' ? true : false;
 				
 				// Get the available headers in specific. 
-				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
+				var	_mrows = shouldMergeCols ? self._mergedColVal(rows, defaultCol) : [];
+
 				self._setBarWidth(rows);
 
 				// Set the scale
@@ -1418,8 +1443,9 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 				// There is a bug for y-axis.
 				self._createYAxis(yLabel);
 
-				self._createBars(rows, defaultCol, _mrows, true);
-				self._markValOnBar(rows, defaultCol, _mrows);
+				// self._createBars(rows, defaultCol, _mrows, true);
+				self._createBars(rows, defaultCol, _mrows, true, colorSet);
+				self._markValOnBar(rows, defaultCol, _mrows.length ? _mrows : null);
 
 				resolve({
 					data: rows,
@@ -1437,9 +1463,12 @@ barGraphClass.prototype.mappingData = function(path, xLabel, yLabel, defaultCol,
 // working-spot-3: Rename it with a better name
 // To check if the selected option is merged results.
 barGraphClass.prototype._checkColAccessableInOrigin = function(rowData, opt) {
+
 	if (rowData) {
 		var ks = Object.keys(rowData[0]);
 		for (var i in ks)
+			// If the opt name is not in the dataset,
+			// it is a merged column.
 			if (ks[i] === opt) return false
 	}
 	return true
@@ -1454,17 +1483,24 @@ barGraphClass.prototype._mergedColVal = function (rowData, mergedCols) {
 	// Rows for max combined value
 	return rowData.map(function(row, i) {
 					
-		var maxVal = 0;
+		var mergedVal = 0;
 
 		for (var i in mergedCols)
-			maxVal += parseFloat(row[mergedCols[i]])
-		return maxVal
+			mergedVal += parseFloat(row[mergedCols[i]])
+		return mergedVal
 	});
 				
 }
+/* 
+	colorSet: 
+		the option for color selecting, 
+		most of the time, the dOption is used to pick up the color value.
+		However, dOption may not be useful in some circumstances like the combined header selection.
+		The circumstance like this needs colorSet for filling color.
 
-// barGraphClass.prototype.update = function(path, xLabel, yLabel, dOption) {
-barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
+*/
+// Accept the multiple options.
+barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
 
 	var self = this;
 
@@ -1489,15 +1525,43 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 					// The positions of bars after update
 					c_Pos = [];
 
-				// working-spot-2: store the data from the bars
+				// store the data from the bars
 				var data = []; 
 
-				_bars.each(function(d, i) {
-					data.push(d);
-				});
+				/* Combined options have to apply combined value for data presenting */
+				let isCombinedOpts = 
+					typeof dOption === 'object' ? true : false ;
 
-				self._setLinearYScale(data, dOption);
-				self._setYAxis('left', data, dOption);
+				if (!isCombinedOpts) {
+
+					// Access the data of each bar.
+					_bars.each(function(d, i) {
+						
+						data.push(d);
+					});
+
+					self._setLinearYScale(data, dOption);
+					self._setYAxis('left', data, dOption);
+
+				} else {
+
+					// Store the combined value of multiple options.
+					_bars.call((rects) => {
+
+						let rectsData = [];
+
+						for (let rect of rects[0]) 
+							rectsData.push(rect.__data__);
+						
+						data = self._mergedColVal(rectsData, dOption);
+
+						// Reset the ycale for combined values.
+						self._setLinearYScale(data, null);
+						self._setYAxis('left', data, null);
+
+					});
+
+				}
 
 				// set xy axes' labels.
 				self._updateXAxisLabel(xLabel);
@@ -1514,22 +1578,37 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 							y: function(d, i) {
 
 								// get current positions of bars which will use for bar transition animations.
-								c_Pos.push(
-									{
-										x: this.getAttribute('x'),
-										y: self.yScale(parseFloat(d[dOption]))
-									}
-								);
+								if (!isCombinedOpts) {
+									c_Pos.push(
+										{
+											x: this.getAttribute('x'),
+											y: self.yScale(parseFloat(d[dOption]))
+										}
+									);
+								} else {
+									c_Pos.push(
+										{
+											x: this.getAttribute('x'),
+											y: self.yScale(data[i])
+										}
+									);
+								}
+								
 								return c_Pos[i].y
 							}, 
 
-							height: function(d) {
+							height: function(d, i) {
 								
-								return self.chartHeight - self.yScale(parseFloat(d[dOption])) 
+								if (!isCombinedOpts) 
+									return self.chartHeight - self.yScale(parseFloat(d[dOption])) 
+								else 
+									return self.chartHeight - self.yScale(parseFloat(data[i])) 
 							},
 
 							fill :function(d, i) {
-								return colorObj.bar[dOption]
+								// console.log(colorObj.bar[cOption]);
+								// return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption]
+								return colorObj.bar[colorSet]
 							}
 						})
 					.each(
@@ -1557,7 +1636,9 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption) {
 					.attr('x', function(d, i) {
 						var deltaX = c_Pos[i]['y'] - f_Pos[i]['y'];
 						return parseInt(this.getAttribute('x')) + deltaX })
-					.text(function(d) { return d[dOption] });
+					.text(function(d, i) { 
+						return isCombinedOpts ? data[i] : d[dOption] 
+					});
 
 				// Update Y axis
 				self.pad
