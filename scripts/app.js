@@ -309,12 +309,12 @@ const DataFilterStateTree = {
 													axes: {
 														x: '民國',
 														y: '案件數',
-														c: '非汽機車竊盜發生件數'
 													},
 													extl: {
 														headers: null
 													},
 													intl: {
+														header: '',
 														headers: ['重大竊盜發生件數', '普通竊盜發生件數'],
 														mHeaders: ['重大竊盜發生件數', '普通竊盜發生件數'],
 														cHeader: '非汽機車竊盜發生件數'
@@ -1815,7 +1815,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													headers: [],
+													header: '',
+													headers: ['舊受', '新受'],
 													mHeaders: ['舊受', '新受'],
 													cHeader: '案件數'
 												}
@@ -3774,8 +3775,7 @@ class StoryTeller {
 					{
 						goto: '總數',
 						transit: (_this, params) => {
-
-							params.push(['重大竊盜發生件數', '普通竊盜發生件數'], '非汽機車竊盜發生件數');
+							// params.push(['重大竊盜發生件數', '普通竊盜發生件數'], '非汽機車竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3783,7 +3783,7 @@ class StoryTeller {
 					{
 						goto: '重大竊盜發生件數',
 						transit: (_this, params) => {	
-							params.push('重大竊盜發生件數');
+							// params.push('重大竊盜發生件數');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3908,7 +3908,7 @@ class StoryTeller {
 					{
 						goto: '機車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -3953,22 +3953,20 @@ class StoryTeller {
 					{
 						goto: '汽車竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '汽車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransBarToPCTStackBar.apply(_this, params);
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜發生件數',
 						transit: (_this, params) => {	
-							// params.push('機車竊盜發生件數');
-							console.log('debugging');
 							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
@@ -3983,7 +3981,7 @@ class StoryTeller {
 					{
 						goto: '機車竊盜破獲與否件數',
 						transit: (_this, params) => {	
-							return _this.DBtransPCTToStackBar.apply(_this, params);
+							return _this.DBtransBarToStackBar.apply(_this, params);
 						},
 						end: null
 					}
@@ -6281,7 +6279,8 @@ const DataBoard = React.createClass({
 		return bG.update(
 			_topic.axes.x,
 			_topic.axes.y,
-			_topic.intl.header,
+			_topic.intl.headers.length ? 
+				_topic.intl.headers : _topic.intl.header,
 			_topic.intl.cHeader
 			)
 			.then(function() {
