@@ -3240,9 +3240,13 @@ const DataFilterStateTree = {
 													],
 													filterSets: null
 												},
-												
 												extl: {
-													url: null
+													url: null,
+													// working-spot
+													line: {
+														name: '羅瑩雪目標',
+														value: 8
+													}
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3301,7 +3305,11 @@ const DataFilterStateTree = {
 													],
 												},
 												extl: {
-													url: null
+													url: null,
+													line: {
+														name: '羅瑩雪目標',
+														value: 8
+													}
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3357,7 +3365,11 @@ const DataFilterStateTree = {
 													],
 												},
 												extl: {
-													url: null
+													url: null,
+													line: {
+														name: '羅瑩雪目標',
+														value: 8
+													}
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3413,7 +3425,11 @@ const DataFilterStateTree = {
 													]
 												},
 												extl: {
-													url: null
+													url: null,
+													line: {
+														name: '羅瑩雪目標',
+														value: 8
+													}
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3477,7 +3493,11 @@ const DataFilterStateTree = {
 													]
 												},
 												extl: {
-													url: null
+													url: null,
+													line: {
+														name: '羅瑩雪目標',
+														value: 8
+													}
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -4237,6 +4257,7 @@ class StoryTeller {
 
 		// Tales for explain the chart.
 		this.taleChains = [
+			/* For Prosecution Data */
 			// 兒少法 (Prosecution)
 			{
 				// The first section of each topic is the main indicator.
@@ -5870,7 +5891,223 @@ class StoryTeller {
 					}
 				]
 			},
+			/* For Correctional Data */
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '103年戒護人力概況',
+				data: '戒護人力情形',
+				vizType: '散佈圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								戒護人力比為矯正機關人力狀況極為重要的指標，
+								也是危及基層戒護人員執勤安全的統計標的。
+								因著矯正機關勤務的特殊性與封閉性，
+								讓許多人望而生畏，因此矯正機關長年受缺乏人力之苦。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								// left: '10em',
+								right: '3em,',
+								top : '3em'
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								時任法務部部長的
+								<a className='tale-body-link' href="https://zh.wikipedia.org/wiki/羅瑩雪">
+									羅瑩雪
+								</a>女士曾提出以戒護人力比
+								<a className='tale-body-link' href='http://www.chinatimes.com/newspapers/20150720000329-260106'>1:8</a>
+								的方向邁進，然而僅有少數的矯正機關達成該目標。監獄除了離島的金門、綠島以外，全數沒有達標。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '10em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								全國至105年有26所監獄，其中原屬國防部的台南軍監，在
+								<a className='tale-body-link' href='https://zh.wikipedia.org/wiki/洪仲丘事件'>洪仲丘事件</a>後，
+								因著
+								<a className='tale-body-link' 
+									 href='http://www.moj.gov.tw/ct.asp?xItem=315176&ctNode=27518'>軍事審判法修正案</a>，
+								於103年1月17日移交矯正署，並於104年7月16日正式成立為台南第二監獄。桃園八德外役監則於104年7月16日成立。
+								故103年的統計資料，僅有24個矯正機關。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '10em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								台中監獄為全台灣最大監獄，監禁5000人以上。因曾監禁知名政治犯的綠島監獄則僅有不足一百的受刑人。
+								從圖也可明顯看出，越大的監獄，戒護人力雖高，收容人卻更多，戒護人力比因此也更高。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
 
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國看守所',
+						isEnd: true
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國戒治所',
+						isEnd: true
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國少年矯正機關',
+						isEnd: true
+					},
+				]
+			},
 		];
 
 		this.calTopicFirstTale = function() {
@@ -6387,9 +6624,13 @@ const DataBoard = React.createClass({
 		// Find the topic.
 		const _topic = this.DBfindTopic(props);
 		
+		// working-spot
 		sG.initializeAPad().setChartSize()
 			.mappingData(
-				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t)
+				dataSheet.url, _topic.axes.x, _topic.axes.y, 
+				_topic.axes.r, _topic.axes.c, _topic.axes.t, 
+				false, false, false, false, false, _topic.extl
+			)
 			.then(function() {
 				t.appendCircleMouseOver(_topic.tipFormat);
 			});

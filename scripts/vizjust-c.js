@@ -347,10 +347,11 @@ this.g=new graphClass();}_createClass(ScatterPlotClass,[{key:'initializeAPad',va
 		rLabel: The data selection applied to map the data
 		cLabel: The data selection applied to fill the color 
 		tLabel: The data selection applied the text
-	*/},{key:'mappingData',value:function mappingData(dataSource,xLabel,yLabel,rLabel,cLabel,tLabel){var isXOrdinal=arguments.length<=6||arguments[6]===undefined?false:arguments[6];var isYOrdinal=arguments.length<=7||arguments[7]===undefined?false:arguments[7];var isXPCT=arguments.length<=8||arguments[8]===undefined?false:arguments[8];var isYPCT=arguments.length<=9||arguments[9]===undefined?false:arguments[9];var isRLog=arguments.length<=10||arguments[10]===undefined?false:arguments[10];var self=this;var p=new Promise(function(resolve,reject){d3.json(dataSource,function(data){ // Create x-axis
+	*/},{key:'mappingData',value:function mappingData(dataSource,xLabel,yLabel,rLabel,cLabel,tLabel){var isXOrdinal=arguments.length<=6||arguments[6]===undefined?false:arguments[6];var isYOrdinal=arguments.length<=7||arguments[7]===undefined?false:arguments[7];var isXPCT=arguments.length<=8||arguments[8]===undefined?false:arguments[8];var isYPCT=arguments.length<=9||arguments[9]===undefined?false:arguments[9];var isRLog=arguments.length<=10||arguments[10]===undefined?false:arguments[10];var extl=arguments[11];var self=this;var p=new Promise(function(resolve,reject){d3.json(dataSource,function(data){ // Create x-axis
 if(isXOrdinal)self.g._setOrdinalXScale();else self.g._setLinearXScale(data,xLabel);self.g._setXAxis('bottom');self.g._createXAxis(data,xLabel); // Create y-axis
 self.g._setLinearYScale(data,yLabel);self.g._setYAxis('left',data,yLabel);self.g._createYAxis(yLabel); // if (isRLog)
-self.g._setRScale(data,rLabel);var circles=self.g.pad.append('g').classed('scatter-plot-group',true).selectAll('circle').data(data).enter().append('circle').attr({cx:function cx(d){return self.g.xScale(d[xLabel]);},cy:function cy(d){return self.g.yScale(d[yLabel]);},r:function r(d){return self.g.rScale(d[rLabel]);},fill:function fill(d){return colorObj.scatterPlot[d[cLabel]];},stroke:'#fff','stroke-width':'0.5'}); // Mark the extreme value
+self.g._setRScale(data,rLabel);var circles=self.g.pad.append('g').classed('scatter-plot-group',true).selectAll('circle').data(data).enter().append('circle').attr({cx:function cx(d){return self.g.xScale(d[xLabel]);},cy:function cy(d){return self.g.yScale(d[yLabel]);},r:function r(d){return self.g.rScale(d[rLabel]);},fill:function fill(d){return colorObj.scatterPlot[d[cLabel]];},stroke:'#fff','stroke-width':'0.5'}); // Add addtion line on scatterPlot for specfic usage.
+if(extl.line)self._addAddtionalLine(extl.line); // Mark the extreme value
 // self.g.pad.append('g')
 // 	.classed('circle-label-group', true)
 // 	.selectAll('text')
@@ -472,7 +473,7 @@ resolve();}); // return p.then((o) => {
 // 						for ( let text of o.r_t ) 
 // 							d3.select(text).style('display', 'none');
 // })	
-return p;} // working-spot: suspended
+return p;}},{key:'_addAddtionalLine',value:function _addAddtionalLine(line){var self=this;this.g.pad.append('g').append('line').attr({'stroke-width':0.5,'stroke-dasharray':'5, 5, 1, 5',x1:function x1(){return self.g.padPadding.left;},x2:function x2(){return self.g.chartWidth-self.g.padPadding.right;},y1:function y1(){return self.g.yScale(line.value);},y2:function y2(){return self.g.yScale(line.value);}});} // working-spot: suspended
 // Append the labels and prevent the collisions with others.
 },{key:'_labelCircles',value:function _labelCircles(circles,texts){console.log(circles);console.log(circles.length);console.log(texts);console.log(texts.length); // Sort the circles according to x positions
 var _circles=function(){var _=circles,l=_.length; // Add the indices to the circles

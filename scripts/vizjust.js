@@ -3800,7 +3800,7 @@ class ScatterPlotClass {
 		cLabel: The data selection applied to fill the color 
 		tLabel: The data selection applied the text
 	*/
-	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, tLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false) {
+	mappingData(dataSource, xLabel, yLabel, rLabel, cLabel, tLabel, isXOrdinal = false, isYOrdinal = false, isXPCT = false, isYPCT = false, isRLog = false, extl) {
 
 		let self = this;
 
@@ -3837,6 +3837,10 @@ class ScatterPlotClass {
 									stroke: '#fff',
 									'stroke-width': '0.5'
 								});
+
+				// Add addtion line on scatterPlot for specfic usage.
+				if ( extl.line ) 
+					self._addAddtionalLine(extl.line);
 
 				// Mark the extreme value
 				// self.g.pad.append('g')
@@ -4069,6 +4073,22 @@ class ScatterPlotClass {
 		// 							d3.select(text).style('display', 'none');
 		// })	
 		return p
+	}
+
+	_addAddtionalLine(line) {
+
+		let self = this;
+
+		this.g.pad.append('g')
+			.append('line')
+				.attr({
+					'stroke-width': 0.5,
+					'stroke-dasharray': '5, 5, 1, 5',
+					x1: function(){ return self.g.padPadding.left }, 
+					x2: function(){ return self.g.chartWidth - self.g.padPadding.right },
+					y1: function(){ return self.g.yScale(line.value) },
+					y2: function(){ return self.g.yScale(line.value) },
+				});
 	}
 
 	// working-spot: suspended
