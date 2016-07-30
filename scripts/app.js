@@ -5743,6 +5743,133 @@ class StoryTeller {
 					}
 				]
 			},
+			// 毒品罪 (Prosecution)
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '毒品罪',
+				data: '被告人數',
+				vizType: '直方圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								至鴉片戰爭之後，毒品對是人的戕害之深，為民族所悌。
+								民國44年制訂
+								<a className='tale-body-link' href="https://zh.wikisource.org/wiki/%E6%88%A1%E4%BA%82%E6%99%82%E6%9C%9F%E8%82%85%E6%B8%85%E7%85%99%E6%AF%92%E6%A2%9D%E4%BE%8B_(%E6%B0%91%E5%9C%8B44%E5%B9%B4)">
+								戡亂時期肅清煙毒條例</a>，其中經過多次的修法，現行的
+								<a className='tale-body-link' href="https://zh.wikisource.org/wiki/%E6%AF%92%E5%93%81%E5%8D%B1%E5%AE%B3%E9%98%B2%E5%88%B6%E6%A2%9D%E4%BE%8B_(%E6%B0%91%E5%9C%8B86%E5%B9%B4%E7%AB%8B%E6%B3%9587%E5%B9%B4%E5%85%AC%E5%B8%83)">毒品危害防制條例</a>
+								於民國86年制定，87年公佈實施並取代原本的肅清煙毒條例。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								// left: '10em',
+								right: '3em,',
+								top : '3em'
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								在毒品危害防制條例實施以前，毒品為麻醉藥品管制條例與肅清煙毒條例所制定。
+								故統計資料於民國87年以前的執行人數為違反上述兩條法律之人數總和。
+								毒品危害防制條例成立的四年內有明顯的「有罪無刑」的人數驟減現象，
+								一個可能的原因是，毒販或是吸食者供出毒品或是原料來源，可減刑或免除其刑。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								雖然免除其刑對被告有很強誘因，但違反社會觀感，爾後幾年便逐漸減少了
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名統計',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								top : '3em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '各刑名百分比',
+						isEnd: true
+					}
+				]
+			},
 
 		];
 
