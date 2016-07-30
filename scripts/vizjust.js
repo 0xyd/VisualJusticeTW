@@ -1218,12 +1218,6 @@ barGraphClass.prototype.transitStackBarToBar = function(header, cHeader, yLabel)
 			);
 
 		self._createYAxis(yLabel);
-		console.log('check here!');
-		// self._createBars(dataset, dOption, mergedDataset, false, colorSet)
-		console.log(data);
-		console.log(header);
-		console.log(r.mergedData);
-		console.log(cHeader);
 		self._createBars(data, header, r.mergedData, false, cHeader);
 		self._markValOnBar(data, header, r.mergedData.length ? r.mergedData : null);
 	})
@@ -1606,8 +1600,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
 							},
 
 							fill :function(d, i) {
-								// console.log(colorObj.bar[cOption]);
-								// return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption]
 								return colorObj.bar[colorSet]
 							}
 						})
@@ -3607,7 +3599,7 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 				});
 	}
 	else if (tipType === 'DOT-TIP')
-		console.log(this.dotTip.node().offsetHeight);
+		this.dotTip.node().offsetHeight;
 
 	return this
 }

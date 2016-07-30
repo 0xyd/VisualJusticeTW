@@ -1749,6 +1749,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader : '被告人數'
 												}
@@ -5770,7 +5771,7 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								至鴉片戰爭之後，毒品對是人的戕害之深，為民族所悌。
+								至鴉片戰爭之後，毒品對世人的戕害之深，為民族所惕。
 								民國44年制訂
 								<a className='tale-body-link' href="https://zh.wikisource.org/wiki/%E6%88%A1%E4%BA%82%E6%99%82%E6%9C%9F%E8%82%85%E6%B8%85%E7%85%99%E6%AF%92%E6%A2%9D%E4%BE%8B_(%E6%B0%91%E5%9C%8B44%E5%B9%B4)">
 								戡亂時期肅清煙毒條例</a>，其中經過多次的修法，現行的
