@@ -860,7 +860,8 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
-													headers: [],
+													header: '',
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}

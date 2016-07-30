@@ -124,7 +124,7 @@ var data=[];var p=new Promise(function(resolve,reject){self.stacks.each(function
 // 	self._avlHeaders(data, mHdrs) : [],
 var isHeaderMerged=(typeof header==='undefined'?'undefined':_typeof(header))==='object'?true:false, // selectedHds = isHeaderMerged ? 
 // 	mHdrs : [],
-mergedData=isHeaderMerged?self._mergedColVal(data,head):[]; // Collpase the stack bars inside the stack group.
+mergedData=isHeaderMerged?self._mergedColVal(data,header):[]; // Collpase the stack bars inside the stack group.
 d3.select(this).selectAll('rect.stackbar').transition().duration(2000).attr({y:self.chartHeight,height:0,width:0});if(this===this.parentNode.lastChild){self.stackGroup.remove();resolve({isHeaderMerged:isHeaderMerged,mergedData:mergedData});}});});p.then(function(r){ // Remove the old y axis.
 self._removeYAxis(); // Create the percentage y scale.
 self._setLinearYScale(r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._setYAxis('left',r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._createYAxis(yLabel); // working-spot
