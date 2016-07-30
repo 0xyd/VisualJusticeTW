@@ -228,9 +228,9 @@ const DataFilterStateTree = {
 														url: null
 													},
 													intl: {
-														header: '',
-														headers:  ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數'],
-														cHeaders: ['汽車竊盜破獲件數', '汽車竊盜尚未破獲件數']
+														header: '汽車竊盜破獲率',
+														headers:  [],
+														cHeader: '汽車竊盜破獲率'
 													}
 												},
 												{
@@ -1814,10 +1814,8 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
-													// headers: null,
 													headers: [],
 													mHeaders: ['舊受', '新受'],
-													// working-spot
 													cHeader: '案件數'
 												}
 											},
@@ -1832,7 +1830,6 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['舊受', '新受'],
-													// working-spot
 													cHeaders: ['舊受', '新受']
 												}
 											},
@@ -1847,7 +1844,6 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['舊受', '新受'],
-													// working-spot
 													cHeaders: ['舊受', '新受']
 												}
 											},
@@ -1862,7 +1858,6 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['終結', '未結'],
-													// working-spot
 													cHeaders: ['終結', '未結']
 												}
 											},
@@ -1877,7 +1872,6 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													headers: ['終結', '未結'],
-													// working-spot
 													cHeaders: ['終結', '未結']
 												}
 											}
@@ -3884,16 +3878,14 @@ class StoryTeller {
 
 						goto: '汽車竊盜案破獲率',
 						transit: (_this, params) => {	
-							return _this.DBtransStackBarToPCT.apply(_this, params);
+							return _this.DBtransStackBarToBar.apply(_this, params);
 						},
 						end: null
 					},
 					{
 						goto: '機車竊盜發生件數',
 						transit: (_this, params) => {
-							// working-spot: Tracing a bug.
-							console.log('debugging');	
-							return _this.DBtransPCTStackBarToBar.apply(_this, params);
+							return _this.DBUpdateBar.apply(_this, params);
 						},
 						end: null
 					},
@@ -6166,11 +6158,9 @@ const DataBoard = React.createClass({
 
 		if (update) {
 			
-			// working-spot
 			bG.update(
 				_topic.axes.x,
 				_topic.axes.y,
-				// props.data 
 				_topic.intl.mHeaders ?
 						 _topic.intl.mHeaders : _topic.intl.headers.length ?
 						 		_topic.intl.headers : _topic.intl.header,
@@ -6182,23 +6172,17 @@ const DataBoard = React.createClass({
 				});
 		} else {
 
-
-			// working-spot
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 				.mappingData(
 					dataSheet.url, 
 					_topic.axes.x,
 					_topic.axes.y,
-					// props.data,
-					// _topic.intl.headers.length ? _topic.intl.headers : _topic.intl.header,
 					_topic.intl.mHeaders ?
 						 _topic.intl.mHeaders : _topic.intl.headers.length ?
 						 		_topic.intl.headers : _topic.intl.header,
 					false,
 					false,
-					// working-spot
-					// _topic.intl.mHeaders
 					_topic.intl.cHeaders ? 
 						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
@@ -6296,8 +6280,6 @@ const DataBoard = React.createClass({
 		return bG.update(
 			_topic.axes.x,
 			_topic.axes.y,
-			// working-spot
-			// props.data === header ? props.data : header,
 			_topic.intl.header,
 			_topic.intl.cHeader
 			)
@@ -6322,8 +6304,7 @@ const DataBoard = React.createClass({
 
 		let bG = this.gpu.barGraph,
 				t = this.tip;
-		// working-spot: depreciate the mHds param.
-		console.log('Test here');
+		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl/*, _topic.intl.mHeaders*/);
@@ -6338,7 +6319,6 @@ const DataBoard = React.createClass({
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
 
-		// working-spot
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
 			_topic.intl.headers.length ?
@@ -6399,7 +6379,6 @@ const DataBoard = React.createClass({
 		return bG.updateStackBars(_topic.intl, _topic.extl)
 	},
 
-	// working-spot
 	// Update the Scatter Plot
 	DBUpdateScatterPlot(props) {
 
@@ -6527,7 +6506,6 @@ const DataBoard = React.createClass({
 						});
 				store.dispatch(setTaleIndexAC(taleIndex));
 			}
-			// working-spot
 			this.storyTeller.toTell(this.props.topicDepth, nextProps.topicDepth, steps.fwd, steps.bwd);
 	},
 

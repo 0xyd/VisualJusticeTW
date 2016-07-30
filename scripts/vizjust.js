@@ -1210,9 +1210,14 @@ barGraphClass.prototype.transitStackBarToBar = function(header, cHeader, yLabel)
 			);
 
 		self._createYAxis(yLabel);
-
+		console.log('check here!');
+		// self._createBars(dataset, dOption, mergedDataset, false, colorSet)
+		console.log(data);
+		console.log(header);
+		console.log(r.mergedData);
+		console.log(cHeader);
 		self._createBars(data, header, r.mergedData, false, cHeader);
-		self._markValOnBar(data, header, r.mergedData);
+		self._markValOnBar(data, header, r.mergedData.length ? r.mergedData : null);
 	})
 	
 	return p
@@ -1351,6 +1356,7 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 
 	// dataset, dOption, mergedDataset, isInit
 	this._createBars(rows, dOption, _mrows, true, intl.cHeader);
+
 	this._markValOnBar(rows, dOption, shouldMergeCols ? _mrows : null);
 
 	return new Promise(function(resolve, reject) { resolve(); })

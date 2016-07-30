@@ -84,12 +84,8 @@ temp.name=headers[i];temp.value=parseFloat(d[headers[i]]); // Calculate the stac
 temp.dy=self.chartHeight-self.yScale(temp.value); // Define the start y for the first stack bar element
 if(parseInt(i)===0)temp.y0=self.chartHeight-sumStacksHeight;else temp.y0=barData[parseInt(i)-1].y0+barData[parseInt(i)-1].dy;barData.push(temp);}} // rects store the original rects before transition.
 var rects=d3.select(this).selectAll('rect'),updatedRects=null,shouldAppendRects=false;function binding(data){ // if (data.length > updatedRects[0].length) {
-if(data.length>rects[0].length){shouldAppendRects=true;updatedRects=rects.data(data).enter();}else rects.data(data).exit().remove();}function render(time){var initAttrs={x:self.outPadding+stackIndex*(self.barWidth+self.step),y:function y(d,i){return d.y0;},fill:function fill(d,i){return colorObj.bar[intl.cHeaders[i]];},width:self.barWidth,height:0};if(shouldAppendRects){rects.attr(initAttrs).transition().duration(time).attr({height:function height(d,i){return d.dy>=0?d.dy:0;}});updatedRects.append('rect').classed('stackbar',true).attr(initAttrs).transition().duration(time).attr({height:function height(d,i){return d.dy>=0?d.dy:0;}});}else {rects.attr(initAttrs).transition().duration(time).attr({height:function height(d){return d.dy>=0?d.dy:0;}});}}binding(barData);render(500);if(this===this.parentNode.lastChild)resolve(d3.selectAll('rect.stackbar'));});});return p;}; // working-spot: Consider to delete mHds.
-// Transit the bar to percentage stack bar
-// barGraphClass.prototype.transitBarToPCTStackBar = function(yLabel, intl, extl, mHds) {
-barGraphClass.prototype.transitBarToPCTStackBar=function(yLabel,intl,extl){var self=this;return this.transitBarToStack(yLabel,intl,extl).then(function(){self.transitPCTStackBar(yLabel);});}; // working-spot: Consider to delete mHds.
-// Transit the stack bar in percentage unit. (PCT = Percent abbr)
-// barGraphClass.prototype.transitPCTStackBar = function(yLabel, mHds) {
+if(data.length>rects[0].length){shouldAppendRects=true;updatedRects=rects.data(data).enter();}else rects.data(data).exit().remove();}function render(time){var initAttrs={x:self.outPadding+stackIndex*(self.barWidth+self.step),y:function y(d,i){return d.y0;},fill:function fill(d,i){return colorObj.bar[intl.cHeaders[i]];},width:self.barWidth,height:0};if(shouldAppendRects){rects.attr(initAttrs).transition().duration(time).attr({height:function height(d,i){return d.dy>=0?d.dy:0;}});updatedRects.append('rect').classed('stackbar',true).attr(initAttrs).transition().duration(time).attr({height:function height(d,i){return d.dy>=0?d.dy:0;}});}else {rects.attr(initAttrs).transition().duration(time).attr({height:function height(d){return d.dy>=0?d.dy:0;}});}}binding(barData);render(500);if(this===this.parentNode.lastChild)resolve(d3.selectAll('rect.stackbar'));});});return p;}; // Transit the bar to percentage stack bar
+barGraphClass.prototype.transitBarToPCTStackBar=function(yLabel,intl,extl){var self=this;return this.transitBarToStack(yLabel,intl,extl).then(function(){self.transitPCTStackBar(yLabel);});}; // Transit the stack bar in percentage unit. (PCT = Percent abbr)
 barGraphClass.prototype.transitPCTStackBar=function(yLabel){var self=this; // Remove the old y axis.
 this._removeYAxis(); // Create the percentage y scale.
 this._setYPctScale();this._setYPctAxis('left');this._createYAxis(yLabel); // Collect the data from stack bars, the index is the stack
@@ -118,17 +114,11 @@ self.stacks.each(function(d,i){d3.select(this).selectAll('rect').data(dataPairs[
 });return p;}; // Transit the stack bar to origin bar.
 barGraphClass.prototype.transitStackBarToBar=function(header,cHeader,yLabel){var self=this; // Grape the data from stack.
 var data=[];var p=new Promise(function(resolve,reject){self.stacks.each(function(d,i){data.push(this.__data__); // Check if the header is a merged result.
-// var isHeaderMerged = self._checkColAccessableInOrigin(data, header),
-// selected headers for the merged.
-// selectedHds = isHeaderMerged ? 
-// 	self._avlHeaders(data, mHdrs) : [],
-var isHeaderMerged=(typeof header==='undefined'?'undefined':_typeof(header))==='object'?true:false, // selectedHds = isHeaderMerged ? 
-// 	mHdrs : [],
-mergedData=isHeaderMerged?self._mergedColVal(data,header):[]; // Collpase the stack bars inside the stack group.
+var isHeaderMerged=(typeof header==='undefined'?'undefined':_typeof(header))==='object'?true:false,mergedData=isHeaderMerged?self._mergedColVal(data,header):[]; // Collpase the stack bars inside the stack group.
 d3.select(this).selectAll('rect.stackbar').transition().duration(2000).attr({y:self.chartHeight,height:0,width:0});if(this===this.parentNode.lastChild){self.stackGroup.remove();resolve({isHeaderMerged:isHeaderMerged,mergedData:mergedData});}});});p.then(function(r){ // Remove the old y axis.
 self._removeYAxis(); // Create the percentage y scale.
-self._setLinearYScale(r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._setYAxis('left',r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._createYAxis(yLabel); // working-spot
-self._createBars(data,header,r.mergedData,false,cHeader);self._markValOnBar(data,header,r.mergedData);});return p;}; /* Switch from percent stack bar to stack bar. */barGraphClass.prototype.transitPCTSBarToSBar=function(yLabel,intl,extl,isOrigin){var self=this,headers=intl.headers.concat(extl.headers).filter(function(d,i){return d!==null&&d!==undefined;}); // Remove the previous y axis.
+self._setLinearYScale(r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._setYAxis('left',r.mergedData.length>0?r.mergedData:data,r.isHeaderMerged?null:header);self._createYAxis(yLabel);console.log('check here!'); // self._createBars(dataset, dOption, mergedDataset, false, colorSet)
+console.log(data);console.log(header);console.log(r.mergedData);console.log(cHeader);self._createBars(data,header,r.mergedData,false,cHeader);self._markValOnBar(data,header,r.mergedData.length?r.mergedData:null);});return p;}; /* Switch from percent stack bar to stack bar. */barGraphClass.prototype.transitPCTSBarToSBar=function(yLabel,intl,extl,isOrigin){var self=this,headers=intl.headers.concat(extl.headers).filter(function(d,i){return d!==null&&d!==undefined;}); // Remove the previous y axis.
 this._removeYAxis(); // Calculate the total amount of the stack bars
 function stackbarDataSum(d){return d.map(function(_d){var t=0;for(var i=0;i<_d.length;++i){t+=_d[i].value;}return t;});}var p=new Promise(function(resolve,reject){ // Store the dataset from the stack bars.
 var dataset=[];if(isOrigin){self.stacks.each(function(d,i){dataset[i]=[];d3.select(this).selectAll('rect').each(function(d,j){dataset[i].push(d);});}); // Sum up the value of each stack bar.
@@ -136,25 +126,17 @@ var _dataSum=stackbarDataSum(dataset); // Create the linear y scale.
 self._setLinearYScale(_dataSum,null);self._setYAxis('left',_dataSum,null);self._createYAxis(yLabel); // Resize the stack bars.
 self.stacks.each(function(d,i){d3.select(this).selectAll('rect').transition().duration(2000).attr({y:function y(d,i){return d.y0;},height:function height(d,i){return d.dy>=0?d.dy:0;}}).each('end',function(d,i){if(this===this.parentNode.lastChild)resolve(new tipClass());});});}else {var dataset=[];self.stacks.each(function(d,i){dataset[i]=[];for(var j in headers){dataset[i].push({name:headers[j],value:parseFloat(d[headers[j]])});}}); // Combined value of each stack
 var _dataSum=stackbarDataSum(dataset);self._setLinearYScale(_dataSum,null);self._setYAxis('left',_dataSum,null);self._createYAxis(yLabel);self._stackBarProducer(intl,extl).then(function(stackbars){stackbars.each(function(d,i){ // Reappend the year to the stack bar
-this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.appendStackBarMouseOver();resolve();});}});return p;}; // working-spot: Depreciate the mHdrs
-// Transit the percentage stack bar to bar.
-// barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, extl, mHdrs) {
-barGraphClass.prototype.transitPCTSBarToBar=function(yLabel,dOption,intl,extl,mHdrs){ // Fetch the rows data from the g.stack
+this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.appendStackBarMouseOver();resolve();});}});return p;}; // Transit the percentage stack bar to bar.
+barGraphClass.prototype.transitPCTSBarToBar=function(yLabel,dOption,intl,extl){ // Fetch the rows data from the g.stack
 var rows=[];this.stacks.each(function(d,i){rows.push(d);});this.stackGroup.remove(); // The option maybe the combined columns of data.
-// var shouldMergeCols = this._checkColAccessableInOrigin(rows, dOption);
 var shouldMergeCols=(typeof dOption==='undefined'?'undefined':_typeof(dOption))==='object'?true:false; // Get the available headers in specific. 
-// var avlHeaders = isdOptionMerged ? this._avlHeaders(rows, mHdrs) : [],
-// var _mrows = shouldMergeCols ? this._mergedColVal(rows, mHdrs) : [];
 var _mrows=shouldMergeCols?this._mergedColVal(rows,dOption):[]; // Set the scale
 this._setLinearYScale(_mrows.length>0?_mrows:rows,shouldMergeCols?null:dOption);this._removeYAxis(); // Set the Y axis
 this._setYAxis('left',_mrows.length>0?_mrows:rows,shouldMergeCols?null:dOption);this._createYAxis(yLabel); // dataset, dOption, mergedDataset, isInit
 this._createBars(rows,dOption,_mrows,true,intl.cHeader);this._markValOnBar(rows,dOption,shouldMergeCols?_mrows:null);return new Promise(function(resolve,reject){resolve();});}; /* </Stack Bars> */barGraphClass.prototype._markValOnBar=function(dataset,dOption,mergedDataset){var self=this; // Mergeddataset has higher priority for data rendering 
 // var beMergedDataset = mergedDataset.length > 0 ? true : false; 
-var beMergedDataset=mergedDataset?true:false;this.barTxtGroup=this.pad.append('g').attr('id','BAR-TXTGROUP');this.barTxtGroup.selectAll('text').data(dataset).enter().append('text').text(function(d,i){return beMergedDataset?mergedDataset[i]:d[dOption]?d[dOption]:d;}).attr('class','mark').attr('x',function(d,i){return self.outPadding+i*(self.barWidth+self.step);}).attr('y',function(d,i){return beMergedDataset?self.yScale(mergedDataset[i]):d[dOption]?self.yScale(d[dOption]):self.yScale(d);}).call(c_placeValOnBarHdV,10,this.barWidth,this.step,this.outPadding);}; // working-spot
-barGraphClass.prototype.mappingData=function(path,xLabel,yLabel,defaultCol,isStacked,isGrouped,colorSet){var self=this;var p=new Promise(function(resolve,reject){self.readCSV(path).row(self._dataFiltering).get(function(errors,rows){ // The option maybe the combined columns of data.
-// var shouldMergeCols = self._checkColAccessableInOrigin(rows, defaultCol);
+var beMergedDataset=mergedDataset?true:false;this.barTxtGroup=this.pad.append('g').attr('id','BAR-TXTGROUP');this.barTxtGroup.selectAll('text').data(dataset).enter().append('text').text(function(d,i){return beMergedDataset?mergedDataset[i]:d[dOption]?d[dOption]:d;}).attr('class','mark').attr('x',function(d,i){return self.outPadding+i*(self.barWidth+self.step);}).attr('y',function(d,i){return beMergedDataset?self.yScale(mergedDataset[i]):d[dOption]?self.yScale(d[dOption]):self.yScale(d);}).call(c_placeValOnBarHdV,10,this.barWidth,this.step,this.outPadding);};barGraphClass.prototype.mappingData=function(path,xLabel,yLabel,defaultCol,isStacked,isGrouped,colorSet){var self=this;var p=new Promise(function(resolve,reject){self.readCSV(path).row(self._dataFiltering).get(function(errors,rows){ // The option maybe the combined columns of data.
 var shouldMergeCols=(typeof defaultCol==='undefined'?'undefined':_typeof(defaultCol))==='object'?true:false; // Get the available headers in specific. 
-// var	_mrows = shouldMergeCols ? self._mergedColVal(rows, mHdrs) : [];
 var _mrows=shouldMergeCols?self._mergedColVal(rows,defaultCol):[];self._setBarWidth(rows); // Set the scale
 self._setOrdinalXScale(rows,xLabel);self._setLinearYScale(_mrows.length>0?_mrows:rows,shouldMergeCols?null:defaultCol); // Set the axes
 self._setYAxis('left',_mrows.length>0?_mrows:rows,shouldMergeCols?null:defaultCol);self._setXAxis('bottom'); // Draw the axes
@@ -175,7 +157,7 @@ return rowData.map(function(row,i){var mergedVal=0;for(var i in mergedCols){merg
 		However, dOption may not be useful in some circumstances like the combined header selection.
 		The circumstance like this needs colorSet for filling color.
 
-*/ // working-spot: accept the multiple options.
+*/ // Accept the multiple options.
 barGraphClass.prototype.update=function(xLabel,yLabel,dOption,colorSet){var self=this;var p=new Promise(function(resolve,reject){var _bars=self.pad.selectAll('rect'),_txts=self.pad.selectAll('.mark'), // Former x value of bars for text marker transition.
 f_Pos=function(){var posAry=[];for(var i=0;i<_bars[0].length;i++){posAry.push({x:_bars[0][i].getAttribute('x'),y:_bars[0][i].getAttribute('y')});};return posAry;}(), // The positions of bars after update
 c_Pos=[]; // store the data from the bars
