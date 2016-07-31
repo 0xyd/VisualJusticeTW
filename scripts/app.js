@@ -3243,10 +3243,18 @@ const DataFilterStateTree = {
 												extl: {
 													url: null,
 													// working-spot
-													line: {
-														name: '羅瑩雪目標',
-														value: 8
-													}
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國矯正機關',
+															tag : '全國矯正機關戒護人力比平均1:',
+															value: 18.58
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3306,10 +3314,18 @@ const DataFilterStateTree = {
 												},
 												extl: {
 													url: null,
-													line: {
-														name: '羅瑩雪目標',
-														value: 8
-													}
+													lines:[
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國監獄',
+															tag : '全國監獄戒護人力比平均1:',
+															value: 18.94
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3366,10 +3382,18 @@ const DataFilterStateTree = {
 												},
 												extl: {
 													url: null,
-													line: {
-														name: '羅瑩雪目標',
-														value: 8
-													}
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國看守所',
+															tag : '全國看守所戒護人力比平均1:',
+															value: 11.96
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3426,10 +3450,18 @@ const DataFilterStateTree = {
 												},
 												extl: {
 													url: null,
-													line: {
-														name: '羅瑩雪目標',
-														value: 8
-													}
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: 	'羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國戒治所',
+															tag : '全國戒治所戒護人力比平均1:',
+															value: 10.34
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3494,10 +3526,18 @@ const DataFilterStateTree = {
 												},
 												extl: {
 													url: null,
-													line: {
-														name: '羅瑩雪目標',
-														value: 8
-													}
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國少年矯正機關',
+															tag : '全國少年矯正機關戒護人力比平均1:',
+															value: 20.30
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -5918,13 +5958,47 @@ class StoryTeller {
 						},
 						infoContext: 
 							<span>
-								戒護人力比為矯正機關人力狀況極為重要的指標，
+								戒護人力比定義為一位戒護人員需要面對幾位收容人，
+								是矯正機關人力狀況極為重要的指標，
 								也是危及基層戒護人員執勤安全的統計標的。
 								因著矯正機關勤務的特殊性與封閉性，
 								讓許多人望而生畏，因此矯正機關長年受缺乏人力之苦。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								圓圈的半徑長度表示該機關收容人數量，
+								最大的為台中監獄，最小的為台南少年觀護所。
+								縱軸為戒護人力比，以明陽中學高居榜首，綠島監獄則最為愜意。
+								橫軸為戒護人力，台中監獄與台南少年歡護所分別為第一與墊底。
+								顏色用以區別矯正機關的類別，深橘色為監獄與女子監獄;
+								橘色為看守所; 水藍色為技能訓練所; 草綠色為戒治所;
+								深綠色則為其他的少年矯正機關如觀護所、矯正學校與輔育院。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
 						topicName: '全國矯正機關',
 						isEnd: false
 					},
@@ -5965,7 +6039,38 @@ class StoryTeller {
 						Container: {
 							pos : {
 								right: '3em',
-								top : '10em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								監獄以<a 
+								className='tale-body-link' 
+								href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=監獄行刑法'>監獄行刑法</a>
+								為其執法的主要法源依據。其中定義了男女分監、少年與成年分而監之等監禁原則，
+								也規範了受刑人在監執行的作業原則。在戒護的事項上，也有所定義。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
 							},
 							size: {
 								width : '400px',
@@ -5990,7 +6095,7 @@ class StoryTeller {
 								故103年的統計資料，僅有24個矯正機關。
 							</span>,
 						infoAnimation: '',
-						isTopicFirstSec: true,
+						isTopicFirstSec: false,
 						topicName: '全國監獄',
 						isEnd: false
 					},
@@ -5998,7 +6103,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								right: '3em',
-								top : '10em',
+								bottom : '5em',
 							},
 							size: {
 								width : '400px',
@@ -6048,7 +6153,7 @@ class StoryTeller {
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '全國看守所',
-						isEnd: true
+						isEnd: false
 					},
 					{
 						Container: {
@@ -6076,7 +6181,7 @@ class StoryTeller {
 						infoAnimation: '',
 						isTopicFirstSec: true,
 						topicName: '全國戒治所',
-						isEnd: true
+						isEnd: false
 					},
 					{
 						Container: {
@@ -6105,7 +6210,7 @@ class StoryTeller {
 						isTopicFirstSec: true,
 						topicName: '全國少年矯正機關',
 						isEnd: true
-					},
+					},	
 				]
 			},
 		];
@@ -6753,8 +6858,8 @@ const DataBoard = React.createClass({
 		let sG = this.gpu.scatterPlot,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
-
-		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
+		
+		return sG.update(_topic.intl.filterSets, _topic.extl.lines, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
 			.then(function() { 
 				t.appendCircleMouseOver(_topic.tipFormat); 
 			})

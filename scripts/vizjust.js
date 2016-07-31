@@ -3838,9 +3838,10 @@ class ScatterPlotClass {
 									'stroke-width': '0.5'
 								});
 
-				// Add addtion line on scatterPlot for specfic usage.
-				if ( extl.line ) 
-					self._addAddtionalLine(extl.line);
+				// Add addtional lines on scatterPlot for specfic usage.
+				// if ( extl.lines )
+				// 	for ( let line of extl.lines ) 
+				self._makeAuxLines(extl.lines);
 
 				// Mark the extreme value
 				// self.g.pad.append('g')
@@ -3917,7 +3918,7 @@ class ScatterPlotClass {
 		return p
 	}
 
-	update(filterSets, xLabel, yLabel, rLabel, cLabel) {
+	update(filterSets, lineSets, xLabel, yLabel, rLabel, cLabel) {
 		
 		const self = this;
 		const selectAll = !filterSets ? true : false;
@@ -4001,6 +4002,9 @@ class ScatterPlotClass {
 					for ( let c of _r_circles ) 
 						d3.select(c).transition().duration(1000).style('display', 'none');
 
+					// working
+					self._makeAuxLines(lineSets);
+
 					// Select the texts 
 				// 	d3.select('g.circle-label-group').selectAll('text')
 				// 		.each(function(d, i) {
@@ -4075,21 +4079,123 @@ class ScatterPlotClass {
 		return p
 	}
 
-	_addAddtionalLine(line) {
+	/* To add the auxiliary line to illustrate the graph. */
+	_makeAuxLines(lineSets) {
+		
+		let self = this,
+				lineGroup = 
+					this.g.pad.select('g.auxiliary-line-group').empty() ?
+						this.g.pad.append('g').classed('auxiliary-line-group', true):
+						this.g.pad.select('g.auxiliary-line-group'),
+				lines = lineGroup.selectAll('line')[0];
+		
+		for ( let i = 0; i < lineSets.length; i++ ) {
 
-		let self = this;
+			/*
+				When the index of the lineSet surpasses the existing number of lines,
+				We create the new lines
+			*/
+			if (i >= lines.length) 
+				addLine(lineSets[i]);
+			/*
+				If line is existing, update it with new line setting.
+			*/
+			else 
+				updateLine(lines[i], lineSets[i]);
+			
 
-		this.g.pad.append('g')
-			.append('line')
+		}
+
+		function updateLine(line, lineSet) {
+
+			let _line = d3.select(line),
+					_tag = d3.select(line.nextSibling);
+
+			_line.transition().duration(1000)
+				.attr({
+					y1: function(){ return self.g.yScale(lineSet.value) },
+					y2: function(){ return self.g.yScale(lineSet.value) },
+				});
+
+			_tag.transition().duration(1000)
+				.attr({
+					x: () => { return self.g.chartWidth - lineSet.tag.length * 15 },
+					y: () => { return self.g.yScale(lineSet.value) - 10 }
+				})
+				.text(lineSet.tag + lineSet.value);
+		}
+
+		function addLine(lineSet) {
+
+			lineGroup.append('line')
 				.attr({
 					'stroke-width': 0.5,
 					'stroke-dasharray': '5, 5, 1, 5',
-					x1: function(){ return self.g.padPadding.left }, 
-					x2: function(){ return self.g.chartWidth - self.g.padPadding.right },
-					y1: function(){ return self.g.yScale(line.value) },
-					y2: function(){ return self.g.yScale(line.value) },
+					stroke: '#000',
+					x1: function(){ return 0 }, 
+					x2: function(){ return self.g.chartWidth },
+					y1: function(){ return self.g.yScale(lineSet.value) },
+					y2: function(){ return self.g.yScale(lineSet.value) },
 				});
+
+			// If the tag is usable, we got to tag it at the end of the line.
+			if (lineSet.tag) {
+				lineGroup
+					.append('text')
+						.attr({
+							x: () => { return self.g.chartWidth - lineSet.tag.length * 15 },
+							y: () => { return self.g.yScale(lineSet.value) - 10 }
+						})
+						.text(lineSet.tag + lineSet.value);
+				}
+		}
+
+		// function dumpLine(line) {
+		// 	// let 
+		// 	d3.select(line).remove();
+		// }
+
+		// for ( let line of lines ) {
+
+		// 	lineGroup.append('line')
+		// 		.attr({
+		// 			'stroke-width': 0.5,
+		// 			'stroke-dasharray': '5, 5, 1, 5',
+		// 			stroke: '#000',
+		// 			x1: function(){ return 0 }, 
+		// 			x2: function(){ return self.g.chartWidth },
+		// 			y1: function(){ return self.g.yScale(line.value) },
+		// 			y2: function(){ return self.g.yScale(line.value) },
+		// 		});
+
+			// If the tag is usable, we got to tag it at the end of the line.
+			// if (line.tag) {
+			// 	lineGroup
+			// 		.append('text')
+			// 			.attr({
+			// 				x: () => { return self.g.chartWidth - line.tag.length * 15 },
+			// 				y: () => { return self.g.yScale(line.value) - 10 }
+			// 			})
+			// 			.text(line.tag + line.value);
+		// }
+		// this.g.pad.append('g').classed('additional-line', true)
+			// .append('line')
+			// 	.attr({
+			// 		'stroke-width': 0.5,
+			// 		'stroke-dasharray': '5, 5, 1, 5',
+			// 		stroke: '#000',
+			// 		x1: function(){ return 0 }, 
+			// 		x2: function(){ return self.g.chartWidth },
+			// 		y1: function(){ return self.g.yScale(line.value) },
+			// 		y2: function(){ return self.g.yScale(line.value) },
+			// 	});
+
+
+		
+		// }
 	}
+
+	/* Dump the lines */
 
 	// working-spot: suspended
 	// Append the labels and prevent the collisions with others.

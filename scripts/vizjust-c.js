@@ -350,8 +350,10 @@ this.g=new graphClass();}_createClass(ScatterPlotClass,[{key:'initializeAPad',va
 	*/},{key:'mappingData',value:function mappingData(dataSource,xLabel,yLabel,rLabel,cLabel,tLabel){var isXOrdinal=arguments.length<=6||arguments[6]===undefined?false:arguments[6];var isYOrdinal=arguments.length<=7||arguments[7]===undefined?false:arguments[7];var isXPCT=arguments.length<=8||arguments[8]===undefined?false:arguments[8];var isYPCT=arguments.length<=9||arguments[9]===undefined?false:arguments[9];var isRLog=arguments.length<=10||arguments[10]===undefined?false:arguments[10];var extl=arguments[11];var self=this;var p=new Promise(function(resolve,reject){d3.json(dataSource,function(data){ // Create x-axis
 if(isXOrdinal)self.g._setOrdinalXScale();else self.g._setLinearXScale(data,xLabel);self.g._setXAxis('bottom');self.g._createXAxis(data,xLabel); // Create y-axis
 self.g._setLinearYScale(data,yLabel);self.g._setYAxis('left',data,yLabel);self.g._createYAxis(yLabel); // if (isRLog)
-self.g._setRScale(data,rLabel);var circles=self.g.pad.append('g').classed('scatter-plot-group',true).selectAll('circle').data(data).enter().append('circle').attr({cx:function cx(d){return self.g.xScale(d[xLabel]);},cy:function cy(d){return self.g.yScale(d[yLabel]);},r:function r(d){return self.g.rScale(d[rLabel]);},fill:function fill(d){return colorObj.scatterPlot[d[cLabel]];},stroke:'#fff','stroke-width':'0.5'}); // Add addtion line on scatterPlot for specfic usage.
-if(extl.line)self._addAddtionalLine(extl.line); // Mark the extreme value
+self.g._setRScale(data,rLabel);var circles=self.g.pad.append('g').classed('scatter-plot-group',true).selectAll('circle').data(data).enter().append('circle').attr({cx:function cx(d){return self.g.xScale(d[xLabel]);},cy:function cy(d){return self.g.yScale(d[yLabel]);},r:function r(d){return self.g.rScale(d[rLabel]);},fill:function fill(d){return colorObj.scatterPlot[d[cLabel]];},stroke:'#fff','stroke-width':'0.5'}); // Add addtional lines on scatterPlot for specfic usage.
+// if ( extl.lines )
+// 	for ( let line of extl.lines ) 
+self._makeAuxLines(extl.lines); // Mark the extreme value
 // self.g.pad.append('g')
 // 	.classed('circle-label-group', true)
 // 	.selectAll('text')
@@ -406,7 +408,7 @@ if(extl.line)self._addAddtionalLine(extl.line); // Mark the extreme value
 // 					return _max
 // 				}
 // 			});
-resolve();});});return p;}},{key:'update',value:function update(filterSets,xLabel,yLabel,rLabel,cLabel){var self=this;var selectAll=!filterSets?true:false;var p=new Promise(function(resolve,reject){var _circles=[], // Initial a circles selected set
+resolve();});});return p;}},{key:'update',value:function update(filterSets,lineSets,xLabel,yLabel,rLabel,cLabel){var self=this;var selectAll=!filterSets?true:false;var p=new Promise(function(resolve,reject){var _circles=[], // Initial a circles selected set
 _r_circles=[], // The circles are not selected
 _texts=[], // Initial a texts selected set
 _r_texts=[], // The texts are not selected
@@ -421,7 +423,8 @@ self.g._setLinearXScale(_data,xLabel);self.g._setXAxis('bottom');self.g.updateXA
 self.g._setLinearYScale(_data,yLabel);self.g._setYAxis('left',_data,yLabel);self.g.updateYAxis(); // Reset the r scale
 self.g._setRScale(_data,rLabel); // Shift the circles to the new positions
 var _iteratorNormalCompletion5=true;var _didIteratorError5=false;var _iteratorError5=undefined;try{for(var _iterator5=_circles[Symbol.iterator](),_step5;!(_iteratorNormalCompletion5=(_step5=_iterator5.next()).done);_iteratorNormalCompletion5=true){var c=_step5.value;d3.select(c).transition().duration(1000).style('display','inline-block').attr({r:function r(_d){return self.g.rScale(_d[rLabel]);},cx:function cx(_d){return self.g.xScale(_d[xLabel]);},cy:function cy(_d){return self.g.yScale(_d[yLabel]);},fill:function fill(_d){return colorLinearCat?colorScale(_d[cLabel]):colorObj.scatterPlot[_d[cLabel]];}});} // Hide those are not seleted.
-}catch(err){_didIteratorError5=true;_iteratorError5=err;}finally {try{if(!_iteratorNormalCompletion5&&_iterator5.return){_iterator5.return();}}finally {if(_didIteratorError5){throw _iteratorError5;}}}var _iteratorNormalCompletion6=true;var _didIteratorError6=false;var _iteratorError6=undefined;try{for(var _iterator6=_r_circles[Symbol.iterator](),_step6;!(_iteratorNormalCompletion6=(_step6=_iterator6.next()).done);_iteratorNormalCompletion6=true){var c=_step6.value;d3.select(c).transition().duration(1000).style('display','none');} // Select the texts 
+}catch(err){_didIteratorError5=true;_iteratorError5=err;}finally {try{if(!_iteratorNormalCompletion5&&_iterator5.return){_iterator5.return();}}finally {if(_didIteratorError5){throw _iteratorError5;}}}var _iteratorNormalCompletion6=true;var _didIteratorError6=false;var _iteratorError6=undefined;try{for(var _iterator6=_r_circles[Symbol.iterator](),_step6;!(_iteratorNormalCompletion6=(_step6=_iterator6.next()).done);_iteratorNormalCompletion6=true){var c=_step6.value;d3.select(c).transition().duration(1000).style('display','none');} // working
+}catch(err){_didIteratorError6=true;_iteratorError6=err;}finally {try{if(!_iteratorNormalCompletion6&&_iterator6.return){_iterator6.return();}}finally {if(_didIteratorError6){throw _iteratorError6;}}}self._makeAuxLines(lineSets); // Select the texts 
 // 	d3.select('g.circle-label-group').selectAll('text')
 // 		.each(function(d, i) {
 // 			let isSelected = false;
@@ -455,7 +458,7 @@ var _iteratorNormalCompletion5=true;var _didIteratorError5=false;var _iteratorEr
 // 				// 	d3.select(text).style('display', 'none');
 // 			}
 // 		});
-}catch(err){_didIteratorError6=true;_iteratorError6=err;}finally {try{if(!_iteratorNormalCompletion6&&_iterator6.return){_iterator6.return();}}finally {if(_didIteratorError6){throw _iteratorError6;}}}}); // resolve({ c: _circles, t: _texts, r_t: _r_texts });
+}); // resolve({ c: _circles, t: _texts, r_t: _r_texts });
 resolve();}); // return p.then((o) => {
 // Suspeneded
 // Label circles for the best view.
@@ -473,7 +476,50 @@ resolve();}); // return p.then((o) => {
 // 						for ( let text of o.r_t ) 
 // 							d3.select(text).style('display', 'none');
 // })	
-return p;}},{key:'_addAddtionalLine',value:function _addAddtionalLine(line){var self=this;this.g.pad.append('g').append('line').attr({'stroke-width':0.5,'stroke-dasharray':'5, 5, 1, 5',x1:function x1(){return self.g.padPadding.left;},x2:function x2(){return self.g.chartWidth-self.g.padPadding.right;},y1:function y1(){return self.g.yScale(line.value);},y2:function y2(){return self.g.yScale(line.value);}});} // working-spot: suspended
+return p;} /* To add the auxiliary line to illustrate the graph. */},{key:'_makeAuxLines',value:function _makeAuxLines(lineSets){var self=this,lineGroup=this.g.pad.select('g.auxiliary-line-group').empty()?this.g.pad.append('g').classed('auxiliary-line-group',true):this.g.pad.select('g.auxiliary-line-group'),lines=lineGroup.selectAll('line')[0];for(var i=0;i<lineSets.length;i++){ /*
+				When the index of the lineSet surpasses the existing number of lines,
+				We create the new lines
+			*/if(i>=lines.length)addLine(lineSets[i]); /*
+				If line is existing, update it with new line setting.
+			*/else updateLine(lines[i],lineSets[i]);}function updateLine(line,lineSet){var _line=d3.select(line),_tag=d3.select(line.nextSibling);_line.transition().duration(1000).attr({y1:function y1(){return self.g.yScale(lineSet.value);},y2:function y2(){return self.g.yScale(lineSet.value);}});_tag.transition().duration(1000).attr({x:function x(){return self.g.chartWidth-lineSet.tag.length*15;},y:function y(){return self.g.yScale(lineSet.value)-10;}}).text(lineSet.tag+lineSet.value);}function addLine(lineSet){lineGroup.append('line').attr({'stroke-width':0.5,'stroke-dasharray':'5, 5, 1, 5',stroke:'#000',x1:function x1(){return 0;},x2:function x2(){return self.g.chartWidth;},y1:function y1(){return self.g.yScale(lineSet.value);},y2:function y2(){return self.g.yScale(lineSet.value);}}); // If the tag is usable, we got to tag it at the end of the line.
+if(lineSet.tag){lineGroup.append('text').attr({x:function x(){return self.g.chartWidth-lineSet.tag.length*15;},y:function y(){return self.g.yScale(lineSet.value)-10;}}).text(lineSet.tag+lineSet.value);}} // function dumpLine(line) {
+// 	// let 
+// 	d3.select(line).remove();
+// }
+// for ( let line of lines ) {
+// 	lineGroup.append('line')
+// 		.attr({
+// 			'stroke-width': 0.5,
+// 			'stroke-dasharray': '5, 5, 1, 5',
+// 			stroke: '#000',
+// 			x1: function(){ return 0 }, 
+// 			x2: function(){ return self.g.chartWidth },
+// 			y1: function(){ return self.g.yScale(line.value) },
+// 			y2: function(){ return self.g.yScale(line.value) },
+// 		});
+// If the tag is usable, we got to tag it at the end of the line.
+// if (line.tag) {
+// 	lineGroup
+// 		.append('text')
+// 			.attr({
+// 				x: () => { return self.g.chartWidth - line.tag.length * 15 },
+// 				y: () => { return self.g.yScale(line.value) - 10 }
+// 			})
+// 			.text(line.tag + line.value);
+// }
+// this.g.pad.append('g').classed('additional-line', true)
+// .append('line')
+// 	.attr({
+// 		'stroke-width': 0.5,
+// 		'stroke-dasharray': '5, 5, 1, 5',
+// 		stroke: '#000',
+// 		x1: function(){ return 0 }, 
+// 		x2: function(){ return self.g.chartWidth },
+// 		y1: function(){ return self.g.yScale(line.value) },
+// 		y2: function(){ return self.g.yScale(line.value) },
+// 	});
+// }
+} /* Dump the lines */ // working-spot: suspended
 // Append the labels and prevent the collisions with others.
 },{key:'_labelCircles',value:function _labelCircles(circles,texts){console.log(circles);console.log(circles.length);console.log(texts);console.log(texts.length); // Sort the circles according to x positions
 var _circles=function(){var _=circles,l=_.length; // Add the indices to the circles
