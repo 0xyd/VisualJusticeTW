@@ -6130,11 +6130,11 @@ class StoryTeller {
 					{
 						Container: {
 							pos : {
-								left: '10em',
-								top : '3em',
+								right: '5em',
+								bottom : '5em',
 							},
 							size: {
-								width : '300px',
+								width : '400px',
 								padding: '0.5em 1em'
 							}
 						},
@@ -6148,10 +6148,85 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+								看守所依法執行
+								<a className='tale-body-link' href="http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=羈押法">
+								羈押法
+								</a>，
+								為看押刑事被告人的矯正機關。與監獄行刑法雷同，規範了男女、少年成年分別羈押等事宜。
+								男性刑事被告被看押於看守所，女性則被看押在女子看守所，而少年刑事被告則於觀護所羈押。
+								雖然被羈押，然而因著
+								<a className='tale-body-link' href='https://zh.wikipedia.org/wiki/%E6%97%A0%E7%BD%AA%E6%8E%A8%E5%AE%9A%E5%8E%9F%E5%88%99'>
+								無罪推定原則
+								</a>，刑事被告在刑事判決尚未定讞以前，為無罪，
+								是故羈押法對刑事被告所規範的事務，相較於監獄行刑法對受刑人，
+								是較為寬鬆的。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
+						topicName: '全國看守所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '5em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								少年觀護所雖羈押少年刑事被告，然而因著是少年嫌疑犯，
+								與少年犯罪等議題較為貼近，因此我們將其歸類為少年矯正機關。
+								不含少年觀護所，全國有20個看守所，
+								其中有8個與監獄合署辦公，他們的戒護人力則與合署監獄一同計算，
+								因此僅有12間看守所被獨立計算。
+								其中最大且最知名為號稱『天下第一所』的台北看守所，收容超過3000人，
+								最小的則為基隆看守所，收容了177人。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國看守所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '5em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								你或許會很訝異看守所竟然看押為數如此多的刑事被告，
+								其實不然。有些看守所有監獄的分監，因此也收容了為數不少的收容人。
+								值得留意的是，除了女子看守所些微沒有超收之外，其他全數超收。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
 						topicName: '全國看守所',
 						isEnd: false
 					},
@@ -6176,7 +6251,8 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+								八十七年<a className='tale-body-link' href=''>毒品危害防制條例</a>通過後，政府將施用毒品者，認定為同時具有病人及犯人雙重性質的病犯，
+								希望藉由進入戒治所接受強制戒治，協助其戒除毒癮。吸毒遭查獲後，會先到勒戒所進行觀察勒戒，若被判定有繼續施用毒品傾向，就會被裁定入戒治所強制戒治，以協助戒除毒癮。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
@@ -6204,7 +6280,7 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								近年來毒品被告人數增加也跟越來越多麻醉（毒品）藥品被入罪，擴大執法範圍。
+								戒治所
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
