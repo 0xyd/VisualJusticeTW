@@ -6234,7 +6234,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								left: '10em',
-								top : '3em',
+								bottom : '5em',
 							},
 							size: {
 								width : '300px',
@@ -6251,8 +6251,11 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								八十七年<a className='tale-body-link' href=''>毒品危害防制條例</a>通過後，政府將施用毒品者，認定為同時具有病人及犯人雙重性質的病犯，
-								希望藉由進入戒治所接受強制戒治，協助其戒除毒癮。吸毒遭查獲後，會先到勒戒所進行觀察勒戒，若被判定有繼續施用毒品傾向，就會被裁定入戒治所強制戒治，以協助戒除毒癮。
+								八十七年<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>毒品危害防制條例</a>通過後，
+								政府將施用毒品者，認定為同時具有病人及犯人雙重性質的病犯。
+								吸毒遭查獲後，依據毒品危害防制條例第二十九條，
+								會先到勒戒所進行觀察勒戒<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>(觀察勒戒執行處分條例)</a>
+								，若被判定有繼續施用毒品傾向，就會被裁定入戒治所強制戒治<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>(戒治處分執行條例)</a>，以協助戒除毒癮。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
@@ -6263,7 +6266,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								left: '10em',
-								top : '3em',
+								bottom : '5em',
 							},
 							size: {
 								width : '300px',
@@ -6280,10 +6283,91 @@ class StoryTeller {
 						},
 						infoContext  : 
 							<span>
-								戒治所
+								依據<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>戒治處分執行條例</a>第11條，
+								戒治處分之執行，其期間為六個月以上，至無繼續強制戒治之必要為止。但最長不得逾一年。
+								因此戒治所的收容人至多收容一年。收容人若有自由刑需要執行，則會送入監獄。
+								也顛覆很多人的猜想，以為毒品氾濫的台灣，戒治所人滿為患，其實不然。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國戒治所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								bottom : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年事件處理法'>
+									 少年事件處理法
+								</a>
+								規範了少年犯因犯罪或有犯罪之虞的情況時，司法的程序以及相關的教化與保護措施，以協助少年悔改，適應社會。
+								所以除了設有少年法庭審理少年的事件外，也設有少年的矯正機構協助矯治犯罪之少年。
+								全國少年矯正機關的分類有：少年輔育院、少年觀護所與少年矯正學校。少年輔育院依
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年觀護所'>
+									少年輔育院條例
+								</a>，依法收容被處以感化教育的少年受處分人。少年觀護所性質與看守所雷同，依據
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年觀護所'>
+									少年觀護所設置以及實施通則
+								</a>，看押少年刑事被告。少年矯正學校則依據
+								<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0040043'>
+									少年矯正學校設置及教育實施通則
+								</a>收容受感化教育、拘役以及徒刑處分之少年，
+								其中誠正中學收容受感化教育之少年收容人，明陽中學則收容少年受刑人。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
+						topicName: '全國少年矯正機關',
+						isEnd: false
+					},	
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								bottom : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								值得慶幸的是，少年矯正機關並沒有超收的問題，可是戒護人力卻居高不下。
+								可以明顯看得出來，在處理少年收容人的態度上，政府是以教化為主，戒護為輔。
+								因此少年矯正機關沒有如其他矯正機關有這麼多的戒護人員，
+								反之，卻有其他矯正機關無法比擬的教化資源。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
 						topicName: '全國少年矯正機關',
 						isEnd: true
 					},	
