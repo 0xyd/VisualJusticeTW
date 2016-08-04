@@ -6448,29 +6448,39 @@ class StoryTeller {
 	*/
 	toTell(startDepth, endDepth, fwdOpParams, bwdOpParams) {
 
+		console.log('_this.vizStory.fwdSteps: ', this._vizStory.fwdSteps);
+		console.log('_this.vizStory.bwdSteps: ', this._vizStory.bwdSteps);
+		console.log('startDepth: ', startDepth);
+		console.log('endDepth: ', endDepth);
 		// For deeper exploration
 		if (endDepth - startDepth > 0) {
+			
+			console.log('For deepper');
 
 			for (let s = startDepth; s < endDepth; ++s) {
-
+				console.log('s: ', s);
 				// The pending promise object will be assigned to the end property. 
-				if ( s === startDepth ) 
+				if ( s === startDepth ) {
 					this._vizStory.fwdSteps[s].end = 
 						this._vizStory.fwdSteps[s]
 							.transit(fwdOpParams[s]._, fwdOpParams[s].params);
-				else
+				}
+				else {
 					this._vizStory.fwdSteps[s].end = 
 						this._vizStory.fwdSteps[s-1].end
 							.then(this._vizStory.fwdSteps[s]
 								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
+				}
 			}
 		}
 		
 		// For returning back from the deep.
 		else if (endDepth - startDepth < 0) {
 
-			for (let s = startDepth - 1; s >= endDepth; --s) {
+			console.log('For returning');
 
+			for (let s = startDepth - 1; s >= endDepth; --s) {
+				console.log('s: ', s);
 				if ( s === startDepth - 1 ) {
 					this._vizStory.bwdSteps[s].end = 
 						this._vizStory.bwdSteps[s]
@@ -7422,6 +7432,10 @@ const DataBoard = React.createClass({
 
 	shouldComponentUpdate(nextProps) {
 
+		// working-spot
+		console.log('nextProps.updateDataBoard:');
+		console.log(nextProps.updateDataBoard);
+
 		if (nextProps.updateDataBoard) {
 			
 			// Select the chain 
@@ -7456,69 +7470,54 @@ const DataBoard = React.createClass({
 
 	// The DataBoard component will renew the visualized data or change a different type.
 	componentWillUpdate (nextProps, nextStates) {
-		
+
 		let dataSheet = this.findDataSheetIndex(nextProps);
-		
-		var 
-			// Renew the board when user switch dataset, chartTypes or 
-			// switch to the new data when reading in the detail story.
-			shouldRenew = 
-				(this.props.dataset !== nextProps.dataset ||
-				 this.props.chartType !== nextProps.chartType ||
-				 (this.props.data !== nextProps.data &&
-				 	this.props.topic !== nextProps.topic)) 
-						? true : false,
+		console.log(nextProps);
+		// var 
+		// 	// Renew the board when user switch dataset, chartTypes or 
+		// 	// switch to the new data when reading in the detail story.
+		// 	shouldRenew = 
+		// 		(this.props.dataset !== nextProps.dataset ||
+		// 		 this.props.chartType !== nextProps.chartType ||
+		// 		 (this.props.data !== nextProps.data &&
+		// 		 	this.props.topic !== nextProps.topic)) 
+		// 				? true : false,
 
-			// Update the chart when user switch data viewing
-			shouldUpdate = 
-				(this.props.data !== nextProps.data &&
-				 this.props.topic === nextProps.topic ) ? true : false,
+		// 	// Update the chart when user switch data viewing
+		// 	shouldUpdate = 
+		// 		(this.props.data !== nextProps.data &&
+		// 		 this.props.topic === nextProps.topic ) ? true : false,
 
-			// Extend the chart when topic update.
-			isTopicSwitching = 
-				(this.props.topic !== nextProps.topic && 
-				 this.props.dataset === nextProps.dataset &&
-				 this.props.data === nextProps.data) ? true : false,
-			
-			// Switch to the next topic when reach the end of the above one.
-			isTopicSwitchingByTaleUd = (() => {
+		// 	// Extend the chart when topic update.
+		// 	isTopicSwitching = 
+		// 		(this.props.topic !== nextProps.topic && 
+		// 		 this.props.dataset === nextProps.dataset &&
+		// 		 this.props.data === nextProps.data) ? true : false;
+
+			// working-spot
+			const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
+			console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
+			let shouldRenew = (activatedDropdownMenuIdx === 0) ? true : false,  // Dataset update
+					shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
+					isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
+						true : (this.props.topic !== nextProps.topic) 
+							? true : false;
+			console.log(this.props.topic !== nextProps.topic);
+			console.log(isTopicSwitching);
+			console.log('this.props.topicDepth: ', this.props.topicDepth);
+			// Switch to the next topic when reach the end of the current.
+			let isTopicSwitchingByTaleUd = (() => {
 				if (this.storyTeller._txtTaleChain) {
 					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
 				}
 				return false
 			})();
+			let shouldStoryRolling = store.getState().get('rollingToNextTopic');
+			// let shouldStoryRolling = false;
 
-		if (shouldRenew) { 
+			// console.log('isTopicSwitchingByTaleUd: ', isTopicSwitchingByTaleUd);
 
-			d3.select('#SKETCHPAD').remove();
-
-			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
-				this.gpu.ringGraph.removeBoards();
-
-			if (nextProps.chartType === '直方圖')
-				this.vizDataWithBarChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '趨勢圖')
-				this.vizDataWithLineChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '圓環比例圖')
-				this.vizDataWithRingChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '散佈圖')
-				this.vizDataWithScatterPlot(nextProps, dataSheet);
-
-		} else if (shouldUpdate) {
-
-			// Update for chart type changing
-			if (nextProps.chartType === '直方圖') 
-				this.vizDataWithBarChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '趨勢圖') 
-				this.vizDataWithLineChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '圓環比例圖')
-				this.vizDataWithRingChart(nextProps, dataSheet, true)
-
-		} else if (isTopicSwitching) { // Update when topic changing.
-			
-			this.DBTopicUpdate(nextProps);
-			
-		} else if (isTopicSwitchingByTaleUd) { 
+		if (shouldStoryRolling) {
 
 			let steps = this.DBTopicStepsProducer(nextProps);
 
@@ -7530,7 +7529,59 @@ const DataBoard = React.createClass({
 					});
 
 			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
+
 		}
+
+		else {
+
+		if (shouldRenew && this.props.dataset !== nextProps.dataset) { 
+			
+			d3.select('#SKETCHPAD').remove();
+
+			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
+				this.gpu.ringGraph.removeBoards();
+
+			if (nextProps.chartType === '直方圖')
+				this.vizDataWithBarChart(nextProps, dataSheet)
+			else if (nextProps.chartType === '趨勢圖')
+				this.vizDataWithLineChart(nextProps, dataSheet)
+			else if (nextProps.chartType === '圓環比例圖')
+				this.vizDataWithRingChart(nextProps, dataSheet)
+			else if (nextProps.chartType === '散佈圖'){
+				this.vizDataWithScatterPlot(nextProps, dataSheet);
+			}
+
+		} else if (shouldUpdate) {
+			console.log('shouldUpdate');
+			// Update for chart type changing
+			if (nextProps.chartType === '直方圖') 
+				this.vizDataWithBarChart(nextProps, dataSheet, true)
+			else if (nextProps.chartType === '趨勢圖') 
+				this.vizDataWithLineChart(nextProps, dataSheet, true)
+			else if (nextProps.chartType === '圓環比例圖')
+				this.vizDataWithRingChart(nextProps, dataSheet, true)
+
+		} else if (isTopicSwitching) { // Update when topic changing.
+			console.log('isTopicSwitching');
+			this.DBTopicUpdate(nextProps);
+			
+		} 
+		// else if (isTopicSwitchingByTaleUd) { 
+		// 	console.log('isTopicSwitchingByTaleUd');
+		// 	let steps = this.DBTopicStepsProducer(nextProps);
+
+		// 	// Find out the relationship between tale index and topic depth.
+		// 	let incrementedTopicDepth = this.props.topicDepth + 1,
+		// 			topicFirstTales = this.storyTeller.calTopicFirstTale(),
+		// 			tale = topicFirstTales.find((t, i) => {
+		// 				return i === incrementedTopicDepth
+		// 			});
+
+		// 	this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
+		// }
+		}
+
+		console.log("===========================");
 	},
 
 	render() {
@@ -8734,6 +8785,12 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 	let shoudDataBoardUpdate = setState('updateDataBoard', true);
 
+	// working-spot
+	let activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', fieldsetIndex);
+
+	// working-spot
+	let rollingToNextTopic = setState('rollingToNextTopic', false);
+
 	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
 
@@ -8777,9 +8834,13 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.topicDepth,
 						newState.taleIndex,
 						newState.dropdownMenuStates,
-						shoudDataBoardUpdate)
+						shoudDataBoardUpdate,
+						activatedDropdownMenuIdx, // working-spot
+						rollingToNextTopic // working-spot
+						)
 				}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate, rollingToNextTopic // working-spot
+				)
 		} 
 
 		// Selecting data
@@ -8795,10 +8856,16 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.topicDepth,
 						newState.taleIndex,
 						newState.dropdownMenuStates,
-						shoudDataBoardUpdate
+						shoudDataBoardUpdate,
+						activatedDropdownMenuIdx, // working-spot
+						rollingToNextTopic // working-spot
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic // working-spot
+				)
 		}
 
 		// Selecting the charttype which will affect the topics.
@@ -8813,10 +8880,16 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					newState.topic,
 					newState.taleIndex,
 					newState.dropdownMenuStates,
-					shoudDataBoardUpdate
+					shoudDataBoardUpdate,
+					activatedDropdownMenuIdx, // working-spot
+					rollingToNextTopic // working-spot
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic // working-spot
+				)
 		} 
 
 		// Selection the topic
@@ -8836,9 +8909,16 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					newTopicDepth, 
 					newTaleIndex,
 					collapsedAllDropdownMenuStates, 
-					shoudDataBoardUpdate)
+					shoudDataBoardUpdate,
+					activatedDropdownMenuIdx, // working-spot
+					rollingToNextTopic // working-spot
+					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate);
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic // working-spot
+				);
 		}
 
 		return state
@@ -9069,15 +9149,33 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 	const newTaleIndex = setState('currentTaleIndex', taleIndex + 1);
 	const updateDataBoard = setState('updateDataBoard', true);
 
+	// working-spot
+	const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
+
+	// working-spot
+	let rollingToNextTopic = setState('rollingToNextTopic', false);
+
+
 	// Check up whether the next tale is the new topic's first tale.
 	const nextTale = taleChain.sections[taleIndex+1];
 
 	if (nextTale.isTopicFirstSec) {
 		const newTopic = setState('currentTopic', nextTale.topicName);
 		const newTopicDepth = setState('currentTopicDepth', state.get('currentTopicDepth') + 1);
-		return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+
+		// working-spot
+		rollingToNextTopic = rollingToNextTopic.merge(setState('rollingToNextTopic', true));
+
+		return state.merge(
+			newTaleIndex, 
+			newTopic, 
+			newTopicDepth, 
+			updateDataBoard, 
+			rollingToNextTopic,
+			activatedDropdownMenuIdx // working-spot
+			)
 	}
-	else return state.merge(newTaleIndex, updateDataBoard);
+	else return state.merge(newTaleIndex, updateDataBoard, rollingToNextTopic, activatedDropdownMenuIdx);
 }
 
 function selectTale(state, taleIndex, taleContext) {
@@ -9100,7 +9198,18 @@ function selectTale(state, taleIndex, taleContext) {
 			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
 	const updateDataBoard = setState('updateDataBoard', true);
 
-	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+	// working-spot
+	console.log('taleContext: ', taleContext);
+
+	let rollingToNextTopic = null;
+	if (taleContext.isTopicFirstSec) {
+		rollingToNextTopic = setState('rollingToNextTopic', true);
+	}
+	else {
+		rollingToNextTopic = setState('rollingToNextTopic', false);
+	}
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard, rollingToNextTopic)
 
 }
 
@@ -9111,12 +9220,25 @@ function back2FirstTale(state, taleChain) {
 	const newTopicDepth = setState('currentTopicDepth', 0);
 	const updateDataBoard = setState('updateDataBoard', true);
 
-	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard);
+	// working-spot
+	const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
+
+	// working-spot
+	const rollingToNextTopic = setState('rollingToNextTopic', false);
+
+	return state.merge(
+		newTaleIndex, 
+		newTopic, 
+		newTopicDepth, 
+		updateDataBoard, 
+		rollingToNextTopic, 
+		activatedDropdownMenuIdx);
 }
 
 function setTaleIndex(state, taleIndex) {
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
 	const updateDataBoard = setState('updateDataBoard', false);
+
 	return state.merge(newTaleIndex, updateDataBoard)
 }
 
@@ -9238,7 +9360,7 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 
 			const key = store.getState().get('theme');
 				
-			// Data is bounding with topics so th
+			// Data is bounding with topics so the topics renewed after the data updates
 			if (props.menuIndex === 1) 
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
 			
@@ -9284,7 +9406,11 @@ const mapStateToDataBoardProps = (state) => {
 		topic    : state.get('currentTopic'),
 		topicDepth: state.get('currentTopicDepth'),
 		taleIndex : state.get('currentTaleIndex'),
-		updateDataBoard: state.get('updateDataBoard')
+		updateDataBoard: state.get('updateDataBoard'),
+		// working-spot
+		rollingToNextTopic: state.get('rollingToNextTopic'),
+		// working-spot
+		// activatedDropdownMenuIdx: state.get('activatedDropdownMenuIdx')
 	}
 }
 
@@ -9297,6 +9423,7 @@ const StatDataBoard = RRd.connect(
 const mapDispatchToNextBtn = (dispatch, props) => {
 	return {
 		nextTale: (e) => {
+			// working-spot
 			dispatch(rollingTalesAC(props.topic, props.topicDepth, props.taleChain, props.taleIndex));
 		}
 	}
