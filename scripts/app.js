@@ -861,7 +861,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
-													header: '',
+													header: [],
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
@@ -924,6 +924,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 
@@ -986,6 +987,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1048,6 +1050,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1110,6 +1113,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1175,6 +1179,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1238,6 +1243,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1300,6 +1306,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1365,6 +1372,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1429,6 +1437,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1493,6 +1502,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1557,6 +1567,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1621,6 +1632,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1685,6 +1697,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader : '被告人數'
 												}
@@ -1749,6 +1762,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader : '被告人數'
 												}
@@ -3684,12 +3698,20 @@ const DataFilterStateTree = {
 	// Find topic
 	findTopic: function(key, datasetName, dataName, chartTypeName, topicName) {
 
+		console.log('topicName: ', topicName);
+
 		const state = this.selectState(key);
 
 		const _datasetIndex = this.findDatasetIndex(key, datasetName);
 		const _dataIndex = this.findDataIndex(key, datasetName, dataName);
 		const _chartTypeIndex = this.findChartTypeIndex(key, datasetName, chartTypeName);
 
+
+		console.log(state);
+		console.log(_datasetIndex);
+		console.log(_dataIndex);
+		console.log(_chartTypeIndex);
+		
 		return state.get(_datasetIndex)
 				.content.data[_dataIndex].topics[_chartTypeIndex]
 					.find((topic) => {
@@ -6448,14 +6470,14 @@ class StoryTeller {
 	*/
 	toTell(startDepth, endDepth, fwdOpParams, bwdOpParams) {
 
-		console.log('_this.vizStory.fwdSteps: ', this._vizStory.fwdSteps);
-		console.log('_this.vizStory.bwdSteps: ', this._vizStory.bwdSteps);
-		console.log('startDepth: ', startDepth);
-		console.log('endDepth: ', endDepth);
+		// console.log('_this.vizStory.fwdSteps: ', this._vizStory.fwdSteps);
+		// console.log('_this.vizStory.bwdSteps: ', this._vizStory.bwdSteps);
+		// console.log('startDepth: ', startDepth);
+		// console.log('endDepth: ', endDepth);
 		// For deeper exploration
 		if (endDepth - startDepth > 0) {
 			
-			console.log('For deepper');
+			// console.log('For deepper');
 
 			for (let s = startDepth; s < endDepth; ++s) {
 				console.log('s: ', s);
@@ -6955,12 +6977,20 @@ const DataBoard = React.createClass({
 
 	// Transform from bar to stack bars.
 	DBtransStackBarToBar(props) {
-
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		console.log(props);
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
+
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		console.log('_topic: ', _topic);
+		console.log('_topic.intl.headers: ', _topic.intl.headers);
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
@@ -7432,10 +7462,6 @@ const DataBoard = React.createClass({
 
 	shouldComponentUpdate(nextProps) {
 
-		// working-spot
-		console.log('nextProps.updateDataBoard:');
-		console.log(nextProps.updateDataBoard);
-
 		if (nextProps.updateDataBoard) {
 			
 			// Select the chain 
@@ -7472,7 +7498,6 @@ const DataBoard = React.createClass({
 	componentWillUpdate (nextProps, nextStates) {
 
 		let dataSheet = this.findDataSheetIndex(nextProps);
-		console.log(nextProps);
 		// var 
 		// 	// Renew the board when user switch dataset, chartTypes or 
 		// 	// switch to the new data when reading in the detail story.
@@ -7496,31 +7521,40 @@ const DataBoard = React.createClass({
 
 			// working-spot
 			const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
-			console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
+			// const activatedDropdownMenuIdx = this.props.activatedDropdownMenuIdx;
 			let shouldRenew = (activatedDropdownMenuIdx === 0) ? true : false,  // Dataset update
 					shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
 					isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
 						true : (this.props.topic !== nextProps.topic) 
 							? true : false;
-			console.log(this.props.topic !== nextProps.topic);
-			console.log(isTopicSwitching);
-			console.log('this.props.topicDepth: ', this.props.topicDepth);
+			// console.log(this.props.topic !== nextProps.topic);
+			// console.log(isTopicSwitching);
+			// console.log('this.props.topicDepth: ', this.props.topicDepth);
 			// Switch to the next topic when reach the end of the current.
-			let isTopicSwitchingByTaleUd = (() => {
-				if (this.storyTeller._txtTaleChain) {
-					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
-				}
-				return false
-			})();
+			// let isTopicSwitchingByTaleUd = (() => {
+			// 	if (this.storyTeller._txtTaleChain) {
+			// 		return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
+			// 	}
+			// 	return false
+			// })();
 			let shouldStoryRolling = store.getState().get('rollingToNextTopic');
 			// let shouldStoryRolling = false;
 
 			// console.log('isTopicSwitchingByTaleUd: ', isTopicSwitchingByTaleUd);
 
+		// console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
+		// console.log('this.props.activatedDropdownMenuIdx: ', this.props.activatedDropdownMenuIdx);
+		// console.log('this.props.dataset:', this.props.dataset);
+		// console.log('nextProps.dataset:', nextProps.dataset);
+		console.log('shouldRenew: ', shouldRenew);
+		console.log('shouldUpdate: ', shouldUpdate);
+		console.log('shouldStoryRolling: ', shouldStoryRolling);
+		console.log('isTopicSwitching: ', isTopicSwitching);		
+
 		if (shouldStoryRolling) {
 
 			let steps = this.DBTopicStepsProducer(nextProps);
-
+			console.log('steps: ', steps);
 			// Find out the relationship between tale index and topic depth.
 			let incrementedTopicDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
@@ -7535,7 +7569,7 @@ const DataBoard = React.createClass({
 		else {
 
 		if (shouldRenew && this.props.dataset !== nextProps.dataset) { 
-			
+			console.log('should renew');
 			d3.select('#SKETCHPAD').remove();
 
 			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
@@ -7563,6 +7597,7 @@ const DataBoard = React.createClass({
 
 		} else if (isTopicSwitching) { // Update when topic changing.
 			console.log('isTopicSwitching');
+			console.log('nextProps: ', nextProps);
 			this.DBTopicUpdate(nextProps);
 			
 		} 
@@ -8839,7 +8874,11 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						rollingToNextTopic // working-spot
 						)
 				}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate, rollingToNextTopic // working-spot
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate, 
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
 				)
 		} 
 
@@ -8864,7 +8903,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			return state.merge(
 				collapsedAllDropdownMenuStates, 
 				shoudDataBoardUpdate,
-				rollingToNextTopic // working-spot
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
 				)
 		}
 
@@ -8883,13 +8923,14 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					shoudDataBoardUpdate,
 					activatedDropdownMenuIdx, // working-spot
 					rollingToNextTopic // working-spot
-					)
+				)
 			}
 			return state.merge(
 				collapsedAllDropdownMenuStates, 
 				shoudDataBoardUpdate,
-				rollingToNextTopic // working-spot
-				)
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
+			)
 		} 
 
 		// Selection the topic
@@ -8917,7 +8958,8 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 			return state.merge(
 				collapsedAllDropdownMenuStates, 
 				shoudDataBoardUpdate,
-				rollingToNextTopic // working-spot
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
 				);
 		}
 
@@ -9179,7 +9221,7 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 }
 
 function selectTale(state, taleIndex, taleContext) {
-	
+	console.log('select Tale');
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
 	const newTopic = 
 		setState(
@@ -9191,18 +9233,16 @@ function selectTale(state, taleIndex, taleContext) {
 	const topicDepth = topicList.findIndex((topic) => {
 		return taleContext.topicName === topic
 	});
-	
+
+	// working-spot
 	const newTopicDepth = 
 		setState(
 			'currentTopicDepth', 
 			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
 	const updateDataBoard = setState('updateDataBoard', true);
 
-	// working-spot
-	console.log('taleContext: ', taleContext);
-
 	let rollingToNextTopic = null;
-	if (taleContext.isTopicFirstSec) {
+	if (taleContext.isTopicFirstSec && newTopicDepth - topicDepth > 0) {
 		rollingToNextTopic = setState('rollingToNextTopic', true);
 	}
 	else {
@@ -9221,7 +9261,7 @@ function back2FirstTale(state, taleChain) {
 	const updateDataBoard = setState('updateDataBoard', true);
 
 	// working-spot
-	const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
+	// const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
 
 	// working-spot
 	const rollingToNextTopic = setState('rollingToNextTopic', false);
@@ -9231,8 +9271,9 @@ function back2FirstTale(state, taleChain) {
 		newTopic, 
 		newTopicDepth, 
 		updateDataBoard, 
-		rollingToNextTopic, 
-		activatedDropdownMenuIdx);
+		rollingToNextTopic
+	)
+		// activatedDropdownMenuIdx);
 }
 
 function setTaleIndex(state, taleIndex) {
@@ -9399,6 +9440,7 @@ const StatFilter = RRd.connect(
 
 /* Connect DataBoard */
 const mapStateToDataBoardProps = (state) => {
+
 	return {
 		dataset  : state.get('currentDataset'), 
 		data     : state.get('currentData'), 
@@ -9411,6 +9453,7 @@ const mapStateToDataBoardProps = (state) => {
 		rollingToNextTopic: state.get('rollingToNextTopic'),
 		// working-spot
 		// activatedDropdownMenuIdx: state.get('activatedDropdownMenuIdx')
+
 	}
 }
 
