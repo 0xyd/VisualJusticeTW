@@ -160,14 +160,14 @@ return rowData.map(function(row,i){var mergedVal=0;for(var i in mergedCols){merg
 		The circumstance like this needs colorSet for filling color.
 
 */ // Accept the multiple options.
-barGraphClass.prototype.update=function(xLabel,yLabel,dOption,colorSet){var self=this;var p=new Promise(function(resolve,reject){var _bars=self.pad.selectAll('rect'),_txts=self.pad.selectAll('.mark'), // Former x value of bars for text marker transition.
+barGraphClass.prototype.update=function(xLabel,yLabel,dOption,colorSet){var self=this;console.log('dOption: ',dOption);var p=new Promise(function(resolve,reject){var _bars=self.pad.selectAll('rect'),_txts=self.pad.selectAll('.mark'), // Former x value of bars for text marker transition.
 f_Pos=function(){var posAry=[];for(var i=0;i<_bars[0].length;i++){posAry.push({x:_bars[0][i].getAttribute('x'),y:_bars[0][i].getAttribute('y')});};return posAry;}(), // The positions of bars after update
 c_Pos=[]; // store the data from the bars
 var data=[]; /* Combined options have to apply combined value for data presenting */var isCombinedOpts=(typeof dOption==='undefined'?'undefined':_typeof(dOption))==='object'?true:false;if(!isCombinedOpts){ // Access the data of each bar.
 _bars.each(function(d,i){data.push(d);});self._setLinearYScale(data,dOption);self._setYAxis('left',data,dOption);}else { // Store the combined value of multiple options.
 _bars.call(function(rects){var rectsData=[];var _iteratorNormalCompletion=true;var _didIteratorError=false;var _iteratorError=undefined;try{for(var _iterator=rects[0][Symbol.iterator](),_step;!(_iteratorNormalCompletion=(_step=_iterator.next()).done);_iteratorNormalCompletion=true){var rect=_step.value;rectsData.push(rect.__data__);}}catch(err){_didIteratorError=true;_iteratorError=err;}finally {try{if(!_iteratorNormalCompletion&&_iterator.return){_iterator.return();}}finally {if(_didIteratorError){throw _iteratorError;}}}data=self._mergedColVal(rectsData,dOption); // Reset the ycale for combined values.
 self._setLinearYScale(data,null);self._setYAxis('left',data,null);});} // set xy axes' labels.
-self._updateXAxisLabel(xLabel);self._updateYAxisLabel(yLabel);_bars.attr({width:function width(d,i){return self.barWidth;}}).transition().attr({y:function y(d,i){ // get current positions of bars which will use for bar transition animations.
+self._updateXAxisLabel(xLabel);self._updateYAxisLabel(yLabel);_bars.attr({width:function width(d,i){return self.barWidth;}}).transition().attr({y:function y(d,i){console.log(d[dOption]); // get current positions of bars which will use for bar transition animations.
 if(!isCombinedOpts){c_Pos.push({x:this.getAttribute('x'),y:self.yScale(parseFloat(d[dOption]))});}else {c_Pos.push({x:this.getAttribute('x'),y:self.yScale(data[i])});}return c_Pos[i].y;},height:function height(d,i){if(!isCombinedOpts)return self.chartHeight-self.yScale(parseFloat(d[dOption]));else return self.chartHeight-self.yScale(parseFloat(data[i]));},fill:function fill(d,i){ // console.log(colorObj.bar[cOption]);
 // return cOption ? colorObj.bar[cOption] : colorObj.bar[dOption]
 return colorObj.bar[colorSet];}}).each('end',function(d,i){ // When the last bar is transited, resolve to the next animation.

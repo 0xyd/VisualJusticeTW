@@ -564,7 +564,7 @@ FB!==undefined?FB.XFBML.parse():null;},componentDidUpdate:function componentDidU
 gpu:function(){return {barGraph:new barGraphClass(),lineGraph:new lineGraphClass(),ringGraph:new ringGraphClass(),scatterPlot:new ScatterPlotClass()};}(),tip:new tipClass(), // Story teller is an explainer for deeper topic tranverse.
 storyTeller:new StoryTeller(), // Find the index of datasheet.
 findDataSheetIndex:function findDataSheetIndex(props){var dSheet=this.state.dataSheets.find(function(dataSheet){return dataSheet.name===props.dataset;});return dSheet;},DBfindTopic:function DBfindTopic(props){var themeKey=store.getState().get('theme');return DataFilterStateTree.findTopic(themeKey,props.dataset,props.data,props.chartType,props.topic);},DBfindData:function DBfindData(props){var themeKey=store.getState().get('theme');return DataFilterStateTree.findData(themeKey,props.dataset,props.data);}, // Visualizing data with bar chart
-vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);if(update){bG.update(_topic.axes.x,_topic.axes.y,_topic.intl.mHeaders?_topic.intl.mHeaders:_topic.intl.headers.length?_topic.intl.headers:_topic.intl.header,_topic.intl.cHeaders?_topic.intl.cHeaders:_topic.intl.cHeader).then(function(){t.appendBarMouseOver(props.data);});}else {bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,_topic.intl.mHeaders?_topic.intl.mHeaders:_topic.intl.headers.length?_topic.intl.headers:_topic.intl.header,false,false,_topic.intl.cHeaders?_topic.intl.cHeaders:_topic.intl.cHeader).then(function(){t.initTips().appendBarMouseOver(props.data);});}}, // Visualizing data with bar chart
+vizDataWithBarChart:function vizDataWithBarChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var bG=this.gpu.barGraph,t=this.tip;var _topic=this.DBfindTopic(props);var _data=this.DBfindData(props);console.log('=====check here=====');console.log('_topic: ',_topic);console.log('_data: ',_data);if(update){bG.update(_topic.axes.x,_topic.axes.y,_topic.intl.mHeaders?_topic.intl.mHeaders:_topic.intl.headers.length?_topic.intl.headers:_topic.intl.header,_topic.intl.cHeaders?_topic.intl.cHeaders:_topic.intl.cHeader).then(function(){t.appendBarMouseOver(props.data);});}else {bG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,_topic.intl.mHeaders?_topic.intl.mHeaders:_topic.intl.headers.length?_topic.intl.headers:_topic.intl.header,false,false,_topic.intl.cHeaders?_topic.intl.cHeaders:_topic.intl.cHeader).then(function(){t.initTips().appendBarMouseOver(props.data);});}}, // Visualizing data with bar chart
 vizDataWithLineChart:function vizDataWithLineChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var lG=this.gpu.lineGraph,t=this.tip;var _topic=this.DBfindTopic(props);if(update){lG.update(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data).then(function(){t.appendDotMouseOver(props.data);});}else {lG.initializeAPad().setChartSize().setOutPadding(10).setStep(10).mappingData(dataSheet.url,_topic.axes.x,_topic.axes.y,props.data,false,false).then(function(){t.initTips().appendDotMouseOver(props.data);});}}, // Visualizing data with ring chart
 vizDataWithRingChart:function vizDataWithRingChart(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var rG=this.gpu.ringGraph;if(update){var yr=parseInt(props.data.match(/\d+/));rG.selectROCYr(yr).updateRings();}else {rG.resetRings().initializeAPad().init().selectROCYr(75).drawMultiRings(dataSheet.urls);}}, // Visualizing data with Scatter plot
 vizDataWithScatterPlot:function vizDataWithScatterPlot(props,dataSheet){var update=arguments.length<=2||arguments[2]===undefined?false:arguments[2];var sG=this.gpu.scatterPlot,t=this.tip; // Find the topic.
@@ -615,29 +615,13 @@ componentWillUpdate:function componentWillUpdate(nextProps,nextStates){var _this
 // 		(this.props.topic !== nextProps.topic && 
 // 		 this.props.dataset === nextProps.dataset &&
 // 		 this.props.data === nextProps.data) ? true : false;
-// working-spot
-var activatedDropdownMenuIdx=store.getState().get('activatedDropdownMenuIdx'); // const activatedDropdownMenuIdx = this.props.activatedDropdownMenuIdx;
-var shouldRenew=activatedDropdownMenuIdx===0?true:false, // Dataset update
+var activatedDropdownMenuIdx=store.getState().get('activatedDropdownMenuIdx');var shouldRenew=activatedDropdownMenuIdx===0?true:false, // Dataset update
 shouldUpdate=activatedDropdownMenuIdx===1?true:false, // Data update
-isTopicSwitching=activatedDropdownMenuIdx===3?true:this.props.topic!==nextProps.topic?true:false; // console.log(this.props.topic !== nextProps.topic);
-// console.log(isTopicSwitching);
-// console.log('this.props.topicDepth: ', this.props.topicDepth);
-// Switch to the next topic when reach the end of the current.
-// let isTopicSwitchingByTaleUd = (() => {
-// 	if (this.storyTeller._txtTaleChain) {
-// 		return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
-// 	}
-// 	return false
-// })();
-var shouldStoryRolling=store.getState().get('rollingToNextTopic'); // let shouldStoryRolling = false;
-// console.log('isTopicSwitchingByTaleUd: ', isTopicSwitchingByTaleUd);
-// console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
-// console.log('this.props.activatedDropdownMenuIdx: ', this.props.activatedDropdownMenuIdx);
-// console.log('this.props.dataset:', this.props.dataset);
-// console.log('nextProps.dataset:', nextProps.dataset);
-console.log('shouldRenew: ',shouldRenew);console.log('shouldUpdate: ',shouldUpdate);console.log('shouldStoryRolling: ',shouldStoryRolling);console.log('isTopicSwitching: ',isTopicSwitching);if(shouldStoryRolling){(function(){var steps=_this3.DBTopicStepsProducer(nextProps);console.log('steps: ',steps); // Find out the relationship between tale index and topic depth.
+isTopicSwitching=activatedDropdownMenuIdx===3?true:this.props.topic!==nextProps.topic?true:false;var shouldStoryRolling=store.getState().get('rollingToNextTopic');if(shouldStoryRolling){(function(){var steps=_this3.DBTopicStepsProducer(nextProps);console.log('steps: ',steps); // Find out the relationship between tale index and topic depth.
 var incrementedTopicDepth=_this3.props.topicDepth+1,topicFirstTales=_this3.storyTeller.calTopicFirstTale(),tale=topicFirstTales.find(function(t,i){return i===incrementedTopicDepth;});_this3.storyTeller.toTell(_this3.props.topicDepth,_this3.props.topicDepth+1,steps.fwd,steps.bwd);})();}else {if(shouldRenew&&this.props.dataset!==nextProps.dataset){console.log('should renew');d3.select('#SKETCHPAD').remove();if(this.props.chartType==='圓環比例圖'&&nextProps.chartType!=='圓環比例圖')this.gpu.ringGraph.removeBoards();if(nextProps.chartType==='直方圖')this.vizDataWithBarChart(nextProps,dataSheet);else if(nextProps.chartType==='趨勢圖')this.vizDataWithLineChart(nextProps,dataSheet);else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet);else if(nextProps.chartType==='散佈圖'){this.vizDataWithScatterPlot(nextProps,dataSheet);}}else if(shouldUpdate){console.log('shouldUpdate'); // Update for chart type changing
-if(nextProps.chartType==='直方圖')this.vizDataWithBarChart(nextProps,dataSheet,true);else if(nextProps.chartType==='趨勢圖')this.vizDataWithLineChart(nextProps,dataSheet,true);else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet,true);}else if(isTopicSwitching){ // Update when topic changing.
+if(nextProps.chartType==='直方圖')this.vizDataWithBarChart(nextProps,dataSheet,false); // else if (nextProps.chartType === '趨勢圖') 
+// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
+else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet,true);}else if(isTopicSwitching){ // Update when topic changing.
 console.log('isTopicSwitching');console.log('nextProps: ',nextProps);this.DBTopicUpdate(nextProps);} // else if (isTopicSwitchingByTaleUd) { 
 // 	console.log('isTopicSwitchingByTaleUd');
 // 	let steps = this.DBTopicStepsProducer(nextProps);

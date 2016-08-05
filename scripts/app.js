@@ -6816,6 +6816,10 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
+		console.log('=====check here=====');
+		console.log('_topic: ', _topic);
+		console.log('_data: ', _data);
+
 		if (update) {
 			
 			bG.update(
@@ -6832,6 +6836,7 @@ const DataBoard = React.createClass({
 				});
 		} else {
 
+			/*  Initialize a bar graph  */
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 				.mappingData(
@@ -7519,37 +7524,15 @@ const DataBoard = React.createClass({
 		// 		 this.props.dataset === nextProps.dataset &&
 		// 		 this.props.data === nextProps.data) ? true : false;
 
-			// working-spot
-			const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
-			// const activatedDropdownMenuIdx = this.props.activatedDropdownMenuIdx;
-			let shouldRenew = (activatedDropdownMenuIdx === 0) ? true : false,  // Dataset update
-					shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
-					isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
-						true : (this.props.topic !== nextProps.topic) 
-							? true : false;
-			// console.log(this.props.topic !== nextProps.topic);
-			// console.log(isTopicSwitching);
-			// console.log('this.props.topicDepth: ', this.props.topicDepth);
-			// Switch to the next topic when reach the end of the current.
-			// let isTopicSwitchingByTaleUd = (() => {
-			// 	if (this.storyTeller._txtTaleChain) {
-			// 		return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
-			// 	}
-			// 	return false
-			// })();
-			let shouldStoryRolling = store.getState().get('rollingToNextTopic');
-			// let shouldStoryRolling = false;
-
-			// console.log('isTopicSwitchingByTaleUd: ', isTopicSwitchingByTaleUd);
-
-		// console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
-		// console.log('this.props.activatedDropdownMenuIdx: ', this.props.activatedDropdownMenuIdx);
-		// console.log('this.props.dataset:', this.props.dataset);
-		// console.log('nextProps.dataset:', nextProps.dataset);
-		console.log('shouldRenew: ', shouldRenew);
-		console.log('shouldUpdate: ', shouldUpdate);
-		console.log('shouldStoryRolling: ', shouldStoryRolling);
-		console.log('isTopicSwitching: ', isTopicSwitching);		
+		const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
+		let shouldRenew = (activatedDropdownMenuIdx === 0) ? true : false,  // Dataset update
+				shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
+				isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
+					true : (this.props.topic !== nextProps.topic) 
+						? true : false;
+			
+		let shouldStoryRolling = store.getState().get('rollingToNextTopic');
+			
 
 		if (shouldStoryRolling) {
 
@@ -7590,8 +7573,8 @@ const DataBoard = React.createClass({
 			// Update for chart type changing
 			if (nextProps.chartType === '直方圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '趨勢圖') 
-				this.vizDataWithLineChart(nextProps, dataSheet, true)
+			// else if (nextProps.chartType === '趨勢圖') 
+			// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
