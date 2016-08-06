@@ -3221,7 +3221,7 @@ const DataFilterStateTree = {
 						}
 					},
 					{
-						dataset: '103年戒護人力概況',
+						dataset: '104年戒護人力概況',
 						availableChartTypes: [
 							'散佈圖'
 						],
@@ -4256,7 +4256,7 @@ class StoryTeller {
 				]
 			},
 			{
-				dataset: '103年戒護人力概況',
+				dataset: '104年戒護人力概況',
 				data: '戒護人力情形',
 				vizType: '散佈圖',
 				fwdSteps: [
@@ -5956,7 +5956,7 @@ class StoryTeller {
 			/* For Correctional Data */
 			{
 				// The first section of each topic is the main indicator.
-				dataset: '103年戒護人力概況',
+				dataset: '104年戒護人力概況',
 				data: '戒護人力情形',
 				vizType: '散佈圖',
 				sections: [
@@ -7448,8 +7448,8 @@ const DataBoard = React.createClass({
 					})()
 				},
 				{
-					name: '103年戒護人力概況',
-					url: './correction/103-security-ratio.json'
+					name: '104年戒護人力概況',
+					url: './correction/104-security-ratio.json'
 				}
 			]
 		}
