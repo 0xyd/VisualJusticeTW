@@ -3221,7 +3221,7 @@ const DataFilterStateTree = {
 						}
 					},
 					{
-						dataset: '103年戒護人力概況',
+						dataset: '104年戒護人力概況',
 						availableChartTypes: [
 							'散佈圖'
 						],
@@ -3266,7 +3266,7 @@ const DataFilterStateTree = {
 														{
 															name: '全國矯正機關',
 															tag : '全國矯正機關戒護人力比平均1:',
-															value: 18.58
+															value: 11.52
 														}
 													]
 												},
@@ -3337,7 +3337,7 @@ const DataFilterStateTree = {
 														{
 															name: '全國監獄',
 															tag : '全國監獄戒護人力比平均1:',
-															value: 18.94
+															value: 11.52
 														}
 													]
 												},
@@ -3405,7 +3405,7 @@ const DataFilterStateTree = {
 														{
 															name: '全國看守所',
 															tag : '全國看守所戒護人力比平均1:',
-															value: 11.96
+															value: 9.63
 														}
 													]
 												},
@@ -3473,7 +3473,7 @@ const DataFilterStateTree = {
 														{
 															name: '全國戒治所',
 															tag : '全國戒治所戒護人力比平均1:',
-															value: 10.34
+															value: 10.54
 														}
 													]
 												},
@@ -3549,7 +3549,7 @@ const DataFilterStateTree = {
 														{
 															name: '全國少年矯正機關',
 															tag : '全國少年矯正機關戒護人力比平均1:',
-															value: 20.30
+															value: 10.96
 														}
 													]
 												},
@@ -4247,7 +4247,7 @@ class StoryTeller {
 				]
 			},
 			{
-				dataset: '103年戒護人力概況',
+				dataset: '104年戒護人力概況',
 				data: '戒護人力情形',
 				vizType: '散佈圖',
 				fwdSteps: [
@@ -5947,7 +5947,7 @@ class StoryTeller {
 			/* For Correctional Data */
 			{
 				// The first section of each topic is the main indicator.
-				dataset: '103年戒護人力概況',
+				dataset: '104年戒護人力概況',
 				data: '戒護人力情形',
 				vizType: '散佈圖',
 				sections: [
@@ -5955,7 +5955,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								right: '3em',
-								top : '3em',
+								bottom : '5em',
 							},
 							size: {
 								width : '400px',
@@ -5986,7 +5986,7 @@ class StoryTeller {
 						Container: {
 							pos : {
 								right: '3em',
-								top : '3em',
+								bottom : '3em',
 							},
 							size: {
 								width : '400px',
@@ -6020,7 +6020,7 @@ class StoryTeller {
 							pos : {
 								// left: '10em',
 								right: '3em,',
-								top : '3em'
+								bottom : '3em'
 							},
 							size: {
 								width : '400px',
@@ -6105,7 +6105,6 @@ class StoryTeller {
 								<a className='tale-body-link' 
 									 href='http://www.moj.gov.tw/ct.asp?xItem=315176&ctNode=27518'>軍事審判法修正案</a>，
 								於103年1月17日移交矯正署，並於104年7月16日正式成立為台南第二監獄。桃園八德外役監則於104年7月16日成立。
-								故103年的統計資料，僅有24個矯正機關。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: false,
@@ -7417,8 +7416,8 @@ const DataBoard = React.createClass({
 					})()
 				},
 				{
-					name: '103年戒護人力概況',
-					url: './correction/103-security-ratio.json'
+					name: '104年戒護人力概況',
+					url: './correction/104-security-ratio.json'
 				}
 			]
 		}
