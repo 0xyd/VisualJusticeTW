@@ -7525,7 +7525,14 @@ const DataBoard = React.createClass({
 		// 		 this.props.data === nextProps.data) ? true : false;
 
 		const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
-		let shouldRenew = (activatedDropdownMenuIdx === 0) ? true : false,  // Dataset update
+
+		// Renew the board when user switch dataset, chartTypes or 
+		// switch to the new data when reading in the detail story.
+		let shouldRenew = 
+					(activatedDropdownMenuIdx === 0 || 1) || 
+						(this.props.dataset !== nextProps.dataset) || 
+							(this.props.data !== nextProps.data &&
+		 		 				this.props.topic !== nextProps.topic) ? true : false,  // Dataset update
 				shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
 				isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
 					true : (this.props.topic !== nextProps.topic) 
@@ -7551,7 +7558,9 @@ const DataBoard = React.createClass({
 
 		else {
 
-		if (shouldRenew && this.props.dataset !== nextProps.dataset) { 
+		if (shouldRenew && 
+				(this.props.dataset !== nextProps.dataset || 
+					this.props.data !== nextProps.data)) { 
 			console.log('should renew');
 			d3.select('#SKETCHPAD').remove();
 
