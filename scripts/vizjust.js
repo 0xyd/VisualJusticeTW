@@ -1498,8 +1498,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
 
 	var self = this;
 
-	console.log('dOption: ', dOption);
-
 	var p = new Promise(function(resolve, reject) {
 
 				var _bars = self.pad.selectAll('rect'),
@@ -1572,8 +1570,6 @@ barGraphClass.prototype.update = function(xLabel, yLabel, dOption, colorSet) {
 					.transition()
 						.attr({
 							y: function(d, i) {
-
-								console.log(d[dOption]);
 
 								// get current positions of bars which will use for bar transition animations.
 								if (!isCombinedOpts) {
@@ -4197,11 +4193,6 @@ class ScatterPlotClass {
 	// Append the labels and prevent the collisions with others.
 	_labelCircles(circles, texts) {
 
-		console.log(circles);
-		console.log(circles.length);
-		console.log(texts);
-		console.log(texts.length);
-		
 		// Sort the circles according to x positions
 		let _circles = 
 			(() => {

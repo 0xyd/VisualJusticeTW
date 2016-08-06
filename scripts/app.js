@@ -3698,20 +3698,11 @@ const DataFilterStateTree = {
 	// Find topic
 	findTopic: function(key, datasetName, dataName, chartTypeName, topicName) {
 
-		console.log('topicName: ', topicName);
-
 		const state = this.selectState(key);
-
 		const _datasetIndex = this.findDatasetIndex(key, datasetName);
 		const _dataIndex = this.findDataIndex(key, datasetName, dataName);
 		const _chartTypeIndex = this.findChartTypeIndex(key, datasetName, chartTypeName);
 
-
-		console.log(state);
-		console.log(_datasetIndex);
-		console.log(_dataIndex);
-		console.log(_chartTypeIndex);
-		
 		return state.get(_datasetIndex)
 				.content.data[_dataIndex].topics[_chartTypeIndex]
 					.find((topic) => {
@@ -6470,17 +6461,10 @@ class StoryTeller {
 	*/
 	toTell(startDepth, endDepth, fwdOpParams, bwdOpParams) {
 
-		// console.log('_this.vizStory.fwdSteps: ', this._vizStory.fwdSteps);
-		// console.log('_this.vizStory.bwdSteps: ', this._vizStory.bwdSteps);
-		// console.log('startDepth: ', startDepth);
-		// console.log('endDepth: ', endDepth);
 		// For deeper exploration
 		if (endDepth - startDepth > 0) {
 			
-			// console.log('For deepper');
-
 			for (let s = startDepth; s < endDepth; ++s) {
-				console.log('s: ', s);
 				// The pending promise object will be assigned to the end property. 
 				if ( s === startDepth ) {
 					this._vizStory.fwdSteps[s].end = 
@@ -6499,10 +6483,7 @@ class StoryTeller {
 		// For returning back from the deep.
 		else if (endDepth - startDepth < 0) {
 
-			console.log('For returning');
-
 			for (let s = startDepth - 1; s >= endDepth; --s) {
-				console.log('s: ', s);
 				if ( s === startDepth - 1 ) {
 					this._vizStory.bwdSteps[s].end = 
 						this._vizStory.bwdSteps[s]
@@ -6816,10 +6797,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		console.log('=====check here=====');
-		console.log('_topic: ', _topic);
-		console.log('_data: ', _data);
-
 		if (update) {
 			
 			bG.update(
@@ -6982,20 +6959,12 @@ const DataBoard = React.createClass({
 
 	// Transform from bar to stack bars.
 	DBtransStackBarToBar(props) {
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
-		console.log(props);
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 		
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
-
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
-		console.log('_topic: ', _topic);
-		console.log('_topic.intl.headers: ', _topic.intl.headers);
-		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
@@ -7544,7 +7513,7 @@ const DataBoard = React.createClass({
 		if (shouldStoryRolling) {
 
 			let steps = this.DBTopicStepsProducer(nextProps);
-			console.log('steps: ', steps);
+			
 			// Find out the relationship between tale index and topic depth.
 			let incrementedTopicDepth = this.props.topicDepth + 1,
 					topicFirstTales = this.storyTeller.calTopicFirstTale(),
@@ -7561,7 +7530,7 @@ const DataBoard = React.createClass({
 		if (shouldRenew && 
 				(this.props.dataset !== nextProps.dataset || 
 					this.props.data !== nextProps.data)) { 
-			console.log('should renew');
+
 			d3.select('#SKETCHPAD').remove();
 
 			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
@@ -7578,7 +7547,7 @@ const DataBoard = React.createClass({
 			}
 
 		} else if (shouldUpdate) {
-			console.log('shouldUpdate');
+			
 			// Update for chart type changing
 			if (nextProps.chartType === '直方圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
@@ -7588,8 +7557,7 @@ const DataBoard = React.createClass({
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
 		} else if (isTopicSwitching) { // Update when topic changing.
-			console.log('isTopicSwitching');
-			console.log('nextProps: ', nextProps);
+			
 			this.DBTopicUpdate(nextProps);
 			
 		} 
@@ -7608,7 +7576,6 @@ const DataBoard = React.createClass({
 		// }
 		}
 
-		console.log("===========================");
 	},
 
 	render() {
@@ -9213,7 +9180,7 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 }
 
 function selectTale(state, taleIndex, taleContext) {
-	console.log('select Tale');
+	
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
 	const newTopic = 
 		setState(
