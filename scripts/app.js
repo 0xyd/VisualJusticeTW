@@ -861,7 +861,7 @@ const DataFilterStateTree = {
 												},
 												intl: {
 													// mHeaders: Headers for mergining into 1 new column.
-													header: '',
+													header: [],
 													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
@@ -924,6 +924,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 
@@ -986,6 +987,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1048,6 +1050,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1110,6 +1113,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1175,6 +1179,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1238,6 +1243,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1300,6 +1306,7 @@ const DataFilterStateTree = {
 												extl: {
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1365,6 +1372,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1429,6 +1437,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1493,6 +1502,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1557,6 +1567,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1621,6 +1632,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader: '被告人數'
 												}
@@ -1685,6 +1697,7 @@ const DataFilterStateTree = {
 													headers: null
 												},
 												intl: {
+													headers: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													mHeaders: ['死刑', '無期徒刑', '有期徒刑', '拘役', '罰金', '免刑', '無罪', '不受理', '其他'],
 													cHeader : '被告人數'
 												}
@@ -3241,9 +3254,21 @@ const DataFilterStateTree = {
 													],
 													filterSets: null
 												},
-												
 												extl: {
-													url: null
+													url: null,
+													// working-spot
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國矯正機關',
+															tag : '全國矯正機關戒護人力比平均1:',
+															value: 18.58
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3302,7 +3327,19 @@ const DataFilterStateTree = {
 													],
 												},
 												extl: {
-													url: null
+													url: null,
+													lines:[
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國監獄',
+															tag : '全國監獄戒護人力比平均1:',
+															value: 18.94
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3358,7 +3395,19 @@ const DataFilterStateTree = {
 													],
 												},
 												extl: {
-													url: null
+													url: null,
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國看守所',
+															tag : '全國看守所戒護人力比平均1:',
+															value: 11.96
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3414,7 +3463,19 @@ const DataFilterStateTree = {
 													]
 												},
 												extl: {
-													url: null
+													url: null,
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: 	'羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國戒治所',
+															tag : '全國戒治所戒護人力比平均1:',
+															value: 10.34
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3478,7 +3539,19 @@ const DataFilterStateTree = {
 													]
 												},
 												extl: {
-													url: null
+													url: null,
+													lines:[ 
+														{
+															name: '羅瑩雪目標',
+															tag: '羅瑩雪目標1:', // tag is used for display what the line is.
+															value: 8
+														},
+														{
+															name: '全國少年矯正機關',
+															tag : '全國少年矯正機關戒護人力比平均1:',
+															value: 20.30
+														}
+													]
 												},
 												tipFormat: {
 													title: '矯正機關名稱',
@@ -3625,12 +3698,20 @@ const DataFilterStateTree = {
 	// Find topic
 	findTopic: function(key, datasetName, dataName, chartTypeName, topicName) {
 
+		console.log('topicName: ', topicName);
+
 		const state = this.selectState(key);
 
 		const _datasetIndex = this.findDatasetIndex(key, datasetName);
 		const _dataIndex = this.findDataIndex(key, datasetName, dataName);
 		const _chartTypeIndex = this.findChartTypeIndex(key, datasetName, chartTypeName);
 
+
+		console.log(state);
+		console.log(_datasetIndex);
+		console.log(_dataIndex);
+		console.log(_chartTypeIndex);
+		
 		return state.get(_datasetIndex)
 				.content.data[_dataIndex].topics[_chartTypeIndex]
 					.find((topic) => {
@@ -4238,6 +4319,7 @@ class StoryTeller {
 
 		// Tales for explain the chart.
 		this.taleChains = [
+			/* For Prosecution Data */
 			// 兒少法 (Prosecution)
 			{
 				// The first section of each topic is the main indicator.
@@ -5871,7 +5953,448 @@ class StoryTeller {
 					}
 				]
 			},
+			/* For Correctional Data */
+			{
+				// The first section of each topic is the main indicator.
+				dataset: '103年戒護人力概況',
+				data: '戒護人力情形',
+				vizType: '散佈圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								戒護人力比定義為一位戒護人員需要面對幾位收容人，
+								是矯正機關人力狀況極為重要的指標，
+								也是危及基層戒護人員執勤安全的統計標的。
+								因著矯正機關勤務的特殊性與封閉性，
+								讓許多人望而生畏，因此矯正機關長年受缺乏人力之苦。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								top : '3em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								圓圈的半徑長度表示該機關收容人數量，
+								最大的為台中監獄，最小的為台南少年觀護所。
+								縱軸為戒護人力比，以明陽中學高居榜首，綠島監獄則最為愜意。
+								橫軸為戒護人力，台中監獄與台南少年歡護所分別為第一與墊底。
+								顏色用以區別矯正機關的類別，深橘色為監獄與女子監獄;
+								橘色為看守所; 水藍色為技能訓練所; 草綠色為戒治所;
+								深綠色則為其他的少年矯正機關如觀護所、矯正學校與輔育院。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								// left: '10em',
+								right: '3em,',
+								top : '3em'
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								時任法務部部長的
+								<a className='tale-body-link' href="https://zh.wikipedia.org/wiki/羅瑩雪">
+									羅瑩雪
+								</a>女士曾提出以戒護人力比
+								<a className='tale-body-link' href='http://www.chinatimes.com/newspapers/20150720000329-260106'>1:8</a>
+								的方向邁進，然而僅有少數的矯正機關達成該目標。監獄除了離島的金門、綠島以外，全數沒有達標。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國矯正機關',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								監獄以<a 
+								className='tale-body-link' 
+								href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=監獄行刑法'>監獄行刑法</a>
+								為其執法的主要法源依據。其中定義了男女分監、少年與成年分而監之等監禁原則，
+								也規範了受刑人在監執行的作業原則。在戒護的事項上，也有所定義。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								全國至105年有26所監獄，其中原屬國防部的台南軍監，在
+								<a className='tale-body-link' href='https://zh.wikipedia.org/wiki/洪仲丘事件'>洪仲丘事件</a>後，
+								因著
+								<a className='tale-body-link' 
+									 href='http://www.moj.gov.tw/ct.asp?xItem=315176&ctNode=27518'>軍事審判法修正案</a>，
+								於103年1月17日移交矯正署，並於104年7月16日正式成立為台南第二監獄。桃園八德外役監則於104年7月16日成立。
+								故103年的統計資料，僅有24個矯正機關。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext  : 
+							<span>
+								台中監獄為全台灣最大監獄，監禁5000人以上。因曾監禁知名政治犯的綠島監獄則僅有不足一百的受刑人。
+								從圖也可明顯看出，越大的監獄，戒護人力雖高，收容人卻更多，戒護人力比因此也更高。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國監獄',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '5em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
 
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								看守所依法執行
+								<a className='tale-body-link' href="http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=羈押法">
+								羈押法
+								</a>，
+								為看押刑事被告人的矯正機關。與監獄行刑法雷同，規範了男女、少年成年分別羈押等事宜。
+								男性刑事被告被看押於看守所，女性則被看押在女子看守所，而少年刑事被告則於觀護所羈押。
+								雖然被羈押，然而因著
+								<a className='tale-body-link' href='https://zh.wikipedia.org/wiki/%E6%97%A0%E7%BD%AA%E6%8E%A8%E5%AE%9A%E5%8E%9F%E5%88%99'>
+								無罪推定原則
+								</a>，刑事被告在刑事判決尚未定讞以前，為無罪，
+								是故羈押法對刑事被告所規範的事務，相較於監獄行刑法對受刑人，
+								是較為寬鬆的。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國看守所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '5em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								少年觀護所雖羈押少年刑事被告，然而因著是少年嫌疑犯，
+								與少年犯罪等議題較為貼近，因此我們將其歸類為少年矯正機關。
+								不含少年觀護所，全國有20個看守所，
+								其中有8個與監獄合署辦公，他們的戒護人力則與合署監獄一同計算，
+								因此僅有12間看守所被獨立計算。
+								其中最大且最知名為號稱『天下第一所』的台北看守所，收容超過3000人，
+								最小的則為基隆看守所，收容了177人。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國看守所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '5em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								你或許會很訝異看守所竟然看押為數如此多的刑事被告，
+								其實不然。有些看守所有監獄的分監，因此也收容了為數不少的收容人。
+								值得留意的是，除了女子看守所些微沒有超收之外，其他全數超收。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國看守所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								bottom : '5em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								八十七年<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>毒品危害防制條例</a>通過後，
+								政府將施用毒品者，認定為同時具有病人及犯人雙重性質的病犯。
+								吸毒遭查獲後，依據毒品危害防制條例第二十九條，
+								會先到勒戒所進行觀察勒戒<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>(觀察勒戒執行處分條例)</a>
+								，若被判定有繼續施用毒品傾向，就會被裁定入戒治所強制戒治<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>(戒治處分執行條例)</a>，以協助戒除毒癮。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國戒治所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '10em',
+								bottom : '5em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								依據<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=C0000008'>戒治處分執行條例</a>第11條，
+								戒治處分之執行，其期間為六個月以上，至無繼續強制戒治之必要為止。但最長不得逾一年。
+								因此戒治所的收容人至多收容一年。收容人若有自由刑需要執行，則會送入監獄。
+								也顛覆很多人的猜想，以為毒品氾濫的台灣，戒治所人滿為患，其實不然。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國戒治所',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								bottom : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年事件處理法'>
+									 少年事件處理法
+								</a>
+								規範了少年犯因犯罪或有犯罪之虞的情況時，司法的程序以及相關的教化與保護措施，以協助少年悔改，適應社會。
+								所以除了設有少年法庭審理少年的事件外，也設有少年的矯正機構協助矯治犯罪之少年。
+								全國少年矯正機關的分類有：少年輔育院、少年觀護所與少年矯正學校。少年輔育院依
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年觀護所'>
+									少年輔育院條例
+								</a>，依法收容被處以感化教育的少年受處分人。少年觀護所性質與看守所雷同，依據
+								<a className='tale-body-link' 
+									 href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=少年觀護所'>
+									少年觀護所設置以及實施通則
+								</a>，看押少年刑事被告。少年矯正學校則依據
+								<a className='tale-body-link' href='http://law.moj.gov.tw/LawClass/LawAll.aspx?PCode=I0040043'>
+									少年矯正學校設置及教育實施通則
+								</a>收容受感化教育、拘役以及徒刑處分之少年，
+								其中誠正中學收容受感化教育之少年收容人，明陽中學則收容少年受刑人。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '全國少年矯正機關',
+						isEnd: false
+					},	
+					{
+						Container: {
+							pos : {
+								left: '5em',
+								bottom : '6em',
+							},
+							size: {
+								width : '300px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+
+							},
+							style: {
+								backgroundColor: '#822979'
+							}
+						},
+						infoContext  : 
+							<span>
+								值得慶幸的是，少年矯正機關並沒有超收的問題，可是戒護人力卻居高不下。
+								可以明顯看得出來，在處理少年收容人的態度上，政府是以教化為主，戒護為輔。
+								因此少年矯正機關沒有如其他矯正機關有這麼多的戒護人員，
+								反之，卻有其他矯正機關無法比擬的教化資源。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '全國少年矯正機關',
+						isEnd: true
+					},	
+				]
+			},
 		];
 
 		this.calTopicFirstTale = function() {
@@ -5947,29 +6470,39 @@ class StoryTeller {
 	*/
 	toTell(startDepth, endDepth, fwdOpParams, bwdOpParams) {
 
+		// console.log('_this.vizStory.fwdSteps: ', this._vizStory.fwdSteps);
+		// console.log('_this.vizStory.bwdSteps: ', this._vizStory.bwdSteps);
+		// console.log('startDepth: ', startDepth);
+		// console.log('endDepth: ', endDepth);
 		// For deeper exploration
 		if (endDepth - startDepth > 0) {
+			
+			// console.log('For deepper');
 
 			for (let s = startDepth; s < endDepth; ++s) {
-
+				console.log('s: ', s);
 				// The pending promise object will be assigned to the end property. 
-				if ( s === startDepth ) 
+				if ( s === startDepth ) {
 					this._vizStory.fwdSteps[s].end = 
 						this._vizStory.fwdSteps[s]
 							.transit(fwdOpParams[s]._, fwdOpParams[s].params);
-				else
+				}
+				else {
 					this._vizStory.fwdSteps[s].end = 
 						this._vizStory.fwdSteps[s-1].end
 							.then(this._vizStory.fwdSteps[s]
 								.transit.bind(null, fwdOpParams[s]._, fwdOpParams[s].params));
+				}
 			}
 		}
 		
 		// For returning back from the deep.
 		else if (endDepth - startDepth < 0) {
 
-			for (let s = startDepth - 1; s >= endDepth; --s) {
+			console.log('For returning');
 
+			for (let s = startDepth - 1; s >= endDepth; --s) {
+				console.log('s: ', s);
 				if ( s === startDepth - 1 ) {
 					this._vizStory.bwdSteps[s].end = 
 						this._vizStory.bwdSteps[s]
@@ -6283,6 +6816,10 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
+		console.log('=====check here=====');
+		console.log('_topic: ', _topic);
+		console.log('_data: ', _data);
+
 		if (update) {
 			
 			bG.update(
@@ -6299,6 +6836,7 @@ const DataBoard = React.createClass({
 				});
 		} else {
 
+			/*  Initialize a bar graph  */
 			bG.initializeAPad()
 				.setChartSize().setOutPadding(10).setStep(10)
 				.mappingData(
@@ -6388,9 +6926,13 @@ const DataBoard = React.createClass({
 		// Find the topic.
 		const _topic = this.DBfindTopic(props);
 		
+		// working-spot
 		sG.initializeAPad().setChartSize()
 			.mappingData(
-				dataSheet.url, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c, _topic.axes.t)
+				dataSheet.url, _topic.axes.x, _topic.axes.y, 
+				_topic.axes.r, _topic.axes.c, _topic.axes.t, 
+				false, false, false, false, false, _topic.extl
+			)
 			.then(function() {
 				t.appendCircleMouseOver(_topic.tipFormat);
 			});
@@ -6440,12 +6982,20 @@ const DataBoard = React.createClass({
 
 	// Transform from bar to stack bars.
 	DBtransStackBarToBar(props) {
-
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		console.log(props);
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
+
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
+		console.log('_topic: ', _topic);
+		console.log('_topic.intl.headers: ', _topic.intl.headers);
+		console.log('++++++++++++++++++++++++++++++++++++++++++++++');
 
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
@@ -6513,8 +7063,8 @@ const DataBoard = React.createClass({
 		let sG = this.gpu.scatterPlot,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
-
-		return sG.update(_topic.intl.filterSets, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
+		
+		return sG.update(_topic.intl.filterSets, _topic.extl.lines, _topic.axes.x, _topic.axes.y, _topic.axes.r, _topic.axes.c)
 			.then(function() { 
 				t.appendCircleMouseOver(_topic.tipFormat); 
 			})
@@ -6951,40 +7501,67 @@ const DataBoard = React.createClass({
 
 	// The DataBoard component will renew the visualized data or change a different type.
 	componentWillUpdate (nextProps, nextStates) {
-		
+
 		let dataSheet = this.findDataSheetIndex(nextProps);
-		
-		var 
-			// Renew the board when user switch dataset, chartTypes or 
-			// switch to the new data when reading in the detail story.
-			shouldRenew = 
-				(this.props.dataset !== nextProps.dataset ||
-				 this.props.chartType !== nextProps.chartType ||
-				 (this.props.data !== nextProps.data &&
-				 	this.props.topic !== nextProps.topic)) 
-						? true : false,
+		// var 
+		// 	// Renew the board when user switch dataset, chartTypes or 
+		// 	// switch to the new data when reading in the detail story.
+		// 	shouldRenew = 
+		// 		(this.props.dataset !== nextProps.dataset ||
+		// 		 this.props.chartType !== nextProps.chartType ||
+		// 		 (this.props.data !== nextProps.data &&
+		// 		 	this.props.topic !== nextProps.topic)) 
+		// 				? true : false,
 
-			// Update the chart when user switch data viewing
-			shouldUpdate = 
-				(this.props.data !== nextProps.data &&
-				 this.props.topic === nextProps.topic ) ? true : false,
+		// 	// Update the chart when user switch data viewing
+		// 	shouldUpdate = 
+		// 		(this.props.data !== nextProps.data &&
+		// 		 this.props.topic === nextProps.topic ) ? true : false,
 
-			// Extend the chart when topic update.
-			isTopicSwitching = 
-				(this.props.topic !== nextProps.topic && 
-				 this.props.dataset === nextProps.dataset &&
-				 this.props.data === nextProps.data) ? true : false,
+		// 	// Extend the chart when topic update.
+		// 	isTopicSwitching = 
+		// 		(this.props.topic !== nextProps.topic && 
+		// 		 this.props.dataset === nextProps.dataset &&
+		// 		 this.props.data === nextProps.data) ? true : false;
+
+		const activatedDropdownMenuIdx = store.getState().get('activatedDropdownMenuIdx');
+
+		// Renew the board when user switch dataset, chartTypes or 
+		// switch to the new data when reading in the detail story.
+		let shouldRenew = 
+					(activatedDropdownMenuIdx === 0 || 1) || 
+						(this.props.dataset !== nextProps.dataset) || 
+							(this.props.data !== nextProps.data &&
+		 		 				this.props.topic !== nextProps.topic) ? true : false,  // Dataset update
+				shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
+				isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
+					true : (this.props.topic !== nextProps.topic) 
+						? true : false;
 			
-			// Switch to the next topic when reach the end of the above one.
-			isTopicSwitchingByTaleUd = (() => {
-				if (this.storyTeller._txtTaleChain) {
-					return this.storyTeller._txtTaleChain.sections[nextProps.taleIndex].isTopicFirstSec;
-				}
-				return false
-			})();
+		let shouldStoryRolling = store.getState().get('rollingToNextTopic');
+			
 
-		if (shouldRenew) { 
+		if (shouldStoryRolling) {
 
+			let steps = this.DBTopicStepsProducer(nextProps);
+			console.log('steps: ', steps);
+			// Find out the relationship between tale index and topic depth.
+			let incrementedTopicDepth = this.props.topicDepth + 1,
+					topicFirstTales = this.storyTeller.calTopicFirstTale(),
+					tale = topicFirstTales.find((t, i) => {
+						return i === incrementedTopicDepth
+					});
+
+			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
+
+		}
+
+		else {
+
+		if (shouldRenew && 
+				(this.props.dataset !== nextProps.dataset || 
+					this.props.data !== nextProps.data)) { 
+			console.log('should renew');
 			d3.select('#SKETCHPAD').remove();
 
 			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
@@ -6996,36 +7573,42 @@ const DataBoard = React.createClass({
 				this.vizDataWithLineChart(nextProps, dataSheet)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '散佈圖')
+			else if (nextProps.chartType === '散佈圖'){
 				this.vizDataWithScatterPlot(nextProps, dataSheet);
+			}
 
 		} else if (shouldUpdate) {
-
+			console.log('shouldUpdate');
 			// Update for chart type changing
 			if (nextProps.chartType === '直方圖') 
 				this.vizDataWithBarChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '趨勢圖') 
-				this.vizDataWithLineChart(nextProps, dataSheet, true)
+			// else if (nextProps.chartType === '趨勢圖') 
+			// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
 			else if (nextProps.chartType === '圓環比例圖')
 				this.vizDataWithRingChart(nextProps, dataSheet, true)
 
 		} else if (isTopicSwitching) { // Update when topic changing.
-			
+			console.log('isTopicSwitching');
+			console.log('nextProps: ', nextProps);
 			this.DBTopicUpdate(nextProps);
 			
-		} else if (isTopicSwitchingByTaleUd) { 
+		} 
+		// else if (isTopicSwitchingByTaleUd) { 
+		// 	console.log('isTopicSwitchingByTaleUd');
+		// 	let steps = this.DBTopicStepsProducer(nextProps);
 
-			let steps = this.DBTopicStepsProducer(nextProps);
+		// 	// Find out the relationship between tale index and topic depth.
+		// 	let incrementedTopicDepth = this.props.topicDepth + 1,
+		// 			topicFirstTales = this.storyTeller.calTopicFirstTale(),
+		// 			tale = topicFirstTales.find((t, i) => {
+		// 				return i === incrementedTopicDepth
+		// 			});
 
-			// Find out the relationship between tale index and topic depth.
-			let incrementedTopicDepth = this.props.topicDepth + 1,
-					topicFirstTales = this.storyTeller.calTopicFirstTale(),
-					tale = topicFirstTales.find((t, i) => {
-						return i === incrementedTopicDepth
-					});
-
-			this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
+		// 	this.storyTeller.toTell(this.props.topicDepth, this.props.topicDepth+1, steps.fwd, steps.bwd);
+		// }
 		}
+
+		console.log("===========================");
 	},
 
 	render() {
@@ -8229,6 +8812,12 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 
 	let shoudDataBoardUpdate = setState('updateDataBoard', true);
 
+	// working-spot
+	let activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', fieldsetIndex);
+
+	// working-spot
+	let rollingToNextTopic = setState('rollingToNextTopic', false);
+
 	// Topic depth define how much info for users to read.
 	let newTopicDepth = null;
 
@@ -8272,9 +8861,17 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.topicDepth,
 						newState.taleIndex,
 						newState.dropdownMenuStates,
-						shoudDataBoardUpdate)
+						shoudDataBoardUpdate,
+						activatedDropdownMenuIdx, // working-spot
+						rollingToNextTopic // working-spot
+						)
 				}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate, 
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
+				)
 		} 
 
 		// Selecting data
@@ -8290,10 +8887,17 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 						newState.topicDepth,
 						newState.taleIndex,
 						newState.dropdownMenuStates,
-						shoudDataBoardUpdate
+						shoudDataBoardUpdate,
+						activatedDropdownMenuIdx, // working-spot
+						rollingToNextTopic // working-spot
 					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
+				)
 		}
 
 		// Selecting the charttype which will affect the topics.
@@ -8308,10 +8912,17 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					newState.topic,
 					newState.taleIndex,
 					newState.dropdownMenuStates,
-					shoudDataBoardUpdate
-					)
+					shoudDataBoardUpdate,
+					activatedDropdownMenuIdx, // working-spot
+					rollingToNextTopic // working-spot
+				)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate)
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
+			)
 		} 
 
 		// Selection the topic
@@ -8331,9 +8942,17 @@ function selectDropdownOption(state, theme, optionName, fieldsetIndex, dataIdx, 
 					newTopicDepth, 
 					newTaleIndex,
 					collapsedAllDropdownMenuStates, 
-					shoudDataBoardUpdate)
+					shoudDataBoardUpdate,
+					activatedDropdownMenuIdx, // working-spot
+					rollingToNextTopic // working-spot
+					)
 			}
-			return state.merge(collapsedAllDropdownMenuStates, shoudDataBoardUpdate);
+			return state.merge(
+				collapsedAllDropdownMenuStates, 
+				shoudDataBoardUpdate,
+				rollingToNextTopic, // working-spot
+				activatedDropdownMenuIdx // working-spot
+				);
 		}
 
 		return state
@@ -8564,19 +9183,37 @@ function rollingTales(state, topic, topicDepth, taleChain, taleIndex) {
 	const newTaleIndex = setState('currentTaleIndex', taleIndex + 1);
 	const updateDataBoard = setState('updateDataBoard', true);
 
+	// working-spot
+	const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
+
+	// working-spot
+	let rollingToNextTopic = setState('rollingToNextTopic', false);
+
+
 	// Check up whether the next tale is the new topic's first tale.
 	const nextTale = taleChain.sections[taleIndex+1];
 
 	if (nextTale.isTopicFirstSec) {
 		const newTopic = setState('currentTopic', nextTale.topicName);
 		const newTopicDepth = setState('currentTopicDepth', state.get('currentTopicDepth') + 1);
-		return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+
+		// working-spot
+		rollingToNextTopic = rollingToNextTopic.merge(setState('rollingToNextTopic', true));
+
+		return state.merge(
+			newTaleIndex, 
+			newTopic, 
+			newTopicDepth, 
+			updateDataBoard, 
+			rollingToNextTopic,
+			activatedDropdownMenuIdx // working-spot
+			)
 	}
-	else return state.merge(newTaleIndex, updateDataBoard);
+	else return state.merge(newTaleIndex, updateDataBoard, rollingToNextTopic, activatedDropdownMenuIdx);
 }
 
 function selectTale(state, taleIndex, taleContext) {
-	
+	console.log('select Tale');
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
 	const newTopic = 
 		setState(
@@ -8588,14 +9225,23 @@ function selectTale(state, taleIndex, taleContext) {
 	const topicDepth = topicList.findIndex((topic) => {
 		return taleContext.topicName === topic
 	});
-	
+
+	// working-spot
 	const newTopicDepth = 
 		setState(
 			'currentTopicDepth', 
 			topicDepth > -1 ? topicDepth : state.get('currentTopicDepth'));
 	const updateDataBoard = setState('updateDataBoard', true);
 
-	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard)
+	let rollingToNextTopic = null;
+	if (taleContext.isTopicFirstSec && newTopicDepth - topicDepth > 0) {
+		rollingToNextTopic = setState('rollingToNextTopic', true);
+	}
+	else {
+		rollingToNextTopic = setState('rollingToNextTopic', false);
+	}
+
+	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard, rollingToNextTopic)
 
 }
 
@@ -8606,12 +9252,26 @@ function back2FirstTale(state, taleChain) {
 	const newTopicDepth = setState('currentTopicDepth', 0);
 	const updateDataBoard = setState('updateDataBoard', true);
 
-	return state.merge(newTaleIndex, newTopic, newTopicDepth, updateDataBoard);
+	// working-spot
+	// const activatedDropdownMenuIdx = setState('activatedDropdownMenuIdx', null);
+
+	// working-spot
+	const rollingToNextTopic = setState('rollingToNextTopic', false);
+
+	return state.merge(
+		newTaleIndex, 
+		newTopic, 
+		newTopicDepth, 
+		updateDataBoard, 
+		rollingToNextTopic
+	)
+		// activatedDropdownMenuIdx);
 }
 
 function setTaleIndex(state, taleIndex) {
 	const newTaleIndex = setState('currentTaleIndex', taleIndex);
 	const updateDataBoard = setState('updateDataBoard', false);
+
 	return state.merge(newTaleIndex, updateDataBoard)
 }
 
@@ -8733,7 +9393,7 @@ const mapDispatchToDropdownMenuItemBtnProps = (dispatch, props) => {
 
 			const key = store.getState().get('theme');
 				
-			// Data is bounding with topics so th
+			// Data is bounding with topics so the topics renewed after the data updates
 			if (props.menuIndex === 1) 
 				dispatch(selectDropdownOptionAC(key, props.name, props.menuIndex, props.optionIdx, 0));
 			
@@ -8772,6 +9432,7 @@ const StatFilter = RRd.connect(
 
 /* Connect DataBoard */
 const mapStateToDataBoardProps = (state) => {
+
 	return {
 		dataset  : state.get('currentDataset'), 
 		data     : state.get('currentData'), 
@@ -8779,7 +9440,12 @@ const mapStateToDataBoardProps = (state) => {
 		topic    : state.get('currentTopic'),
 		topicDepth: state.get('currentTopicDepth'),
 		taleIndex : state.get('currentTaleIndex'),
-		updateDataBoard: state.get('updateDataBoard')
+		updateDataBoard: state.get('updateDataBoard'),
+		// working-spot
+		rollingToNextTopic: state.get('rollingToNextTopic'),
+		// working-spot
+		// activatedDropdownMenuIdx: state.get('activatedDropdownMenuIdx')
+
 	}
 }
 
@@ -8792,6 +9458,7 @@ const StatDataBoard = RRd.connect(
 const mapDispatchToNextBtn = (dispatch, props) => {
 	return {
 		nextTale: (e) => {
+			// working-spot
 			dispatch(rollingTalesAC(props.topic, props.topicDepth, props.taleChain, props.taleIndex));
 		}
 	}
