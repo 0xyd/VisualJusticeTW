@@ -4,7 +4,7 @@ if __name__ == '__main__':
 
 	new_json = None
 
-	with open('../../correction/103-security-ratio.json', encoding='utf8') as data:
+	with open('../../correction/104-security-ratio.json', encoding='utf8') as data:
 
 		json_data = json.loads(data.read())
 		
