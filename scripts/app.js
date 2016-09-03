@@ -6519,6 +6519,7 @@ class StoryTeller {
 	}
 }
 
+
 /* ***** Elements for the Index Page ***** */
 var IndexNavList = React.createClass({
 
@@ -6682,10 +6683,33 @@ var IndexNavListItem = React.createClass({
 });
 
 /* Major Themes are displaying on the index page. */
-var Theme = React.createClass({
+const ThemeImage = React.createClass({
 
-	componentWillMount() {
-	},
+	// handleImageLoaded() {
+	// 	this.setState({ imageState: true });
+	// },
+
+	// getInitialState() {
+	// 	return {
+	// 		imageState: null
+	// 	}	
+	// },
+
+	render() {
+
+		let inlineStyle={ display: 'inline-block', verticalAlign: 'middle' };
+
+		return (
+			<div style={ inlineStyle }>
+				<img className="sect-part-img" src={ this.props.imageSrc } />
+			</div>
+		)
+		
+	}
+
+});
+
+var Theme = React.createClass({
 
 	componentDidMount() {
 		$v(ReactDOM.findDOMNode(this), { left: '0%' }, { duration: 2000 });
@@ -6701,7 +6725,7 @@ var Theme = React.createClass({
 				<div className="b12-col-md-12 b12-row-md-8 sect-part-imgwrapper">
 					<span className="ver-helper"></span>
 					<RR.Link to={ this.props.path }>
-						<img className="sect-part-img" src={this.props.themeImg} />
+						<ThemeImage imageSrc={ this.props.themeImg } />
 					</RR.Link>
 				</div>
 				<div className="b12-col-md-12 b12-row-md-1 sect-part-btnwrapper">
@@ -7984,6 +8008,10 @@ const HomeLink = React.createClass({
 /* ***** App are the main components of all web pages  ***** */
 var App = React.createClass({
 
+	componentDidMount() {
+		console.log('App did mount!');
+	},
+
 	render: function() {
 		const { nav, main } = this.props
 		return (
@@ -8007,13 +8035,6 @@ var Nav = React.createClass({
 
 
 var Main = React.createClass({
-
-	componentWillMount() { 
-	},
-
-	componentDidMount() { 
-		
-	},
 
 	render: function() {
 		return (
