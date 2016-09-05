@@ -612,16 +612,9 @@ componentWillUpdate:function componentWillUpdate(nextProps,nextStates){var _this
 // 		 this.props.data === nextProps.data) ? true : false;
 var activatedDropdownMenuIdx=store.getState().get('activatedDropdownMenuIdx'); // Renew the board when user switch dataset, chartTypes or 
 // switch to the new data when reading in the detail story.
-var shouldRenew=activatedDropdownMenuIdx===0||1||this.props.dataset!==nextProps.dataset||this.props.data!==nextProps.data&&this.props.topic!==nextProps.topic?true:false, // Dataset update
+var shouldRenew=(activatedDropdownMenuIdx===0||1)&&this.props.dataset!==nextProps.dataset||this.props.data!==nextProps.data&&this.props.topic!==nextProps.topic?true:false, // Dataset update
 shouldUpdate=activatedDropdownMenuIdx===1?true:false, // Data update
-isTopicSwitching=activatedDropdownMenuIdx===3?true:this.props.topic!==nextProps.topic?true:false;var shouldStoryRolling=store.getState().get('rollingToNextTopic'); // console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
-// console.log('this.props.topic: ', this.props.topic);
-// console.log('nextProps.topic: ', nextProps.topic);
-// console.log(this.props.data !== nextProps.data &&
-//  		 				this.props.topic !== nextProps.topic);
-// console.log('shouldRenew', shouldRenew);
-// console.log('shouldUpdate: ', shouldUpdate);
-if(shouldStoryRolling){(function(){var steps=_this3.DBTopicStepsProducer(nextProps); // Find out the relationship between tale index and topic depth.
+isTopicSwitching=activatedDropdownMenuIdx===3?true:this.props.topic!==nextProps.topic?true:false;var shouldStoryRolling=store.getState().get('rollingToNextTopic');console.log('activatedDropdownMenuIdx: ',activatedDropdownMenuIdx);console.log('this.props.topic: ',this.props.topic);console.log('nextProps.topic: ',nextProps.topic);console.log(this.props.data!==nextProps.data&&this.props.topic!==nextProps.topic);console.log('shouldRenew',shouldRenew);console.log('shouldUpdate: ',shouldUpdate);if(shouldStoryRolling){(function(){var steps=_this3.DBTopicStepsProducer(nextProps); // Find out the relationship between tale index and topic depth.
 var incrementedTopicDepth=_this3.props.topicDepth+1,topicFirstTales=_this3.storyTeller.calTopicFirstTale(),tale=topicFirstTales.find(function(t,i){return i===incrementedTopicDepth;});_this3.storyTeller.toTell(_this3.props.topicDepth,_this3.props.topicDepth+1,steps.fwd,steps.bwd);})();}else {if(shouldRenew&&(this.props.dataset!==nextProps.dataset||this.props.data!==nextProps.data)){console.log('run here?');d3.select('#SKETCHPAD').remove();if(this.props.chartType==='圓環比例圖'&&nextProps.chartType!=='圓環比例圖')this.gpu.ringGraph.removeBoards();if(nextProps.chartType==='長條圖')this.vizDataWithBarChart(nextProps,dataSheet);else if(nextProps.chartType==='趨勢圖')this.vizDataWithLineChart(nextProps,dataSheet);else if(nextProps.chartType==='圓環比例圖')this.vizDataWithRingChart(nextProps,dataSheet);else if(nextProps.chartType==='散佈圖'){this.vizDataWithScatterPlot(nextProps,dataSheet);}}else if(shouldUpdate){ // working-test
 console.log('nextProps.chartType: ',nextProps.chartType); // Update for chart type changing
 if(nextProps.chartType==='長條圖')this.vizDataWithBarChart(nextProps,dataSheet,true); // else if (nextProps.chartType === '趨勢圖') 
