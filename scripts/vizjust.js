@@ -2759,9 +2759,10 @@ ringGraphClass.prototype.calRadiusDelta = function(categoryNum) {
 ringGraphClass.prototype.selectROCYr = function(yr) {
 
 	var date = new Date();
-
+	
 	// The data of current year won't be published until the next year
-	this.rocYr = ( yr >= 75 && (date.getFullYear()-1911-1) > yr ) ? yr : null;
+	this.rocYr = ( yr >= 75 && (date.getFullYear()-1911) > yr ) ? yr : null;
+	
 	return this
 }
 

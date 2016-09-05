@@ -6910,7 +6910,7 @@ const DataBoard = React.createClass({
 			rG.resetRings()
 				.initializeAPad()
 				.init()
-					.selectROCYr(75)
+					.selectROCYr(104)
 						.drawMultiRings(
 							dataSheet.urls);
 		}
@@ -7581,7 +7581,6 @@ const DataBoard = React.createClass({
 				// else if (nextProps.chartType === '趨勢圖') 
 				// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
 				else if (nextProps.chartType === '圓環比例圖'){
-					console.log('update 圓環比例圖');
 					this.vizDataWithRingChart(nextProps, dataSheet, true)
 				}
 
