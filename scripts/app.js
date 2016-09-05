@@ -44,7 +44,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '竊盜案件',
 						availableChartTypes: [
-							'直方圖',
+							'長條圖',
 							// '趨勢圖'
 						],
 						content: {
@@ -451,7 +451,7 @@ const DataFilterStateTree = {
 					// {
 					// 	dataset: '暴力犯罪案件',
 					// 	availableChartTypes: [
-					// 		'直方圖',
+					// 		'長條圖',
 					// 		// '趨勢圖'
 					// 	],
 					// 	content: {
@@ -667,7 +667,7 @@ const DataFilterStateTree = {
 					// {
 					// 	dataset: '毒品案件',
 					// 	availableChartTypes: [
-					// 		'直方圖',
+					// 		'長條圖',
 					// 		'趨勢圖'
 					// 	],
 					// 	content: {
@@ -841,7 +841,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '殺人罪',
 						availableChartTypes: [
-							'直方圖'
+							'長條圖'
 							// '趨勢圖'
 						],
 						content: {
@@ -906,7 +906,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '兒童及少年性交易防制條例',
 						availableChartTypes: [
-							'直方圖',
+							'長條圖',
 							'趨勢圖'
 						],
 						content: {
@@ -969,7 +969,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '竊盜罪',
 						availableChartTypes: [
-							'直方圖',
+							'長條圖',
 							'趨勢圖'
 						],
 						content: {
@@ -1032,7 +1032,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '擄人勒贖罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1095,7 +1095,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '恐嚇罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1158,7 +1158,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '槍砲彈藥刀械管制條例',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1225,7 +1225,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '公共危險罪',
 						availableChartTypes: [
-							'直方圖',
+							'長條圖',
 							'趨勢圖'
 						],
 						content: {
@@ -1288,7 +1288,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '貪污罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖',
 						],
 						content: {
@@ -1352,7 +1352,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '瀆職罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1417,7 +1417,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '詐欺罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1482,7 +1482,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '重傷罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1547,7 +1547,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '強制性交罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1612,7 +1612,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '偽造文書印文罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1677,7 +1677,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '賭博罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1742,7 +1742,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '毒品罪',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -1810,7 +1810,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '地方法院刑事案件收結情形',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								// '趨勢圖'
 						],
 						content: {
@@ -2029,7 +2029,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '高等法院刑事案件收結情形',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								// '趨勢圖'
 						],
 						content: {
@@ -2247,7 +2247,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '最高法院刑事案件收結情形',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								// '趨勢圖'
 						],
 						content: {
@@ -2463,7 +2463,7 @@ const DataFilterStateTree = {
 					{
 						dataset: '監獄人數概況',
 						availableChartTypes: [
-								'直方圖',
+								'長條圖',
 								'趨勢圖'
 						],
 						content: {
@@ -2724,7 +2724,7 @@ const DataFilterStateTree = {
 						content: {
 							data: [
 								{
-									name: '民國75年',
+									name: '民國104年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2741,7 +2741,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國76年',
+									name: '民國103年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2758,7 +2758,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國77年',
+									name: '民國102年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2775,7 +2775,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國78年',
+									name: '民國101年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2792,7 +2792,330 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國79年',
+									name: '民國100年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國99年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國98年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國97年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國96年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國95年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國94年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國93年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國92年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國91年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國90年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國89年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國88年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國87年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國86年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國85年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國84年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國83年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國82年',
+									data: [
+										'總覽',
+										'新入監前家庭狀況',
+										'新入監前犯罪次數與種類',
+										'新入監前教育程度',
+										'新入監年齡統計'
+									],
+									topics: [
+										[
+											{
+												name: '總數'
+											}
+										]
+									]
+								},
+								{
+									name: '民國81年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2827,7 +3150,7 @@ const DataFilterStateTree = {
 
 								},
 								{
-									name: '民國81年',
+									name: '民國79年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2844,7 +3167,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國82年',
+									name: '民國78年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2861,7 +3184,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國83年',
+									name: '民國77年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2878,7 +3201,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國84年',
+									name: '民國76年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -2895,313 +3218,7 @@ const DataFilterStateTree = {
 									]
 								},
 								{
-									name: '民國85年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國86年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國87年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國88年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國89年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國90年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國91年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國92年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國93年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國94年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國95年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國96年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國97年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國98年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國99年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國100年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國101年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國102年',
-									data: [
-										'總覽',
-										'新入監前家庭狀況',
-										'新入監前犯罪次數與種類',
-										'新入監前教育程度',
-										'新入監年齡統計'
-									],
-									topics: [
-										[
-											{
-												name: '總數'
-											}
-										]
-									]
-								},
-								{
-									name: '民國103年',
+									name: '民國75年',
 									data: [
 										'總覽',
 										'新入監前家庭狀況',
@@ -3744,7 +3761,7 @@ class StoryTeller {
 			{
 				dataset: '竊盜案件',
 				data: '合計發生件數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{
 						goto: '案件種類',
@@ -3781,7 +3798,7 @@ class StoryTeller {
 			{
 				dataset: '竊盜案件',
 				data: '非汽機車竊盜發生件數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{
 						goto: '重大竊盜發生件數',
@@ -3910,7 +3927,7 @@ class StoryTeller {
 			{
 				dataset: '竊盜案件',
 				data: '汽機車竊盜案件',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{
 						goto: '汽機車案件數',
@@ -4070,7 +4087,7 @@ class StoryTeller {
 					'毒品罪'
 				],
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{ 
 						goto: '各刑名統計', 
@@ -4108,7 +4125,7 @@ class StoryTeller {
 			{
 				datasets: ['地方法院刑事案件收結情形', '高等法院刑事案件收結情形'],
 				data: '案件數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{
 						goto: '新受與舊受',
@@ -4174,7 +4191,7 @@ class StoryTeller {
 			{
 				dataset: '監獄人數概況',
 				data: '本年執行人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 
 				fwdSteps: [
 					{ 
@@ -4212,7 +4229,7 @@ class StoryTeller {
 			{
 				dataset: '監獄人數概況',
 				data: '新入監人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				fwdSteps: [
 					{
 						goto: '犯次分類',
@@ -4316,7 +4333,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '兒童及少年性交易防制條例',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -4453,7 +4470,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '殺人罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -4563,7 +4580,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '竊盜罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -4722,7 +4739,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '擄人勒贖罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -4861,7 +4878,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '恐嚇罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -4954,7 +4971,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '瀆職罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5046,7 +5063,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '槍砲彈藥刀械管制條例',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5140,7 +5157,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '公共危險罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5263,7 +5280,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '貪污罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5444,7 +5461,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '詐欺罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5538,7 +5555,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '賭博罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5631,7 +5648,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '重傷罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5724,7 +5741,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '強制性交罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -5822,7 +5839,7 @@ class StoryTeller {
 				// The first section of each topic is the main indicator.
 				dataset: '毒品罪',
 				data: '被告人數',
-				vizType: '直方圖',
+				vizType: '長條圖',
 				sections: [
 					{
 						Container: {
@@ -7456,7 +7473,7 @@ const DataBoard = React.createClass({
 
 		let dataSheet = this.findDataSheetIndex(this.props);
 
-		if (this.props.chartType === '直方圖') {
+		if (this.props.chartType === '長條圖') {
 			this.vizDataWithBarChart(this.props, dataSheet);
 			
 		} else if (this.props.chartType === '趨勢圖') {
@@ -7508,7 +7525,13 @@ const DataBoard = React.createClass({
 			
 		let shouldStoryRolling = store.getState().get('rollingToNextTopic');
 			
-
+		// console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
+		// console.log('this.props.topic: ', this.props.topic);
+		// console.log('nextProps.topic: ', nextProps.topic);
+		// console.log(this.props.data !== nextProps.data &&
+		//  		 				this.props.topic !== nextProps.topic);
+		// console.log('shouldRenew', shouldRenew);
+		// console.log('shouldUpdate: ', shouldUpdate);
 		if (shouldStoryRolling) {
 
 			let steps = this.DBTopicStepsProducer(nextProps);
@@ -7526,34 +7549,38 @@ const DataBoard = React.createClass({
 
 		else {
 
-		if (shouldRenew && 
-				(this.props.dataset !== nextProps.dataset || 
-					this.props.data !== nextProps.data)) { 
+			if (shouldRenew && 
+					(this.props.dataset !== nextProps.dataset || 
+						this.props.data !== nextProps.data)) { 
 
-			d3.select('#SKETCHPAD').remove();
+				console.log('run here?');
+				d3.select('#SKETCHPAD').remove();
 
-			if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
-				this.gpu.ringGraph.removeBoards();
+				if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
+					this.gpu.ringGraph.removeBoards();
 
-			if (nextProps.chartType === '直方圖')
-				this.vizDataWithBarChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '趨勢圖')
-				this.vizDataWithLineChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '圓環比例圖')
-				this.vizDataWithRingChart(nextProps, dataSheet)
-			else if (nextProps.chartType === '散佈圖'){
-				this.vizDataWithScatterPlot(nextProps, dataSheet);
-			}
+				if (nextProps.chartType === '長條圖')
+					this.vizDataWithBarChart(nextProps, dataSheet)
+				else if (nextProps.chartType === '趨勢圖')
+					this.vizDataWithLineChart(nextProps, dataSheet)
+				else if (nextProps.chartType === '圓環比例圖')
+					this.vizDataWithRingChart(nextProps, dataSheet)
+				else if (nextProps.chartType === '散佈圖'){
+					this.vizDataWithScatterPlot(nextProps, dataSheet);
+				}
 
-		} else if (shouldUpdate) {
-			
-			// Update for chart type changing
-			if (nextProps.chartType === '直方圖') 
-				this.vizDataWithBarChart(nextProps, dataSheet, true)
-			// else if (nextProps.chartType === '趨勢圖') 
-			// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
-			else if (nextProps.chartType === '圓環比例圖')
-				this.vizDataWithRingChart(nextProps, dataSheet, true)
+			} else if (shouldUpdate) {
+				// working-test
+				console.log('nextProps.chartType: ', nextProps.chartType);
+				// Update for chart type changing
+				if (nextProps.chartType === '長條圖') 
+					this.vizDataWithBarChart(nextProps, dataSheet, true)
+				// else if (nextProps.chartType === '趨勢圖') 
+				// 	this.vizDataWithLineChart(nextProps, dataSheet, true)
+				else if (nextProps.chartType === '圓環比例圖'){
+					console.log('update 圓環比例圖');
+					this.vizDataWithRingChart(nextProps, dataSheet, true)
+				}
 
 		} else if (isTopicSwitching) { // Update when topic changing.
 			
@@ -8584,7 +8611,7 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/policeStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '竊盜案件');
 			defaultData = setState('currentData', '合計發生件數');
-			defaultChartType = setState('currentChartType', '直方圖');
+			defaultChartType = setState('currentChartType', '長條圖');
 			defaultTopic = setState('currentTopic', '案件總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
 			defaultTaleIndex = setState('currentTaleIndex', 0);
@@ -8606,7 +8633,7 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/prosecuteStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '殺人罪');
 			defaultData = setState('currentData', '被告人數');
-			defaultChartType = setState('currentChartType', '直方圖');
+			defaultChartType = setState('currentChartType', '長條圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
 			defaultTaleIndex = setState('currentTaleIndex', 0);
@@ -8627,7 +8654,7 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/judgeStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '地方法院刑事案件收結情形');
 			defaultData = setState('currentData', '案件數');
-			defaultChartType = setState('currentChartType', '直方圖');
+			defaultChartType = setState('currentChartType', '長條圖');
 			defaultTopic = setState('currentTopic', '受理件數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
 			defaultTaleIndex = setState('currentTaleIndex', 0);
@@ -8647,7 +8674,7 @@ function selectAppTheme(state, theme) {
 			statTitle = setState('statTitleImageSrc', './src/correctStatTitle-160px.png');
 			defaultDataset = setState('currentDataset', '監獄人數概況');
 			defaultData = setState('currentData', '本年執行人數');
-			defaultChartType = setState('currentChartType', '直方圖');
+			defaultChartType = setState('currentChartType', '長條圖');
 			defaultTopic = setState('currentTopic', '總數');
 			defaultTopicDepth = setState('currentTopicDepth', 0);
 			defaultTaleIndex = setState('currentTaleIndex', 0);
