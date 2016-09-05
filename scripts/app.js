@@ -7526,14 +7526,14 @@ const DataBoard = React.createClass({
 		// Renew the board when user switch dataset, chartTypes or 
 		// switch to the new data when reading in the detail story.
 		let shouldRenew = 
-					(activatedDropdownMenuIdx === 0 || 1) || 
-						(this.props.dataset !== nextProps.dataset) || 
-							(this.props.data !== nextProps.data &&
-		 		 				this.props.topic !== nextProps.topic) ? true : false,  // Dataset update
-				shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
-				isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
-					true : (this.props.topic !== nextProps.topic) 
-						? true : false;
+			(activatedDropdownMenuIdx === 0 || 1) &&
+				(this.props.dataset !== nextProps.dataset) || 
+					(this.props.data !== nextProps.data &&
+ 		 				this.props.topic !== nextProps.topic) ? true : false,  // Dataset update
+			shouldUpdate = (activatedDropdownMenuIdx === 1) ? true : false, // Data update
+			isTopicSwitching = (activatedDropdownMenuIdx === 3) ? 
+				true : (this.props.topic !== nextProps.topic) 
+					? true : false;
 			
 		let shouldStoryRolling = store.getState().get('rollingToNextTopic');
 			
@@ -7558,7 +7558,6 @@ const DataBoard = React.createClass({
 					(this.props.dataset !== nextProps.dataset || 
 						this.props.data !== nextProps.data)) { 
 
-				console.log('run here?');
 				d3.select('#SKETCHPAD').remove();
 
 				if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
