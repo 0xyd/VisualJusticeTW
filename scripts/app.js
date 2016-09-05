@@ -6808,10 +6808,13 @@ const DataBoard = React.createClass({
 	vizDataWithBarChart(props, dataSheet, update = false) {
 
 		let bG = this.gpu.barGraph,
-				t  = this.tip;
-		
+			t  = this.tip;
+
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
+
+		// Temp used
+		t.remove();
 
 		if (update) {
 			
@@ -6857,6 +6860,9 @@ const DataBoard = React.createClass({
 				t = this.tip;
 
 		const _topic = this.DBfindTopic(props);
+
+		// Temp used
+		t.remove();
 		
 		if (update) {
 			lG.update(
@@ -6914,7 +6920,10 @@ const DataBoard = React.createClass({
 	vizDataWithScatterPlot(props, dataSheet, update = false) {
 
 		let sG = this.gpu.scatterPlot,
-				t  = this.tip;
+			t  = this.tip;
+
+		// Temp used
+		t.remove();
 
 		// Find the topic.
 		const _topic = this.DBfindTopic(props);
@@ -6935,7 +6944,10 @@ const DataBoard = React.createClass({
 	DBUpdateBar(props, header) {
 		
 		let bG = this.gpu.barGraph,
-				t  = this.tip;
+			t  = this.tip;
+
+		// Temp used
+		t.remove();
 
 		const _topic = this.DBfindTopic(props);
 		
@@ -7525,13 +7537,6 @@ const DataBoard = React.createClass({
 			
 		let shouldStoryRolling = store.getState().get('rollingToNextTopic');
 			
-		// console.log('activatedDropdownMenuIdx: ', activatedDropdownMenuIdx);
-		// console.log('this.props.topic: ', this.props.topic);
-		// console.log('nextProps.topic: ', nextProps.topic);
-		// console.log(this.props.data !== nextProps.data &&
-		//  		 				this.props.topic !== nextProps.topic);
-		// console.log('shouldRenew', shouldRenew);
-		// console.log('shouldUpdate: ', shouldUpdate);
 		if (shouldStoryRolling) {
 
 			let steps = this.DBTopicStepsProducer(nextProps);
@@ -7570,8 +7575,7 @@ const DataBoard = React.createClass({
 				}
 
 			} else if (shouldUpdate) {
-				// working-test
-				console.log('nextProps.chartType: ', nextProps.chartType);
+				
 				// Update for chart type changing
 				if (nextProps.chartType === '長條圖') 
 					this.vizDataWithBarChart(nextProps, dataSheet, true)

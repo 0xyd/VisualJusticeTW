@@ -3604,6 +3604,16 @@ tipClass.prototype._nodeSizeCorrect = function(tipType) {
 	return this
 }
 
+tipClass.prototype.remove = function() {
+
+	d3.select('#DOT-TIP').remove();
+	d3.select('#BAR-TIP').remove();
+	d3.select('#CIRCLE-TIP').remove();
+
+	return this
+
+}
+
 /* Additional Functions */
 /* 
 	A function for pinnig label at the middle bottom of the element space.
