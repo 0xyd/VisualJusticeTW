@@ -5963,6 +5963,41 @@ class StoryTeller {
 			},
 			/* For Correctional Data */
 			{
+				dataset: '監獄人數概況',
+				data:    '本年執行人數',
+				vizType: '長條圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								本年執行人數代表了一年於監獄執刑的人數，言而簡之，就是這一年度有多少人在監獄度過夜晚。
+								
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+				]
+			},
+			{
 				// The first section of each topic is the main indicator.
 				dataset: '104年戒護人力概況',
 				data: '戒護人力情形',
