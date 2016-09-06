@@ -6813,9 +6813,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// Temp used
-		t.remove();
-
 		if (update) {
 			
 			bG.update(
@@ -6848,7 +6845,7 @@ const DataBoard = React.createClass({
 						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
-					t.initTips().appendBarMouseOver(props.data);
+					t.remove().initTips().appendBarMouseOver(props.data);
 				});
 		}
 	},
@@ -6861,9 +6858,6 @@ const DataBoard = React.createClass({
 
 		const _topic = this.DBfindTopic(props);
 
-		// Temp used
-		t.remove();
-		
 		if (update) {
 			lG.update(
 				dataSheet.url, 
@@ -6888,7 +6882,7 @@ const DataBoard = React.createClass({
 						false
 					)
 					.then(function() {
-						t.initTips().appendDotMouseOver(props.data);
+						t.remove().initTips().appendDotMouseOver(props.data);
 					});
 
 		}
@@ -6922,13 +6916,9 @@ const DataBoard = React.createClass({
 		let sG = this.gpu.scatterPlot,
 			t  = this.tip;
 
-		// Temp used
-		t.remove();
-
 		// Find the topic.
 		const _topic = this.DBfindTopic(props);
 		
-		// working-spot
 		sG.initializeAPad().setChartSize()
 			.mappingData(
 				dataSheet.url, _topic.axes.x, _topic.axes.y, 
@@ -6945,9 +6935,6 @@ const DataBoard = React.createClass({
 		
 		let bG = this.gpu.barGraph,
 			t  = this.tip;
-
-		// Temp used
-		t.remove();
 
 		const _topic = this.DBfindTopic(props);
 		
