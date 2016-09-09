@@ -5988,10 +5988,60 @@ class StoryTeller {
 						infoContext: 
 							<span>
 								本年執行人數代表了一年於監獄執刑的人數，言而簡之，就是這一年度有多少人在監獄度過夜晚。
-								
+								這三十年平均的執行人數為90516.23人，中位數為94699.5人。
+								高峰發生在民國98年，執行人數高達122008人，最少人則發生於民國78年，為41752人，
+								或許與民國77年所實施的
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E4%B8%83%E5%8D%81%E4%B8%83%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國七十七年罪犯減刑條例》</a>有關。
 							</span>,
 						infoAnimation: '',
 						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								論到減刑，從全國法規的資料庫可查到以下的減刑條例：
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%85%AD%E5%8D%81%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國六十年罪犯減刑條例》</a>、
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%85%AD%E5%8D%81%E5%9B%9B%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國六十四年罪犯減刑條例》</a>、
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E4%B8%83%E5%8D%81%E4%B8%83%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國七十七年罪犯減刑條例》</a>、
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E5%85%AB%E5%8D%81%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國八十年罪犯減刑條例》</a>、
+								<a className='tale-body-link' 
+								   href='http://law.moj.gov.tw/Law/LawSearchResult.aspx?p=A&t=A1A2E1F1&k1=%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B%E4%B9%9D%E5%8D%81%E5%85%AD%E5%B9%B4%E7%BD%AA%E7%8A%AF%E6%B8%9B%E5%88%91%E6%A2%9D%E4%BE%8B'>
+								《中華民國九十六年罪犯減刑條例》</a>。
+								減刑是影響監所收容人數的重要因素，以目前擁有的數據，我們可以觀察前總統李登輝任內推出的兩次減刑(民國77年與80年)與
+								前總統陳水扁推動的一次減刑(民國96年)，對監所人數所造成的影響。
+								很有趣的是民國八十年的減刑並沒有降低執行人數，較去年反之上升了5088人。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
 						topicName: '總數',
 						isEnd: false
 					},
