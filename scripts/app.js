@@ -6045,6 +6045,293 @@ class StoryTeller {
 						topicName: '總數',
 						isEnd: false
 					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								從我們現有的數據與資料來觀察，七十七年、八十年與九十六年的減刑效果非常有限。
+								除了有短期一次性的效果，在接下來的幾年內執行人數很快就回到減刑前的人數。
+								從統計數據觀察，減刑僅是一個緩解症狀的藥品，而並無對整體矯正系統進行體質的改善。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								從我們現有的數據與資料來觀察，七十七年、八十年與九十六年的減刑效果非常有限。
+								除了有短期一次性的效果，在接下來的幾年內執行人數很快就回到減刑前的人數。
+								從統計數據觀察，減刑僅是一個緩解症狀的藥品，而並無對整體矯正系統進行體質的改善。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '組成',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								本年執行人數由兩樣統計數據組成，
+								一個為上年底留監人數(黃色表示)，
+								結算時間為上一年的12/31日。
+								另一個為本年入監人數(紅色表示)，
+								注意的是本年入監並不只有包含新入監的人數，
+								其中也包括了保外就醫、戒治等人數返回。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '組成',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								從百分比的角度觀察，上年底的留監人數在比例上有不斷的提升。
+								可能意味著受刑人刑期不斷地增長。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '組成百分比',
+						isEnd: true
+					},
+				]
+			},
+			{
+				dataset: '監獄人數概況',
+				data:    '新入監人數',
+				vizType: '長條圖',
+				sections: [
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								新入監人數的統計包含了死刑之執行、新受徒刑拘役之執行、罰金(易服勞役)與緩刑撤銷等人數，
+								並非第一次犯罪而入監的人數。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								right: '3em',
+								bottom : '5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								在法務部的統計資料，關於新入監的統計繁多。
+								舉凡新入監者的年齡層、職業、教育程度、家庭經濟狀況都有所統計。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '總數',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '1.5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								我們先從犯次開始講起：
+								犯次，顧名思義，就是犯罪的次數。
+								最主要分為初犯(第一次)、再犯(第二次)以及累犯(第三次或以上)，
+								其中再犯有再細分為再犯同罪與再犯異罪，
+								累犯有再細分為累犯同罪與累犯異罪。
+								不過細分的項目暫時沒有足夠的資料。
+								最主要的高峰發生在民國97年，也就是西元2008年，
+								新入監人數高達48234人，
+								如此高的新入監人數是否肇因於2008年的金融海嘯，
+								很值得我們來深入探討。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '犯次分類',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '1.5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								從民國75年到去年104年，我國平均一年的因初犯而處以徒刑的有13,365.97人，
+								而104年是我國初犯人數最少的一年，僅有7,604人；
+								初犯數最多則發生在民國83年，共有19,661人踉蹌入獄。
+								以平均增減福來看，每年減少約4.2個百分比的人數。
+								初犯人數長期的趨勢雖漸漸地下滑，
+								然而再犯與累犯數卻令人捏一把冷汗。
+								平均每一年再、累犯的人數共為16,930.57人，
+								若將30年的資料分為前面15年與後面15年，
+								前面15年，平均再累犯為11,313.6人，
+								後面15年，平均再累犯人數竟高達22,547.53人，
+								成長了近一百個百分點之譜！
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: false,
+						topicName: '犯次分類',
+						isEnd: false
+					},
+					{
+						Container: {
+							pos : {
+								left: '4em',
+								top : '1.5em',
+							},
+							size: {
+								width : '400px',
+								padding: '0.5em 1em'
+							}
+						},
+						IndButton: {
+							pos  : {
+							},
+							style: {
+								backgroundColor: '#3B8AE5'
+							}
+						},
+						infoContext: 
+							<span>
+								從比例圖來看，
+								值得高興的是初犯比例逐年地下滑，
+								但是再犯、累犯從民國75年的25個百分點，
+								一路上升到104年高達77個百分比的累再犯。
+								近十年新入監人數的區間落在33,684人至48,234人，
+								在人數沒有大幅度的修正趨勢下，
+								節節升高的再犯、累犯人數反映了現下犯罪防治的果效問題。
+							</span>,
+						infoAnimation: '',
+						isTopicFirstSec: true,
+						topicName: '犯次分類比例',
+						isEnd: true
+					},
 				]
 			},
 			{
