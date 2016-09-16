@@ -4257,7 +4257,6 @@ class StoryTeller {
 					{
 						goto: '犯次分類',
 						transit: function(_this, params) {
-							// Bug is here!
 							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
@@ -7242,6 +7241,7 @@ const DataBoard = React.createClass({
 						_topic.intl.cHeaders : _topic.intl.cHeader
 				)
 				.then(function() {
+					console.log('props.data: ', props.data);
 					t.remove().initTips().appendBarMouseOver(props.data);
 				});
 		}
@@ -7414,8 +7414,16 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
-
-		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, true);
+		// console.log('check _topic: ');
+		// console.log(_topic);
+		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, true)
+				.then((t) => {
+					// working-bug;
+					console.log('props.data:  ', props.data);
+					// t.remove().initTips().appendBarMouseOver(_topic.intl.header);
+					t.appendBarMouseOver(props.data);
+					console.log(t);
+				});
 	},
 
 	// Transform the percentage stack to general bar stack
@@ -7426,7 +7434,8 @@ const DataBoard = React.createClass({
 
 		// t.remove().initTips();
 
-		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false);
+		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false)
+
 	},
 
 	// Transform the percentage stack bar to primitive bar

@@ -1331,7 +1331,7 @@ barGraphClass.prototype.transitPCTSBarToBar = function(yLabel, dOption, intl, ex
 	
 	// Fetch the rows data from the g.stack
 	var rows = [];
-	console.log('transitPCTSBarToBar ');
+
 	this.stacks.each(function(d, i) {
 		rows.push(d);
 	});
@@ -3322,12 +3322,15 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		// Set up the origin of the bar tip
 		offset = this._setOffset('BAR-TIP');
 
+	console.log(d3.selectAll('.bar'));
+	console.log('this: ', this);
+
 	d3.select('#SKETCHPAD')
 		.selectAll('.bar')
 		.on(
 			'mouseenter', 
 			function(d) {
-				
+				console.log(self.barTip);
 				var 
 					_this = d3.select(this),
 					prevBar = this.previousSibling,
