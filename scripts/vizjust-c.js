@@ -291,7 +291,19 @@ ringNode.transition().duration(500).style('opacity',1.0).transition().duration(1
 return function(t){var b=itp(t);d.x0=b.x;d.dx0=b.dx;return ringObj.arc(b);};}}) // Stores the updated position 
 .call(function(pathCluster){ringObj.pathOriginPos=self._stashOriginPathPos(pathCluster[0]);});}});};ringGraphClass.prototype._stashOriginPathPos=function(paths){var originPoses=[];for(var i in paths){if(parseInt(i)>0)originPoses.push({x0:paths[i].__data__.x,dx0:paths[i].__data__.dx});}return originPoses;}; // Clear previos ring graph for updating.
 ringGraphClass.prototype.resetRings=function(){this.ringGroup=[];return this;}; // remove the boards if they exist
-ringGraphClass.prototype.removeBoards=function(){var statsBoard=this.ringInfoBoard.statsBoard,percentageBoard=this.ringInfoBoard.percentageBoard;if(statsBoard.body)statsBoard.emptyAll();if(percentageBoard.body)percentageBoard.emptyAll();}; /* A class for tooltip */var tipClass=function tipClass(){var panel=d3.select('#APP');this.dotTip=panel?panel.append('div').attr('id','DOT-TIP').attr('class','tip'):undefined;this.barTip=panel?panel.append('div').attr('id','BAR-TIP').attr('class','tip'):undefined; /* These varaibles are designed for preventing any kinds of exceptional value of the node */ // The below two record the size value of tip and are used for checking the elements' resize.
+ringGraphClass.prototype.removeBoards=function(){var statsBoard=this.ringInfoBoard.statsBoard,percentageBoard=this.ringInfoBoard.percentageBoard;if(statsBoard.body)statsBoard.emptyAll();if(percentageBoard.body)percentageBoard.emptyAll();}; /* A class for tooltip */var tipClass=function tipClass(){var panel=d3.select('#APP'); // this.dotTip = panel ? 
+// 	panel.append('div')
+// 		.attr('id', 'DOT-TIP')
+// 		.attr('class', 'tip') : undefined;
+// this.barTip = panel ? 
+// 	panel.append('div')
+// 		.attr('id', 'BAR-TIP')
+// 		.attr('class', 'tip') : undefined;
+// console.log('this.dotTip: ');
+// console.log(this.dotTip);
+// console.log('this.barTip: ');
+// console.log(this.barTip);
+this.dotTip=undefined;this.barTip=undefined; /* These varaibles are designed for preventing any kinds of exceptional value of the node */ // The below two record the size value of tip and are used for checking the elements' resize.
 this._bTipH=null;this._bTipW=null;};tipClass.prototype.initTips=function(){this.dotTip=d3.select('#APP').append('div').attr('id','DOT-TIP').attr('class','tip');this.barTip=d3.select('#APP').append('div').attr('id','BAR-TIP').attr('class','tip'); // working-spot
 this.circleTip=d3.select('#APP').append('div').attr('id','CIRCLE-TIP').classed('tip',true);return this;};tipClass.prototype.appendDotMouseOver=function(dOption){var self=this, // Set up the origin of the dot tip
 offset=this._setOffset('DOT-TIP');d3.select('#SKETCHPAD').selectAll('.dots').on('mouseover',function(d){var posX=parseInt(this.getAttribute('cx')),posY=parseInt(this.getAttribute('cy'));self.dotTip.classed('display',true) // Make the tip's origin fixed at center of circles

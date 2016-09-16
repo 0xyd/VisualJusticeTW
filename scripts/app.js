@@ -4257,6 +4257,7 @@ class StoryTeller {
 					{
 						goto: '犯次分類',
 						transit: function(_this, params) {
+							// Bug is here!
 							return _this.DBtransPCTToOriginStackBar.apply(_this, params);
 						},
 						end: null
@@ -7322,7 +7323,7 @@ const DataBoard = React.createClass({
 				false, false, false, false, false, _topic.extl
 			)
 			.then(function() {
-				t.appendCircleMouseOver(_topic.tipFormat);
+				t.remove().initTips().appendCircleMouseOver(_topic.tipFormat);
 			});
 	},
 
@@ -7354,6 +7355,9 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
+		// console.log('testing t.remove().initTips()');
+		// t.remove().initTips();
+
 		return bG.transitBarToStack(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
@@ -7365,6 +7369,9 @@ const DataBoard = React.createClass({
 		
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
+
+		// t.remove().initTips();
+
 		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
@@ -7376,6 +7383,8 @@ const DataBoard = React.createClass({
 
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
+
+		// t.remove().initTips();
 
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
@@ -7394,6 +7403,8 @@ const DataBoard = React.createClass({
 
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
+
+		// t.remove().initTips();
 		
 		return bG.transitPCTStackBar(_topic.axes.y, _topic.intl.mHeaders);
 	},
@@ -7412,14 +7423,20 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
+
+		// t.remove().initTips();
+
 		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false);
 	},
 
 	// Transform the percentage stack bar to primitive bar
 	DBtransPCTStackBarToBar(props) {
-		let bG = this.gpu.barGraph;
+		let bG = this.gpu.barGraph,
+			t = this.tip;
 		const _data  = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
+
+		
 		
 		return bG.transitPCTSBarToBar(
 			_topic.axes.y, 
@@ -7428,11 +7445,16 @@ const DataBoard = React.createClass({
 			_topic.intl, 
 			_topic.extl
 			/*_topic.intl.mHeaders*/)
+			.then(() => {
+				t.remove().initTips().appendBarMouseOver(_topic.intl.header);;
+			})
 	},
 
 	DBupdateStackBars(props) {
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
+
+		// t.remove().initTips();
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
 	},
@@ -7937,12 +7959,13 @@ const DataBoard = React.createClass({
 
 		else {
 
+			// Renew the whole data board.
 			if (shouldRenew && 
 					(this.props.dataset !== nextProps.dataset || 
 						this.props.data !== nextProps.data)) { 
 
 				d3.select('#SKETCHPAD').remove();
-
+				
 				if (this.props.chartType === '圓環比例圖' && nextProps.chartType !== '圓環比例圖') 
 					this.gpu.ringGraph.removeBoards();
 
