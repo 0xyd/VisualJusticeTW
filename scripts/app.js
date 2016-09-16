@@ -7355,8 +7355,7 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph,
 				t = this.tip;
 		const _topic = this.DBfindTopic(props);
-		// console.log('testing t.remove().initTips()');
-		// t.remove().initTips();
+		
 
 		return bG.transitBarToStack(_topic.axes.y, _topic.intl, _topic.extl);
 	},
@@ -7370,8 +7369,6 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// t.remove().initTips();
-
 		return bG.transitBarToPCTStackBar(_topic.axes.y, _topic.intl, _topic.extl);
 	},
 
@@ -7383,8 +7380,6 @@ const DataBoard = React.createClass({
 
 		const _data = this.DBfindData(props);
 		const _topic = this.DBfindTopic(props);
-
-		// t.remove().initTips();
 
 		return bG.transitStackBarToBar(
 			// Pass the muliple headers for bar to merge the stacks.
@@ -7404,25 +7399,19 @@ const DataBoard = React.createClass({
 		const _topic = this.DBfindTopic(props);
 		const _data = this.DBfindData(props);
 
-		// t.remove().initTips();
-		
 		return bG.transitPCTStackBar(_topic.axes.y, _topic.intl.mHeaders);
 	},
 
 	// Transform the percentage stack bar into origin quantative stack bar
 	DBtransPCTToOriginStackBar(props) {
-		let bG = this.gpu.barGraph;
+		let bG = this.gpu.barGraph,
+			t  = this.tip;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
-		// console.log('check _topic: ');
-		// console.log(_topic);
+		
 		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, true)
-				.then((t) => {
-					// working-bug;
-					console.log('props.data:  ', props.data);
-					// t.remove().initTips().appendBarMouseOver(_topic.intl.header);
-					t.appendBarMouseOver(props.data);
-					console.log(t);
+				.then(() => {
+					t.remove().initTips().appendBarMouseOver(props.data);
 				});
 	},
 
@@ -7431,8 +7420,6 @@ const DataBoard = React.createClass({
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
 		const _data  = this.DBfindData(props);
-
-		// t.remove().initTips();
 
 		return bG.transitPCTSBarToSBar(_topic.axes.y, _topic.intl, _topic.extl, false)
 
@@ -7462,8 +7449,6 @@ const DataBoard = React.createClass({
 	DBupdateStackBars(props) {
 		let bG = this.gpu.barGraph;
 		const _topic = this.DBfindTopic(props);
-
-		// t.remove().initTips();
 
 		return bG.updateStackBars(_topic.intl, _topic.extl)
 	},

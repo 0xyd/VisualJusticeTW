@@ -1285,8 +1285,8 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 								}
 							})
 							.each('end', function(d, i) {
-								if ( this === this.parentNode.lastChild )
-									resolve(new tipClass());
+								if ( this === this.parentNode.lastChild ) resolve();
+									// resolve(new tipClass());
 							});
 			});
 		}
@@ -3330,7 +3330,8 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		.on(
 			'mouseenter', 
 			function(d) {
-				console.log(self.barTip);
+				console.log('self.barTip: ', self.barTip);
+				console.log('this.barTip: ', this.barTip);
 				var 
 					_this = d3.select(this),
 					prevBar = this.previousSibling,
@@ -3348,7 +3349,6 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 				self.barTip
 					.classed('display', true)
-
 					// Make the tip's origin fixed at center of circles
 					.style('top' , posY + offset.Y + 'px')
 					.style('left', posX + offset.X + 'px')
