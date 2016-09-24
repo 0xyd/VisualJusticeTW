@@ -61,7 +61,7 @@ function bindingStack(data){if(stacks[0].length<data.length)stacks=stacks.data(d
 this.stacks=stacks; // Create the stack bars.
 this._stackBarProducer(stackOptions);}; // Update the stack bars if more data features are coming in.
 barGraphClass.prototype.updateStackBars=function(yLabel,intl,extl){this._stackBarProducer(intl,extl).then(function(stackbars){stackbars.each(function(d,i){ // Reappend the year to the stack bar
-this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.appendStackBarMouseOver(); // resolve();
+this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.remove().initTips().appendStackBarMouseOver(); // resolve();
 });}; // Graph tranform from bar to stack bars.
 barGraphClass.prototype.transitBarToStack=function(yLabel,intl,extl){ // Reselect the origin bar
 this.bars=this.barsGroup.selectAll('rect.bar');this.stackGroup=this.pad.append('g').classed('stack-bars-group',true);var self=this,stacks=this.stackGroup.selectAll('g'),promised=null; // g.stack are used for storing the row data from origin 
@@ -76,7 +76,8 @@ for(var j=0;j<len;++j){var temp={};for(var k=0;k<2;++k){if(dataHub[k])Object.ass
 var mergedHds=[].concat(extl.headers).concat(intl.headers).filter(function(d){return d!==null&&d!==undefined;}); // Find out the maximum values for each stack
 var _mrows=self._mergedColVal(stackData,mergedHds);self._removeYAxis();self._setLinearYScale(_mrows,null);self._setYAxis('left',_mrows,null);self._createYAxis(yLabel); /* The above feature is testing. */bindingStack(stackData);renderStack(stackData); // Remove the bars group and the text group following it.
 self.barsGroup.remove();self.barTxtGroup.remove();self._stackBarProducer(intl,extl).then(function(stackbars){stackbars.each(function(d,i){ // Reappend the year to the stack bar
-this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.appendStackBarMouseOver();resolve();});});});return p_final;}; // Create the stack bars
+this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){console.log('test new way is available or not'); // tip.appendStackBarMouseOver();
+tip.remove().initTips().appendStackBarMouseOver();resolve();});});});return p_final;}; // Create the stack bars
 barGraphClass.prototype._stackBarProducer=function(intl,extl){this.stacks=this.stackGroup.selectAll('g.stack');var self=this,headers=[].concat(intl.headers,extl.headers).filter(function(d){return d!==null&&d!==undefined;}), // working-spot
 cHeaders=[].concat(intl.cHeaders,extl.cHeaders).filter(function(d){return d!==null&&d!==undefined;});var p=new Promise(function(resolve,reject){d3.selectAll('g.stack').each(function(d,stackIndex){ // Select the headers chosen for specific purpose.
 if(headers){var barData=[], // Calculate the total stacks height
@@ -125,9 +126,10 @@ function stackbarDataSum(d){return d.map(function(_d){var t=0;for(var i=0;i<_d.l
 var dataset=[];if(isOrigin){self.stacks.each(function(d,i){dataset[i]=[];d3.select(this).selectAll('rect').each(function(d,j){dataset[i].push(d);});}); // Sum up the value of each stack bar.
 var _dataSum=stackbarDataSum(dataset); // Create the linear y scale.
 self._setLinearYScale(_dataSum,null);self._setYAxis('left',_dataSum,null);self._createYAxis(yLabel); // Resize the stack bars.
-self.stacks.each(function(d,i){d3.select(this).selectAll('rect').transition().duration(2000).attr({y:function y(d,i){return d.y0;},height:function height(d,i){return d.dy>=0?d.dy:0;}}).each('end',function(d,i){if(this===this.parentNode.lastChild)resolve(new tipClass());});});}else {var dataset=[];self.stacks.each(function(d,i){dataset[i]=[];for(var j in headers){dataset[i].push({name:headers[j],value:parseFloat(d[headers[j]])});}}); // Combined value of each stack
+self.stacks.each(function(d,i){d3.select(this).selectAll('rect').transition().duration(2000).attr({y:function y(d,i){return d.y0;},height:function height(d,i){return d.dy>=0?d.dy:0;}}).each('end',function(d,i){if(this===this.parentNode.lastChild)resolve(); // resolve(new tipClass());
+});});}else {var dataset=[];self.stacks.each(function(d,i){dataset[i]=[];for(var j in headers){dataset[i].push({name:headers[j],value:parseFloat(d[headers[j]])});}}); // Combined value of each stack
 var _dataSum=stackbarDataSum(dataset);self._setLinearYScale(_dataSum,null);self._setYAxis('left',_dataSum,null);self._createYAxis(yLabel);self._stackBarProducer(intl,extl).then(function(stackbars){stackbars.each(function(d,i){ // Reappend the year to the stack bar
-this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.appendStackBarMouseOver();resolve();});}});return p;}; // Transit the percentage stack bar to bar.
+this.__data__.year=this.parentNode.__data__['民國'];});return new tipClass();}).then(function(tip){tip.remove().initTips().appendStackBarMouseOver();resolve();});}});return p;}; // Transit the percentage stack bar to bar.
 barGraphClass.prototype.transitPCTSBarToBar=function(yLabel,dOption,intl,extl){ // Fetch the rows data from the g.stack
 var rows=[];this.stacks.each(function(d,i){rows.push(d);});this.stackGroup.remove(); // The option maybe the combined columns of data.
 var shouldMergeCols=(typeof dOption==='undefined'?'undefined':_typeof(dOption))==='object'?true:false; // Get the available headers in specific. 
@@ -291,7 +293,19 @@ ringNode.transition().duration(500).style('opacity',1.0).transition().duration(1
 return function(t){var b=itp(t);d.x0=b.x;d.dx0=b.dx;return ringObj.arc(b);};}}) // Stores the updated position 
 .call(function(pathCluster){ringObj.pathOriginPos=self._stashOriginPathPos(pathCluster[0]);});}});};ringGraphClass.prototype._stashOriginPathPos=function(paths){var originPoses=[];for(var i in paths){if(parseInt(i)>0)originPoses.push({x0:paths[i].__data__.x,dx0:paths[i].__data__.dx});}return originPoses;}; // Clear previos ring graph for updating.
 ringGraphClass.prototype.resetRings=function(){this.ringGroup=[];return this;}; // remove the boards if they exist
-ringGraphClass.prototype.removeBoards=function(){var statsBoard=this.ringInfoBoard.statsBoard,percentageBoard=this.ringInfoBoard.percentageBoard;if(statsBoard.body)statsBoard.emptyAll();if(percentageBoard.body)percentageBoard.emptyAll();}; /* A class for tooltip */var tipClass=function tipClass(){var panel=d3.select('#APP');this.dotTip=panel?panel.append('div').attr('id','DOT-TIP').attr('class','tip'):undefined;this.barTip=panel?panel.append('div').attr('id','BAR-TIP').attr('class','tip'):undefined; /* These varaibles are designed for preventing any kinds of exceptional value of the node */ // The below two record the size value of tip and are used for checking the elements' resize.
+ringGraphClass.prototype.removeBoards=function(){var statsBoard=this.ringInfoBoard.statsBoard,percentageBoard=this.ringInfoBoard.percentageBoard;if(statsBoard.body)statsBoard.emptyAll();if(percentageBoard.body)percentageBoard.emptyAll();}; /* A class for tooltip */var tipClass=function tipClass(){var panel=d3.select('#APP'); // this.dotTip = panel ? 
+// 	panel.append('div')
+// 		.attr('id', 'DOT-TIP')
+// 		.attr('class', 'tip') : undefined;
+// this.barTip = panel ? 
+// 	panel.append('div')
+// 		.attr('id', 'BAR-TIP')
+// 		.attr('class', 'tip') : undefined;
+// console.log('this.dotTip: ');
+// console.log(this.dotTip);
+// console.log('this.barTip: ');
+// console.log(this.barTip);
+this.dotTip=undefined;this.barTip=undefined; /* These varaibles are designed for preventing any kinds of exceptional value of the node */ // The below two record the size value of tip and are used for checking the elements' resize.
 this._bTipH=null;this._bTipW=null;};tipClass.prototype.initTips=function(){this.dotTip=d3.select('#APP').append('div').attr('id','DOT-TIP').attr('class','tip');this.barTip=d3.select('#APP').append('div').attr('id','BAR-TIP').attr('class','tip'); // working-spot
 this.circleTip=d3.select('#APP').append('div').attr('id','CIRCLE-TIP').classed('tip',true);return this;};tipClass.prototype.appendDotMouseOver=function(dOption){var self=this, // Set up the origin of the dot tip
 offset=this._setOffset('DOT-TIP');d3.select('#SKETCHPAD').selectAll('.dots').on('mouseover',function(d){var posX=parseInt(this.getAttribute('cx')),posY=parseInt(this.getAttribute('cy'));self.dotTip.classed('display',true) // Make the tip's origin fixed at center of circles
@@ -305,7 +319,7 @@ var info='民國 '+d['民國']+'<br>'+dOption+': '+d[dOption]; // working-spot-1
 // 				 '<span class="tag">' + d.tag + '</span>'
 // }
 return '<span id="DOT-INFO">'+info+'</span>';}).call(function(d){self._correctPos('DOT-TIP');});}).on('mouseout',function(d){self.dotTip.classed('display',false);});};tipClass.prototype.appendBarMouseOver=function(dOption){var self=this, // Set up the origin of the bar tip
-offset=this._setOffset('BAR-TIP');d3.select('#SKETCHPAD').selectAll('.bar').on('mouseenter',function(d){var _this=d3.select(this),prevBar=this.previousSibling,diff=function(name){var r=_this.attr('diff-'+name);if(r)return r;}(dOption);var posX=parseFloat(this.getAttribute('x'))+parseFloat(this.getAttribute('width')/2),posY=parseFloat(this.getAttribute('y'));self.barTip.classed('display',true) // Make the tip's origin fixed at center of circles
+offset=this._setOffset('BAR-TIP');console.log(d3.selectAll('.bar'));console.log('this: ',this);d3.select('#SKETCHPAD').selectAll('.bar').on('mouseenter',function(d){console.log('self.barTip: ',self.barTip);console.log('this.barTip: ',this.barTip);var _this=d3.select(this),prevBar=this.previousSibling,diff=function(name){var r=_this.attr('diff-'+name);if(r)return r;}(dOption);var posX=parseFloat(this.getAttribute('x'))+parseFloat(this.getAttribute('width')/2),posY=parseFloat(this.getAttribute('y'));self.barTip.classed('display',true) // Make the tip's origin fixed at center of circles
 .style('top',posY+offset.Y+'px').style('left',posX+offset.X+'px').html(function(){ // Check the current display data is a merged result or not.
 var keys=Object.keys(d), // isMergedResult = !(dOption in keys);
 isMergedResult=function(){for(var i=0;i<keys.length;i++){if(keys[i]===dOption)return false;}return true;}();var info='民國 '+d['民國']+'<br>'+dOption+': '+( // Render the merged result if it is.

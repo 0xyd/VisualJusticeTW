@@ -769,7 +769,7 @@ barGraphClass.prototype.updateStackBars = function(yLabel, intl, extl) {
 				return new tipClass()
 			})
 			.then(function(tip){ 
-				tip.appendStackBarMouseOver();
+				tip.remove().initTips().appendStackBarMouseOver();
 				// resolve();
 			});
 }
@@ -890,7 +890,9 @@ barGraphClass.prototype.transitBarToStack = function(yLabel, intl, extl) {
 					return new tipClass()
 				})
 				.then(function(tip){ 
-					tip.appendStackBarMouseOver();
+					console.log('test new way is available or not');
+					// tip.appendStackBarMouseOver();
+					tip.remove().initTips().appendStackBarMouseOver();
 					resolve();
 				});
 	});
@@ -1283,8 +1285,8 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 								}
 							})
 							.each('end', function(d, i) {
-								if ( this === this.parentNode.lastChild )
-									resolve(new tipClass());
+								if ( this === this.parentNode.lastChild ) resolve();
+									// resolve(new tipClass());
 							});
 			});
 		}
@@ -1315,7 +1317,7 @@ barGraphClass.prototype.transitPCTSBarToSBar = function(yLabel, intl, extl, isOr
 				return new tipClass()
 			})
 			.then(function(tip){ 
-				tip.appendStackBarMouseOver();
+				tip.remove().initTips().appendStackBarMouseOver();
 				resolve();
 			});
 		}
@@ -3216,15 +3218,23 @@ var tipClass = function() {
 
 	var panel = d3.select('#APP');
 	
-	this.dotTip = panel ? 
-		panel.append('div')
-			.attr('id', 'DOT-TIP')
-			.attr('class', 'tip') : undefined;
+	// this.dotTip = panel ? 
+	// 	panel.append('div')
+	// 		.attr('id', 'DOT-TIP')
+	// 		.attr('class', 'tip') : undefined;
 
-	this.barTip = panel ? 
-		panel.append('div')
-			.attr('id', 'BAR-TIP')
-			.attr('class', 'tip') : undefined;
+	// this.barTip = panel ? 
+	// 	panel.append('div')
+	// 		.attr('id', 'BAR-TIP')
+	// 		.attr('class', 'tip') : undefined;
+
+	// console.log('this.dotTip: ');
+	// console.log(this.dotTip);
+	// console.log('this.barTip: ');
+	// console.log(this.barTip);
+
+	this.dotTip = undefined;
+	this.barTip = undefined;
 
 	/* These varaibles are designed for preventing any kinds of exceptional value of the node */
 	// The below two record the size value of tip and are used for checking the elements' resize.
@@ -3312,12 +3322,16 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 		// Set up the origin of the bar tip
 		offset = this._setOffset('BAR-TIP');
 
+	console.log(d3.selectAll('.bar'));
+	console.log('this: ', this);
+
 	d3.select('#SKETCHPAD')
 		.selectAll('.bar')
 		.on(
 			'mouseenter', 
 			function(d) {
-				
+				console.log('self.barTip: ', self.barTip);
+				console.log('this.barTip: ', this.barTip);
 				var 
 					_this = d3.select(this),
 					prevBar = this.previousSibling,
@@ -3335,7 +3349,6 @@ tipClass.prototype.appendBarMouseOver = function(dOption) {
 
 				self.barTip
 					.classed('display', true)
-
 					// Make the tip's origin fixed at center of circles
 					.style('top' , posY + offset.Y + 'px')
 					.style('left', posX + offset.X + 'px')
