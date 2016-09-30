@@ -27,7 +27,6 @@ class EventLine {
 
 	initialize(svgWidth) {
 		this.evtlineG = 
-			// d3.select('svg')
 			this.pad			
 				.attr('width', svgWidth)
 				.append('g')
@@ -108,7 +107,10 @@ class EventLine {
 				.reduce((p, c) => { // Reduce the array into a weight summary value.
 				return p+c
 				}) + 
-				( period -  this.timeWeight.length ) * this.timeSpace // Time slots for the dates without events. 
+				// Time slots for the dates without events.
+				( period -  this.timeWeight.length ) * this.timeSpace +
+				100
+
 		)
 			
 	}
@@ -163,7 +165,6 @@ class EventLine {
 
 									return 125 + 250 * i + pDiff
 								},
-								// cy: 50,
 								cy: this.evtLineY,
 								fill: (d, i) => { return colorScale(i) },
 								r : 12
@@ -173,8 +174,6 @@ class EventLine {
 
 	_calY() {
 
-		console.log(this.pad.style('height'));
-
 		this.evtLineY =  
 			parseFloat(this.pad.style('height').replace('px', '')) - 30;
 	}
@@ -182,6 +181,18 @@ class EventLine {
 	_drawPath(circles) {
 
 		let cPoses = [];
+
+		// Set up the arrow.
+		this.pad.append('defs')
+			.append('marker')
+				.attr({
+					id: 'Continue',
+				})
+				.append('path')
+					.attr({
+						d: 'M0,0 L0,6 L9,3 z',
+						fill: '#f00'
+					});
 
 		this.line = 
 			d3.svg.line()
@@ -193,9 +204,20 @@ class EventLine {
 				.each((d, i) => {
 					cPoses.push({
 						cx: parseInt(d3.select(circles[0][i]).attr('cx').replace('px', '')),
-						// cy: 50
 						cy: this.evtLineY
 					});
+					
+					// Append a last point for tailing.
+					if (i === circles[0].length-1) {
+
+						let l = cPoses.length,
+							lastCPos = cPoses[l-1];
+
+						cPoses.push({
+							cx: lastCPos.cx + 100,
+							cy: lastCPos.cy
+						});
+					}
 				})
 				.call((circles) => {
 					this.evtlineG
@@ -203,8 +225,10 @@ class EventLine {
 							.classed('path-group', true)
 								.append('path')
 									.attr('d', this.line(cPoses))
-									.attr('stoke-width', '2')
-									.attr('stroke', '#000');
+									.attr('stroke-width', '2')
+									.attr('stroke', '#000')
+									.attr('marker-end', 'url(#Continue)');
+
 				})
 		)
 	}

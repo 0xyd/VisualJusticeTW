@@ -33,9 +33,7 @@ var EventLine = function () {
 	_createClass(EventLine, [{
 		key: 'initialize',
 		value: function initialize(svgWidth) {
-			this.evtlineG =
-			// d3.select('svg')
-			this.pad.attr('width', svgWidth).append('g').attr('id', 'EvtLine');
+			this.evtlineG = this.pad.attr('width', svgWidth).append('g').attr('id', 'EvtLine');
 
 			this.evtInfoBoard = d3.select('#TimeLineInfo').style('width', svgWidth + 'px');
 
@@ -125,8 +123,9 @@ var EventLine = function () {
 			return 250 * this.timeWeight.reduce(function (p, c) {
 				// Reduce the array into a weight summary value.
 				return p + c;
-			}) + (period - this.timeWeight.length) * this.timeSpace // Time slots for the dates without events.
-			;
+			}) +
+			// Time slots for the dates without events.
+			(period - this.timeWeight.length) * this.timeSpace + 100;
 		}
 	}, {
 		key: 'drawChart',
@@ -169,7 +168,6 @@ var EventLine = function () {
 
 					return 125 + 250 * i + pDiff;
 				},
-				// cy: 50,
 				cy: this.evtLineY,
 				fill: function fill(d, i) {
 					return colorScale(i);
@@ -181,8 +179,6 @@ var EventLine = function () {
 		key: '_calY',
 		value: function _calY() {
 
-			console.log(this.pad.style('height'));
-
 			this.evtLineY = parseFloat(this.pad.style('height').replace('px', '')) - 30;
 		}
 	}, {
@@ -191,6 +187,14 @@ var EventLine = function () {
 			var _this4 = this;
 
 			var cPoses = [];
+
+			// Set up the arrow.
+			this.pad.append('defs').append('marker').attr({
+				id: 'Continue'
+			}).append('path').attr({
+				d: 'M0,0 L0,6 L9,3 z',
+				fill: '#f00'
+			});
 
 			this.line = d3.svg.line().x(function (d) {
 				return d.cx;
@@ -201,11 +205,22 @@ var EventLine = function () {
 			return circles.each(function (d, i) {
 				cPoses.push({
 					cx: parseInt(d3.select(circles[0][i]).attr('cx').replace('px', '')),
-					// cy: 50
 					cy: _this4.evtLineY
 				});
+
+				// Append a last point for tailing.
+				if (i === circles[0].length - 1) {
+
+					var l = cPoses.length,
+					    lastCPos = cPoses[l - 1];
+
+					cPoses.push({
+						cx: lastCPos.cx + 100,
+						cy: lastCPos.cy
+					});
+				}
 			}).call(function (circles) {
-				_this4.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this4.line(cPoses)).attr('stoke-width', '2').attr('stroke', '#000');
+				_this4.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this4.line(cPoses)).attr('stroke-width', '2').attr('stroke', '#000').attr('marker-end', 'url(#Continue)');
 			});
 		}
 
