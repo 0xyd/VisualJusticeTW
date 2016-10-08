@@ -190,7 +190,11 @@ var EventLine = function () {
 
 			// Set up the arrow.
 			this.pad.append('defs').append('marker').attr({
-				id: 'Continue'
+				id: 'Continue',
+				refX: 0,
+				refY: 3,
+				markerWidth: 10,
+				markerHeight: 10
 			}).append('path').attr({
 				d: 'M0,0 L0,6 L9,3 z',
 				fill: '#f00'
