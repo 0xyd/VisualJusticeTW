@@ -21,6 +21,9 @@ class EventLine {
 		// Time scale
 		this.timeScale = null;
 
+		// Y scale
+		this.yScale = null;
+
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 
 	}
@@ -123,12 +126,17 @@ class EventLine {
 					.call((circles) => {
 
 						// Mark the events on the line.
-						this._markEvts(circles);	
+						this._markEvts(circles);
+
+						// 
+						this._plotPoints(circles);
 						
 					});
 			});
 	}
 
+
+	// Marke the circles on the lines
 	_markCircles(data) {
 
 		let colorScale = d3.scale.category20c();
@@ -172,6 +180,49 @@ class EventLine {
 			)
 	}
 
+	_plotPoints(circles) {
+
+		let points = [],
+			circleData = circles[0].map((c, i) => { console.log(c); return c.__data__ }),
+			compound = [circleData[0]];  
+
+		for ( let i = 1; i < circleData.length; i++ ) {
+
+			if (circleData[i-1].Time === circleData[i].Time) {
+				compound.push(circleData[i]);
+			}
+			else if (compound.length === 0)
+				compound.push(circleData[i]);
+			else if (compound.length === 1) {
+				
+				let popEle = compound.shift();
+
+				points.push({
+					x: popEle.x,
+					Time: popEle.Time
+				});
+
+				compound.push(circleData[i]);
+				
+			} 
+			else if (compound.length > 1) {
+				
+				points.push({
+					x: (
+						parseFloat(compound[0].x) + 
+							parseFloat(compound[compound.length-1].x)) / 2,
+					Time: compound[0].Time
+				});
+				compound = [circleData[i]];
+
+			}
+		}
+
+		console.log(points);
+
+	}
+
+	// Calculate y postion of the line.
 	_calY() {
 
 		this.evtLineY =  

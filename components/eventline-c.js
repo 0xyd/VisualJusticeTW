@@ -27,6 +27,9 @@ var EventLine = function () {
 		// Time scale
 		this.timeScale = null;
 
+		// Y scale
+		this.yScale = null;
+
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 	}
 
@@ -137,9 +140,15 @@ var EventLine = function () {
 
 					// Mark the events on the line.
 					_this2._markEvts(circles);
+
+					//
+					_this2._plotPoints(circles);
 				});
 			});
 		}
+
+		// Marke the circles on the lines
+
 	}, {
 		key: '_markCircles',
 		value: function _markCircles(data) {
@@ -175,6 +184,45 @@ var EventLine = function () {
 				r: 12
 			});
 		}
+	}, {
+		key: '_plotPoints',
+		value: function _plotPoints(circles) {
+
+			var points = [],
+			    circleData = circles[0].map(function (c, i) {
+				console.log(c);return c.__data__;
+			}),
+			    compound = [circleData[0]];
+
+			for (var i = 1; i < circleData.length; i++) {
+
+				if (circleData[i - 1].Time === circleData[i].Time) {
+					compound.push(circleData[i]);
+				} else if (compound.length === 0) compound.push(circleData[i]);else if (compound.length === 1) {
+
+					var popEle = compound.shift();
+
+					points.push({
+						x: popEle.x,
+						Time: popEle.Time
+					});
+
+					compound.push(circleData[i]);
+				} else if (compound.length > 1) {
+
+					points.push({
+						x: (parseFloat(compound[0].x) + parseFloat(compound[compound.length - 1].x)) / 2,
+						Time: compound[0].Time
+					});
+					compound = [circleData[i]];
+				}
+			}
+
+			console.log(points);
+		}
+
+		// Calculate y postion of the line.
+
 	}, {
 		key: '_calY',
 		value: function _calY() {
