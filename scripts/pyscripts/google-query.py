@@ -2,8 +2,8 @@ from lxml import etree, html
 from lxml.cssselect import CSSSelector
 from datetime import date, timedelta
 
-import io
 import re
+import csv
 import time
 import random
 import urllib
@@ -104,49 +104,54 @@ def start_search(keywords, start_time, end_time):
 		# Get the number of total search results
 		print(get_search_stat(search_response))
 
+
+
 		# Categorizing the search result with date.
-		result = { 
-			'time': \
-				str(current_time.year) + '/'  + \
-				str(current_time.month) + '/' + \
-				str(current_time.day) ,
-			'results': []
-		}
+		# result = { 
+		# 	'time': \
+		# 		str(current_time.year) + '/'  + \
+		# 		str(current_time.month) + '/' + \
+		# 		str(current_time.day) ,
+		# 	'results': []
+		# }
 
 		stop_time = make_random_stop_time(fibonacci(10))
 
 		# Collect the links of search results
-		while search_response.status_code == 200:
+		# while search_response.status_code == 200:
 
-			result['results'] += get_search_results(search_response)
+		# 	result['results'] += get_search_results(search_response)
 
-			# search_results += result
-			print(result['results'])
+		# 	# search_results += result
+		# 	print(result['results'])
 
-			# To check if the next page available.
-			if get_nextpage_entry(search_response):
+		# 	# To check if the next page available.
+			# if get_nextpage_entry(search_response):
 
-				# Clear the cookies
-				requests.session().cookies.clear()
+			# 	# Clear the cookies
+			# 	requests.session().cookies.clear()
 
-				print('----- Sleeping -----')
-				time.sleep(stop_time.pop())
-				print('----- Crawler awaken -----')
+			# 	print('----- Sleeping -----')
+			# 	time.sleep(stop_time.pop())
+			# 	print('----- Crawler awaken -----')
 
-				# Update the to next search entry point
-				search_response = requests.get(GOOGLE_URL+get_nextpage_entry(search_response))
-			else:
-				print('The search results are all collected completely')
-				break
+			# 	# Update the to next search entry point
+			# 	search_response = requests.get(GOOGLE_URL+get_nextpage_entry(search_response))
+			# else:
+			# 	print('The search results are all collected completely')
+			# 	break
 
-			print(search_response.status_code)
+			# print(search_response.status_code)
 
 		current_time += timedelta(days=1)
 
-		search_results.append(result)
+		# search_results.append(result)
 	
 	# print out the search results for testing
-	print(search_results)
+	# print(search_results)
+
+	# return search_results
+	
 
 # Generate a fibonacci serial result for random stop.
 def fibonacci(n):
@@ -173,24 +178,39 @@ def make_random_stop_time(numbers):
 if __name__ == '__main__':
 
 	print('=====Start Search setting=====')
-	input_keywords = input('Please enter the keywords: ')
+	search_keywords = input('Please enter the keywords: ')
 
 	print('=====Enter the start date=====')
-	input_year  = int(input('Please enter the year: '))
-	input_month = int(input('Please enter the month: '))
-	input_date  = int(input('Please enter the date : '))
+	input_start_year  = int(input('Please enter the year: '))
+	input_start_month = int(input('Please enter the month: '))
+	input_start_date  = int(input('Please enter the date : '))
 
-	start_date = date(year=input_year, month=input_month, day=input_date)
+	start_date = date(year=input_start_year, month=input_start_month, day=input_start_date)
 
 	print('=====Enter the end date=====')
-	input_year_2  = int(input('Please end the year: '))
-	input_month_2 = int(input('Please end the month: '))
-	input_date_2  = int(input('Please end the date : '))
+	input_end_year  = int(input('Please end the year: '))
+	input_end_month = int(input('Please end the month: '))
+	input_end_date  = int(input('Please end the date : '))
 
-	end_date = date(year=input_year_2, month=input_month_2, day=input_date_2)
+	end_date = date(year=input_end_year, month=input_end_month, day=input_end_date)
 
-	start_search(input_keywords, start_date, end_date)
+	# results = start_search(search_keywords, start_date, end_date)
+	start_search(search_keywords, start_date, end_date)
 
+	# with open(
+	# 	str(input_start_year) + '-' + str(input_start_month) + \
+	# 	'-' + str(input_start_date) + '~' + \
+	# 	str(input_end_year) + '-' + str(input_end_month) + \
+	# 	'-' + str(input_end_date) + '.csv', 'w') as csvfile:
+
+	# 	datawriter = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+
+	# 	for r in results:
+
+	# 		print('Date: %s' % r['time'])
+	# 		print('results: ', r['results'])
+
+		# datawriter.writerow(results)
 	# print(make_random_stop_time(fibonacci(10)));
 
 	
