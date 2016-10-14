@@ -21,8 +21,13 @@ class EventLine {
 		// Time scale
 		this.timeScale = null;
 
-		// Y scale
-		this.yScale = null;
+		// peak scale
+		this.peakScale = null;
+
+		// peak path generator
+		this.peakPathG = 
+			d3.svg.line()
+				.x((d) => { return console.log('d.x: ', d.x); parseFloat(d.x) }).y((d) => { /*console.log(d);*/return parseFloat(d.y) });
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 
@@ -42,9 +47,9 @@ class EventLine {
 		return this
 	}
 
-	csvImport(path) {
+	csvImport(eventPaths, peakStatPath) {
 
-		d3.csv(path)
+		d3.csv(eventPaths)
 			.row((d, i) => { return d })
 			.get((error, rows) => {
 
@@ -52,7 +57,7 @@ class EventLine {
 					.initialize(
 						this._calSvgWidth(
 							this._eventSerial(rows)))
-					.drawChart(rows);
+					.drawChart(rows, peakStatPath);
 				
 			});
 
@@ -112,13 +117,14 @@ class EventLine {
 				}) + 
 				// Time slots for the dates without events.
 				( period -  this.timeWeight.length ) * this.timeSpace +
+				// 100 pixels are left for tail.
 				100
 
 		)
 			
 	}
 
-	drawChart(data) {
+	drawChart(data, peakStatPath) {
 
 		this._markCircles(data)
 			.call((circles) => {
@@ -128,9 +134,18 @@ class EventLine {
 						// Mark the events on the line.
 						this._markEvts(circles);
 
-						// 
-						this._plotPoints(circles);
+						// Peaks' x positions
+						this._plotPeak(
+							this._peaksXProducer(circles),
+							peakStatPath
+						);
 						
+						this.pad.append('path')
+							.data(data)
+								.attr('d', this.peakPathG)
+								.attr('fill', '#000');
+
+
 					});
 			});
 	}
@@ -180,47 +195,130 @@ class EventLine {
 			)
 	}
 
-	_plotPoints(circles) {
+	// Create the plots 
+	_peaksXProducer(circles) {
 
-		let points = [],
-			circleData = circles[0].map((c, i) => { console.log(c); return c.__data__ }),
+		let eventPeaks = [],
+			circleData = circles[0].map((c, i) => { return c.__data__ }),
 			compound = [circleData[0]];  
 
+		/*
+			Get the circles' x position and 
+			calculate the average x position if there are multiple circles having the same date.
+		*/
 		for ( let i = 1; i < circleData.length; i++ ) {
 
-			if (circleData[i-1].Time === circleData[i].Time) {
-				compound.push(circleData[i]);
-			}
-			else if (compound.length === 0)
-				compound.push(circleData[i]);
-			else if (compound.length === 1) {
+			// Move the element in compund out once its Time property is different from the next one.
+			if (compound.length === 1 && circleData[i-1].Time !== circleData[i].Time) {
 				
 				let popEle = compound.shift();
 
-				points.push({
+				eventPeaks.push({
 					x: popEle.x,
-					Time: popEle.Time
+					dateObj: popEle.dateObj
 				});
-
-				compound.push(circleData[i]);
 				
 			} 
-			else if (compound.length > 1) {
+			else if (compound.length > 1 && circleData[i-1].Time !== circleData[i].Time) {
 				
-				points.push({
+				eventPeaks.push({
 					x: (
 						parseFloat(compound[0].x) + 
 							parseFloat(compound[compound.length-1].x)) / 2,
-					Time: compound[0].Time
+					dateObj: compound[0].dateObj
 				});
-				compound = [circleData[i]];
+				compound = [];
+			}
 
+			compound.push(circleData[i]);
+
+		}
+
+		let datePeaks = [];
+
+		/*
+			Adding the dates that does not have any events.
+		*/
+		for ( let j = 1; j < eventPeaks.length; j++ ) {
+
+			datePeaks.push(eventPeaks[j-1]);
+
+			// Add new eventPeaks if the two peaks are not sequential.
+			if (eventPeaks[j].dateObj !== eventPeaks[j-1].dateObj) {
+
+				let endDate = eventPeaks[j].dateObj,
+					startDate = eventPeaks[j-1].dateObj,
+					diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
+					_ = [];
+
+				for ( let k = 0; k < Math.abs(diffDays); k++ ) {
+
+					_.push({
+						'x': parseFloat(eventPeaks[j-1].x) + 125 + 50*(k+1),
+						'dateObj':
+							new Date(
+								startDate.getYear(), 
+									startDate.getMonth(), startDate.getDate() + 1+k)
+						})
+					
+				}
+				datePeaks = datePeaks.concat(_);
 			}
 		}
 
-		console.log(points);
+		return datePeaks
+	}
+
+	// Plot peaks
+	_plotPeak(peaks, path) {
+
+		d3.csv(path)
+			.row((d) => { 
+				if (d.Time === "") return null
+				else if (d.search_results === "") {
+					d.search_results = 0
+					return d
+				}
+				else {
+					d.search_results = 
+						parseInt(d.search_results);
+					return d
+				}
+				})
+				.get((error, rows) => {
+
+					let h = 
+						parseInt(this.pad.style('height').replace('px', ''));
+
+					this.peakScale = 
+						d3.scale.linear()
+							.domain([
+								d3.min(rows, (d) => { return d.search_results }),
+								d3.max(rows, (d) => { return d.search_results })
+							])
+							.range([h-50, 0]);
+
+					// Compress the data
+					let dataLength = 
+						d3.min([
+							rows.length,
+							peaks.length
+						]);
+
+					// Calculate the y position of each peak by the scale function.
+					for ( let i = 0; i < dataLength; i++ )
+						peaks[i].y = this.peakScale(rows[i].search_results);
+					
+					this.pad.append('g').classed('peak-group', true)
+						.append('path')
+						.datum(peaks.slice(0, dataLength))
+						.attr('d', this.peakPathG)
+						.attr('fill', '#000');
+
+				})
 
 	}
+
 
 	// Calculate y postion of the line.
 	_calY() {

@@ -27,8 +27,15 @@ var EventLine = function () {
 		// Time scale
 		this.timeScale = null;
 
-		// Y scale
-		this.yScale = null;
+		// peak scale
+		this.peakScale = null;
+
+		// peak path generator
+		this.peakPathG = d3.svg.line().x(function (d) {
+			return console.log('d.x: ', d.x);parseFloat(d.x);
+		}).y(function (d) {
+			/*console.log(d);*/return parseFloat(d.y);
+		});
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 	}
@@ -44,14 +51,14 @@ var EventLine = function () {
 		}
 	}, {
 		key: 'csvImport',
-		value: function csvImport(path) {
+		value: function csvImport(eventPaths, peakStatPath) {
 			var _this = this;
 
-			d3.csv(path).row(function (d, i) {
+			d3.csv(eventPaths).row(function (d, i) {
 				return d;
 			}).get(function (error, rows) {
 
-				_this.initialize(_this._calSvgWidth(_this._eventSerial(rows))).drawChart(rows);
+				_this.initialize(_this._calSvgWidth(_this._eventSerial(rows))).drawChart(rows, peakStatPath);
 			});
 
 			return this;
@@ -128,11 +135,13 @@ var EventLine = function () {
 				return p + c;
 			}) +
 			// Time slots for the dates without events.
-			(period - this.timeWeight.length) * this.timeSpace + 100;
+			(period - this.timeWeight.length) * this.timeSpace +
+			// 100 pixels are left for tail.
+			100;
 		}
 	}, {
 		key: 'drawChart',
-		value: function drawChart(data) {
+		value: function drawChart(data, peakStatPath) {
 			var _this2 = this;
 
 			this._markCircles(data).call(function (circles) {
@@ -141,8 +150,10 @@ var EventLine = function () {
 					// Mark the events on the line.
 					_this2._markEvts(circles);
 
-					//
-					_this2._plotPoints(circles);
+					// Peaks' x positions
+					_this2._plotPeak(_this2._peaksXProducer(circles), peakStatPath);
+
+					_this2.pad.append('path').data(data).attr('d', _this2.peakPathG).attr('fill', '#000');
 				});
 			});
 		}
@@ -184,41 +195,110 @@ var EventLine = function () {
 				r: 12
 			});
 		}
-	}, {
-		key: '_plotPoints',
-		value: function _plotPoints(circles) {
 
-			var points = [],
+		// Create the plots
+
+	}, {
+		key: '_peaksXProducer',
+		value: function _peaksXProducer(circles) {
+
+			var eventPeaks = [],
 			    circleData = circles[0].map(function (c, i) {
-				console.log(c);return c.__data__;
+				return c.__data__;
 			}),
 			    compound = [circleData[0]];
 
+			/*
+   	Get the circles' x position and 
+   	calculate the average x position if there are multiple circles having the same date.
+   */
 			for (var i = 1; i < circleData.length; i++) {
 
-				if (circleData[i - 1].Time === circleData[i].Time) {
-					compound.push(circleData[i]);
-				} else if (compound.length === 0) compound.push(circleData[i]);else if (compound.length === 1) {
+				// Move the element in compund out once its Time property is different from the next one.
+				if (compound.length === 1 && circleData[i - 1].Time !== circleData[i].Time) {
 
 					var popEle = compound.shift();
 
-					points.push({
+					eventPeaks.push({
 						x: popEle.x,
-						Time: popEle.Time
+						dateObj: popEle.dateObj
 					});
+				} else if (compound.length > 1 && circleData[i - 1].Time !== circleData[i].Time) {
 
-					compound.push(circleData[i]);
-				} else if (compound.length > 1) {
-
-					points.push({
+					eventPeaks.push({
 						x: (parseFloat(compound[0].x) + parseFloat(compound[compound.length - 1].x)) / 2,
-						Time: compound[0].Time
+						dateObj: compound[0].dateObj
 					});
-					compound = [circleData[i]];
+					compound = [];
+				}
+
+				compound.push(circleData[i]);
+			}
+
+			var datePeaks = [];
+
+			/*
+   	Adding the dates that does not have any events.
+   */
+			for (var j = 1; j < eventPeaks.length; j++) {
+
+				datePeaks.push(eventPeaks[j - 1]);
+
+				// Add new eventPeaks if the two peaks are not sequential.
+				if (eventPeaks[j].dateObj !== eventPeaks[j - 1].dateObj) {
+
+					var endDate = eventPeaks[j].dateObj,
+					    startDate = eventPeaks[j - 1].dateObj,
+					    diffDays = (endDate - startDate) / (24 * 60 * 60 * 1000) - 1,
+					    _ = [];
+
+					for (var k = 0; k < Math.abs(diffDays); k++) {
+
+						_.push({
+							'x': parseFloat(eventPeaks[j - 1].x) + 125 + 50 * (k + 1),
+							'dateObj': new Date(startDate.getYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
+						});
+					}
+					datePeaks = datePeaks.concat(_);
 				}
 			}
 
-			console.log(points);
+			return datePeaks;
+		}
+
+		// Plot peaks
+
+	}, {
+		key: '_plotPeak',
+		value: function _plotPeak(peaks, path) {
+			var _this4 = this;
+
+			d3.csv(path).row(function (d) {
+				if (d.Time === "") return null;else if (d.search_results === "") {
+					d.search_results = 0;
+					return d;
+				} else {
+					d.search_results = parseInt(d.search_results);
+					return d;
+				}
+			}).get(function (error, rows) {
+
+				var h = parseInt(_this4.pad.style('height').replace('px', ''));
+
+				_this4.peakScale = d3.scale.linear().domain([d3.min(rows, function (d) {
+					return d.search_results;
+				}), d3.max(rows, function (d) {
+					return d.search_results;
+				})]).range([h - 50, 0]);
+
+				// Compress the data
+				var dataLength = d3.min([rows.length, peaks.length]);
+
+				// Calculate the y position of each peak by the scale function.
+				for (var i = 0; i < dataLength; i++) {
+					peaks[i].y = _this4.peakScale(rows[i].search_results);
+				}_this4.pad.append('g').classed('peak-group', true).append('path').datum(peaks.slice(0, dataLength)).attr('d', _this4.peakPathG).attr('fill', '#000');
+			});
 		}
 
 		// Calculate y postion of the line.
@@ -232,7 +312,7 @@ var EventLine = function () {
 	}, {
 		key: '_drawPath',
 		value: function _drawPath(circles) {
-			var _this4 = this;
+			var _this5 = this;
 
 			var cPoses = [];
 
@@ -257,7 +337,7 @@ var EventLine = function () {
 			return circles.each(function (d, i) {
 				cPoses.push({
 					cx: parseInt(d3.select(circles[0][i]).attr('cx').replace('px', '')),
-					cy: _this4.evtLineY
+					cy: _this5.evtLineY
 				});
 
 				// Append a last point for tailing.
@@ -272,7 +352,7 @@ var EventLine = function () {
 					});
 				}
 			}).call(function (circles) {
-				_this4.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this4.line(cPoses)).attr('stroke-width', '2').attr('stroke', '#000').attr('marker-end', 'url(#Continue)');
+				_this5.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this5.line(cPoses)).attr('stroke-width', '2').attr('stroke', '#000').attr('marker-end', 'url(#Continue)');
 			});
 		}
 
@@ -281,7 +361,7 @@ var EventLine = function () {
 	}, {
 		key: '_markEvts',
 		value: function _markEvts(circles) {
-			var _this5 = this;
+			var _this6 = this;
 
 			var data = [];
 
@@ -297,7 +377,7 @@ var EventLine = function () {
 
 				var pl = parseFloat(d3.select('svg').style('padding-left').replace('px', ''));
 
-				_this5.evtInfoBoard.selectAll('div').data(data).enter().append('div').classed('event-info', true).style({
+				_this6.evtInfoBoard.selectAll('div').data(data).enter().append('div').classed('event-info', true).style({
 					left: function left(d, i) {
 						// return pl+125+(250 * i)+-100 + 'px'
 						return pl + parseFloat(d.x) + -100 + 'px';
