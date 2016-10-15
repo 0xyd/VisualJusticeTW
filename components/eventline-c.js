@@ -20,7 +20,7 @@ var EventLine = function () {
 
 		// The date weight for putting date in position.
 		this.timeWeight = null;
-		this.timeSpace = 5;
+		this.timeSpace = 50;
 
 		this.textPointer = null;
 
@@ -35,7 +35,7 @@ var EventLine = function () {
 			return parseFloat(d.x);
 		}).y(function (d) {
 			return parseFloat(d.y);
-		});
+		}).interpolate('basis');
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 	}
@@ -58,7 +58,24 @@ var EventLine = function () {
 				return d;
 			}).get(function (error, rows) {
 
-				_this.initialize(_this._calSvgWidth(_this._dateSerial(rows))).drawChart(rows, peakStatPath);
+				var p = new Promise(function (resolve, reject) {
+
+					var reformedRows = _this._dateSerial(rows);
+
+					_this.initialize(_this._calSvgWidth(reformedRows));
+
+					resolve(reformedRows);
+				});
+
+				p.then(function (r) {
+					_this.drawChart(r, peakStatPath);
+				});
+
+				// this
+				// 	.initialize(
+				// 		this._calSvgWidth(
+				// 			this._dateSerial(rows)))
+				// 	.drawChart(rows, peakStatPath);
 			});
 
 			return this;
@@ -86,22 +103,28 @@ var EventLine = function () {
 				    // The index of the data element
 				w = 1; // The weight of date
 
+				var eventData = data.map(function (d) {
+					if (d.Event.length > 0) return d;
+				}).filter(function (d) {
+					if (d) return d;
+				});
+
 				var _iteratorNormalCompletion = true;
 				var _didIteratorError = false;
 				var _iteratorError = undefined;
 
 				try {
-					for (var _iterator = data[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+					for (var _iterator = eventData[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 						var d = _step.value;
 
 						// Check the date change.
 						// Once the date change, push the weight value to array
-						if (n && d.dateObj.getDate() !== data[n - 1].dateObj.getDate()) {
+						if (n && d.dateObj.getDate() !== eventData[n - 1].dateObj.getDate()) {
 							_.push(w);
 							w = 1;
 
 							// When the element is the last, push it anyway.
-							if (n === data.length - 1) _.push(w);
+							if (n === eventData.length - 1) _.push(w);
 						}
 
 						// Increment the weight of the date.
@@ -137,7 +160,7 @@ var EventLine = function () {
 			// Time slots for the dates without events.
 			(period - this.timeWeight.length) * this.timeSpace +
 			// 100 pixels are left for tail.
-			100;
+			250;
 		}
 	}, {
 		key: 'drawChart',
@@ -151,10 +174,7 @@ var EventLine = function () {
 					_this2._markEvts(circles);
 
 					// Peaks' x positions
-					// this._plotPeak(
-					// 	this._peaksXProducer(circles),
-					// 	peakStatPath
-					// );
+					_this2._plotPeak(peakStatPath);
 
 					// this.pad.append('path')
 					// 	.data(data)
@@ -172,122 +192,110 @@ var EventLine = function () {
 			var _this3 = this;
 
 			var colorScale = d3.scale.category20c(),
-			    prevCirclePos = 0;
+			    prevCirclePos = 125;
 
 			this._calY();
 
 			return this.evtlineG.append('g').classed('event-group', true).selectAll('circles').data(this.evtsData).enter().append('circle').classed('event-node', true).attr({
 				cx: function cx(d, i) {
-					console.log('prev position: ', prevCirclePos);
-					var pDiff = 0,
-					    // the pixels length between two event.
-					diffDays = 0; // The diff of days.
 
-					for (var k = 0; k <= i; k++) {
+					var pos = 0;
 
-						// Calculate the diff days from the time starts
-						var _d = k > 0 ? Math.abs(_this3.evtsData[k].dateObj - _this3.evtsData[k - 1].dateObj) / (24 * 60 * 60 * 1000) - 1 : 0;
-						diffDays += _d;
-					}
+					if (i === 0) pos += prevCirclePos;else if (_this3.evtsData[i - 1].Event.length !== 0 && _this3.evtsData[i].Event.length !== 0) pos += prevCirclePos + 250;else if (_this3.evtsData[i - 1].Event === _this3.evtsData[i].Event) pos += prevCirclePos + 50;else pos += prevCirclePos + 150;
 
-					console.log('check diffDays: ', diffDays);
+					prevCirclePos = pos;
 
-					// The serial time is not count
-					if (diffDays >= 2) pDiff = _this3.timeSpace * diffDays;
-					prevCirclePos = 125 + 250 * i + pDiff;
-					return 125 + 250 * i + pDiff;
-
-					// if (i === 0)
-					// 	return 125
-					// if (d.Event.length === 0)
+					return pos;
 				},
 				cy: this.evtLineY,
 				fill: function fill(d, i) {
 					return colorScale(i);
 				},
-				// working
-				// r : 12
 				r: function r(d) {
-					if (d.Event === '') return 1;else return 12;
+					if (d.Event === '') return 5;else return 12;
 				}
 			});
 		}
 
-		// Create the plots
+		// Create the plots (Depreciated)
+		// _peaksProducer(circles) {
 
-	}, {
-		key: '_peaksXProducer',
-		value: function _peaksXProducer(circles) {
+		// 	let eventPeaks = [],
+		// 		circleData = circles[0].map((c, i) => { return c.__data__ }),
+		// 		compound = [circleData[0]]; 
 
-			var eventPeaks = [],
-			    circleData = circles[0].map(function (c, i) {
-				return c.__data__;
-			}),
-			    compound = [circleData[0]];
+		// 	/*
+		// 		Get the circles' x position and
+		// 		calculate the average x position if there are multiple circles having the same date.
+		// 	*/
+		// 	// for ( let i = 1; i < circleData.length; i++ ) {
 
-			/*
-   	Get the circles' x position and 
-   	calculate the average x position if there are multiple circles having the same date.
-   */
-			for (var i = 1; i < circleData.length; i++) {
+		// 	// 	// Move the element in compund out once its Time property is different from the next one.
+		// 	// 	if (compound.length === 1 && circleData[i-1].Time !== circleData[i].Time) {
 
-				// Move the element in compund out once its Time property is different from the next one.
-				if (compound.length === 1 && circleData[i - 1].Time !== circleData[i].Time) {
+		// 	// 		let popEle = compound.shift();
 
-					var popEle = compound.shift();
+		// 	// 		eventPeaks.push({
+		// 	// 			x: popEle.x,
+		// 	// 			dateObj: popEle.dateObj
+		// 	// 		});
 
-					eventPeaks.push({
-						x: popEle.x,
-						dateObj: popEle.dateObj
-					});
-				} else if (compound.length > 1 && circleData[i - 1].Time !== circleData[i].Time) {
+		// 	// 	}
+		// 	// 	else if (compound.length > 1 && circleData[i-1].Time !== circleData[i].Time) {
 
-					eventPeaks.push({
-						x: (parseFloat(compound[0].x) + parseFloat(compound[compound.length - 1].x)) / 2,
-						dateObj: compound[0].dateObj
-					});
-					compound = [];
-				}
+		// 	// 		eventPeaks.push({
+		// 	// 			x: (
+		// 	// 				parseFloat(compound[0].x) +
+		// 	// 					parseFloat(compound[compound.length-1].x)) / 2,
+		// 	// 			dateObj: compound[0].dateObj
+		// 	// 		});
+		// 	// 		compound = [];
+		// 	// 	}
 
-				compound.push(circleData[i]);
-			}
+		// 	// 	compound.push(circleData[i]);
 
-			var datePeaks = [];
+		// 	// }
 
-			/*
-   	Adding the dates that does not have any events.
-   */
-			for (var j = 1; j < eventPeaks.length; j++) {
+		// 	let datePeaks = [];
 
-				datePeaks.push(eventPeaks[j - 1]);
+		// 	/*
+		// 		Adding the dates that does not have any events.
+		// 	*/
+		// 	for ( let j = 1; j < eventPeaks.length; j++ ) {
 
-				// Add new eventPeaks if the two peaks are not sequential.
-				if (eventPeaks[j].dateObj !== eventPeaks[j - 1].dateObj) {
+		// 		datePeaks.push(eventPeaks[j-1]);
 
-					var endDate = eventPeaks[j].dateObj,
-					    startDate = eventPeaks[j - 1].dateObj,
-					    diffDays = (endDate - startDate) / (24 * 60 * 60 * 1000) - 1,
-					    _ = [];
+		// 		// Add new eventPeaks if the two peaks are not sequential.
+		// 		if (eventPeaks[j].dateObj !== eventPeaks[j-1].dateObj) {
 
-					for (var k = 0; k < Math.abs(diffDays); k++) {
+		// 			let endDate = eventPeaks[j].dateObj,
+		// 				startDate = eventPeaks[j-1].dateObj,
+		// 				diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
+		// 				_ = [];
 
-						_.push({
-							'x': parseFloat(eventPeaks[j - 1].x) + 125 + 50 * (k + 1),
-							'dateObj': new Date(startDate.getYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
-						});
-					}
-					datePeaks = datePeaks.concat(_);
-				}
-			}
+		// 			for ( let k = 0; k < Math.abs(diffDays); k++ ) {
 
-			return datePeaks;
-		}
+		// 				_.push({
+		// 					'x': parseFloat(eventPeaks[j-1].x) + 125 + 50*(k+1),
+		// 					'dateObj':
+		// 						new Date(
+		// 							startDate.getYear(),
+		// 								startDate.getMonth(), startDate.getDate() + 1+k)
+		// 					})
+
+		// 			}
+		// 			datePeaks = datePeaks.concat(_);
+		// 		}
+		// 	}
+
+		// 	return datePeaks
+		// }
 
 		// Plot peaks
-
+		// _plotPeak(peaks, path) {
 	}, {
 		key: '_plotPeak',
-		value: function _plotPeak(peaks, path) {
+		value: function _plotPeak(path) {
 			var _this4 = this;
 
 			d3.csv(path).row(function (d) {
@@ -309,12 +317,15 @@ var EventLine = function () {
 				})]).range([h - 50, 0]);
 
 				// Compress the data
-				var dataLength = d3.min([rows.length, peaks.length]);
+				var dataLength = d3.min([rows.length, _this4.evtsData.length]);
 
 				// Calculate the y position of each peak by the scale function.
 				for (var i = 0; i < dataLength; i++) {
-					peaks[i].y = _this4.peakScale(rows[i].search_results);
-				}_this4.pad.append('g').classed('peak-group', true).append('path').datum(peaks.slice(0, dataLength)).attr('d', _this4.peakPathG).attr('fill', '#000');
+					// peaks[i].y = this.peakScale(rows[i].search_results);
+					_this4.evtsData[i].y = _this4.peakScale(rows[i].search_results);
+				}
+
+				_this4.pad.append('g').classed('peak-group', true).append('path').datum(_this4.evtsData.slice(0, dataLength)).attr('d', _this4.peakPathG).attr('stroke', '#000').attr('stroke-width', '3').attr('fill', 'none');
 			});
 		}
 
@@ -394,9 +405,15 @@ var EventLine = function () {
 
 				var pl = parseFloat(d3.select('svg').style('padding-left').replace('px', ''));
 
-				_this6.evtInfoBoard.selectAll('div').data(data).enter().append('div').classed('event-info', true).style({
+				// Only mark the events with event content
+				var reformedData = data.map(function (d) {
+					if (d.Event.length !== 0) return d;
+				}).filter(function (d) {
+					if (d) return d;
+				});
+
+				_this6.evtInfoBoard.selectAll('div').data(reformedData).enter().append('div').classed('event-info', true).style({
 					left: function left(d, i) {
-						// return pl+125+(250 * i)+-100 + 'px'
 						return pl + parseFloat(d.x) + -100 + 'px';
 					}
 				}).html(function (d) {
@@ -430,8 +447,6 @@ var EventLine = function () {
 
 					// Date(year, month, date)
 					d.dateObj = new Date(parsedTime[1], parsedTime[2] - 1, parsedTime[3]);
-
-					// this.evtsData.push(d);
 				}
 
 				// Sort the event in ascending order.
@@ -463,7 +478,7 @@ var EventLine = function () {
 				this.evtsData.push(data[j - 1]);
 
 				// Add new eventPeaks if the two peaks are not sequential.
-				if (data[j].dateObj !== data[j - 1].dateObj) {
+				if (data[j].dateObj > data[j - 1].dateObj) {
 
 					var endDate = data[j].dateObj,
 					    startDate = data[j - 1].dateObj,
@@ -475,18 +490,12 @@ var EventLine = function () {
 						_.push({
 							// 'x': parseFloat(data[j-1].x) + 125 + 50*(k+1),
 							'Event': '',
-							'dateObj': new Date(startDate.getYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
+							'dateObj': new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
 						});
 					}
 					this.evtsData = this.evtsData.concat(_);
 				}
 			}
-
-			console.log('check evtsData: ', this.evtsData);
-
-			// this.evtsData.sort((a, b) => {
-			// 	return a.dateObj.getTime() - b.dateObj.getTime()
-			// });
 
 			this.timeScale = d3.scale.linear().domain([this.evtsData[0].dateObj.getTime(), this.evtsData[l - 1].dateObj.getTime()]).range([0, function () {
 				var svg = d3.select('svg'),

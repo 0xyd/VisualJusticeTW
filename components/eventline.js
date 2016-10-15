@@ -14,7 +14,7 @@ class EventLine {
 
 		// The date weight for putting date in position.
 		this.timeWeight = null;
-		this.timeSpace  = 5;
+		this.timeSpace  = 50;
 
 		this.textPointer = null;
 
@@ -28,7 +28,9 @@ class EventLine {
 		this.peakPathG = 
 			d3.svg.line()
 				.x((d) => { return parseFloat(d.x) })
-				.y((d) => { return parseFloat(d.y) });
+				.y((d) => { return parseFloat(d.y) })
+				.interpolate('basis');
+		
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 
@@ -54,11 +56,28 @@ class EventLine {
 			.row((d, i) => { return d })
 			.get((error, rows) => {
 
-				this
-					.initialize(
-						this._calSvgWidth(
-							this._dateSerial(rows)))
-					.drawChart(rows, peakStatPath);
+				let p = new Promise((resolve, reject) => {
+
+					let reformedRows = this._dateSerial(rows);
+
+					this
+						.initialize(
+							this._calSvgWidth(reformedRows));
+
+					resolve(reformedRows);
+
+				});
+
+
+				p.then((r) => {
+					this.drawChart(r, peakStatPath);
+				});
+
+				// this
+				// 	.initialize(
+				// 		this._calSvgWidth(
+				// 			this._dateSerial(rows)))
+				// 	.drawChart(rows, peakStatPath);
 				
 			});
 
@@ -83,16 +102,21 @@ class EventLine {
 			let n = 0, // The index of the data element
 				w = 1; // The weight of date
 
-			for (let d of data) {
+			let eventData = 
+				data
+					.map((d) => { if (d.Event.length > 0) return d })
+					.filter((d) => { if(d) return d });
 
-				// Check the date change. 
+			for (let d of eventData) {
+
+				// Check the date change.
 				// Once the date change, push the weight value to array
-				if (n && (d.dateObj.getDate() !== data[n-1].dateObj.getDate())) {
+				if (n && (d.dateObj.getDate() !== eventData[n-1].dateObj.getDate())) {
 					_.push(w);
 					w = 1;
 
 					// When the element is the last, push it anyway.
-					if (n === data.length-1) _.push(w);
+					if (n === eventData.length-1) _.push(w);
 				} 
 
 				// Increment the weight of the date.
@@ -109,7 +133,7 @@ class EventLine {
 			Math
 				.abs(data[last].dateObj - data[0].dateObj) /
 					( 24 * 60 * 60 * 1000 );
-		
+
 		return (
 
 			250 * this.timeWeight
@@ -119,7 +143,7 @@ class EventLine {
 				// Time slots for the dates without events.
 				( period -  this.timeWeight.length ) * this.timeSpace +
 				// 100 pixels are left for tail.
-				100
+				250
 
 		)
 			
@@ -136,10 +160,7 @@ class EventLine {
 						this._markEvts(circles);
 
 						// Peaks' x positions
-						// this._plotPeak(
-						// 	this._peaksXProducer(circles),
-						// 	peakStatPath
-						// );
+						this._plotPeak(peakStatPath);
 						
 						// this.pad.append('path')
 						// 	.data(data)
@@ -155,8 +176,9 @@ class EventLine {
 	// Marke the circles on the lines
 	_markCircles(data) {
 
-		let colorScale = d3.scale.category20c(),
-			prevCirclePos = 0;
+		let colorScale = 
+				d3.scale.category20c(),
+			prevCirclePos = 125;
 
 		this._calY();
 
@@ -169,123 +191,113 @@ class EventLine {
 							.classed('event-node', true)
 							.attr({
 								cx: (d, i) => {
-									console.log('prev position: ', prevCirclePos);
-									let pDiff = 0,    // the pixels length between two event. 
-										diffDays = 0; // The diff of days.
 
-									for (let k = 0 ; k <= i; k ++) {
+									let pos = 0
 
-										// Calculate the diff days from the time starts
-										let d = 
-											k > 0 ?
-												Math.abs(
-													this.evtsData[k].dateObj - this.evtsData[k-1].dateObj) / 
-										 				( 24 * 60 * 60 * 1000 ) - 1 : 0;
-										diffDays += d;
-									}
+									if (i === 0)
+										pos += prevCirclePos
 
-									console.log('check diffDays: ', diffDays);
+									else if (
+										this.evtsData[i-1].Event.length !== 0 && 
+										this.evtsData[i].Event.length !== 0)
+										pos += prevCirclePos + 250
+									
+									else if (this.evtsData[i-1].Event === this.evtsData[i].Event)
+										pos += prevCirclePos + 50
 
-									// The serial time is not count
-									if (diffDays >= 2) 
-										pDiff = this.timeSpace * diffDays;
-									prevCirclePos = 125 + 250 * i + pDiff;
-									return 125 + 250 * i + pDiff
+									else pos += prevCirclePos + 150
 
-									// if (i === 0)
-									// 	return 125
-									// if (d.Event.length === 0)
+									prevCirclePos = pos;
 
-
+									return pos 
 								},
 								cy: this.evtLineY,
 								fill: (d, i) => { return colorScale(i) },
-								// working
-								// r : 12
 								r: (d) => { 
-									if (d.Event === '') return 1 
+									if (d.Event === '') return 5 
 									else return 12
 								} 
 							})
 			)
 	}
 
-	// Create the plots 
-	_peaksXProducer(circles) {
+	// Create the plots (Depreciated)
+	// _peaksProducer(circles) {
 
-		let eventPeaks = [],
-			circleData = circles[0].map((c, i) => { return c.__data__ }),
-			compound = [circleData[0]];  
+	// 	let eventPeaks = [],
+	// 		circleData = circles[0].map((c, i) => { return c.__data__ }),
+	// 		compound = [circleData[0]];  
 
-		/*
-			Get the circles' x position and 
-			calculate the average x position if there are multiple circles having the same date.
-		*/
-		for ( let i = 1; i < circleData.length; i++ ) {
+	// 	/*
+	// 		Get the circles' x position and 
+	// 		calculate the average x position if there are multiple circles having the same date.
+	// 	*/
+	// 	// for ( let i = 1; i < circleData.length; i++ ) {
 
-			// Move the element in compund out once its Time property is different from the next one.
-			if (compound.length === 1 && circleData[i-1].Time !== circleData[i].Time) {
+	// 	// 	// Move the element in compund out once its Time property is different from the next one.
+	// 	// 	if (compound.length === 1 && circleData[i-1].Time !== circleData[i].Time) {
 				
-				let popEle = compound.shift();
+	// 	// 		let popEle = compound.shift();
 
-				eventPeaks.push({
-					x: popEle.x,
-					dateObj: popEle.dateObj
-				});
+	// 	// 		eventPeaks.push({
+	// 	// 			x: popEle.x,
+	// 	// 			dateObj: popEle.dateObj
+	// 	// 		});
 				
-			} 
-			else if (compound.length > 1 && circleData[i-1].Time !== circleData[i].Time) {
+	// 	// 	} 
+	// 	// 	else if (compound.length > 1 && circleData[i-1].Time !== circleData[i].Time) {
 				
-				eventPeaks.push({
-					x: (
-						parseFloat(compound[0].x) + 
-							parseFloat(compound[compound.length-1].x)) / 2,
-					dateObj: compound[0].dateObj
-				});
-				compound = [];
-			}
+	// 	// 		eventPeaks.push({
+	// 	// 			x: (
+	// 	// 				parseFloat(compound[0].x) + 
+	// 	// 					parseFloat(compound[compound.length-1].x)) / 2,
+	// 	// 			dateObj: compound[0].dateObj
+	// 	// 		});
+	// 	// 		compound = [];
+	// 	// 	}
 
-			compound.push(circleData[i]);
+	// 	// 	compound.push(circleData[i]);
 
-		}
+	// 	// }
 
-		let datePeaks = [];
+	// 	let datePeaks = [];
 
-		/*
-			Adding the dates that does not have any events.
-		*/
-		for ( let j = 1; j < eventPeaks.length; j++ ) {
+	// 	/*
+	// 		Adding the dates that does not have any events.
+	// 	*/
+	// 	for ( let j = 1; j < eventPeaks.length; j++ ) {
 
-			datePeaks.push(eventPeaks[j-1]);
+	// 		datePeaks.push(eventPeaks[j-1]);
 
-			// Add new eventPeaks if the two peaks are not sequential.
-			if (eventPeaks[j].dateObj !== eventPeaks[j-1].dateObj) {
+	// 		// Add new eventPeaks if the two peaks are not sequential.
+	// 		if (eventPeaks[j].dateObj !== eventPeaks[j-1].dateObj) {
 
-				let endDate = eventPeaks[j].dateObj,
-					startDate = eventPeaks[j-1].dateObj,
-					diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
-					_ = [];
+	// 			let endDate = eventPeaks[j].dateObj,
+	// 				startDate = eventPeaks[j-1].dateObj,
+	// 				diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
+	// 				_ = [];
 
-				for ( let k = 0; k < Math.abs(diffDays); k++ ) {
+	// 			for ( let k = 0; k < Math.abs(diffDays); k++ ) {
 
-					_.push({
-						'x': parseFloat(eventPeaks[j-1].x) + 125 + 50*(k+1),
-						'dateObj':
-							new Date(
-								startDate.getYear(), 
-									startDate.getMonth(), startDate.getDate() + 1+k)
-						})
+	// 				_.push({
+	// 					'x': parseFloat(eventPeaks[j-1].x) + 125 + 50*(k+1),
+	// 					'dateObj':
+	// 						new Date(
+	// 							startDate.getYear(), 
+	// 								startDate.getMonth(), startDate.getDate() + 1+k)
+	// 					})
 					
-				}
-				datePeaks = datePeaks.concat(_);
-			}
-		}
+	// 			}
+	// 			datePeaks = datePeaks.concat(_);
+	// 		}
+	// 	}
 
-		return datePeaks
-	}
+	// 	return datePeaks
+	// }
 
 	// Plot peaks
-	_plotPeak(peaks, path) {
+	// _plotPeak(peaks, path) {
+	_plotPeak(path) {
 
 		d3.csv(path)
 			.row((d) => { 
@@ -317,18 +329,22 @@ class EventLine {
 					let dataLength = 
 						d3.min([
 							rows.length,
-							peaks.length
+							this.evtsData.length
 						]);
 
 					// Calculate the y position of each peak by the scale function.
-					for ( let i = 0; i < dataLength; i++ )
-						peaks[i].y = this.peakScale(rows[i].search_results);
+					for ( let i = 0; i < dataLength; i++ ){
+						// peaks[i].y = this.peakScale(rows[i].search_results);
+						this.evtsData[i].y = this.peakScale(rows[i].search_results);
+					}
 					
 					this.pad.append('g').classed('peak-group', true)
 						.append('path')
-						.datum(peaks.slice(0, dataLength))
+						.datum(this.evtsData.slice(0, dataLength))
 						.attr('d', this.peakPathG)
-						.attr('fill', '#000');
+						.attr('stroke', '#000')
+						.attr('stroke-width', '3')
+						.attr('fill', 'none');
 
 				})
 
@@ -421,13 +437,21 @@ class EventLine {
 				parseFloat(
 					d3.select('svg').style('padding-left').replace('px', ''));
 
+			// Only mark the events with event content
+			let reformedData = 
+				data
+					.map((d) => {
+						if (d.Event.length !== 0) return d
+					})
+					.filter((d) => { if (d) return d });
+
+
 			this.evtInfoBoard.selectAll('div')
-				.data(data).enter()
+				.data(reformedData).enter()
 					.append('div')
 						.classed('event-info', true)
 							.style({
 								left: (d, i) => { 
-									// return pl+125+(250 * i)+-100 + 'px' 
 									return pl+parseFloat(d.x)+(-100) + 'px'
 								}
 							})
@@ -455,11 +479,9 @@ class EventLine {
 
 			let parsedTime = d['Time'].match(this.timeRegExp);
 				
-				// Date(year, month, date)
-				d.dateObj = 
-					new Date(parsedTime[1], parsedTime[2]-1, parsedTime[3]);
-
-			// this.evtsData.push(d);
+			// Date(year, month, date)
+			d.dateObj = 
+				new Date(parsedTime[1], parsedTime[2]-1, parsedTime[3]);
 		}
 
 		// Sort the event in ascending order.
@@ -476,7 +498,7 @@ class EventLine {
 			this.evtsData.push(data[j-1]);
 
 			// Add new eventPeaks if the two peaks are not sequential.
-			if (data[j].dateObj !== data[j-1].dateObj) {
+			if (data[j].dateObj > data[j-1].dateObj) {
 
 				let endDate = data[j].dateObj,
 					startDate = data[j-1].dateObj,
@@ -490,7 +512,7 @@ class EventLine {
 						'Event': '',
 						'dateObj':
 							new Date(
-								startDate.getYear(), 
+								startDate.getFullYear(), 
 									startDate.getMonth(), startDate.getDate() + 1+k)
 						})
 					
@@ -498,12 +520,6 @@ class EventLine {
 				this.evtsData = this.evtsData.concat(_);
 			}
 		}
-
-		console.log('check evtsData: ', this.evtsData);
-
-		// this.evtsData.sort((a, b) => {
-		// 	return a.dateObj.getTime() - b.dateObj.getTime()
-		// });
 
 		this.timeScale = 
 			d3.scale.linear()
