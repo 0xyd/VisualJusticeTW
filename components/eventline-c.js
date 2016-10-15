@@ -32,9 +32,9 @@ var EventLine = function () {
 
 		// peak path generator
 		this.peakPathG = d3.svg.line().x(function (d) {
-			return console.log('d.x: ', d.x);parseFloat(d.x);
+			return parseFloat(d.x);
 		}).y(function (d) {
-			/*console.log(d);*/return parseFloat(d.y);
+			return parseFloat(d.y);
 		});
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
@@ -58,7 +58,7 @@ var EventLine = function () {
 				return d;
 			}).get(function (error, rows) {
 
-				_this.initialize(_this._calSvgWidth(_this._eventSerial(rows))).drawChart(rows, peakStatPath);
+				_this.initialize(_this._calSvgWidth(_this._dateSerial(rows))).drawChart(rows, peakStatPath);
 			});
 
 			return this;
@@ -151,9 +151,15 @@ var EventLine = function () {
 					_this2._markEvts(circles);
 
 					// Peaks' x positions
-					_this2._plotPeak(_this2._peaksXProducer(circles), peakStatPath);
+					// this._plotPeak(
+					// 	this._peaksXProducer(circles),
+					// 	peakStatPath
+					// );
 
-					_this2.pad.append('path').data(data).attr('d', _this2.peakPathG).attr('fill', '#000');
+					// this.pad.append('path')
+					// 	.data(data)
+					// 		.attr('d', this.peakPathG)
+					// 		.attr('fill', '#000');
 				});
 			});
 		}
@@ -165,13 +171,14 @@ var EventLine = function () {
 		value: function _markCircles(data) {
 			var _this3 = this;
 
-			var colorScale = d3.scale.category20c();
+			var colorScale = d3.scale.category20c(),
+			    prevCirclePos = 0;
 
 			this._calY();
 
 			return this.evtlineG.append('g').classed('event-group', true).selectAll('circles').data(this.evtsData).enter().append('circle').classed('event-node', true).attr({
 				cx: function cx(d, i) {
-
+					console.log('prev position: ', prevCirclePos);
 					var pDiff = 0,
 					    // the pixels length between two event.
 					diffDays = 0; // The diff of days.
@@ -183,16 +190,26 @@ var EventLine = function () {
 						diffDays += _d;
 					}
 
+					console.log('check diffDays: ', diffDays);
+
 					// The serial time is not count
 					if (diffDays >= 2) pDiff = _this3.timeSpace * diffDays;
-
+					prevCirclePos = 125 + 250 * i + pDiff;
 					return 125 + 250 * i + pDiff;
+
+					// if (i === 0)
+					// 	return 125
+					// if (d.Event.length === 0)
 				},
 				cy: this.evtLineY,
 				fill: function fill(d, i) {
 					return colorScale(i);
 				},
-				r: 12
+				// working
+				// r : 12
+				r: function r(d) {
+					if (d.Event === '') return 1;else return 12;
+				}
 			});
 		}
 
@@ -392,14 +409,15 @@ var EventLine = function () {
 			});
 		}
 
-		// Transfer the event's time value to date object.
+		// Add the event's date object according to events.
 
 	}, {
-		key: '_eventSerial',
-		value: function _eventSerial(data) {
+		key: '_dateSerial',
+		value: function _dateSerial(data) {
 
 			var l = data.length;
 
+			// Generate the date objects for events
 			var _iteratorNormalCompletion2 = true;
 			var _didIteratorError2 = false;
 			var _iteratorError2 = undefined;
@@ -413,7 +431,7 @@ var EventLine = function () {
 					// Date(year, month, date)
 					d.dateObj = new Date(parsedTime[1], parsedTime[2] - 1, parsedTime[3]);
 
-					this.evtsData.push(d);
+					// this.evtsData.push(d);
 				}
 
 				// Sort the event in ascending order.
@@ -432,9 +450,43 @@ var EventLine = function () {
 				}
 			}
 
-			this.evtsData.sort(function (a, b) {
+			data.sort(function (a, b) {
 				return a.dateObj.getTime() - b.dateObj.getTime();
 			});
+
+			/*
+   	Adding the dates that does not have any events.
+   */
+			// let reproducedData = [];
+			for (var j = 1; j < l; j++) {
+
+				this.evtsData.push(data[j - 1]);
+
+				// Add new eventPeaks if the two peaks are not sequential.
+				if (data[j].dateObj !== data[j - 1].dateObj) {
+
+					var endDate = data[j].dateObj,
+					    startDate = data[j - 1].dateObj,
+					    diffDays = (endDate - startDate) / (24 * 60 * 60 * 1000) - 1,
+					    _ = [];
+
+					for (var k = 0; k < Math.abs(diffDays); k++) {
+
+						_.push({
+							// 'x': parseFloat(data[j-1].x) + 125 + 50*(k+1),
+							'Event': '',
+							'dateObj': new Date(startDate.getYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
+						});
+					}
+					this.evtsData = this.evtsData.concat(_);
+				}
+			}
+
+			console.log('check evtsData: ', this.evtsData);
+
+			// this.evtsData.sort((a, b) => {
+			// 	return a.dateObj.getTime() - b.dateObj.getTime()
+			// });
 
 			this.timeScale = d3.scale.linear().domain([this.evtsData[0].dateObj.getTime(), this.evtsData[l - 1].dateObj.getTime()]).range([0, function () {
 				var svg = d3.select('svg'),

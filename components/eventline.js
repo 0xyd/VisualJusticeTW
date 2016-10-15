@@ -27,7 +27,8 @@ class EventLine {
 		// peak path generator
 		this.peakPathG = 
 			d3.svg.line()
-				.x((d) => { return console.log('d.x: ', d.x); parseFloat(d.x) }).y((d) => { /*console.log(d);*/return parseFloat(d.y) });
+				.x((d) => { return parseFloat(d.x) })
+				.y((d) => { return parseFloat(d.y) });
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 
@@ -56,7 +57,7 @@ class EventLine {
 				this
 					.initialize(
 						this._calSvgWidth(
-							this._eventSerial(rows)))
+							this._dateSerial(rows)))
 					.drawChart(rows, peakStatPath);
 				
 			});
@@ -135,15 +136,15 @@ class EventLine {
 						this._markEvts(circles);
 
 						// Peaks' x positions
-						this._plotPeak(
-							this._peaksXProducer(circles),
-							peakStatPath
-						);
+						// this._plotPeak(
+						// 	this._peaksXProducer(circles),
+						// 	peakStatPath
+						// );
 						
-						this.pad.append('path')
-							.data(data)
-								.attr('d', this.peakPathG)
-								.attr('fill', '#000');
+						// this.pad.append('path')
+						// 	.data(data)
+						// 		.attr('d', this.peakPathG)
+						// 		.attr('fill', '#000');
 
 
 					});
@@ -154,10 +155,11 @@ class EventLine {
 	// Marke the circles on the lines
 	_markCircles(data) {
 
-		let colorScale = d3.scale.category20c();
+		let colorScale = d3.scale.category20c(),
+			prevCirclePos = 0;
 
 		this._calY();
-		
+
 		return (
 			this.evtlineG
 			.append('g').classed('event-group', true)
@@ -166,8 +168,8 @@ class EventLine {
 						.enter().append('circle')
 							.classed('event-node', true)
 							.attr({
-								cx: (d, i) => { 
-									
+								cx: (d, i) => {
+									console.log('prev position: ', prevCirclePos);
 									let pDiff = 0,    // the pixels length between two event. 
 										diffDays = 0; // The diff of days.
 
@@ -182,15 +184,28 @@ class EventLine {
 										diffDays += d;
 									}
 
+									console.log('check diffDays: ', diffDays);
+
 									// The serial time is not count
 									if (diffDays >= 2) 
 										pDiff = this.timeSpace * diffDays;
-
+									prevCirclePos = 125 + 250 * i + pDiff;
 									return 125 + 250 * i + pDiff
+
+									// if (i === 0)
+									// 	return 125
+									// if (d.Event.length === 0)
+
+
 								},
 								cy: this.evtLineY,
 								fill: (d, i) => { return colorScale(i) },
-								r : 12
+								// working
+								// r : 12
+								r: (d) => { 
+									if (d.Event === '') return 1 
+									else return 12
+								} 
 							})
 			)
 	}
@@ -430,26 +445,65 @@ class EventLine {
 
 	}
 
-	// Transfer the event's time value to date object.
-	_eventSerial(data) {
+	// Add the event's date object according to events.
+	_dateSerial(data) {
 
 		let l  = data.length;
 		
+		// Generate the date objects for events
 		for (let d of data) {
+
 			let parsedTime = d['Time'].match(this.timeRegExp);
 				
 				// Date(year, month, date)
 				d.dateObj = 
 					new Date(parsedTime[1], parsedTime[2]-1, parsedTime[3]);
 
-			this.evtsData.push(d);
+			// this.evtsData.push(d);
 		}
 
-
 		// Sort the event in ascending order.
-		this.evtsData.sort((a, b) => {
+		data.sort((a, b) => {
 			return a.dateObj.getTime() - b.dateObj.getTime()
 		});
+
+		/*
+			Adding the dates that does not have any events.
+		*/
+		// let reproducedData = [];
+		for ( let j = 1; j < l; j++ ) {
+
+			this.evtsData.push(data[j-1]);
+
+			// Add new eventPeaks if the two peaks are not sequential.
+			if (data[j].dateObj !== data[j-1].dateObj) {
+
+				let endDate = data[j].dateObj,
+					startDate = data[j-1].dateObj,
+					diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
+					_ = [];
+
+				for ( let k = 0; k < Math.abs(diffDays); k++ ) {
+
+					_.push({
+						// 'x': parseFloat(data[j-1].x) + 125 + 50*(k+1),
+						'Event': '',
+						'dateObj':
+							new Date(
+								startDate.getYear(), 
+									startDate.getMonth(), startDate.getDate() + 1+k)
+						})
+					
+				}
+				this.evtsData = this.evtsData.concat(_);
+			}
+		}
+
+		console.log('check evtsData: ', this.evtsData);
+
+		// this.evtsData.sort((a, b) => {
+		// 	return a.dateObj.getTime() - b.dateObj.getTime()
+		// });
 
 		this.timeScale = 
 			d3.scale.linear()
