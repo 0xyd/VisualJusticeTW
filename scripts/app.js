@@ -8449,6 +8449,14 @@ function setAppMainAC(components) {
 	}
 }
 
+/* Action creators of  */
+function initJudicialEvents() {
+	return {
+		type: 'INIT_JUDICIAL_EVTS',
+	}
+}
+
+/* Action creators of Theme stats. */
 function setThemesAC() {
 	return {
 		type: 'SET_THEMES'
@@ -8577,6 +8585,11 @@ function AppReducer(state = INITIAL_STATE, action) {
 			return selectDropdownOption(
 				state, 
 				action.theme, action.option, action.fieldsetIndex, action.dataIndex, action.topicDepth)
+
+
+		// Working
+		case 'INIT_JUDICIAL_EVTS':
+			return 
 
 		default: 
 			return state
@@ -9983,9 +9996,14 @@ ReactDOM.render(
 						cb(null, { nav: AppNav, main: AppMain });
 					}}
 					/>
-				{/*  */}
+				{/* Entry point of  */}
 				<RR.Route 
 					path='/judicial_events'
+					getComponents={
+
+						store.dispatch();
+
+					}
 					/>
 				<RR.Route 
 					path='/police_stat' 
