@@ -9911,7 +9911,9 @@ ReactDOM.render(
 										<img src="./src/aboutus.png" />
 									</RR.Link>,
 									<img src="./src/see.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
-									<img src="./src/issue.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
+									<RR.Link to='/judicial_events'>
+										<img src="./src/judicial-event-125px.png" />
+									</RR.Link>,
 									<img src="./src/work.png" onClick={ function(){ window.alert('建置中，敬請期待。'); } }/>,
 									<div className='social-group'>
 										<iframe id='githubStar' className='social-btn'
@@ -9980,6 +9982,10 @@ ReactDOM.render(
 
 						cb(null, { nav: AppNav, main: AppMain });
 					}}
+					/>
+				{/*  */}
+				<RR.Route 
+					path='/judicial_events'
 					/>
 				<RR.Route 
 					path='/police_stat' 

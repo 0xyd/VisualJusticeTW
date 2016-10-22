@@ -21,8 +21,9 @@ class EventLine {
 		// Time scale
 		this.timeScale = null;
 
-		// peak scale
+		/* Peak Related Properties */
 		this.peakScale = null;
+		this.peakGroupNames = null;
 
 		// peak path generator
 		this.peakPathG = 
@@ -296,7 +297,6 @@ class EventLine {
 	// }
 
 	// Plot peaks
-	// _plotPeak(peaks, path) {
 	_plotPeak(path) {
 
 		d3.csv(path)
@@ -317,39 +317,113 @@ class EventLine {
 					let h = 
 						parseInt(this.pad.style('height').replace('px', ''));
 
+					let classifiedData = 
+						this._classifyPeak(rows);
+
+
+					// Flatten the group data.
+					let flattenData = ((data) => {
+
+						let flatten = [],
+							keys = Object.keys(data);
+
+						for ( let key of keys ) 
+							for (let d of data[key])
+								flatten.push(d)
+						
+						return flatten
+
+					})(classifiedData);
+
 					this.peakScale = 
 						d3.scale.linear()
 							.domain([
-								d3.min(rows, (d) => { return d.search_results }),
-								d3.max(rows, (d) => { return d.search_results })
+								d3.min(flattenData, (d) => { return parseFloat(d) }),
+								d3.max(flattenData, (d) => { return parseFloat(d) })
 							])
 							.range([h-50, 0]);
 
-					// Compress the data
+					// Compress the data because these two dataset are not with the same length.
 					let dataLength = 
 						d3.min([
 							rows.length,
 							this.evtsData.length
 						]);
 
+					this._plotPeakGroupData(classifiedData, dataLength);
+
+					/* The below snippet is going to be replaced. */
 					// Calculate the y position of each peak by the scale function.
-					for ( let i = 0; i < dataLength; i++ ){
-						// peaks[i].y = this.peakScale(rows[i].search_results);
-						this.evtsData[i].y = this.peakScale(rows[i].search_results);
-					}
+					// for ( let i = 0; i < dataLength; i++ ) {
+					// 	this.evtsData[i].y = this.peakScale(rows[i].search_results);
+					// }
 					
-					this.pad.append('g').classed('peak-group', true)
-						.append('path')
-						.datum(this.evtsData.slice(0, dataLength))
-						.attr('d', this.peakPathG)
-						.attr('stroke', '#000')
-						.attr('stroke-width', '3')
-						.attr('fill', 'none');
+					// this.pad.append('g').classed('peak-group', true)
+					// 	.append('path')
+					// 	.datum(this.evtsData.slice(0, dataLength))
+					// 	.attr('d', this.peakPathG)
+					// 	.attr('stroke', '#000')
+					// 	.attr('stroke-width', '3')
+					// 	.attr('fill', 'none');
 
 				})
 
 	}
 
+
+	/* Group the peaks by the according to the keywords */
+	_classifyPeak(rowData) {
+
+		let googleSearch = /^google_search_results/,
+			groupData = {};
+
+		/* List the keywords of the search result  */
+		let names = Object.keys(rowData[0])
+			.filter((d)=> {
+				return d.match(googleSearch)
+			});
+
+		/* Initialize the data */
+		for ( let name of names )
+			groupData[name] = [];
+		
+
+		/* Put the data inside the groupData */
+		for ( let row of rowData )
+			for ( let name of names )
+				groupData[name].push(row[name])
+			
+		return groupData
+	}
+
+	/* Group the peak data */
+	_plotPeakGroupData(groupedData, dataNumber) {
+
+		// Assign the group names
+		this.peakGroupNames = Object.keys(groupedData);
+
+		for ( let i = 0; i < dataNumber; i++ ) {
+ 
+			for ( let gName of this.peakGroupNames ) 
+				this.evtsData[i][gName] = { 
+					y: this.peakScale(parseFloat(groupedData[gName][i])) 
+				};
+		}
+
+		for ( let gName of this.peakGroupNames ) {
+
+			this.pad.append('g')
+				.classed('peak-group' + gName, true)
+					.append('path')
+						.datum(this.evtsData.slice(0, dataNumber))
+							.attr('d', this.peakPathG)
+							.attr('stroke', '#000')
+							.attr('stroke-width', '3')
+							.attr('fill', 'none');
+
+		}
+
+	}
 
 	// Calculate y postion of the line.
 	_calY() {

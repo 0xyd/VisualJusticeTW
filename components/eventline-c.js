@@ -27,8 +27,9 @@ var EventLine = function () {
 		// Time scale
 		this.timeScale = null;
 
-		// peak scale
+		/* Peak Related Properties */
 		this.peakScale = null;
+		this.peakGroupNames = null;
 
 		// peak path generator
 		this.peakPathG = d3.svg.line().x(function (d) {
@@ -292,7 +293,7 @@ var EventLine = function () {
 		// }
 
 		// Plot peaks
-		// _plotPeak(peaks, path) {
+
 	}, {
 		key: '_plotPeak',
 		value: function _plotPeak(path) {
@@ -310,23 +311,244 @@ var EventLine = function () {
 
 				var h = parseInt(_this4.pad.style('height').replace('px', ''));
 
-				_this4.peakScale = d3.scale.linear().domain([d3.min(rows, function (d) {
-					return d.search_results;
-				}), d3.max(rows, function (d) {
-					return d.search_results;
+				var classifiedData = _this4._classifyPeak(rows);
+
+				// Flatten the group data.
+				var flattenData = function (data) {
+
+					var flatten = [],
+					    keys = Object.keys(data);
+
+					var _iteratorNormalCompletion2 = true;
+					var _didIteratorError2 = false;
+					var _iteratorError2 = undefined;
+
+					try {
+						for (var _iterator2 = keys[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+							var key = _step2.value;
+							var _iteratorNormalCompletion3 = true;
+							var _didIteratorError3 = false;
+							var _iteratorError3 = undefined;
+
+							try {
+								for (var _iterator3 = data[key][Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+									var d = _step3.value;
+
+									flatten.push(d);
+								}
+							} catch (err) {
+								_didIteratorError3 = true;
+								_iteratorError3 = err;
+							} finally {
+								try {
+									if (!_iteratorNormalCompletion3 && _iterator3.return) {
+										_iterator3.return();
+									}
+								} finally {
+									if (_didIteratorError3) {
+										throw _iteratorError3;
+									}
+								}
+							}
+						}
+					} catch (err) {
+						_didIteratorError2 = true;
+						_iteratorError2 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion2 && _iterator2.return) {
+								_iterator2.return();
+							}
+						} finally {
+							if (_didIteratorError2) {
+								throw _iteratorError2;
+							}
+						}
+					}
+
+					return flatten;
+				}(classifiedData);
+
+				_this4.peakScale = d3.scale.linear().domain([d3.min(flattenData, function (d) {
+					return parseFloat(d);
+				}), d3.max(flattenData, function (d) {
+					return parseFloat(d);
 				})]).range([h - 50, 0]);
 
-				// Compress the data
+				// Compress the data because these two dataset are not with the same length.
 				var dataLength = d3.min([rows.length, _this4.evtsData.length]);
 
-				// Calculate the y position of each peak by the scale function.
-				for (var i = 0; i < dataLength; i++) {
-					// peaks[i].y = this.peakScale(rows[i].search_results);
-					_this4.evtsData[i].y = _this4.peakScale(rows[i].search_results);
-				}
+				_this4._plotPeakGroupData(classifiedData, dataLength);
 
-				_this4.pad.append('g').classed('peak-group', true).append('path').datum(_this4.evtsData.slice(0, dataLength)).attr('d', _this4.peakPathG).attr('stroke', '#000').attr('stroke-width', '3').attr('fill', 'none');
+				/* The below snippet is going to be replaced. */
+				// Calculate the y position of each peak by the scale function.
+				// for ( let i = 0; i < dataLength; i++ ) {
+				// 	this.evtsData[i].y = this.peakScale(rows[i].search_results);
+				// }
+
+				// this.pad.append('g').classed('peak-group', true)
+				// 	.append('path')
+				// 	.datum(this.evtsData.slice(0, dataLength))
+				// 	.attr('d', this.peakPathG)
+				// 	.attr('stroke', '#000')
+				// 	.attr('stroke-width', '3')
+				// 	.attr('fill', 'none');
 			});
+		}
+
+		/* Group the peaks by the according to the keywords */
+
+	}, {
+		key: '_classifyPeak',
+		value: function _classifyPeak(rowData) {
+
+			var googleSearch = /^google_search_results/,
+			    groupData = {};
+
+			/* List the keywords of the search result  */
+			var names = Object.keys(rowData[0]).filter(function (d) {
+				return d.match(googleSearch);
+			});
+
+			/* Initialize the data */
+			var _iteratorNormalCompletion4 = true;
+			var _didIteratorError4 = false;
+			var _iteratorError4 = undefined;
+
+			try {
+				for (var _iterator4 = names[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+					var name = _step4.value;
+
+					groupData[name] = [];
+				} /* Put the data inside the groupData */
+			} catch (err) {
+				_didIteratorError4 = true;
+				_iteratorError4 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion4 && _iterator4.return) {
+						_iterator4.return();
+					}
+				} finally {
+					if (_didIteratorError4) {
+						throw _iteratorError4;
+					}
+				}
+			}
+
+			var _iteratorNormalCompletion5 = true;
+			var _didIteratorError5 = false;
+			var _iteratorError5 = undefined;
+
+			try {
+				for (var _iterator5 = rowData[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+					var row = _step5.value;
+					var _iteratorNormalCompletion6 = true;
+					var _didIteratorError6 = false;
+					var _iteratorError6 = undefined;
+
+					try {
+						for (var _iterator6 = names[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+							var name = _step6.value;
+
+							groupData[name].push(row[name]);
+						}
+					} catch (err) {
+						_didIteratorError6 = true;
+						_iteratorError6 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion6 && _iterator6.return) {
+								_iterator6.return();
+							}
+						} finally {
+							if (_didIteratorError6) {
+								throw _iteratorError6;
+							}
+						}
+					}
+				}
+			} catch (err) {
+				_didIteratorError5 = true;
+				_iteratorError5 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion5 && _iterator5.return) {
+						_iterator5.return();
+					}
+				} finally {
+					if (_didIteratorError5) {
+						throw _iteratorError5;
+					}
+				}
+			}
+
+			return groupData;
+		}
+
+		/* Group the peak data */
+
+	}, {
+		key: '_plotPeakGroupData',
+		value: function _plotPeakGroupData(groupedData, dataNumber) {
+
+			// Assign the group names
+			this.peakGroupNames = Object.keys(groupedData);
+
+			for (var i = 0; i < dataNumber; i++) {
+				var _iteratorNormalCompletion7 = true;
+				var _didIteratorError7 = false;
+				var _iteratorError7 = undefined;
+
+				try {
+
+					for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+						var gName = _step7.value;
+
+						this.evtsData[i][gName] = {
+							y: this.peakScale(parseFloat(groupedData[gName][i]))
+						};
+					}
+				} catch (err) {
+					_didIteratorError7 = true;
+					_iteratorError7 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion7 && _iterator7.return) {
+							_iterator7.return();
+						}
+					} finally {
+						if (_didIteratorError7) {
+							throw _iteratorError7;
+						}
+					}
+				}
+			}
+
+			var _iteratorNormalCompletion8 = true;
+			var _didIteratorError8 = false;
+			var _iteratorError8 = undefined;
+
+			try {
+				for (var _iterator8 = this.peakGroupNames[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+					var gName = _step8.value;
+
+					this.pad.append('g').classed('peak-group' + gName, true).append('path').datum(this.evtsData.slice(0, dataNumber)).attr('d', this.peakPathG).attr('stroke', '#000').attr('stroke-width', '3').attr('fill', 'none');
+				}
+			} catch (err) {
+				_didIteratorError8 = true;
+				_iteratorError8 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion8 && _iterator8.return) {
+						_iterator8.return();
+					}
+				} finally {
+					if (_didIteratorError8) {
+						throw _iteratorError8;
+					}
+				}
+			}
 		}
 
 		// Calculate y postion of the line.
@@ -435,13 +657,13 @@ var EventLine = function () {
 			var l = data.length;
 
 			// Generate the date objects for events
-			var _iteratorNormalCompletion2 = true;
-			var _didIteratorError2 = false;
-			var _iteratorError2 = undefined;
+			var _iteratorNormalCompletion9 = true;
+			var _didIteratorError9 = false;
+			var _iteratorError9 = undefined;
 
 			try {
-				for (var _iterator2 = data[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var d = _step2.value;
+				for (var _iterator9 = data[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+					var d = _step9.value;
 
 					var parsedTime = d['Time'].match(this.timeRegExp);
 
@@ -451,16 +673,16 @@ var EventLine = function () {
 
 				// Sort the event in ascending order.
 			} catch (err) {
-				_didIteratorError2 = true;
-				_iteratorError2 = err;
+				_didIteratorError9 = true;
+				_iteratorError9 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion2 && _iterator2.return) {
-						_iterator2.return();
+					if (!_iteratorNormalCompletion9 && _iterator9.return) {
+						_iterator9.return();
 					}
 				} finally {
-					if (_didIteratorError2) {
-						throw _iteratorError2;
+					if (_didIteratorError9) {
+						throw _iteratorError9;
 					}
 				}
 			}
