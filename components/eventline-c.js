@@ -191,11 +191,6 @@ var EventLine = function () {
 
 					// Peaks' x positions
 					_this2._plotPeak(peakStatPath);
-
-					// this.pad.append('path')
-					// 	.data(data)
-					// 		.attr('d', this.peakPathG)
-					// 		.attr('fill', '#000');
 				});
 			});
 		}
@@ -232,80 +227,6 @@ var EventLine = function () {
 				}
 			});
 		}
-
-		// Create the plots (Depreciated)
-		// _peaksProducer(circles) {
-
-		// 	let eventPeaks = [],
-		// 		circleData = circles[0].map((c, i) => { return c.__data__ }),
-		// 		compound = [circleData[0]]; 
-
-		// 	/*
-		// 		Get the circles' x position and
-		// 		calculate the average x position if there are multiple circles having the same date.
-		// 	*/
-		// 	// for ( let i = 1; i < circleData.length; i++ ) {
-
-		// 	// 	// Move the element in compund out once its Time property is different from the next one.
-		// 	// 	if (compound.length === 1 && circleData[i-1].Time !== circleData[i].Time) {
-
-		// 	// 		let popEle = compound.shift();
-
-		// 	// 		eventPeaks.push({
-		// 	// 			x: popEle.x,
-		// 	// 			dateObj: popEle.dateObj
-		// 	// 		});
-
-		// 	// 	}
-		// 	// 	else if (compound.length > 1 && circleData[i-1].Time !== circleData[i].Time) {
-
-		// 	// 		eventPeaks.push({
-		// 	// 			x: (
-		// 	// 				parseFloat(compound[0].x) +
-		// 	// 					parseFloat(compound[compound.length-1].x)) / 2,
-		// 	// 			dateObj: compound[0].dateObj
-		// 	// 		});
-		// 	// 		compound = [];
-		// 	// 	}
-
-		// 	// 	compound.push(circleData[i]);
-
-		// 	// }
-
-		// 	let datePeaks = [];
-
-		// 	/*
-		// 		Adding the dates that does not have any events.
-		// 	*/
-		// 	for ( let j = 1; j < eventPeaks.length; j++ ) {
-
-		// 		datePeaks.push(eventPeaks[j-1]);
-
-		// 		// Add new eventPeaks if the two peaks are not sequential.
-		// 		if (eventPeaks[j].dateObj !== eventPeaks[j-1].dateObj) {
-
-		// 			let endDate = eventPeaks[j].dateObj,
-		// 				startDate = eventPeaks[j-1].dateObj,
-		// 				diffDays = (endDate - startDate) / ( 24 * 60 * 60 * 1000) - 1,
-		// 				_ = [];
-
-		// 			for ( let k = 0; k < Math.abs(diffDays); k++ ) {
-
-		// 				_.push({
-		// 					'x': parseFloat(eventPeaks[j-1].x) + 125 + 50*(k+1),
-		// 					'dateObj':
-		// 						new Date(
-		// 							startDate.getYear(),
-		// 								startDate.getMonth(), startDate.getDate() + 1+k)
-		// 					})
-
-		// 			}
-		// 			datePeaks = datePeaks.concat(_);
-		// 		}
-		// 	}
-
-		// 	return datePeaks
-		// }
 
 		// Plot peaks
 
@@ -389,6 +310,21 @@ var EventLine = function () {
 				}), d3.max(flattenData, function (d) {
 					return parseFloat(d);
 				})]).range([h - 50, 0]);
+
+				// TODO: Flatten events data because some data share the same date.
+				var flattenEvtData = function (evtsData) {
+
+					console.log(evtsData);
+
+					var _ = [];
+
+					for (var i = 0; i < evtsData.length - 1; i++) {
+
+						while (evtsData[i + 1].dateObj === evtsData[i].dateObj) {
+							console.log('testing');
+						}
+					}
+				}(_this4.evtsData);
 
 				// Compress the data because these two dataset are not with the same length.
 				var dataLength = d3.min([rows.length, _this4.evtsData.length]);
@@ -586,6 +522,17 @@ var EventLine = function () {
 					fill: this.groupColors[i].fill,
 					stroke: this.groupColors[i].stroke,
 					opacity: 0.8
+				}).on('mouseenter', function (d) {
+
+					var x = window.event.pageX;
+
+					// Return the
+					var currentDate = _this5.events.find(function (d, i, ary) {
+
+						return x > parseInt(d.x);
+					});
+
+					console.log(currentDate);
 				});
 			}
 		}
