@@ -15,6 +15,9 @@ var EventLine = function () {
 		this.evtLineY = null; // The Y position of the event line.
 		this.eventNodes = null;
 
+		// TODO
+		this.groupSearchResults = {};
+
 		// this.line = null;
 		this.evtInfoBoard = null;
 
@@ -495,35 +498,44 @@ var EventLine = function () {
 			// Assign the group names
 			this.peakGroupNames = Object.keys(groupedData);
 
-			for (var i = 0; i < dataNumber; i++) {
-				var _iteratorNormalCompletion7 = true;
-				var _didIteratorError7 = false;
-				var _iteratorError7 = undefined;
+			// console.log(groupedData);
 
-				try {
+			// Group the event data and bind the y information.
+			var _iteratorNormalCompletion7 = true;
+			var _didIteratorError7 = false;
+			var _iteratorError7 = undefined;
 
-					for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-						var gName = _step7.value;
+			try {
+				for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+					var group = _step7.value;
 
-						this.evtsData[i][gName] = {
-							y: this.peakScale(parseFloat(groupedData[gName][i]))
-						};
+					this.groupSearchResults[group] = [];
+
+					for (var i = 0; i < dataNumber; i++) {
+
+						var d = this.evtsData[i];
+
+						d['y'] = this.peakScale(parseFloat(groupedData[group][i]));
+
+						this.groupSearchResults[group].push(d);
 					}
-				} catch (err) {
-					_didIteratorError7 = true;
-					_iteratorError7 = err;
+				}
+			} catch (err) {
+				_didIteratorError7 = true;
+				_iteratorError7 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion7 && _iterator7.return) {
+						_iterator7.return();
+					}
 				} finally {
-					try {
-						if (!_iteratorNormalCompletion7 && _iterator7.return) {
-							_iterator7.return();
-						}
-					} finally {
-						if (_didIteratorError7) {
-							throw _iteratorError7;
-						}
+					if (_didIteratorError7) {
+						throw _iteratorError7;
 					}
 				}
 			}
+
+			console.log(this.groupSearchResults);
 
 			var _iteratorNormalCompletion8 = true;
 			var _didIteratorError8 = false;
@@ -531,10 +543,41 @@ var EventLine = function () {
 
 			try {
 				for (var _iterator8 = this.peakGroupNames[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-					var gName = _step8.value;
+					var group = _step8.value;
 
-					this.pad.append('g').classed('peak-group' + gName, true).append('path').datum(this.evtsData.slice(0, dataNumber)).attr('d', this.peakPathG).attr('stroke', '#000').attr('stroke-width', '3').attr('fill', 'none');
+					this.pad.append('g').classed('peak-group-' + group, true).append('path').datum(this.groupSearchResults[group]).attr({
+						d: this.peakPathG,
+						stroke: '#000',
+						'stroke-width': 1,
+						fill: 'none'
+					});
 				}
+
+				// Depreciate the below code
+				// for ( let i = 0; i < dataNumber; i++ ) {
+
+				// 	for ( let gName of this.peakGroupNames ) {
+
+				// 		this.evtsData[i][gName] = {
+				// 			y: this.peakScale(parseFloat(groupedData[gName][i]))
+				// 		};
+				// 	}
+				// }
+
+				// for ( let gName of this.peakGroupNames ) {
+
+				// 	console.log('bound data check:', this.evtsData.slice(0, dataNumber));
+
+				// 	this.pad.append('g')
+				// 		.classed('peak-group-' + gName, true)
+				// 			.append('path')
+				// 				.datum(this.evtsData.slice(0, dataNumber))
+				// 					.attr('d', this.peakPathG)
+				// 					.attr('stroke', '#000')
+				// 					.attr('stroke-width', '3')
+				// 					.attr('fill', 'none');
+
+				// }
 			} catch (err) {
 				_didIteratorError8 = true;
 				_iteratorError8 = err;
@@ -555,6 +598,7 @@ var EventLine = function () {
 
 	}, {
 		key: '_calY',
+		// display: 'none'
 		value: function _calY() {
 
 			this.evtLineY = parseFloat(this.pad.style('height').replace('px', '')) - 30;

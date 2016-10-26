@@ -9,6 +9,9 @@ class EventLine {
 		this.evtLineY = null; // The Y position of the event line.
 		this.eventNodes = null;
 
+		// TODO
+		this.groupSearchResults = {};
+
 		// this.line = null;
 		this.evtInfoBoard = null;
 
@@ -402,26 +405,42 @@ class EventLine {
 		// Assign the group names
 		this.peakGroupNames = Object.keys(groupedData);
 
-		for ( let i = 0; i < dataNumber; i++ ) {
- 
-			for ( let gName of this.peakGroupNames ) 
-				this.evtsData[i][gName] = { 
-					y: this.peakScale(parseFloat(groupedData[gName][i])) 
-				};
+		// Group the event data and bind the y information.
+		for ( let group of this.peakGroupNames ) {
+
+			this.groupSearchResults[group] = [];
+
+			for ( let i = 0; i < dataNumber; i++ ) {
+
+				let d = this.evtsData[i];
+
+				d['y'] = 
+					this.peakScale(
+						parseFloat(groupedData[group][i]));
+
+				this.groupSearchResults[group].push(d);
+			}
 		}
 
-		for ( let gName of this.peakGroupNames ) {
+		console.log(this.groupSearchResults);
+
+		for ( let group of this.peakGroupNames ) {
 
 			this.pad.append('g')
-				.classed('peak-group' + gName, true)
+				.classed('peak-group-' + group, true)
 					.append('path')
-						.datum(this.evtsData.slice(0, dataNumber))
-							.attr('d', this.peakPathG)
-							.attr('stroke', '#000')
-							.attr('stroke-width', '3')
-							.attr('fill', 'none');
-
+						.datum(this.groupSearchResults[group])
+						.attr({
+							d: this.peakPathG,
+							stroke: '#000',
+							'stroke-width': 1,
+							fill: 'none',
+							// display: 'none'
+						});
 		}
+
+		
+
 
 	}
 
