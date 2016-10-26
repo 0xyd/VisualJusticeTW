@@ -15,9 +15,6 @@ var EventLine = function () {
 		this.evtLineY = null; // The Y position of the event line.
 		this.eventNodes = null;
 
-		// TODO
-		this.groupSearchResults = {};
-
 		// this.line = null;
 		this.evtInfoBoard = null;
 
@@ -33,6 +30,21 @@ var EventLine = function () {
 		/* Peak Related Properties */
 		this.peakScale = null;
 		this.peakGroupNames = null;
+
+		/* Group Colors */
+		this.groupColors = [{
+			"fill": '#FF8723',
+			"stroke": '#FE7300'
+		}, {
+			"fill": '#095EA4',
+			"stroke": '#4789C0'
+		}, {
+			"fill": '#D9479A',
+			"stroke": '#C5006F'
+		}, {
+			"fill": '#42A74E',
+			"stroke": '#157120'
+		}];
 
 		// peak path generator
 		this.peakPathG = d3.svg.line().x(function (d) {
@@ -382,20 +394,6 @@ var EventLine = function () {
 				var dataLength = d3.min([rows.length, _this4.evtsData.length]);
 
 				_this4._plotPeakGroupData(classifiedData, dataLength);
-
-				/* The below snippet is going to be replaced. */
-				// Calculate the y position of each peak by the scale function.
-				// for ( let i = 0; i < dataLength; i++ ) {
-				// 	this.evtsData[i].y = this.peakScale(rows[i].search_results);
-				// }
-
-				// this.pad.append('g').classed('peak-group', true)
-				// 	.append('path')
-				// 	.datum(this.evtsData.slice(0, dataLength))
-				// 	.attr('d', this.peakPathG)
-				// 	.attr('stroke', '#000')
-				// 	.attr('stroke-width', '3')
-				// 	.attr('fill', 'none');
 			});
 		}
 
@@ -494,11 +492,12 @@ var EventLine = function () {
 	}, {
 		key: '_plotPeakGroupData',
 		value: function _plotPeakGroupData(groupedData, dataNumber) {
+			var _this5 = this;
+
+			var dataset = {};
 
 			// Assign the group names
 			this.peakGroupNames = Object.keys(groupedData);
-
-			// console.log(groupedData);
 
 			// Group the event data and bind the y information.
 			var _iteratorNormalCompletion7 = true;
@@ -506,20 +505,61 @@ var EventLine = function () {
 			var _iteratorError7 = undefined;
 
 			try {
-				for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+				var _loop = function _loop() {
 					var group = _step7.value;
 
-					this.groupSearchResults[group] = [];
+					dataset[group] = [];
+
+					var _loop2 = function _loop2(i) {
+
+						// Create the replicas of event data
+						var d = function (evtData) {
+
+							var _ = {},
+							    keys = Object.keys(evtData); // Keys in the data
+
+							var _iteratorNormalCompletion8 = true;
+							var _didIteratorError8 = false;
+							var _iteratorError8 = undefined;
+
+							try {
+								for (var _iterator8 = keys[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+									var k = _step8.value;
+									_[k] = evtData[k];
+								} // Calculate the y value according to search results.
+							} catch (err) {
+								_didIteratorError8 = true;
+								_iteratorError8 = err;
+							} finally {
+								try {
+									if (!_iteratorNormalCompletion8 && _iterator8.return) {
+										_iterator8.return();
+									}
+								} finally {
+									if (_didIteratorError8) {
+										throw _iteratorError8;
+									}
+								}
+							}
+
+							_['y'] = _this5.peakScale(parseFloat(groupedData[group][i]));
+
+							return _;
+						}(_this5.evtsData[i]);
+
+						dataset[group].push(d);
+					};
 
 					for (var i = 0; i < dataNumber; i++) {
-
-						var d = this.evtsData[i];
-
-						d['y'] = this.peakScale(parseFloat(groupedData[group][i]));
-
-						this.groupSearchResults[group].push(d);
+						_loop2(i);
 					}
+				};
+
+				for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+					_loop();
 				}
+
+				/* Draw the peaks */
 			} catch (err) {
 				_didIteratorError7 = true;
 				_iteratorError7 = err;
@@ -535,62 +575,18 @@ var EventLine = function () {
 				}
 			}
 
-			console.log(this.groupSearchResults);
+			for (var i = 0; i < this.peakGroupNames.length; i++) {
 
-			var _iteratorNormalCompletion8 = true;
-			var _didIteratorError8 = false;
-			var _iteratorError8 = undefined;
+				var group = this.peakGroupNames[i];
 
-			try {
-				for (var _iterator8 = this.peakGroupNames[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-					var group = _step8.value;
-
-					this.pad.append('g').classed('peak-group-' + group, true).append('path').datum(this.groupSearchResults[group]).attr({
-						d: this.peakPathG,
-						stroke: '#000',
-						'stroke-width': 1,
-						fill: 'none'
-					});
-				}
-
-				// Depreciate the below code
-				// for ( let i = 0; i < dataNumber; i++ ) {
-
-				// 	for ( let gName of this.peakGroupNames ) {
-
-				// 		this.evtsData[i][gName] = {
-				// 			y: this.peakScale(parseFloat(groupedData[gName][i]))
-				// 		};
-				// 	}
-				// }
-
-				// for ( let gName of this.peakGroupNames ) {
-
-				// 	console.log('bound data check:', this.evtsData.slice(0, dataNumber));
-
-				// 	this.pad.append('g')
-				// 		.classed('peak-group-' + gName, true)
-				// 			.append('path')
-				// 				.datum(this.evtsData.slice(0, dataNumber))
-				// 					.attr('d', this.peakPathG)
-				// 					.attr('stroke', '#000')
-				// 					.attr('stroke-width', '3')
-				// 					.attr('fill', 'none');
-
-				// }
-			} catch (err) {
-				_didIteratorError8 = true;
-				_iteratorError8 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion8 && _iterator8.return) {
-						_iterator8.return();
-					}
-				} finally {
-					if (_didIteratorError8) {
-						throw _iteratorError8;
-					}
-				}
+				this.pad.append('g').classed('peak-group-' + group, true).append('path').datum(dataset[group]).attr({
+					d: this.peakPathG,
+					stroke: '#000',
+					'stroke-width': 1,
+					fill: this.groupColors[i].fill,
+					stroke: this.groupColors[i].stroke,
+					opacity: 0.8
+				});
 			}
 		}
 
@@ -598,7 +594,6 @@ var EventLine = function () {
 
 	}, {
 		key: '_calY',
-		// display: 'none'
 		value: function _calY() {
 
 			this.evtLineY = parseFloat(this.pad.style('height').replace('px', '')) - 30;
@@ -606,7 +601,7 @@ var EventLine = function () {
 	}, {
 		key: '_drawPath',
 		value: function _drawPath(circles) {
-			var _this5 = this;
+			var _this6 = this;
 
 			var cPoses = [];
 
@@ -631,7 +626,7 @@ var EventLine = function () {
 			return circles.each(function (d, i) {
 				cPoses.push({
 					cx: parseInt(d3.select(circles[0][i]).attr('cx').replace('px', '')),
-					cy: _this5.evtLineY
+					cy: _this6.evtLineY
 				});
 
 				// Append a last point for tailing.
@@ -646,7 +641,7 @@ var EventLine = function () {
 					});
 				}
 			}).call(function (circles) {
-				_this5.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this5.line(cPoses)).attr('stroke-width', '2').attr('stroke', '#000').attr('marker-end', 'url(#Continue)');
+				_this6.evtlineG.insert('g', ':first-child').classed('path-group', true).append('path').attr('d', _this6.line(cPoses)).attr('stroke-width', '2').attr('stroke', '#000').attr('marker-end', 'url(#Continue)');
 			});
 		}
 
@@ -655,7 +650,7 @@ var EventLine = function () {
 	}, {
 		key: '_markEvts',
 		value: function _markEvts(circles) {
-			var _this6 = this;
+			var _this7 = this;
 
 			var data = [];
 
@@ -678,7 +673,7 @@ var EventLine = function () {
 					if (d) return d;
 				});
 
-				_this6.evtInfoBoard.selectAll('div').data(reformedData).enter().append('div').classed('event-info', true).style({
+				_this7.evtInfoBoard.selectAll('div').data(reformedData).enter().append('div').classed('event-info', true).style({
 					left: function left(d, i) {
 						return pl + parseFloat(d.x) + -100 + 'px';
 					}
@@ -738,7 +733,6 @@ var EventLine = function () {
 			/*
    	Adding the dates that does not have any events.
    */
-			// let reproducedData = [];
 			for (var j = 1; j < l; j++) {
 
 				this.evtsData.push(data[j - 1]);
@@ -749,17 +743,17 @@ var EventLine = function () {
 					var endDate = data[j].dateObj,
 					    startDate = data[j - 1].dateObj,
 					    diffDays = (endDate - startDate) / (24 * 60 * 60 * 1000) - 1,
-					    _ = [];
+					    _2 = [];
 
 					for (var k = 0; k < Math.abs(diffDays); k++) {
 
-						_.push({
+						_2.push({
 							// 'x': parseFloat(data[j-1].x) + 125 + 50*(k+1),
 							'Event': '',
 							'dateObj': new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + 1 + k)
 						});
 					}
-					this.evtsData = this.evtsData.concat(_);
+					this.evtsData = this.evtsData.concat(_2);
 				}
 			}
 
@@ -767,6 +761,7 @@ var EventLine = function () {
 				var svg = d3.select('svg'),
 				    w = parseInt(svg.style('width').replace('px', '')),
 				   
+
 				// Value of Padding right and left
 				pl = parseInt(svg.style('padding-left').replace('px', '')),
 				    pr = parseInt(svg.style('padding-right').replace('px', ''));

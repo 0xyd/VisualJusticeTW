@@ -9,9 +9,6 @@ class EventLine {
 		this.evtLineY = null; // The Y position of the event line.
 		this.eventNodes = null;
 
-		// TODO
-		this.groupSearchResults = {};
-
 		// this.line = null;
 		this.evtInfoBoard = null;
 
@@ -27,6 +24,26 @@ class EventLine {
 		/* Peak Related Properties */
 		this.peakScale = null;
 		this.peakGroupNames = null;
+
+		/* Group Colors */
+		this.groupColors = [
+			{
+				"fill"  : '#FF8723',
+				"stroke": '#FE7300'
+			},
+			{
+				"fill"  : '#095EA4',
+				"stroke": '#4789C0'
+			},
+			{
+				"fill"  : '#D9479A',
+				"stroke": '#C5006F'
+			},
+			{
+				"fill"  : '#42A74E',
+				"stroke": '#157120'
+			}
+		];
 
 		// peak path generator
 		this.peakPathG = 
@@ -355,20 +372,6 @@ class EventLine {
 
 					this._plotPeakGroupData(classifiedData, dataLength);
 
-					/* The below snippet is going to be replaced. */
-					// Calculate the y position of each peak by the scale function.
-					// for ( let i = 0; i < dataLength; i++ ) {
-					// 	this.evtsData[i].y = this.peakScale(rows[i].search_results);
-					// }
-					
-					// this.pad.append('g').classed('peak-group', true)
-					// 	.append('path')
-					// 	.datum(this.evtsData.slice(0, dataLength))
-					// 	.attr('d', this.peakPathG)
-					// 	.attr('stroke', '#000')
-					// 	.attr('stroke-width', '3')
-					// 	.attr('fill', 'none');
-
 				})
 
 	}
@@ -402,46 +405,55 @@ class EventLine {
 	/* Group the peak data */
 	_plotPeakGroupData(groupedData, dataNumber) {
 
+		let dataset = {};
+
 		// Assign the group names
 		this.peakGroupNames = Object.keys(groupedData);
-
+		
 		// Group the event data and bind the y information.
 		for ( let group of this.peakGroupNames ) {
 
-			this.groupSearchResults[group] = [];
+			dataset[group] = [];
 
 			for ( let i = 0; i < dataNumber; i++ ) {
 
-				let d = this.evtsData[i];
+				// Create the replicas of event data
+				let d = ((evtData) => {
+					
+					let _ = {},
+					   keys = Object.keys(evtData); // Keys in the data
 
-				d['y'] = 
-					this.peakScale(
-						parseFloat(groupedData[group][i]));
+					for ( let k of keys ) _[k] = evtData[k];
 
-				this.groupSearchResults[group].push(d);
+					// Calculate the y value according to search results.
+					_['y'] = this.peakScale(parseFloat(groupedData[group][i]))
+
+					return _
+
+				})(this.evtsData[i]);
+
+				dataset[group].push(d);
 			}
 		}
 
-		console.log(this.groupSearchResults);
+		/* Draw the peaks */
+		for ( let i = 0; i < this.peakGroupNames.length; i++ ) {
 
-		for ( let group of this.peakGroupNames ) {
+			let group = this.peakGroupNames[i];
 
 			this.pad.append('g')
 				.classed('peak-group-' + group, true)
 					.append('path')
-						.datum(this.groupSearchResults[group])
+						.datum(dataset[group])
 						.attr({
 							d: this.peakPathG,
 							stroke: '#000',
 							'stroke-width': 1,
-							fill: 'none',
-							// display: 'none'
+							fill:   this.groupColors[i].fill,
+							stroke: this.groupColors[i].stroke,
+							opacity: 0.8
 						});
 		}
-
-		
-
-
 	}
 
 	// Calculate y postion of the line.
@@ -585,7 +597,6 @@ class EventLine {
 		/*
 			Adding the dates that does not have any events.
 		*/
-		// let reproducedData = [];
 		for ( let j = 1; j < l; j++ ) {
 
 			this.evtsData.push(data[j-1]);
@@ -625,6 +636,7 @@ class EventLine {
 					(() => {
 						let svg = d3.select('svg'),
 							w = parseInt(svg.style('width').replace('px', '')),
+
 							// Value of Padding right and left
 							pl = parseInt(svg.style('padding-left').replace('px', '')),
 							pr = parseInt(svg.style('padding-right').replace('px', ''));
