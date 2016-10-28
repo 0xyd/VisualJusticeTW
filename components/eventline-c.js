@@ -53,6 +53,13 @@ var EventLine = function () {
 			return parseFloat(d.y);
 		}).interpolate('basis');
 
+		// TODO: Use area to draw path instead.
+		this.areaG = d3.svg.area().x(function (d) {
+			return parseFloat(d.x);
+		}).y1(function (d) {
+			return parseFloat(d.y);
+		}).interpolate('monotone');
+
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
 	}
 
@@ -311,25 +318,74 @@ var EventLine = function () {
 					return parseFloat(d);
 				})]).range([h - 50, 0]);
 
-				// TODO: Flatten events data because some data share the same date.
+				/* Flatten events data because some data share the same date.*/
 				var flattenEvtData = function (evtsData) {
 
-					console.log(evtsData);
+					var newEvtData = [];
 
-					var _ = [];
+					for (var i = 0; i < evtsData.length;) {
 
-					for (var i = 0; i < evtsData.length - 1; i++) {
+						var j = i,
+						    skip = 1,
+						    replica = {};
 
-						while (evtsData[i + 1].dateObj === evtsData[i].dateObj) {
-							console.log('testing');
+						// Compress the events with same date
+						// and calculate the mid point as the new x
+						if (i < evtsData.length - 1) {
+							while (evtsData[j].dateObj.getTime() === evtsData[j + 1].dateObj.getTime()) {
+								++j;++skip;
+							}
 						}
+
+						// New x position is the middle point of sequent event dots.
+						var new_x = (parseFloat(evtsData[j].x) + parseFloat(evtsData[i].x)) / 2;
+
+						// Retrieve the keys of event data
+						// which is not equal to "x"
+						var keys = Object.keys(evtsData[i]).filter(function (d) {
+							return d !== 'x';
+						});
+
+						// Replicate the event data and set the x with new evaluated result.
+						var _iteratorNormalCompletion4 = true;
+						var _didIteratorError4 = false;
+						var _iteratorError4 = undefined;
+
+						try {
+							for (var _iterator4 = keys[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+								var k = _step4.value;
+
+								replica[k] = evtsData[i][k];
+							}
+						} catch (err) {
+							_didIteratorError4 = true;
+							_iteratorError4 = err;
+						} finally {
+							try {
+								if (!_iteratorNormalCompletion4 && _iterator4.return) {
+									_iterator4.return();
+								}
+							} finally {
+								if (_didIteratorError4) {
+									throw _iteratorError4;
+								}
+							}
+						}
+
+						replica['x'] = new_x;
+
+						newEvtData.push(replica);
+
+						if (skip) i += skip;else i++;
 					}
+
+					return newEvtData;
 				}(_this4.evtsData);
 
-				// Compress the data because these two dataset are not with the same length.
-				var dataLength = d3.min([rows.length, _this4.evtsData.length]);
+				// Compress the data because these two dataset are not always with the same length.
+				var dataLength = d3.min([rows.length, flattenEvtData.length]);
 
-				_this4._plotPeakGroupData(classifiedData, dataLength);
+				_this4._plotPeakGroupData(classifiedData, flattenEvtData, dataLength);
 			});
 		}
 
@@ -348,63 +404,16 @@ var EventLine = function () {
 			});
 
 			/* Initialize the data */
-			var _iteratorNormalCompletion4 = true;
-			var _didIteratorError4 = false;
-			var _iteratorError4 = undefined;
-
-			try {
-				for (var _iterator4 = names[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-					var name = _step4.value;
-
-					groupData[name] = [];
-				} /* Put the data inside the groupData */
-			} catch (err) {
-				_didIteratorError4 = true;
-				_iteratorError4 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion4 && _iterator4.return) {
-						_iterator4.return();
-					}
-				} finally {
-					if (_didIteratorError4) {
-						throw _iteratorError4;
-					}
-				}
-			}
-
 			var _iteratorNormalCompletion5 = true;
 			var _didIteratorError5 = false;
 			var _iteratorError5 = undefined;
 
 			try {
-				for (var _iterator5 = rowData[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-					var row = _step5.value;
-					var _iteratorNormalCompletion6 = true;
-					var _didIteratorError6 = false;
-					var _iteratorError6 = undefined;
+				for (var _iterator5 = names[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+					var name = _step5.value;
 
-					try {
-						for (var _iterator6 = names[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-							var name = _step6.value;
-
-							groupData[name].push(row[name]);
-						}
-					} catch (err) {
-						_didIteratorError6 = true;
-						_iteratorError6 = err;
-					} finally {
-						try {
-							if (!_iteratorNormalCompletion6 && _iterator6.return) {
-								_iterator6.return();
-							}
-						} finally {
-							if (_didIteratorError6) {
-								throw _iteratorError6;
-							}
-						}
-					}
-				}
+					groupData[name] = [];
+				} /* Put the data inside the groupData */
 			} catch (err) {
 				_didIteratorError5 = true;
 				_iteratorError5 = err;
@@ -420,29 +429,81 @@ var EventLine = function () {
 				}
 			}
 
+			var _iteratorNormalCompletion6 = true;
+			var _didIteratorError6 = false;
+			var _iteratorError6 = undefined;
+
+			try {
+				for (var _iterator6 = rowData[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+					var row = _step6.value;
+					var _iteratorNormalCompletion7 = true;
+					var _didIteratorError7 = false;
+					var _iteratorError7 = undefined;
+
+					try {
+						for (var _iterator7 = names[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+							var name = _step7.value;
+
+							groupData[name].push(row[name]);
+						}
+					} catch (err) {
+						_didIteratorError7 = true;
+						_iteratorError7 = err;
+					} finally {
+						try {
+							if (!_iteratorNormalCompletion7 && _iterator7.return) {
+								_iterator7.return();
+							}
+						} finally {
+							if (_didIteratorError7) {
+								throw _iteratorError7;
+							}
+						}
+					}
+				}
+			} catch (err) {
+				_didIteratorError6 = true;
+				_iteratorError6 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion6 && _iterator6.return) {
+						_iterator6.return();
+					}
+				} finally {
+					if (_didIteratorError6) {
+						throw _iteratorError6;
+					}
+				}
+			}
+
 			return groupData;
 		}
 
-		/* Group the peak data */
+		/* Plot the grouping peak data by bounding the related data. */
 
 	}, {
 		key: '_plotPeakGroupData',
-		value: function _plotPeakGroupData(groupedData, dataNumber) {
+		value: function _plotPeakGroupData(peakData, evtsData, dataNumber) {
 			var _this5 = this;
+
+			// Set up x0 and y0 for area generator
+			console.log('check:');
+			console.log(parseFloat(this.pad.style('height').replace('px', '')));
+			this.areaG.y0(this.evtLineY - 20);
 
 			var dataset = {};
 
 			// Assign the group names
-			this.peakGroupNames = Object.keys(groupedData);
+			this.peakGroupNames = Object.keys(peakData);
 
 			// Group the event data and bind the y information.
-			var _iteratorNormalCompletion7 = true;
-			var _didIteratorError7 = false;
-			var _iteratorError7 = undefined;
+			var _iteratorNormalCompletion8 = true;
+			var _didIteratorError8 = false;
+			var _iteratorError8 = undefined;
 
 			try {
 				var _loop = function _loop() {
-					var group = _step7.value;
+					var group = _step8.value;
 
 					dataset[group] = [];
 
@@ -454,34 +515,34 @@ var EventLine = function () {
 							var _ = {},
 							    keys = Object.keys(evtData); // Keys in the data
 
-							var _iteratorNormalCompletion8 = true;
-							var _didIteratorError8 = false;
-							var _iteratorError8 = undefined;
+							var _iteratorNormalCompletion10 = true;
+							var _didIteratorError10 = false;
+							var _iteratorError10 = undefined;
 
 							try {
-								for (var _iterator8 = keys[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-									var k = _step8.value;
+								for (var _iterator10 = keys[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+									var k = _step10.value;
 									_[k] = evtData[k];
 								} // Calculate the y value according to search results.
 							} catch (err) {
-								_didIteratorError8 = true;
-								_iteratorError8 = err;
+								_didIteratorError10 = true;
+								_iteratorError10 = err;
 							} finally {
 								try {
-									if (!_iteratorNormalCompletion8 && _iterator8.return) {
-										_iterator8.return();
+									if (!_iteratorNormalCompletion10 && _iterator10.return) {
+										_iterator10.return();
 									}
 								} finally {
-									if (_didIteratorError8) {
-										throw _iteratorError8;
+									if (_didIteratorError10) {
+										throw _iteratorError10;
 									}
 								}
 							}
 
-							_['y'] = _this5.peakScale(parseFloat(groupedData[group][i]));
+							_['y'] = _this5.peakScale(parseFloat(peakData[group][i]));
 
 							return _;
-						}(_this5.evtsData[i]);
+						}(evtsData[i]);
 
 						dataset[group].push(d);
 					};
@@ -491,22 +552,50 @@ var EventLine = function () {
 					}
 				};
 
-				for (var _iterator7 = this.peakGroupNames[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+				for (var _iterator8 = this.peakGroupNames[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
 					_loop();
+				}
+
+				// Testing
+			} catch (err) {
+				_didIteratorError8 = true;
+				_iteratorError8 = err;
+			} finally {
+				try {
+					if (!_iteratorNormalCompletion8 && _iterator8.return) {
+						_iterator8.return();
+					}
+				} finally {
+					if (_didIteratorError8) {
+						throw _iteratorError8;
+					}
+				}
+			}
+
+			console.log("==========================");
+			var _iteratorNormalCompletion9 = true;
+			var _didIteratorError9 = false;
+			var _iteratorError9 = undefined;
+
+			try {
+				for (var _iterator9 = this.peakGroupNames[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+					var _group = _step9.value;
+
+					console.log(dataset[_group]);
 				}
 
 				/* Draw the peaks */
 			} catch (err) {
-				_didIteratorError7 = true;
-				_iteratorError7 = err;
+				_didIteratorError9 = true;
+				_iteratorError9 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion7 && _iterator7.return) {
-						_iterator7.return();
+					if (!_iteratorNormalCompletion9 && _iterator9.return) {
+						_iterator9.return();
 					}
 				} finally {
-					if (_didIteratorError7) {
-						throw _iteratorError7;
+					if (_didIteratorError9) {
+						throw _iteratorError9;
 					}
 				}
 			}
@@ -516,25 +605,56 @@ var EventLine = function () {
 				var group = this.peakGroupNames[i];
 
 				this.pad.append('g').classed('peak-group-' + group, true).append('path').datum(dataset[group]).attr({
-					d: this.peakPathG,
+					d: this.areaG,
 					stroke: '#000',
 					'stroke-width': 1,
 					fill: this.groupColors[i].fill,
 					stroke: this.groupColors[i].stroke,
-					opacity: 0.8
-				}).on('mouseenter', function (d) {
-
-					var x = window.event.pageX;
-
-					// Return the
-					var currentDate = _this5.events.find(function (d, i, ary) {
-
-						return x > parseInt(d.x);
-					});
-
-					console.log(currentDate);
+					opacity: 0.3
 				});
+				/* TODO: Hover event. */
+				// .on('mouseenter', (d) => {
+
+				// 	let x = window.event.pageX;
+
+				// 	// Return the
+				// 	let currentDate = this.events.find((d, i, ary) => {
+
+				// 		return x > parseInt(d.x)
+
+				// 	});
+
+				// 	console.log(currentDate);
+
+				// });
 			}
+
+			// Ploting for testing purpose
+			// this.pad.append('g').classed('test-google_search_results#輔大性侵', true)
+			// 	.selectAll('circle')
+			// 	.data(dataset['google_search_results#輔大性侵']).enter()
+			// 		.append('circle')
+			// 			.attr({
+			// 				r: 5,
+			// 				cx: (d) => { return parseFloat(d.x) },
+			// 				cy: (d) => { return parseFloat(d.y) },
+			// 				// fill: this.groupColors[i].fill
+			// 			});
+
+			// this.pad.append('g')
+			// 	.classed('peak-group-google_search_results#輔大性侵', true)
+			// 		.append('path')
+			// 			.datum(dataset['google_search_results#輔大性侵'])
+			// 			.attr({
+			// 				d: this.areaG,
+			// 				stroke: '#000',
+			// 				'stroke-width': 1,
+			// 				// fill:   this.groupColors[i].fill,
+			// 				// stroke: this.groupColors[i].stroke,
+			// 				fill: '#000',
+			// 				stroke: '#000',
+			// 				opacity: 0.8
+			// 			});
 		}
 
 		// Calculate y postion of the line.
@@ -643,13 +763,13 @@ var EventLine = function () {
 			var l = data.length;
 
 			// Generate the date objects for events
-			var _iteratorNormalCompletion9 = true;
-			var _didIteratorError9 = false;
-			var _iteratorError9 = undefined;
+			var _iteratorNormalCompletion11 = true;
+			var _didIteratorError11 = false;
+			var _iteratorError11 = undefined;
 
 			try {
-				for (var _iterator9 = data[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-					var d = _step9.value;
+				for (var _iterator11 = data[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+					var d = _step11.value;
 
 					var parsedTime = d['Time'].match(this.timeRegExp);
 
@@ -659,16 +779,16 @@ var EventLine = function () {
 
 				// Sort the event in ascending order.
 			} catch (err) {
-				_didIteratorError9 = true;
-				_iteratorError9 = err;
+				_didIteratorError11 = true;
+				_iteratorError11 = err;
 			} finally {
 				try {
-					if (!_iteratorNormalCompletion9 && _iterator9.return) {
-						_iterator9.return();
+					if (!_iteratorNormalCompletion11 && _iterator11.return) {
+						_iterator11.return();
 					}
 				} finally {
-					if (_didIteratorError9) {
-						throw _iteratorError9;
+					if (_didIteratorError11) {
+						throw _iteratorError11;
 					}
 				}
 			}

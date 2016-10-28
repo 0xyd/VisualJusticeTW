@@ -51,6 +51,13 @@ class EventLine {
 				.x((d) => { return parseFloat(d.x) })
 				.y((d) => { return parseFloat(d.y) })
 				.interpolate('basis');
+
+		// TODO: Use area to draw path instead.
+		this.areaG = 
+			d3.svg.area()
+				.x((d) => { return parseFloat(d.x) })
+				.y1((d) => { return parseFloat(d.y) })
+				.interpolate('monotone');
 		
 
 		this.timeRegExp = new RegExp('^(\\d+)\/(\\d+)\/(\\d+)$');
@@ -257,6 +264,9 @@ class EventLine {
 					let h = 
 						parseInt(this.pad.style('height').replace('px', ''));
 
+					
+
+
 					let classifiedData = 
 						this._classifyPeak(rows);
 
@@ -283,30 +293,60 @@ class EventLine {
 							])
 							.range([h-50, 0]);
 
-					// TODO: Flatten events data because some data share the same date.
+					/* Flatten events data because some data share the same date.*/
 					let flattenEvtData = ((evtsData) => {
 
-						console.log(evtsData);
+						let newEvtData = [];
 
-						let _ = [];
+						for ( let i = 0; i < evtsData.length; ) {
+							
+							let j = i,
+								skip = 1,
+								replica = {};
 
-						for ( let i = 0; i < evtsData.length-1; i++ ) {
+							// Compress the events with same date 
+							// and calculate the mid point as the new x
+							if (i < evtsData.length-1) {
+								while ( evtsData[j].dateObj.getTime() === 
+										evtsData[j+1].dateObj.getTime() ) {
+									++j; ++skip;
+								}
+							}
+							
 
-							while ( evtsData[i+1].dateObj === evtsData[i].dateObj ) 
-								console.log('testing');
+							// New x position is the middle point of sequent event dots.
+							let new_x = 
+								(parseFloat(evtsData[j].x) + 
+									parseFloat(evtsData[i].x)) / 2;
+
+							// Retrieve the keys of event data 
+							// which is not equal to "x"
+							let keys = Object.keys(evtsData[i]).filter((d) => { return d !== 'x' })
+							
+							// Replicate the event data and set the x with new evaluated result.
+							for ( let k of keys )
+								replica[k] = evtsData[i][k]
+							replica['x'] = new_x;
+
+							newEvtData.push(replica);
+
+							if (skip) i+=skip;
+							else i++;
+							
 						}
 
+						return newEvtData
 
 					})(this.evtsData);
 
-					// Compress the data because these two dataset are not with the same length.
+					// Compress the data because these two dataset are not always with the same length.
 					let dataLength = 
 						d3.min([
 							rows.length,
-							this.evtsData.length
+							flattenEvtData.length
 						]);
 
-					this._plotPeakGroupData(classifiedData, dataLength);
+					this._plotPeakGroupData(classifiedData, flattenEvtData, dataLength);
 
 				})
 
@@ -338,13 +378,18 @@ class EventLine {
 		return groupData
 	}
 
-	/* Group the peak data */
-	_plotPeakGroupData(groupedData, dataNumber) {
+	/* Plot the grouping peak data by bounding the related data. */
+	_plotPeakGroupData(peakData, evtsData, dataNumber) {
+
+		// Set up x0 and y0 for area generator
+		console.log('check:');
+		console.log(parseFloat(this.pad.style('height').replace('px', '')));
+		this.areaG.y0(this.evtLineY - 20);
 
 		let dataset = {};
 
 		// Assign the group names
-		this.peakGroupNames = Object.keys(groupedData);
+		this.peakGroupNames = Object.keys(peakData);
 		
 		// Group the event data and bind the y information.
 		for ( let group of this.peakGroupNames ) {
@@ -362,15 +407,23 @@ class EventLine {
 					for ( let k of keys ) _[k] = evtData[k];
 
 					// Calculate the y value according to search results.
-					_['y'] = this.peakScale(parseFloat(groupedData[group][i]))
+					_['y'] = this.peakScale(parseFloat(peakData[group][i]))
 
 					return _
 
-				})(this.evtsData[i]);
+				})(evtsData[i]);
 
 				dataset[group].push(d);
 			}
+
 		}
+
+		// Testing
+		console.log("==========================");
+		for ( let group of this.peakGroupNames ) {
+			console.log(dataset[group]);
+		}
+
 
 		/* Draw the peaks */
 		for ( let i = 0; i < this.peakGroupNames.length; i++ ) {
@@ -382,31 +435,61 @@ class EventLine {
 					.append('path')
 						.datum(dataset[group])
 						.attr({
-							d: this.peakPathG,
+							d: this.areaG,
 							stroke: '#000',
 							'stroke-width': 1,
 							fill:   this.groupColors[i].fill,
 							stroke: this.groupColors[i].stroke,
-							opacity: 0.8
-						})
-					.on('mouseenter', (d) => {
-
-						let x = window.event.pageX;
-
-						// Return the 
-						let currentDate = this.events.find((d, i, ary) => {
-
-
-
-							return x > parseInt(d.x)
-
+							opacity: 0.3
 						});
+					/* TODO: Hover event. */
+					// .on('mouseenter', (d) => {
 
-						console.log(currentDate);
+					// 	let x = window.event.pageX;
+
+					// 	// Return the 
+					// 	let currentDate = this.events.find((d, i, ary) => {
+
+					// 		return x > parseInt(d.x)
+
+					// 	});
+
+					// 	console.log(currentDate);
 
 
-					});
+					// });
+
+			
+			
+
 		}
+
+		// Ploting for testing purpose
+			// this.pad.append('g').classed('test-google_search_results#輔大性侵', true)
+			// 	.selectAll('circle')
+			// 	.data(dataset['google_search_results#輔大性侵']).enter()
+			// 		.append('circle')
+			// 			.attr({
+			// 				r: 5,
+			// 				cx: (d) => { return parseFloat(d.x) },
+			// 				cy: (d) => { return parseFloat(d.y) },
+			// 				// fill: this.groupColors[i].fill
+			// 			});
+
+			// this.pad.append('g')
+			// 	.classed('peak-group-google_search_results#輔大性侵', true)
+			// 		.append('path')
+			// 			.datum(dataset['google_search_results#輔大性侵'])
+			// 			.attr({
+			// 				d: this.areaG,
+			// 				stroke: '#000',
+			// 				'stroke-width': 1,
+			// 				// fill:   this.groupColors[i].fill,
+			// 				// stroke: this.groupColors[i].stroke,
+			// 				fill: '#000',
+			// 				stroke: '#000',
+			// 				opacity: 0.8
+			// 			});
 	}
 
 	// Calculate y postion of the line.
