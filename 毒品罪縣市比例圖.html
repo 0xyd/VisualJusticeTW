@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<svg width="800px" height="600px"></svg>
+	<script type="text/javascript" src='.\libs\d3.js'></script>
+	<script type="text/javascript" src="http://d3js.org/topojson.v1.min.js"></script>
+	<script type="text/javascript">
+		 d3.json("./police/map/county.json", function(topodata) {
+		 	
+      		var features = topojson.feature(topodata, topodata.objects["County_MOI_1041215"]).features;
+      		// 這裡要注意的是 topodata.objects["county"] 中的 "county" 為原本 shp 的檔名
+      		var path = d3.geo.path().projection( // 路徑產生器
+    			d3.geo.mercator().center([121,24]).scale(6000) // 座標變換函式
+  			);
+  			d3.select("svg").selectAll("path").data(features)
+    			.enter().append("path").attr("d",path);
+    		var sevenCrimes = null;
+
+    		getJsonFile('./police/104台灣各縣市七宗罪統計地圖.json').then(function(result) {
+
+    			// Seven crimes get. However the type of results is as string.
+    			// Use the JSON parse to string into JSON object.
+    			sevenCrimes = JSON.parse(result);
+
+    			// Set up the linear color range.
+    			var colorRange = d3.scale.linear()
+    				.domain([
+						d3.min(sevenCrimes, dataFilter),
+						d3.max(sevenCrimes, dataFilter)
+    				]).range(['#FFB88C', '#DE6262']);
+
+    			function dataFilter(d) {
+    				return d['毒品']
+    			}
+
+    			/*Paint the colors on the Taiwan map.*/
+    			// Traverse through the features and append the data to each country.
+    			for (var i = features.length-1; i >= 0; i --) {
+    				features[i].properties.sevenCrimes = sevenCrimes.find(function(d) {
+    					return d["縣市"] === features[i].properties.C_Name
+    				});
+    			}
+
+    			// Select the whole countries 
+    			d3.select('svg').selectAll('path').data(features).attr({
+    				d: path,
+    				fill: function(d) {
+    					return d.properties.sevenCrimes ? 
+    						colorRange(d.properties.sevenCrimes['毒品']) : '#000'
+    				}
+    			});
+
+    		});
+    	});
+
+		/* Get the json file. */
+		function getJsonFile(path) {
+
+			var p = new Promise(function(resolve, reject) {
+
+				var r = new XMLHttpRequest();
+
+				// The event envokes when the load task is finished
+				r.addEventListener("load", loadListener.bind(r, resolve));
+
+				// The progress event 
+				r.addEventListener('progress', progressListener);
+				r.open('GET', path);
+				r.send();
+			});
+
+			return p
+		}
+
+		function progressListener(oEvent) {
+			
+			if (oEvent.lengthComputable) {
+    			var percentComplete = oEvent.loaded / oEvent.total;
+    			console.log(percentComplete);
+    			// ...
+  			} else {
+  			  // Unable to compute progress information since the total size is unknown
+  			}
+		}
+
+		function loadListener(resolve) {
+			
+			if (this.status === 200) {
+				resolve(this.responseText);
+			} else {
+				console.log('Get action is failed');
+			}
+		}
+  
+	</script>
+</body>
+</html>
