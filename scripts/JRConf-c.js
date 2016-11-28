@@ -8,28 +8,11 @@ var JRConfHeader = React.createClass({
 			{ className: "row jrcf-header" },
 			React.createElement(
 				"div",
-				{ className: "col-md-9 page-title" },
+				{ className: "col-md-12 title" },
 				React.createElement(
 					"span",
 					null,
-					React.createElement(
-						"h2",
-						null,
-						"總統府司法改革國是會議觀測站"
-					)
-				)
-			),
-			React.createElement(
-				"div",
-				{ className: "col-md-2 col-md-offset-1" },
-				React.createElement(
-					"span",
-					null,
-					React.createElement(
-						"h2",
-						null,
-						"籌備委員"
-					)
+					"總統府司法改革國是會議觀測站－委員名單"
 				)
 			)
 		);
@@ -78,7 +61,13 @@ var JRConfBodyCellFigure = React.createClass({
 						null,
 						this.props.position
 					)
-				)
+				),
+				this.props.is_left ? React.createElement(JRConfNextPrevBar, {
+					is_first: this.props.is_first,
+					prev_evt: this.props.prev_evt,
+					is_last: this.props.is_last,
+					next_evt: this.props.next_evt,
+					current_slide_index: this.props.current_slide_index }) : null
 			)
 		);
 	}
@@ -108,12 +97,12 @@ var JRConfBodyCellDesc = React.createClass({
 					{ className: "context" },
 					this.props.context
 				),
-				React.createElement(JRConfNextPrevBar, {
+				this.props.is_left ? React.createElement(JRConfNextPrevBar, {
 					is_first: this.props.is_first,
 					prev_evt: this.props.prev_evt,
 					is_last: this.props.is_last,
 					next_evt: this.props.next_evt,
-					current_slide_index: this.props.current_slide_index })
+					current_slide_index: this.props.current_slide_index }) : null
 			)
 		);
 	}
@@ -130,11 +119,18 @@ var JRConfBodyCellRadar = React.createClass({
 	},
 	componentDidMount: function componentDidMount() {
 
-		this.state.radar.importData(this.props.radar_data).draw().hightlightRadarArea(0);
+		console.log('check:');
+		console.log(this.props.radar_data);
+
+		if (this.props.radar_data) {
+			this.state.radar.importData(this.props.radar_data.filter(function (d) {
+				return d;
+			})).draw().hightlightRadarArea(0);
+		}
 	},
 	componentWillUpdate: function componentWillUpdate(nextProps, nextState) {
 
-		this.state.radar.hightlightRadarArea(nextProps.radar_index);
+		if (this.props.radar_data) this.state.radar.hightlightRadarArea(nextProps.radar_index - 2);
 	},
 	render: function render() {
 
@@ -190,10 +186,12 @@ var JRConfBodyCell = React.createClass({
 			"div",
 			{ className: "col-md-4 jrcf-article-cell" },
 			is_figure ? React.createElement(JRConfBodyCellFigure, {
+				is_left: this.props.is_left,
 				fig_name: fig_name,
 				img_path: img_path, img_credit: img_credit,
 				title: title, position: position }) : null,
 			is_desc ? React.createElement(JRConfBodyCellDesc, {
+				is_left: this.props.is_left,
 				is_first: this.props.is_first,
 				prev_evt: this.props.prev_evt,
 				is_last: this.props.is_last,
@@ -201,6 +199,7 @@ var JRConfBodyCell = React.createClass({
 				current_slide_index: this.props.current_slide_index,
 				title: title, context: context }) : null,
 			is_radar ? React.createElement(JRConfBodyCellRadar, {
+				is_left: this.props.is_left,
 				fig_name: fig_name,
 				radar_index: this.props.radar_index,
 				radar_data: this.props.radar_data }) : null
@@ -290,7 +289,7 @@ var JRConfBody = React.createClass({
 	getInitialState: function getInitialState() {
 
 		return {
-			slide_index: 1,
+			slide_index: 0,
 			slide_all_data: null,
 			slide_max_number: null,
 			slide_property: '',
@@ -308,9 +307,10 @@ var JRConfBody = React.createClass({
 			    radar_data = data.map(function (d, i) {
 
 				if (d.left.is_radar) return d.left.radar_data;else return null;
-			}).filter(function (d, i) {
-				return d;
 			});
+			// .filter(function(d, i) { return d });
+
+			console.log(radar_data);
 
 			_this.setState({
 				'slide_all_data': data,
@@ -318,7 +318,6 @@ var JRConfBody = React.createClass({
 				'slide_max_number': slide_data.length,
 				'radar_data': radar_data,
 				'radar_index': 0
-				// 'radar_ids': radar_ids
 			});
 		});
 	},
@@ -336,13 +335,15 @@ var JRConfBody = React.createClass({
 				radar_data: this.state.radar_data,
 				radar_index: this.state.radar_index,
 				data: this.state.slide_property.left }),
-			React.createElement(JRConfBodyCell, { data: this.state.slide_property.middle }),
+			React.createElement(JRConfBodyCell, {
+				data: this.state.slide_property.middle }),
 			React.createElement(JRConfBodyCell, {
 				is_first: is_first,
 				prev_evt: this.prev_slide,
 				is_last: is_last,
 				next_evt: this.next_slide,
 				current_slide_index: this.state.slide_index,
+				is_left: true,
 				data: this.state.slide_property.right })
 		);
 	}
@@ -351,9 +352,60 @@ var JRConfBody = React.createClass({
 var JRConfFooter = React.createClass({
 	displayName: "JRConfFooter",
 	render: function render() {
-		return React.createElement("footer", { className: "row" });
+
+		var facebookLikeStyle = {
+			border: 'none',
+			overflow: 'hidden'
+		};
+
+		return React.createElement(
+			"footer",
+			{ className: "row" },
+			React.createElement("span", { className: "ver-helper" }),
+			React.createElement("iframe", {
+				src: "https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858",
+				width: "150", height: "20", style: facebookLikeStyle,
+				scrolling: "no", frameborder: "0", allowTransparency: "true" }),
+			React.createElement(
+				"a",
+				{ className: "github-button",
+					href: "https://github.com/yudazilian/VisualJusticeTW",
+					"data-icon": "octicon-star", "data-style": "mega",
+					"data-count-href": "/yudazilian/VisualJusticeTW/stargazers",
+					"data-count-api": "/repos/yudazilian/VisualJusticeTW#stargazers_count",
+					"data-count-aria-label": "# stargazers on GitHub",
+					"aria-label": "Star yudazilian/VisualJusticeTW on GitHub" },
+				"Star"
+			),
+			React.createElement(
+				"span",
+				{ className: "signature" },
+				"Credit BY:    ",
+				React.createElement(
+					"a",
+					null,
+					"Y.D. Lin"
+				),
+				",    ",
+				React.createElement(
+					"a",
+					null,
+					"陳乃瑜"
+				),
+				" & 成員們 @",
+				React.createElement(
+					"a",
+					{ href: "http://vizjust.tw" },
+					"看見思法"
+				)
+			)
+		);
 	}
 });
+
+// let JRSocialSocialPage = React.createClass({
+
+// });
 
 var JRConf = React.createClass({
 	displayName: "JRConf",
