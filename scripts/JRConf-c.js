@@ -548,10 +548,7 @@ var JRConfPrevBtn = React.createClass({
 		var displayWords = '',
 		    current_slide_index = this.props.current_slide_index;
 
-		if (current_slide_index == 1 || current_slide_index == 2) displayWords = '上一篇概要';
-		// else if (this.props.current_slide_index == 2)
-		// 	displayWords = '';
-		else displayWords = '上一位委員';
+		if (current_slide_index == 1 || current_slide_index == 2) displayWords = '上一篇概要';else displayWords = '上一位委員';
 
 		return React.createElement(
 			"div",
@@ -569,7 +566,7 @@ var JRConfNextBtn = React.createClass({
 		var displayWords = '',
 		    is_last = this.props.is_last;
 
-		if (this.props.is_first) displayWords = '下一篇概要';else if (this.props.current_slide_index == 1) displayWords = '第一位委員';else if (this.props.current_slide_index == 19) displayWords = '前往小結';else if (is_last) displayWords = '最終頁';
+		if (this.props.is_first) displayWords = '下一篇概要';else if (this.props.current_slide_index == 1) displayWords = '第一位委員';else if (this.props.current_slide_index == 18) displayWords = '前往小結';else if (is_last) displayWords = '最終頁';
 		// else if (this.props.current_slide_index == )
 		else displayWords = '下一位委員';
 
@@ -674,6 +671,9 @@ var JRConfBody = React.createClass({
 		    is_person_slide = false,
 		    slide_index = this.state.slide_index,
 		    slide_all_data = this.state.slide_all_data;
+
+		console.log('check here!');
+		console.log(slide_index);
 
 		if (slide_index === this.state.slide_max_number - 1) {
 			is_last = true;
