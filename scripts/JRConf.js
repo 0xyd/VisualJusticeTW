@@ -267,7 +267,7 @@ let JRSocialSocialPage = React.createClass({
 					</div>
 					<iframe 
 						src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=487648844706858" 
-						width="340" height="400" style={ facebookSocialPageStyle } scrolling="no" 
+						width="340" height="350" style={ facebookSocialPageStyle } scrolling="no" 
 						frameborder="0" allowTransparency="true"></iframe>
 					{
 					this.props.is_right ? 
@@ -438,11 +438,13 @@ let JRConfNextBtn = React.createClass({
 			displayWords = '下一篇概要';
 		else if (this.props.current_slide_index == 1)
 			displayWords = '第一位委員';
+		else if (this.props.current_slide_index == 19)
+			displayWords = '前往小結';
 		else if (is_last)
-			displayWords = '最終頁'
+			displayWords = '最終頁';
 		// else if (this.props.current_slide_index == )
 		else
-			displayWords = '下一位委員'
+			displayWords = '下一位委員';
 
 		return (
 			<div className={ is_last ? "next hidden" : "next" } 
