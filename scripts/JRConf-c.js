@@ -1,18 +1,27 @@
-"use strict";
+'use strict';
+
+// Detecting the screen size via javascript
+function detectScreenSize() {
+
+	var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+	var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+	if (w < 768) return 'mobile';else return 'desktop';
+}
 
 var JRConfHeader = React.createClass({
-	displayName: "JRConfHeader",
+	displayName: 'JRConfHeader',
 	render: function render() {
 		return React.createElement(
-			"header",
-			{ className: "row jrcf-header" },
+			'header',
+			{ className: 'row jrcf-header' },
 			React.createElement(
-				"div",
-				{ className: "col-md-12 title" },
+				'div',
+				{ className: 'col-md-12 title' },
 				React.createElement(
-					"span",
+					'span',
 					null,
-					"看見思法司法改革國是會議觀測站－委員名單"
+					'看見思法司法改革國是會議觀測站－委員名單'
 				)
 			)
 		);
@@ -21,43 +30,43 @@ var JRConfHeader = React.createClass({
 
 // For the figure
 var JRConfBodyCellFigure = React.createClass({
-	displayName: "JRConfBodyCellFigure",
+	displayName: 'JRConfBodyCellFigure',
 	render: function render() {
 
 		return React.createElement(
-			"div",
-			{ className: "row-col-md-12 figure " },
-			React.createElement("span", { className: "ver-helper" }),
+			'div',
+			{ className: 'row-col-md-12 figure ' },
+			React.createElement('span', { className: 'ver-helper' }),
 			React.createElement(
-				"div",
-				{ className: "figure-context" },
+				'div',
+				{ className: 'figure-context' },
 				React.createElement(
-					"div",
-					{ className: "image" },
-					React.createElement("img", { src: this.props.img_path })
+					'div',
+					{ className: 'image' },
+					React.createElement('img', { src: this.props.img_path })
 				),
 				React.createElement(
-					"div",
-					{ className: "image-info" },
+					'div',
+					{ className: 'image-info' },
 					React.createElement(
-						"h5",
-						{ className: "credit" },
-						" Photo Credit: ",
+						'h5',
+						{ className: 'credit' },
+						' Photo Credit: ',
 						this.props.img_credit,
-						" "
+						' '
 					),
 					React.createElement(
-						"h2",
+						'h2',
 						null,
 						this.props.fig_name
 					),
 					React.createElement(
-						"h3",
+						'h3',
 						null,
 						this.props.title
 					),
 					React.createElement(
-						"h4",
+						'h4',
 						null,
 						this.props.position
 					)
@@ -75,26 +84,26 @@ var JRConfBodyCellFigure = React.createClass({
 
 // For the description
 var JRConfBodyCellDesc = React.createClass({
-	displayName: "JRConfBodyCellDesc",
+	displayName: 'JRConfBodyCellDesc',
 	render: function render() {
 		return React.createElement(
-			"div",
-			{ className: "row-col-md-12 desc" },
+			'div',
+			{ className: 'row-col-md-12 desc' },
 			React.createElement(
-				"div",
-				{ className: "desc-context" },
+				'div',
+				{ className: 'desc-context' },
 				React.createElement(
-					"div",
-					{ className: "title" },
+					'div',
+					{ className: 'title' },
 					React.createElement(
-						"h2",
+						'h2',
 						null,
 						this.props.title
 					)
 				),
 				React.createElement(
-					"div",
-					{ className: "context" },
+					'div',
+					{ className: 'context' },
 					this.props.context
 				),
 				this.props.is_right ? React.createElement(JRConfNextPrevBar, {
@@ -110,7 +119,7 @@ var JRConfBodyCellDesc = React.createClass({
 
 // For Radar data
 var JRConfBodyCellRadar = React.createClass({
-	displayName: "JRConfBodyCellRadar",
+	displayName: 'JRConfBodyCellRadar',
 	getInitialState: function getInitialState() {
 
 		return {
@@ -132,22 +141,22 @@ var JRConfBodyCellRadar = React.createClass({
 	render: function render() {
 
 		return React.createElement(
-			"div",
-			{ className: "canvas-container" },
-			React.createElement("span", { className: "ver-helper" }),
+			'div',
+			{ className: 'canvas-container' },
+			React.createElement('span', { className: 'ver-helper' }),
 			React.createElement(
-				"div",
-				{ id: "Radar-Canvas" },
+				'div',
+				{ id: 'Radar-Canvas' },
 				React.createElement(
-					"h3",
-					{ className: "canvas-title" },
+					'h3',
+					{ className: 'canvas-title' },
 					this.props.fig_name
 				)
 			),
 			React.createElement(
-				"span",
-				{ className: "warning" },
-				"雷達圖數據是小編們依照角色學經歷背景的粗估，方便諸位速讀並博君一笑，如此已矣。"
+				'span',
+				{ className: 'warning' },
+				'雷達圖數據是小編們依照角色學經歷背景的粗估，方便諸位速讀並博君一笑，如此已矣。'
 			)
 		);
 	}
@@ -155,7 +164,7 @@ var JRConfBodyCellRadar = React.createClass({
 
 // People Stat
 var JRConfBodyCellPeopleStat = React.createClass({
-	displayName: "JRConfBodyCellPeopleStat",
+	displayName: 'JRConfBodyCellPeopleStat',
 	generatePics: function generatePics(data) {
 
 		// Classify the types
@@ -233,10 +242,10 @@ var JRConfBodyCellPeopleStat = React.createClass({
 		var sequences = types.map(function (type, i) {
 
 			var r = [React.createElement(
-				"span",
-				{ key: 0, className: "catname" },
+				'span',
+				{ key: 0, className: 'catname' },
 				type.typeName,
-				"："
+				'：'
 			)],
 			    count = 0;
 
@@ -252,24 +261,24 @@ var JRConfBodyCellPeopleStat = React.createClass({
 
 					if (td.type === 'female' || td.gender === 'female') {
 						r.push(React.createElement(
-							"span",
-							{ key: count + 1, className: "ele" },
-							React.createElement("span", { className: "ver-helper" }),
-							React.createElement("img", { src: "./src/female.png" }),
+							'span',
+							{ key: count + 1, className: 'ele' },
+							React.createElement('span', { className: 'ver-helper' }),
+							React.createElement('img', { src: './src/female.png' }),
 							React.createElement(
-								"span",
+								'span',
 								null,
 								td.name
 							)
 						));
 					} else if (td.type === 'male' || td.gender === 'male') {
 						r.push(React.createElement(
-							"span",
-							{ key: count + 1, className: "ele" },
-							React.createElement("span", { className: "ver-helper" }),
-							React.createElement("img", { src: "./src/male.png" }),
+							'span',
+							{ key: count + 1, className: 'ele' },
+							React.createElement('span', { className: 'ver-helper' }),
+							React.createElement('img', { src: './src/male.png' }),
 							React.createElement(
-								"span",
+								'span',
 								null,
 								td.name
 							)
@@ -293,10 +302,10 @@ var JRConfBodyCellPeopleStat = React.createClass({
 			}
 
 			r.push(React.createElement(
-				"span",
-				{ className: "statvalue", key: count + 1 },
+				'span',
+				{ className: 'statvalue', key: count + 1 },
 				count,
-				"人"
+				'人'
 			));
 
 			return r;
@@ -324,12 +333,12 @@ var JRConfBodyCellPeopleStat = React.createClass({
 					var s = _step4.value;
 
 					wrappedSeq.push(React.createElement(
-						"div",
-						{ key: k, className: "statrow" },
+						'div',
+						{ key: k, className: 'statrow' },
 						React.createElement(
-							"span",
-							{ className: "ver-helper" },
-							" ",
+							'span',
+							{ className: 'ver-helper' },
+							' ',
 							s
 						)
 					));
@@ -354,30 +363,30 @@ var JRConfBodyCellPeopleStat = React.createClass({
 		}();
 
 		return React.createElement(
-			"div",
-			{ className: "statpanel" },
+			'div',
+			{ className: 'statpanel' },
 			React.createElement(
-				"div",
-				{ className: "stat-context" },
+				'div',
+				{ className: 'stat-context' },
 				React.createElement(
-					"div",
-					{ className: "title" },
+					'div',
+					{ className: 'title' },
 					React.createElement(
-						"h2",
+						'h2',
 						null,
 						this.props.title
 					)
 				),
 				React.createElement(
-					"div",
-					{ className: "context" },
+					'div',
+					{ className: 'context' },
 					this.props.context
 				)
 			),
 			React.createElement(
-				"div",
-				{ className: "stat-canvas" },
-				React.createElement("div", { className: "statrow" }),
+				'div',
+				{ className: 'stat-canvas' },
+				React.createElement('div', { className: 'statrow' }),
 				seqs
 			),
 			this.props.is_right ? React.createElement(JRConfNextPrevBar, {
@@ -392,18 +401,18 @@ var JRConfBodyCellPeopleStat = React.createClass({
 
 //
 var JRConfBodyCellScore = React.createClass({
-	displayName: "JRConfBodyCellScore",
+	displayName: 'JRConfBodyCellScore',
 	render: function render() {
 
 		return React.createElement(
-			"div",
-			{ className: "scorepanel" },
-			React.createElement("span", { className: "ver-helper" }),
+			'div',
+			{ className: 'scorepanel' },
+			React.createElement('span', { className: 'ver-helper' }),
 			React.createElement(
-				"div",
-				{ className: "score" },
+				'div',
+				{ className: 'score' },
 				React.createElement(
-					"h1",
+					'h1',
 					null,
 					this.props.score_value
 				)
@@ -413,31 +422,31 @@ var JRConfBodyCellScore = React.createClass({
 });
 
 var JRSocialSocialPage = React.createClass({
-	displayName: "JRSocialSocialPage",
+	displayName: 'JRSocialSocialPage',
 	render: function render() {
 
 		var facebookSocialPageStyle = { border: "none", overflow: "hidden" };
 
 		return React.createElement(
-			"div",
-			{ className: "socialpage" },
-			React.createElement("span", { className: "ver-helper" }),
+			'div',
+			{ className: 'socialpage' },
+			React.createElement('span', { className: 'ver-helper' }),
 			React.createElement(
-				"div",
-				{ className: "context" },
+				'div',
+				{ className: 'context' },
 				React.createElement(
-					"div",
-					{ className: "title" },
+					'div',
+					{ className: 'title' },
 					React.createElement(
-						"h2",
+						'h2',
 						null,
-						"請多關注我們：）"
+						'請多關注我們：）'
 					)
 				),
-				React.createElement("iframe", {
-					src: "https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=487648844706858",
-					width: "340", height: "350", style: facebookSocialPageStyle, scrolling: "no",
-					frameborder: "0", allowTransparency: "true" }),
+				React.createElement('iframe', {
+					src: 'https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId=487648844706858',
+					width: '340', height: '350', style: facebookSocialPageStyle, scrolling: 'no',
+					frameborder: '0', allowTransparency: 'true' }),
 				this.props.is_right ? React.createElement(JRConfNextPrevBar, {
 					is_first: this.props.is_first,
 					prev_evt: this.props.prev_evt,
@@ -450,7 +459,7 @@ var JRSocialSocialPage = React.createClass({
 });
 
 var JRConfBodyCell = React.createClass({
-	displayName: "JRConfBodyCell",
+	displayName: 'JRConfBodyCell',
 	render: function render() {
 
 		var data = this.props.data,
@@ -493,12 +502,13 @@ var JRConfBodyCell = React.createClass({
 		// The stack reorder: When the slide's type is person's slide.
 		// If it is the radar cell, it should be pull down.
 		// The figure, instead, should be push up.
-		var cellClassName = "";
+		var cellClassName = "",
+		    is_person_slide = this.props.is_person_slide;
 
-		if (this.props.is_person_slide && is_figure) cellClassName = "col-md-4 col-md-push-4 jrcf-article-cell";else if (this.props.is_person_slide && is_radar) cellClassName = "col-md-4 col-md-pull-4 jrcf-article-cell";else cellClassName = "col-md-4 jrcf-article-cell";
+		if (is_person_slide && is_figure) cellClassName = "col-md-4 col-md-push-4 jrcf-article-cell";else if (is_person_slide && is_radar) cellClassName = "col-md-4 col-md-pull-4 jrcf-article-cell";else cellClassName = "col-md-4 jrcf-article-cell";
 
 		return React.createElement(
-			"div",
+			'div',
 			{ className: cellClassName },
 			is_figure ? React.createElement(JRConfBodyCellFigure, {
 				is_right: this.props.is_right,
@@ -511,6 +521,7 @@ var JRConfBodyCell = React.createClass({
 				prev_evt: this.props.prev_evt,
 				is_last: this.props.is_last,
 				next_evt: this.props.next_evt,
+				is_person_slide: is_person_slide,
 				current_slide_index: this.props.current_slide_index,
 				title: title, context: context }) : null,
 			is_radar ? React.createElement(JRConfBodyCellRadar, {
@@ -542,7 +553,7 @@ var JRConfBodyCell = React.createClass({
 });
 
 var JRConfPrevBtn = React.createClass({
-	displayName: "JRConfPrevBtn",
+	displayName: 'JRConfPrevBtn',
 	render: function render() {
 
 		var displayWords = '',
@@ -551,7 +562,7 @@ var JRConfPrevBtn = React.createClass({
 		if (current_slide_index == 1 || current_slide_index == 2) displayWords = '上一篇概要';else displayWords = '上一位委員';
 
 		return React.createElement(
-			"div",
+			'div',
 			{ className: this.props.is_first ? "prev hidden" : "prev",
 				onClick: this.props.clickEvt },
 			displayWords
@@ -560,7 +571,7 @@ var JRConfPrevBtn = React.createClass({
 });
 
 var JRConfNextBtn = React.createClass({
-	displayName: "JRConfNextBtn",
+	displayName: 'JRConfNextBtn',
 	render: function render() {
 
 		var displayWords = '',
@@ -571,7 +582,7 @@ var JRConfNextBtn = React.createClass({
 		else displayWords = '下一位委員';
 
 		return React.createElement(
-			"div",
+			'div',
 			{ className: is_last ? "next hidden" : "next",
 				onClick: is_last ? null : this.props.clickEvt },
 			displayWords
@@ -580,12 +591,12 @@ var JRConfNextBtn = React.createClass({
 });
 
 var JRConfNextPrevBar = React.createClass({
-	displayName: "JRConfNextPrevBar",
+	displayName: 'JRConfNextPrevBar',
 	render: function render() {
 
 		return React.createElement(
-			"div",
-			{ id: "PrevNextBtnBar" },
+			'div',
+			{ id: 'PrevNextBtnBar' },
 			React.createElement(JRConfPrevBtn, {
 				is_first: this.props.is_first,
 				clickEvt: this.props.prev_evt,
@@ -599,8 +610,10 @@ var JRConfNextPrevBar = React.createClass({
 	}
 });
 
+// let JRConfDisq =
+
 var JRConfBody = React.createClass({
-	displayName: "JRConfBody",
+	displayName: 'JRConfBody',
 	next_slide: function next_slide() {
 
 		var index = this.state.slide_index;
@@ -672,9 +685,6 @@ var JRConfBody = React.createClass({
 		    slide_index = this.state.slide_index,
 		    slide_all_data = this.state.slide_all_data;
 
-		console.log('check here!');
-		console.log(slide_index);
-
 		if (slide_index === this.state.slide_max_number - 1) {
 			is_last = true;
 		} else if (slide_index === 0) {
@@ -685,8 +695,8 @@ var JRConfBody = React.createClass({
 		if (slide_all_data) if (slide_all_data[slide_index].type == 'person_slide') is_person_slide = true;
 
 		return React.createElement(
-			"article",
-			{ className: "row jrcf-article" },
+			'article',
+			{ className: 'row jrcf-article' },
 			React.createElement(JRConfBodyCell, {
 				is_person_slide: is_person_slide,
 				data: is_person_slide ? this.state.slide_property.middle : this.state.slide_property.left }),
@@ -708,54 +718,81 @@ var JRConfBody = React.createClass({
 	}
 });
 
-var JRConfFooter = React.createClass({
-	displayName: "JRConfFooter",
+var JRFootFacebookBtn = React.createClass({
+	displayName: 'JRFootFacebookBtn',
 	render: function render() {
 
-		var facebookLikeStyle = {
+		var facebookBtn = null,
+		    facebookLikeStyle = {
 			border: 'none',
 			overflow: 'hidden'
+		},
+		    divStyle = {
+			display: 'inline-block'
 		};
 
+		if (this.props.device === 'mobile') {
+
+			facebookBtn = React.createElement('iframe', {
+				src: 'https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=487648844706858',
+				width: '450', height: '80', style: facebookLikeStyle,
+				scrolling: 'no', frameborder: '0', allowTransparency: 'true' });
+		} else {
+
+			facebookBtn = React.createElement('iframe', {
+				src: 'https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858',
+				width: '150', height: '20', style: facebookLikeStyle,
+				scrolling: 'no', frameborder: '0', allowTransparency: 'true' });
+		}
+
 		return React.createElement(
-			"footer",
-			{ className: "row" },
-			React.createElement("span", { className: "ver-helper" }),
-			React.createElement("iframe", {
-				src: "https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858",
-				width: "150", height: "20", style: facebookLikeStyle,
-				scrolling: "no", frameborder: "0", allowTransparency: "true" }),
+			'div',
+			{ style: divStyle },
+			facebookBtn
+		);
+	}
+});
+
+var JRConfFooter = React.createClass({
+	displayName: 'JRConfFooter',
+	render: function render() {
+
+		return React.createElement(
+			'footer',
+			{ className: 'row' },
+			React.createElement('span', { className: 'ver-helper' }),
+			React.createElement(JRFootFacebookBtn, { device: detectScreenSize() }),
 			React.createElement(
-				"a",
-				{ className: "github-button",
-					href: "https://github.com/yudazilian/VisualJusticeTW",
-					"data-icon": "octicon-star", "data-style": "mega",
-					"data-count-href": "/yudazilian/VisualJusticeTW/stargazers",
-					"data-count-api": "/repos/yudazilian/VisualJusticeTW#stargazers_count",
-					"data-count-aria-label": "# stargazers on GitHub",
-					"aria-label": "Star yudazilian/VisualJusticeTW on GitHub" },
-				"Star"
+				'a',
+				{ className: 'github-button',
+					href: 'https://github.com/yudazilian/VisualJusticeTW',
+					'data-icon': 'octicon-star', 'data-style': 'mega',
+					'data-count-href': '/yudazilian/VisualJusticeTW/stargazers',
+					'data-count-api': '/repos/yudazilian/VisualJusticeTW#stargazers_count',
+					'data-count-aria-label': '# stargazers on GitHub',
+					'aria-label': 'Star yudazilian/VisualJusticeTW on GitHub' },
+				'Star'
 			),
 			React.createElement(
-				"span",
-				{ className: "signature" },
-				"Credit BY:    ",
+				'span',
+				{ className: 'signature' },
+				'Credit BY:    ',
 				React.createElement(
-					"a",
-					{ href: "https://www.facebook.com/yude.lin.754" },
-					"Y.D. Lin"
+					'a',
+					{ href: 'https://www.facebook.com/yude.lin.754' },
+					'Y.D. Lin'
 				),
-				",    ",
+				',    ',
 				React.createElement(
-					"a",
-					{ href: "https://www.facebook.com/profile.php?id=100000497148567&fref=ts" },
-					"陳乃瑜"
+					'a',
+					{ href: 'https://www.facebook.com/profile.php?id=100000497148567&fref=ts' },
+					'陳乃瑜'
 				),
-				" & 成員們 @",
+				' & 成員們 @',
 				React.createElement(
-					"a",
-					{ href: "http://vizjust.tw" },
-					"看見思法"
+					'a',
+					{ href: 'http://vizjust.tw' },
+					'看見思法'
 				)
 			)
 		);
@@ -763,11 +800,11 @@ var JRConfFooter = React.createClass({
 });
 
 var JRConf = React.createClass({
-	displayName: "JRConf",
+	displayName: 'JRConf',
 	render: function render() {
 		return React.createElement(
-			"div",
-			{ id: "JRCF-root", className: "row" },
+			'div',
+			{ id: 'JRCF-root', className: 'row' },
 			React.createElement(JRConfHeader, null),
 			React.createElement(JRConfBody, null),
 			React.createElement(JRConfFooter, null)

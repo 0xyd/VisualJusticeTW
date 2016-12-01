@@ -1,3 +1,14 @@
+// Detecting the screen size via javascript
+function detectScreenSize() {
+
+		var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+
+		if ( w < 768 ) return 'mobile'
+		else return 'desktop'
+
+}
+
 let JRConfHeader = React.createClass({
 
 	render() {
@@ -54,6 +65,7 @@ let JRConfBodyCellDesc = React.createClass({
 				<div className="desc-context">
 					<div className='title'>
 						<h2>{ this.props.title }</h2>
+					{/* this.props.is_person_slide ? <img src='./src/conversation_web.png' /> : null */}
 					</div>
 					<div className="context">
 						{ this.props.context }
@@ -254,6 +266,7 @@ let JRConfBodyCellScore = React.createClass({
 
 let JRSocialSocialPage = React.createClass({
 
+	
 	render() {
 
 		let facebookSocialPageStyle = { border: "none", overflow: "hidden" };
@@ -330,11 +343,12 @@ let JRConfBodyCell = React.createClass({
 		// The stack reorder: When the slide's type is person's slide.
 		// If it is the radar cell, it should be pull down.
 		// The figure, instead, should be push up.
-		let cellClassName = "";
+		let cellClassName = "",
+			is_person_slide = this.props.is_person_slide;
 
-		if (this.props.is_person_slide && is_figure)
+		if (is_person_slide && is_figure)
 			cellClassName = "col-md-4 col-md-push-4 jrcf-article-cell"
-		else if (this.props.is_person_slide && is_radar)
+		else if (is_person_slide && is_radar)
 			cellClassName = "col-md-4 col-md-pull-4 jrcf-article-cell"
 		else
 			cellClassName = "col-md-4 jrcf-article-cell"
@@ -357,6 +371,7 @@ let JRConfBodyCell = React.createClass({
 							prev_evt={ this.props.prev_evt }
 							is_last ={ this.props.is_last }
 							next_evt={ this.props.next_evt }
+							is_person_slide={ is_person_slide }
 							current_slide_index={ this.props.current_slide_index }
 							title={ title } context={ context }/> : null
 				}
@@ -475,6 +490,11 @@ let JRConfNextPrevBar = React.createClass({
 
 });
 
+
+// let JRConfDisq = 
+
+
+
 let JRConfBody = React.createClass({
 
 	next_slide() {
@@ -572,9 +592,6 @@ let JRConfBody = React.createClass({
 			slide_index = this.state.slide_index,
 			slide_all_data = this.state.slide_all_data;
 
-		console.log('check here!');
-		console.log(slide_index);
-
 		if ( slide_index === this.state.slide_max_number - 1){
 			is_last = true
 		}
@@ -613,22 +630,67 @@ let JRConfBody = React.createClass({
 
 });
 
+let JRFootFacebookBtn = React.createClass({
+
+	render() {
+
+		let facebookBtn = null,
+			facebookLikeStyle = {
+				border: 'none',
+				overflow: 'hidden'
+			},
+			divStyle = {
+				display: 'inline-block'
+			};
+
+		if (this.props.device === 'mobile') {
+
+			facebookBtn = 
+				<iframe 
+					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=487648844706858" 
+					width="450" height="80" style={ facebookLikeStyle } 
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+			}
+		else {
+
+			facebookBtn = 
+				<iframe 
+					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858" 
+					width="150" height="20" style={ facebookLikeStyle } 
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>			
+
+		}
+
+		return (
+			<div style={ divStyle }>{ facebookBtn }</div>
+		)
+	}
+
+
+});
+
 let JRConfFooter = React.createClass({
 
 	render() {
 
-		let facebookLikeStyle = {
-			border: 'none',
-			overflow: 'hidden'
-		};
+		// let facebookLikeStyle = {
+		// 	border: 'none',
+		// 	overflow: 'hidden'
+		// };
+
+		// detectScreenSize();
+
+		// if (true) 
+
 
 		return (
 			<footer className="row">
 				<span className="ver-helper"></span>
-				<iframe 
-					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858" 
+				{/*<iframe 
+					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=standard&show_faces=true&share=true&height=46&appId=487648844706858" 
 					width="150" height="20" style={ facebookLikeStyle } 
-					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+					scrolling="no" frameborder="0" allowTransparency="true"></iframe>*/}
+				<JRFootFacebookBtn device={ detectScreenSize() } />
 				<a className="github-button" 
 				   href="https://github.com/yudazilian/VisualJusticeTW" 
 				   data-icon="octicon-star" data-style="mega" 
