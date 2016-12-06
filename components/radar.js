@@ -1,4 +1,6 @@
-class Radar {
+import * as d3 from 'd3';
+
+export default class Radar {
 
 
 	constructor(id, radar_width, radar_height, label_factor, options) {

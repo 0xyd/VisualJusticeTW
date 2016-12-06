@@ -1,30 +1,11 @@
-// Detecting the screen size via javascript
-function detectScreenSize() {
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactRouter from 'react-router';
 
-		var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-		var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-
-		if ( w < 768 ) return 'mobile'
-		else return 'desktop'
-
-}
-
-let JRConfHeader = React.createClass({
-
-	render() {
-		return (
-			<header className="row jrcf-header">
-				<div className="col-md-12 title">
-					<span>看見思法司法改革國是會議觀測站－委員名單</span>
-				</div>
-			</header>
-		)
-	}
-
-});
+import Radar from '../radar';
 
 // For the figure
-let JRConfBodyCellFigure = React.createClass({
+class JRConfBodyCellFigure extends React.Component {
 
 	render() {
 
@@ -54,10 +35,10 @@ let JRConfBodyCellFigure = React.createClass({
 			</div>
 		)
 	}
-})
+}
 
 // For the description
-let JRConfBodyCellDesc = React.createClass({
+class JRConfBodyCellDesc extends React.Component {
 
 	render() {
 		return (
@@ -83,18 +64,28 @@ let JRConfBodyCellDesc = React.createClass({
 			</div>
 		)
 	}
-})
+}
 
 
 // For Radar data
-let JRConfBodyCellRadar = React.createClass({
+class JRConfBodyCellRadar extends React.Component {
 
-	getInitialState() {
+	constructor(props) {
 
-		return { 
+		super(props);
+
+		this.state = {
 			radar: new Radar('#Radar-Canvas', 330, 330, 1.12)
-		}
-	},
+		};
+
+	}
+
+	// getInitialState() {
+
+	// 	return { 
+	// 		radar: new Radar('#Radar-Canvas', 330, 330, 1.12)
+	// 	}
+	// }
 
 	componentDidMount() {
 
@@ -104,7 +95,7 @@ let JRConfBodyCellRadar = React.createClass({
 					.filter((d) => { return d }))
 				.draw().hightlightRadarArea(0);
 		}
-	},
+	}
 
 
 	componentWillUpdate(nextProps, nextState) {
@@ -112,7 +103,7 @@ let JRConfBodyCellRadar = React.createClass({
 		if (this.props.radar_data)
 			this.state.radar.hightlightRadarArea(nextProps.radar_index-2);
 
-	},
+	}
 
 	render() {
 
@@ -128,10 +119,10 @@ let JRConfBodyCellRadar = React.createClass({
 			</div>
 		)
 	}
-})
+}
 
 // People Stat
-let JRConfBodyCellPeopleStat = React.createClass({
+class JRConfBodyCellPeopleStat extends React.Component {
 
 	generatePics(data) {
 
@@ -195,7 +186,7 @@ let JRConfBodyCellPeopleStat = React.createClass({
 
 		return sequences
 
-	},
+	}
 
 	render() {
 
@@ -244,10 +235,10 @@ let JRConfBodyCellPeopleStat = React.createClass({
 		)
 	}
 
-});
+}
 
 // 
-let JRConfBodyCellScore = React.createClass({
+class JRConfBodyCellScore extends React.Component {
 
 	render() {
 
@@ -262,9 +253,9 @@ let JRConfBodyCellScore = React.createClass({
 
 	}
 
-});
+}
 
-let JRSocialSocialPage = React.createClass({
+class JRSocialSocialPage extends React.Component {
 
 	
 	render() {
@@ -295,11 +286,10 @@ let JRSocialSocialPage = React.createClass({
 			</div>
 		)
 	}
+}
 
-});
 
-
-let JRConfBodyCell = React.createClass({
+class JRConfBodyCell extends React.Component {
 
 	render() {
 
@@ -414,11 +404,11 @@ let JRConfBodyCell = React.createClass({
 			</div>
 		)
 	}
-});
+}
 
 
 
-let JRConfPrevBtn = React.createClass({
+class JRConfPrevBtn extends React.Component {
 
 	render() {
 
@@ -438,9 +428,9 @@ let JRConfPrevBtn = React.createClass({
 		)
 	}
 
-});
+}
 
-let JRConfNextBtn = React.createClass({
+class JRConfNextBtn extends React.Component {
 
 	render() {
 
@@ -466,10 +456,10 @@ let JRConfNextBtn = React.createClass({
 			</div>
 		)
 	}
-});
+}
 
 
-let JRConfNextPrevBar = React.createClass({
+class JRConfNextPrevBar extends React.Component {
 
 	render() {
 
@@ -487,76 +477,42 @@ let JRConfNextPrevBar = React.createClass({
 			</div>
 		)
 	}
-
-});
-
-
-// let JRConfDisq = 
+}
 
 
 
-let JRConfBody = React.createClass({
+export default class JRConfBody extends React.Component {
 
-	next_slide() {
+	// getInitialState() {
 
-		let index = this.state.slide_index;
+	// 	return (
+	// 		{
+	// 			slide_index: 0,
+	// 			slide_all_data: null,
+	// 			slide_max_number: null,
+	// 			slide_property: '',
+	// 			radar_data: null,
+	// 			radar_index: null,
+	// 			data_path : './JRConf/commitee.json',
+	// 		}
+	// 	)
+	// }
 
-		this.setState({ 
-			'slide_index': 
-				index + 1,
-			'radar_index':
-				this.state.radar_index + 1,
-			'slide_property': 
-				this.state.slide_all_data[index + 1],
-		})
+	constructor(props) {
 
-	},
+		super(props);
 
+		this.state = {
+			slide_index: 0,
+			slide_all_data: null,
+			slide_max_number: null,
+			slide_property: '',
+			radar_data: null,
+			radar_index: null,
+			data_path : './JRConf/commitee.json'
+		}
 
-	prev_slide() {
-
-		let index = this.state.slide_index;
-
-		this.setState({ 
-			'slide_index': 
-				index - 1,
-			'radar_index':
-				this.state.radar_index - 1,
-			'slide_property': 
-				this.state.slide_all_data[index - 1] 
-		})
-		
-
-	},
-
-	loadJson(data_path) {
-
-		let p = new Promise(function(resolve, reject) {
-
-			d3.json(data_path).get(function(error, data) {
-				resolve(data);
-			});
-
-		});
-
-		return p
-
-	},
-
-	getInitialState() {
-
-		return (
-			{
-				slide_index: 0,
-				slide_all_data: null,
-				slide_max_number: null,
-				slide_property: '',
-				radar_data: null,
-				radar_index: null,
-				data_path : './JRConf/commitee.json',
-			}
-		)
-	},
+	}
 
 	componentDidMount() {
 
@@ -582,7 +538,7 @@ let JRConfBody = React.createClass({
 				'radar_index': 0
 			});
 		});
-	},
+	}
 
 	render() {
 
@@ -628,102 +584,54 @@ let JRConfBody = React.createClass({
 		)
 	}
 
-});
+	next_slide() {
 
-let JRFootFacebookBtn = React.createClass({
+		let index = this.state.slide_index;
 
-	render() {
+		this.setState({ 
+			'slide_index': 
+				index + 1,
+			'radar_index':
+				this.state.radar_index + 1,
+			'slide_property': 
+				this.state.slide_all_data[index + 1],
+		})
 
-		let facebookBtn = null,
-			facebookLikeStyle = {
-				border: 'none',
-				overflow: 'hidden'
-			},
-			divStyle = {
-				display: 'inline-block'
-			};
-
-		if (this.props.device === 'mobile') {
-
-			facebookBtn = 
-				<iframe 
-					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust&width=450&layout=standard&action=like&size=large&show_faces=true&share=true&height=80&appId=487648844706858" 
-					width="450" height="80" style={ facebookLikeStyle } 
-					scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-			}
-		else {
-
-			facebookBtn = 
-				<iframe 
-					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=small&show_faces=true&share=true&height=46&appId=487648844706858" 
-					width="150" height="20" style={ facebookLikeStyle } 
-					scrolling="no" frameborder="0" allowTransparency="true"></iframe>			
-
-		}
-
-		return (
-			<div style={ divStyle }>{ facebookBtn }</div>
-		)
 	}
 
 
-});
+	prev_slide() {
 
-let JRConfFooter = React.createClass({
+		let index = this.state.slide_index;
 
-	render() {
+		this.setState({ 
+			'slide_index': 
+				index - 1,
+			'radar_index':
+				this.state.radar_index - 1,
+			'slide_property': 
+				this.state.slide_all_data[index - 1] 
+		})
+		
 
-		// let facebookLikeStyle = {
-		// 	border: 'none',
-		// 	overflow: 'hidden'
-		// };
-
-		// detectScreenSize();
-
-		// if (true) 
-
-
-		return (
-			<footer className="row">
-				<span className="ver-helper"></span>
-				{/*<iframe 
-					src="https://www.facebook.com/plugins/like.php?href=https%3A%2F%2Fwww.facebook.com%2Fvizjust%2F&width=117&layout=button_count&action=like&size=standard&show_faces=true&share=true&height=46&appId=487648844706858" 
-					width="150" height="20" style={ facebookLikeStyle } 
-					scrolling="no" frameborder="0" allowTransparency="true"></iframe>*/}
-				<JRFootFacebookBtn device={ detectScreenSize() } />
-				<a className="github-button" 
-				   href="https://github.com/yudazilian/VisualJusticeTW" 
-				   data-icon="octicon-star" data-style="mega" 
-				   data-count-href="/yudazilian/VisualJusticeTW/stargazers" 
-				   data-count-api="/repos/yudazilian/VisualJusticeTW#stargazers_count" 
-				   data-count-aria-label="# stargazers on GitHub" 
-				   aria-label="Star yudazilian/VisualJusticeTW on GitHub">Star</a>
-				<span className="signature">
-					Credit BY: &nbsp;&nbsp;&nbsp;
-					<a href="https://www.facebook.com/yude.lin.754">Y.D. Lin</a>, &nbsp;&nbsp;&nbsp;
-					<a href="https://www.facebook.com/profile.php?id=100000497148567&fref=ts">陳乃瑜</a> & 成員們 @
-					<a href="http://vizjust.tw">看見思法</a></span>
-			</footer>
-		)
 	}
 
-});
+	loadJson(data_path) {
 
+		let p = new Promise(function(resolve, reject) {
 
-let JRConf = React.createClass({
+			d3.json(data_path).get(function(error, data) {
+				resolve(data);
+			});
 
-	render() {
-		return (
-			<div id="JRCF-root" className="row">
-				<JRConfHeader></JRConfHeader>			
-				<JRConfBody></JRConfBody>
-				<JRConfFooter></JRConfFooter>
-			</div>
-		)
+		});
+
+		return p
+
 	}
-});
+}
 
-ReactDOM.render(
-	<JRConf />,
-	document.getElementById('volume'));
+
+
+
 
