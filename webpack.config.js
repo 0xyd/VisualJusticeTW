@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 const path = require('path');
+// Y.D 20161212: Figure it later
+// const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: path.join(__dirname, 'scripts', 'jrcf.js'),
@@ -24,7 +26,12 @@ module.exports = {
           cacheDirectory: 'babel_cache',
           presets: ['react', 'es2015']
         }
-      }
+      },
+      // Y.D 20161212: Figure it later
+      // {
+      //   test: path.join(__dirname, 'style'),
+      //   loader: ExtractTextPlugin.extract("style", "css!stylus")
+      // }
       
     ]
   },
@@ -40,6 +47,13 @@ module.exports = {
       sourcemap: false,
       beautify: false,
       dead_code: true
-    })
+    }),
+    new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
+    }),
+    // Y.D 20161212: Figure it later
+    // Extract css file
+    // new ExtractTextPlugin("[name].css")
   ]
 }
