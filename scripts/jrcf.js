@@ -8,15 +8,15 @@ import ReactRouter from 'react-router';
 import JRConf from '../components/JRConf/JRConfCommitee';
 import JRConfLanding from '../components/JRConf/JRConfLanding';
 
+// Y.D. 20161218: 
 // window.onload = () => {
 // 	ReactDOM.render(<JRConf />, document.getElementById('volume'))
 // }
 
-
 window.onload = () => {
 	ReactDOM.render(
 		<JRConfLanding />, 
-		document.getElementById('volume'))
+		document.getElementById('volume'));
 }
 
 
