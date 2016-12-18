@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactRouter from 'react-router';
 
 import $ from 'jquery';
-import FlipClock from 'flipclock/compiled/flipClock';
+import FlipClock from '../../scripts/flipclock/compiled/flipClock';
 
 
 function calTimeDiff(endDate) {
