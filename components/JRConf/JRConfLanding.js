@@ -166,7 +166,7 @@ class JRConfTimerSlide extends React.Component {
 			idName = "AdviceStage";
 			subTitle = '現正熱映';
 			mainTitle = "全民司改意見徵集";
-			context = "司法改革意見徵集將於12月底截止，看見思法鼓勵每一個對司法感到不公貨司法改革理想的人，都去網站留下意見，讓國是會議是人民聲音滿滿的大平台！";
+			context = "司法改革意見徵集將於12月底截止，看見思法鼓勵每一個對司法感到不公或對司法改革理想的人，都去網站留下意見，讓國是會議是人民聲音滿滿的大平台！";
 			btnContext = "前往國是會議留言";
 
 		} else if (timerType == 'issue') {

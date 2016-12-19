@@ -23,7 +23,7 @@ export default class JRConfFooter extends React.Component {
 					<span className="authors"> &nbsp; Developer: Y.D. Lin </span>
 					<span className="authors"> &nbsp; Designer: CT. Tang</span>
 					<span className="authors"> &nbsp; Credit: 看見思法</span>
-					<span className="authors"> &nbsp; Lisence: MIT</span>
+					<span className="authors"> &nbsp; License: MIT</span>
 				</div>
 			</footer>
 
