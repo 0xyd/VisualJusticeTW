@@ -15,7 +15,7 @@ export default class JRConfFooter extends React.Component {
 				<div className="col-md-8">
 					<Disqus />
 				</div>
-				<div className="col-md-4">
+				<div id="facebook-social-page-container" className="col-md-4">
 					<FacebookSocialPage />
 				</div>
 				<div className="col-md-12 credit-signature">
