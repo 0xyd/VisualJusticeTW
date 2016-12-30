@@ -12,9 +12,9 @@ export default class JRConf extends React.Component {
 	render() {
 		return (
 			<div id="JRCF-root" className="row">
-				<JRConfHeader></JRConfHeader>			
-				<JRConfBody></JRConfBody>
-				<JRConfFooter></JRConfFooter>
+				<JRConfCommiteeHeader></JRConfCommiteeHeader>			
+				<JRConfCommiteeBody></JRConfCommiteeBody>
+				<JRConfCommiteeFooter></JRConfCommiteeFooter>
 			</div>
 		)
 	}
