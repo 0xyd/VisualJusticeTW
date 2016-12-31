@@ -11,10 +11,10 @@ export default class Chronicle extends React.Component {
 
 		return (
 
-			<div>
+			<div id="Chronicle" className="row">
 				<ChronicleHeader/>
-				<ChronicleFooter/>
 				<ChronicleBody />
+				<ChronicleFooter/>
 			</div>
 
 		)
