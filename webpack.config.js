@@ -2,10 +2,10 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
-  entry: path.join(__dirname, 'scripts', 'jrcf.js'),
+  entry: path.join(__dirname, 'scripts', 'chronicle.js'),
   output: {
     path: path.join(__dirname),
-    filename: 'bundle.js'
+    filename: 'chronicle-bundle.js'
   },
   module: {
     loaders: [
@@ -18,7 +18,7 @@ module.exports = {
         }
       },
       {
-        test: path.join(__dirname, 'scripts', 'jrcf.js'),
+        test: path.join(__dirname, 'scripts', 'chronicle.js'),
         loader: ['babel-loader'],
         query: {
           cacheDirectory: 'babel_cache',
