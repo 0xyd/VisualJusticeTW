@@ -163,16 +163,22 @@ class JRConfTimerSlide extends React.Component {
 
 		if (timerType == 'advice') {
 
+			// 20170107: Time is over.
+			// idName = "AdviceStage";
+			// subTitle = '現正熱映';
+			// mainTitle = "全民司改意見徵集";
+			// context = "司法改革意見徵集將於12月底截止，看見思法鼓勵每一個對司法感到不公貨司法改革理想的人，都去網站留下意見，讓國是會議是人民聲音滿滿的大平台！";
+			// btnContext = "前往國是會議留言";
 			idName = "AdviceStage";
-			subTitle = '現正熱映';
+			subTitle = '已結束';
 			mainTitle = "全民司改意見徵集";
-			context = "司法改革意見徵集將於12月底截止，看見思法鼓勵每一個對司法感到不公貨司法改革理想的人，都去網站留下意見，讓國是會議是人民聲音滿滿的大平台！";
-			btnContext = "前往國是會議留言";
+			context = "全民意見徵集已經結束，觀測站數據整理中。";
+			btnContext = "查看國是會議留言";
 
 		} else if (timerType == 'issue') {
 
 			idName = "IssuesStage";
-			subTitle = "同場加映";
+			subTitle = "現正熱映中";
 			mainTitle = "分組會議  共識凝聚";
 			context = "隨著民眾的留言，許多國是會議的議題也因孕而生。現在府方網站有許多議題讓全民參與討論，讓我們把握僅存的時間，用我們的想法轟炸這些議題吧！";
 			btnContext = "前往國是會議的議題";
@@ -227,8 +233,8 @@ export default class JRConfLanding extends React.Component {
 				<JRConfHeader />
 				<RedRibbon />
 				<JRConfHeadSlide />
-				<JRConfTimerSlide clockType="advice" bgType="bg-white"/>
-				<JRConfTimerSlide clockType="issue"  bgType="bg-red"/>
+				<JRConfTimerSlide clockType="issue"  bgType="bg-white"/>
+				<JRConfTimerSlide clockType="advice" bgType="bg-red"/>
 				<JRConfTimerSlide clockType="group"  bgType="bg-white"/>
 				<JRConfTimerSlide clockType="final"  bgType="bg-red"/>
 				<JRConfFooter />

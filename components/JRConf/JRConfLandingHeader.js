@@ -17,7 +17,7 @@ export default class JRConfHeader extends React.Component {
 					<a href="https://www.facebook.com/vizjust/">
 					<img src="./src/fb-observe-fb_2x.png" />
 					</a>*/}
-					<a className="link" href="https://www.facebook.com/vizjust/">Facebook</a>
+					<a className="link" href="https://www.facebook.com/vizjust/">聯絡我們</a>
 				</div>
 			</header>
 

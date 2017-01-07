@@ -31,25 +31,18 @@ function countDown(clock, timerType) {
 
 }
 
-// Timer for advice deadline
+// Y.D. 20170107: Time has stopped.
+// Timer for advice deadline 
 class AdviceTimer extends React.Component {
 
 	componentDidMount() {
 
-		let endDate = new Date(2016, 11, 31),
-			timeTypeAndDiff = calTimeDiff(endDate);
-
 		let Clock = $('#AdviceTimer').FlipClock(
 
-			timeTypeAndDiff.value,
-
+			0,
 			{
-				countdown: true,
-				clockFace: timeTypeAndDiff.unit == 'day' ? 'Counter' : 'DailyCounter' 
+				autoStart: false
 			});
-
-		countDown(Clock, timeTypeAndDiff.unit);
-
 	}	
 
 	render() {
@@ -69,7 +62,7 @@ class IssueTimer extends React.Component {
 
 	componentDidMount() {
 
-		let endDate = new Date(2017, 2, 1),
+		let endDate = new Date(2017, 1, 31),
 			timeTypeAndDiff = calTimeDiff(endDate);
 
 		let Clock = $('#IssueTimer').FlipClock(
@@ -103,7 +96,7 @@ class GroupTimer extends React.Component {
 
 	componentDidMount() {
 
-		let endDate = new Date(2017, 2, 1),
+		let endDate = new Date(2017, 1, 31),
 			timeTypeAndDiff = calTimeDiff(endDate);
 
 		let Clock = $('#GroupTimer').FlipClock(
