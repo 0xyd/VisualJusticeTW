@@ -34,23 +34,23 @@ function countDown(clock, timerType) {
 // Timer for advice deadline
 class AdviceTimer extends React.Component {
 
-	componentDidMount() {
+	// componentDidMount() {
 
-		let endDate = new Date(2016, 11, 31),
-			timeTypeAndDiff = calTimeDiff(endDate);
+	// 	let endDate = new Date(2016, 11, 31),
+	// 		timeTypeAndDiff = calTimeDiff(endDate);
 
-		let Clock = $('#AdviceTimer').FlipClock(
+	// 	let Clock = $('#AdviceTimer').FlipClock(
 
-			timeTypeAndDiff.value,
+	// 		timeTypeAndDiff.value,
 
-			{
-				countdown: true,
-				clockFace: timeTypeAndDiff.unit == 'day' ? 'Counter' : 'DailyCounter' 
-			});
+	// 		{
+	// 			countdown: true,
+	// 			clockFace: timeTypeAndDiff.unit == 'day' ? 'Counter' : 'DailyCounter' 
+	// 		});
 
-		countDown(Clock, timeTypeAndDiff.unit);
+	// 	countDown(Clock, timeTypeAndDiff.unit);
 
-	}	
+	// }	
 
 	render() {
 
@@ -178,7 +178,7 @@ export default class Timer extends React.Component {
 					<img className="timer-image" 
 						 src={ this.props.bgType == "bg-red" ? "./src/countdown-timer-red.png" : "./src/countdown-timer-white.png" } />
 				</div>
-				{ this.props.type == 'advice' ? <AdviceTimer /> : null }
+				{/* this.props.type == 'advice' ? <AdviceTimer /> : null */}
 				{ this.props.type == 'issue' ? <IssueTimer /> : null }
 				{ this.props.type == 'group' ? <GroupTimer /> : null  }
 				{ this.props.type == 'final' ? <FinalTimer /> : null }

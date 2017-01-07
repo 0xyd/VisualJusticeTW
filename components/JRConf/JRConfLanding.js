@@ -5,9 +5,9 @@ import ReactRouter from 'react-router';
 import JRConfHeader from './JRConfLandingHeader';
 import JRConfFooter from './JRConfFooter';
 import Timer from './JRConfTimer';
-import { RedRibbon } from './githubRibbon';
-import FacebookLikeButton from './FacebookLikeButton';
-import GithubButton from './Github';
+import { RedRibbon } from '../common/githubRibbon';
+import FacebookLikeButton from '../common/FacebookLikeButton';
+import GithubButton from '../common/Github';
 
 
 class JRConfNextSlideBtn extends React.Component {

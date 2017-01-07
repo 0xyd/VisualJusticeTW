@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactRouter from 'react-router';
 
-import Disqus from './Disqus';
-import FacebookSocialPage from './FacebookSocialPage';
+import Disqus from '../common/Disqus';
+import FacebookSocialPage from '../common/FacebookSocialPage';
 
 export default class JRConfFooter extends React.Component {
 
