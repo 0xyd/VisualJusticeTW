@@ -7,10 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 # 20171010 Y.D.: This is used for debugging time_range_select function.
 index = 1
 
+shot_number = 0
+
 class Spider():
 
     def __init__(self):
         self.spider = webdriver.PhantomJS()
+        self.spider.set_window_position(1280, 800)
         self.spider.get('http://www.rjsd.moj.gov.tw/RJSDWEB/inquiry/InquireAdvance.aspx')
         sleep(3)
 
@@ -40,9 +43,10 @@ class Spider():
             options[1].click()
         sleep(3)
 
-    # 20171010 Y.D. TODO: Month selector does not work well.
+    # 20171010 Y.D.
     def select_time_range(self, start_year, end_year, start_month=1, end_month=12):
         global index
+
         begin_year_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQYearBegin')
         begin_years = begin_year_selector.find_elements_by_css_selector('option')
         begin_yr_index = start_year - 94
@@ -58,39 +62,37 @@ class Spider():
             else:
                 print('The begin latest year is 民國 %d' % (93+len(years)))
 
+        try:
+            months = self.spider.find_elements_by_css_selector('#ctl00_cphMain_ddlQDateBegin > option')
+            # begin_month_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQDateBegin')
+            # months = self.spider.find_elements_by_css_selector('option')
+            months[start_month-1].click()
+            sleep(1)
+            self.take_snapshot('start_month_click_' + str(index) + '.png')
+        except NoSuchElementException as e:
+            print('The Month elements are not available in begin field.')
+
         end_year_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQYearEnd')
         end_years = end_year_selector.find_elements_by_css_selector('option')
         end_yr_index = end_year - 94
         try:
             end_years[end_yr_index].click()
-            sleep(1)
             self.take_snapshot('end_year_click_' + str(index) + '.png')
+            sleep(1)
         except IndexError:
             if end_yr_index < 0:
                 print('End year should be set 民國 94 or later.')
             else:
                 print('The end latest year is 民國 %d' % (93+len(years)))
-
-        # try:
-        #     begin_month_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQDateBegin')
-        #     months = self.spider.find_elements_by_css_selector('option')
-        #     months[start_month-1].click()
-        #     months[end_month-1].click()
-        #     sleep(1)
-        #     self.take_snapshot('start_date_click' + str(index) + '.png')
-        # except NoSuchElementException as e:
-        #     print('The Month elements are not available in begin field.')
             
-        # try:
-        #     end_month_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQDateEnd')
-        #     months = self.spider.find_elements_by_css_selector('option')
-        #     months[start_month-1].click()
-        #     months[end_month-1].click()
-        #     sleep(1)
-        #     self.take_snapshot('end_date_click' + str(index) + '.png')
-        # except NoSuchElementException as e:
-        #     print('The Month elements are not available in end field.')
-
+        try:
+            months = self.spider.find_elements_by_css_selector('#ctl00_cphMain_ddlQDateEnd > option')
+            months[end_month-1].click()
+            sleep(1)
+            self.take_snapshot('end_month_click_' + str(index) + '.png')
+        except NoSuchElementException as e:
+            print('The Month elements are not available in end field.')
+        
         index += 1
 
     def access_html(self):
@@ -115,7 +117,9 @@ def main():
     )
     spider.select_time_unit()
     spider.start_query()
-    spider.take_snapshot()
+    # spider.take_snapshot()
+
+
     # spider = webdriver.PhantomJS()
     # spider.get('http://www.rjsd.moj.gov.tw/RJSDWEB/inquiry/InquireAdvance.aspx')
     # sleep(3)
