@@ -1,0 +1,758 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-Frame-Options" content="deny"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>
+	法務部 法務統計資訊網
+</title>
+
+    
+
+    <script type="text/javascript">
+	    if (self == top) {
+	        var antiClickjack = document.getElementById("antiClickjack");
+	        antiClickjack.parentNode.removeChild(antiClickjack);
+	    } else {
+	        top.location = self.location;
+	    } 
+    </script>
+
+    <link href="http://www.rjsd.moj.gov.tw/RJSDWeb/library/RJSDWeb.css" rel="stylesheet" type="text/css">
+
+    <script src="http://www.rjsd.moj.gov.tw/RJSDWeb/library/RJSDWeb.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        window.name = "rjsd_main";
+    </script>
+
+    
+    <style type="text/css">
+        .Propose
+        {
+            font-size: 10pt;
+            color: blue;
+        }
+        .Category
+        {
+            width: 95%;
+            margin-top: 5px;
+        }
+        .CategoryPath
+        {
+            padding-right: 10px;
+        }
+        .FieldGroup
+        {
+            margin-top: 5px;
+            background-color: #D9FF9F;            
+        }
+        .FieldGroup td
+        {
+            font-size: 11pt;
+            color: #000000;
+            text-indent: -16pt;
+            padding-left: 16pt;
+        }
+        .Query
+        {
+            padding-left: 20px;
+            margin-top: 10px;
+            line-height: 18pt;
+        }
+        .Query table
+        {
+            width: 99%;
+        }
+        .DimensionCheckAll
+        {
+            font-size: 10pt;
+        }
+        .Dimension td
+        {
+            font-size: 10pt;
+        }
+        .Help
+        {
+            display: block;
+            margin-top: 10px;
+            font-size: 10pt;
+            color: #0056e5;
+        }
+        .Help1 span
+        {
+            display: block;
+            margin-left: 1em;
+        }        
+        .Help2 span
+        {
+            display: block;
+            text-indent: -1em;
+            margin-left: 2em;
+        }        
+        .CellCount
+        {
+            display: block;
+            position: relative;
+            left: 10px;
+            font-size: 10pt;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function DimensionClick(e, objTree) {
+            var objTarget = e.target || e.srcElement
+
+            if (objTarget.id.match("^" + objTree.id + "n")) {
+                // alert(strClickID)
+                SelectedCount();
+            }
+            else if (objTarget.id.match("^" + objTree.id + "t")) {
+                var strCheckID = objTree.id + "n" + objTarget.id.substr(objTree.id.length + 1) + "CheckBox";
+                var objCheck = document.getElementById(strCheckID);
+
+                objCheck.checked = !objCheck.checked;
+                SelectedCount();
+            }
+        }
+
+        function ShowNounDialog(strWebGroupID) {
+            window.open('../noun/NounCollection.aspx?web_group_id=' + strWebGroupID, 'rjsd_noun', 'width=800, height=600, resizable=yes, scrollbars=yes');
+        }
+
+        function CheckAll(strHolder, blnChecked) {
+            var aryCheck = document.getElementById(strHolder).getElementsByTagName('input');
+            var i;
+
+            for (i = 0; i < aryCheck.length; i++) {
+                if (aryCheck[i].type == "checkbox")
+                    aryCheck[i].checked = blnChecked
+            }
+            SelectedCount();
+        }
+
+        var m_intDateCount = 1;
+
+        // 計算選取之儲存格數
+        function SelectedCount() {
+            var i, intAllowCount, intSelectedCount, intCanCount, intDimCount, intDimNo, chkDim;
+            var lblCellCount;
+
+            intSelectedCount = m_intDateCount;
+            for (i = 0; i < m_aryDimTree.length; i++) {
+                intDimNo = 0;
+                intDimCount = 0;
+                while (true) {
+                    chkDim = document.getElementById(m_aryDimTree[i] + "n" + String(intDimNo) + "CheckBox");
+                    if (chkDim==null) break;
+
+                    if (chkDim.checked) intDimCount += 1;
+                    intDimNo += 1;
+                }
+                if (intDimCount > 0) intSelectedCount *= intDimCount;
+            }
+
+            lblCellCount = document.getElementById("ctl00_cphMain_lblCellCount")
+            if (lblCellCount) {
+                intAllowCount = 10000;
+                intCanCount = intAllowCount - intSelectedCount;
+                lblCellCount.style.color = intCanCount < 0 ? "red" : "";
+                lblCellCount.innerHTML = "可選取之儲存格數：" + FormatNumber(intAllowCount) + "；已選取數：" + FormatNumber(intSelectedCount) + "；尚可選取數：" + FormatNumber(intCanCount < 0 ? 0 : intCanCount);
+            }
+        }
+
+        function FormatNumber(intCount) {
+            var strNumber = String(intCount);
+            var strDestination = "";
+            var intLen = strNumber.length;
+            var intPartLen, i;
+
+            intPartLen = intLen % 3;
+            if (intPartLen==0) intPartLen = 3;
+
+            i = 0;
+            while (i < intLen) {
+                if (strDestination!="") strDestination += ","
+                strDestination += strNumber.substr(i, intPartLen);
+                i += intPartLen;
+                intPartLen = 3;
+            }
+            return strDestination;
+        }
+        
+    </script>
+
+    <link href="./InquireAdvanceTable.css" rel="stylesheet" type="text/css">
+</head>
+<body style="margin: 0px;">
+    <form name="aspnetForm" method="post" action="InquireAdvance.aspx" id="aspnetForm">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/RJSDWEB/WebResource.axd?d=Hx-pgabEQV5rVMhrIGit8WMsr7wF-zjPiEQf0vtSPTDvsL7GAwe3DWvLe_0zoVMqLTELF1BIY2TwYDroQoab6lUz6g41&amp;t=636271959501517547" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+function ChangeDirection(strSourceDirect, intSourcePos, strOverDirect, intOverPos) {
+document.getElementById('ctl00_cphMain_hidCallback').value = strSourceDirect + intSourcePos + '|' + strOverDirect + intOverPos;
+document.getElementById('ctl00_cphMain_btnCallback').click();
+}//]]>
+</script>
+
+<script src="/RJSDWEB/ScriptResource.axd?d=iF-EL1hhl3WRpbg8hwB55KDR0WU26DVSpDtMjFK6S4uRoMmC-GoOiH3DeqH6Jfpw-gyh8XE4U6yBxgWFZlQn7g_xbnAnaYlVbYRte6UrPF8wGvvcIQOzN6xwNLhU5AdvRpjQoJszM0hMg96snJ2q6RayeQij4kcQHiNHtQQm-I6SO2nK0&amp;t=2e2045e2" type="text/javascript"></script>
+<script src="/RJSDWEB/ScriptResource.axd?d=HZ1dg2cB5VTR98G1LOx6_sWCky_AQgZV7DE8YSLuzkVS4e843QGwcQz9mmGOvIWyJoQzMVzdq6h9GrtJw_TCle-CnesNHy3gKi63RzgT3xn6Mu_8EKtfMQmq8ovcwXBbVOjM2kaSV6lY0zsJy1AUEmFgXnDu0P7HFb9i7pUTDFe04igN0&amp;t=2e2045e2" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="95EF47B5">
+</div>
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tbody><tr>
+            <td style="white-space: nowrap;">
+                <a href="http://www.moj.gov.tw" target="_blank">
+                    <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_01.gif" alt="法務部"></a><a href="../default.aspx"><img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_02.gif" alt="法務統計資訊網"></a> </td>
+            <td style="width: 99%; background-image: url(&quot;http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_03.gif&quot;);" class="TopMenu">
+                ::: <a href="../Default.aspx">回首頁</a> | <a href="http://www.moj.gov.tw" target="_blank">
+                    回法務部首頁</a> | <a href="../common/SiteMap.aspx">網站導覽</a> |
+                <a id="ctl00_lnkEnglish" href="http://www.moj.gov.tw/np.asp?ctNode=11618&amp;mp=095" target="_blank">English</a>
+                <br>
+                <span id="ctl00_lblEmviroment" style="color:Red;font-family:微軟正黑體;font-size:18pt;"></span>
+            </td>
+        </tr>
+    </tbody></table>
+    <div style="white-space: nowrap; background: url(../images/index_10.gif);">
+        <a id="ctl00_uctlMenu1_repMenu_ctl00_lnkTitle" title="關於法務統計" href="/RJSDWEB/common/SubMenu.aspx?menu=ABOUT"><img id="ctl00_uctlMenu1_repMenu_ctl00_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt1_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl00_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt1_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl00_panSubMenu')" src="/RJSDWEB/images/index_bt1_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl00_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl00_lnkSubMenuTitle" title="統計處簡介" href="/RJSDWEB/common/HtmlPage.aspx?menu=ABO_INTRODUCTION">統計處簡介</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl01_lnkSubMenuTitle" title="最新消息" href="/RJSDWEB/news/Bulletin.aspx">最新消息</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl02_lnkSubMenuTitle" title="預告統計發布時間" href="http://win.dgbas.gov.tw/dgbas03/bs7/calendar/calendar.asp?selorg=10" target="_blank">預告統計發布時間</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl03_lnkSubMenuTitle" title="重要統計事項變更" href="/RJSDWEB/history/HistoryReform.aspx">重要統計事項變更</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl01_lnkTitle" title="統計資訊服務" href="/RJSDWEB/common/SubMenu.aspx?menu=INFORMATION"><img id="ctl00_uctlMenu1_repMenu_ctl01_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt2_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl01_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt2_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl01_panSubMenu')" src="/RJSDWEB/images/index_bt2_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl01_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl00_lnkSubMenuTitle" title="法務績效圖示" href="/RJSDWEB/common/WebList4.aspx?menu=INF_PERFORMANCE_CHART">法務績效圖示</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl01_lnkSubMenuTitle" title="重要統計指標" href="/RJSDWEB/indicator/Indicator.aspx">重要統計指標</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_lnkSubMenuTitle" title="常用統計查詢" onmouseover="MenuSOver(this,'ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2')" onmouseout="MenuSOut(this,'ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2')" href="/RJSDWEB/common/SubMenu.aspx?menu=INF_COMMON">常用統計查詢</a>
+                                <div id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2" style="position:absolute;display:none;" class="SubMenu" onmouseover="SubMenuOver2()" onmouseout="SubMenuOut2()">
+                                    <ul>
+                                        
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl00_lnkSubMenuTitle" title="檢察統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_P">檢察統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl01_lnkSubMenuTitle" title="矯正統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_C">矯正統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl02_lnkSubMenuTitle" title="司法保護統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_Q">司法保護統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl03_lnkSubMenuTitle" title="行政執行統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_A">行政執行統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl04_lnkSubMenuTitle" title="其他業務" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_O">其他業務</a></li>
+                                            
+                                    </ul>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl03_lnkSubMenuTitle" title="進階統計查詢" href="/RJSDWEB/inquiry/InquireAdvance.aspx">進階統計查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl02_lnkTitle" title="性別統計" href="/RJSDWEB/common/SubMenu.aspx?menu=GENDER"><img id="ctl00_uctlMenu1_repMenu_ctl02_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt3_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl02_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt3_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl02_panSubMenu')" src="/RJSDWEB/images/index_bt3_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl02_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl00_lnkSubMenuTitle" title="性別統計圖" href="/RJSDWEB/common/WebList4.aspx?menu=GEN_CHAER">性別統計圖</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_lnkSubMenuTitle" title="性別統計表" onmouseover="MenuSOver(this,'ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2')" onmouseout="MenuSOut(this,'ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2')" href="/RJSDWEB/common/SubMenu.aspx?menu=GEN_REPORT">性別統計表</a>
+                                <div id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2" style="position:absolute;display:none;" class="SubMenu" onmouseover="SubMenuOver2()" onmouseout="SubMenuOut2()">
+                                    <ul>
+                                        
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl00_lnkSubMenuTitle" title="檢察統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_PROSECUTION">檢察統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl01_lnkSubMenuTitle" title="矯正統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_REDRESS">矯正統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl02_lnkSubMenuTitle" title="司法保護統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_JUDICIAL">司法保護統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl03_lnkSubMenuTitle" title="行政執行統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_ADMINISTRATIVE">行政執行統計</a></li>
+                                            
+                                    </ul>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl02_lnkSubMenuTitle" title="性別統計分析" href="/RJSDWEB/common/WebList2.aspx?menu=GEN_ANALYSIS">性別統計分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl03_lnkSubMenuTitle" title="性別統計進階查詢" href="/RJSDWEB/inquiry/InquireAdvance.aspx?gender=1">性別統計進階查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl03_lnkTitle" title="統計書刊" href="/RJSDWEB/common/SubMenu.aspx?menu=BOOK"><img id="ctl00_uctlMenu1_repMenu_ctl03_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt4_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl03_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt4_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl03_panSubMenu')" src="/RJSDWEB/images/index_bt4_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl03_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl00_lnkSubMenuTitle" title="書刊介紹" href="/RJSDWEB/book/BookIntro.aspx">書刊介紹</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl01_lnkSubMenuTitle" title="法務統計摘要" href="/RJSDWEB/book/Book.aspx?category_id=9">法務統計摘要</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl02_lnkSubMenuTitle" title="法務統計重要參考指標" href="/RJSDWEB/book/Book.aspx?category_id=8">法務統計重要參考指標</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl03_lnkSubMenuTitle" title="法務統計月報" href="/RJSDWEB/book/Book.aspx?category_id=5">法務統計月報</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl04_lnkSubMenuTitle" title="法務統計年報" href="/RJSDWEB/book/Book.aspx?category_id=4">法務統計年報</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl05_lnkSubMenuTitle" title="法務部統計手冊" href="/RJSDWEB/book/Book.aspx?category_id=6">法務部統計手冊</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl06_lnkSubMenuTitle" title="書刊統計表查詢" href="/RJSDWEB/book/BookReport.aspx">書刊統計表查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl04_lnkTitle" title="統計分析" href="/RJSDWEB/common/SubMenu.aspx?menu=ANALYSIS"><img id="ctl00_uctlMenu1_repMenu_ctl04_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt5_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl04_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt5_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl04_panSubMenu')" src="/RJSDWEB/images/index_bt5_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl04_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl00_lnkSubMenuTitle" title="統計摘要分析" href="/RJSDWEB/common/WebList2.aspx?menu=AYA_SPECIAL_REPORT">統計摘要分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl01_lnkSubMenuTitle" title="統計短文" href="/RJSDWEB/common/Propaganda.aspx">統計短文</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl02_lnkSubMenuTitle" title="統計年報提要分析" href="/RJSDWEB/common/WebList2.aspx?menu=AYA_ANNUAL_REPORT">統計年報提要分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl03_lnkSubMenuTitle" title="調查提要分析" href="/RJSDWEB/common/ProjectReport.aspx">調查提要分析</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl05_lnkTitle" title="視覺化查詢" href="/RJSDWEB/visualization/justice/justice_homepage.html" target="_blank"><img id="ctl00_uctlMenu1_repMenu_ctl05_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt6_02.gif?v=1.2','')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt6_01.gif?v=1.2','')" src="/RJSDWEB/images/index_bt6_01.gif?v=1.2" style="border-width:0px;"></a><a id="ctl00_uctlMenu1_repMenu_ctl06_lnkTitle" title="其他服務" href="/RJSDWEB/common/SubMenu.aspx?menu=OTHER"><img id="ctl00_uctlMenu1_repMenu_ctl06_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt7_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl06_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt7_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl06_panSubMenu')" src="/RJSDWEB/images/index_bt7_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl06_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl00_lnkSubMenuTitle" title="統計用詞解釋" href="/RJSDWEB/noun/Noun.aspx">統計用詞解釋</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl01_lnkSubMenuTitle" title="統計資料紀事" href="/RJSDWEB/history/History.aspx">統計資料紀事</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl02_lnkSubMenuTitle" title="相關統計網站" href="/RJSDWEB/common/RelatedWebsite.aspx">相關統計網站</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div>
+
+    </div>
+    <div id="Content">
+        <div id="ctl00_panPath" class="path">
+	
+            目前位置：<a id="ctl00_lnkHome" href="../Default.aspx">首頁</a>
+            &gt;
+            
+                    <a id="ctl00_repPath_ctl00_lnkMenu" title="統計資訊服務" href="../common/SubMenu.aspx?menu=INFORMATION">統計資訊服務</a>
+                
+                    &gt;
+                
+                    <a id="ctl00_repPath_ctl02_lnkMenu" title="進階統計查詢" href="InquireAdvance.aspx">進階統計查詢</a>
+                
+        
+</div>
+        <table id="ctl00_tabTitle" cellpadding="0" cellspacing="0" width="100%" class="Content_Title">
+	<tbody><tr>
+		<td style="white-space: nowrap;">
+                    <img src="../images/title1.gif" alt=""><span id="Content_String">進階統計查詢</span></td>
+		<td style="width: 99%;">
+                    <span class="Content_SubMenu">
+                        
+    <span style="float: right;"><span class="Propose">建議使用 IE10 以上版本，以達到最佳之執行效果。</span>&nbsp;<span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cntSubMenu$btnHelp" value="查詢說明" onclick="window.open('./InquireAdvance_help.html');return false;" id="ctl00_cntSubMenu_btnHelp"></span></span></span>
+
+                    </span></td>
+	</tr>
+</tbody></table>
+
+        
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$cphMain$ScriptManager1', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tctl00$cphMain$panQuery','tctl00$cphMain$panQCalMode','tctl00$cphMain$panVer','tctl00$cphMain$panHor','tctl00$cphMain$panVaule'], ['ctl00$cphMain$btnCallback'], [], 90);
+//]]>
+</script>
+
+    
+            <table width="99%">
+                <tbody><tr>
+                    
+                    <td valign="top">
+                        <table cellpadding="0" cellspacing="0" width="99%">
+                            <tbody><tr>
+                                <td>
+                                    <span id="ctl00_cphMain_lblGroupName" class="CategoryLabel">監獄在監受刑人人數(含性別)－依前科情形分（人）</span>
+                                </td>
+                                <td align="right">
+                                    <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnBack" value="回上一頁" id="ctl00_cphMain_btnBack"></span></span>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <fieldset class="Query">
+                            <legend style="font-weight: bold;">索引條件</legend>
+                            <div style="float: left; white-space: nowrap;">
+                                <div id="ctl00_cphMain_panQuery">
+	
+                                        <span style="white-space: nowrap;">週期：<select name="ctl00$cphMain$ddlQPeriod" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQPeriod\',\'\')', 0)" id="ctl00_cphMain_ddlQPeriod">
+		<option selected="selected" value="M">月</option>
+		<option value="Y">年</option>
+		<option value="YM">年（含月）</option>
+
+	</select>
+                                            &nbsp; </span><span style="white-space: nowrap;">資料期間：民國&nbsp;<select name="ctl00$cphMain$ddlQYearBegin" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQYearBegin\',\'\')', 0)" id="ctl00_cphMain_ddlQYearBegin">
+		<option value="099">99年</option>
+		<option value="100">100年</option>
+		<option value="101">101年</option>
+		<option value="102">102年</option>
+		<option value="103">103年</option>
+		<option value="104">104年</option>
+		<option selected="selected" value="105">105年</option>
+		<option value="106">106年</option>
+
+	</select>
+                                                <select name="ctl00$cphMain$ddlQDateBegin" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQDateBegin\',\'\')', 0)" id="ctl00_cphMain_ddlQDateBegin">
+		<option value="01">1月</option>
+		<option value="02">2月</option>
+		<option value="03">3月</option>
+		<option value="04">4月</option>
+		<option value="05">5月</option>
+		<option value="06">6月</option>
+		<option value="07">7月</option>
+		<option value="08">8月</option>
+		<option selected="selected" value="09">9月</option>
+		<option value="10">10月</option>
+		<option value="11">11月</option>
+		<option value="12">12月</option>
+
+	</select>
+                                                &nbsp;～&nbsp;民國&nbsp;<select name="ctl00$cphMain$ddlQYearEnd" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQYearEnd\',\'\')', 0)" id="ctl00_cphMain_ddlQYearEnd">
+		<option value="099">99年</option>
+		<option value="100">100年</option>
+		<option value="101">101年</option>
+		<option value="102">102年</option>
+		<option value="103">103年</option>
+		<option value="104">104年</option>
+		<option value="105">105年</option>
+		<option selected="selected" value="106">106年</option>
+
+	</select>
+                                                <select name="ctl00$cphMain$ddlQDateEnd" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQDateEnd\',\'\')', 0)" id="ctl00_cphMain_ddlQDateEnd">
+		<option value="01">1月</option>
+		<option value="02">2月</option>
+		<option value="03">3月</option>
+		<option value="04">4月</option>
+		<option value="05">5月</option>
+		<option value="06">6月</option>
+		<option value="07">7月</option>
+		<option value="08">8月</option>
+		<option selected="selected" value="09">9月</option>
+
+	</select>
+                                                &nbsp; </span>
+                                    
+</div>
+                            </div>
+                            <table cellpadding="0" cellspacing="0" style="padding-top: 6px; width: auto; margin-left: auto;">
+                                <tbody><tr>
+                                    <td>
+                                        <div id="ctl00_cphMain_panQCalMode">
+	
+                                                <span style="white-space: nowrap;">計算模式：<select name="ctl00$cphMain$ddlQCalMode" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQCalMode\',\'\')', 0)" id="ctl00_cphMain_ddlQCalMode">
+		<option selected="selected" value="V">統計值</option>
+		<option value="R">較上年(或上年同月)增減率</option>
+		<option value="P">較上年(或上月)增減率</option>
+		<option value="VR">統計值+較上年(或上年同月)增減率</option>
+		<option value="VP">統計值+較上年(或上月)增減率</option>
+
+	</select>
+                                                    &nbsp; </span>
+                                            
+</div>
+                                    </td>
+                                    <td>
+                                        <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnQuery" value="查　詢" id="ctl00_cphMain_btnQuery"></span></span>&nbsp;&nbsp;&nbsp;
+                                        <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnExcel" value="匯出Excel檔" id="ctl00_cphMain_btnExcel"></span></span>&nbsp;&nbsp;&nbsp;<span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnNoun" value="相關統計用詞" onclick="ShowNounDialog('135');return false;" id="ctl00_cphMain_btnNoun"></span></span></td>
+                                </tr>
+                            </tbody></table>
+                        </fieldset>
+                        
+                        <br>
+                        
+                        
+                    </td>
+                </tr>
+            </tbody></table>
+            
+
+                <script type="text/javascript" src="./ExtendedTable.js"></script><table cellpadding="0" cellspacing="0"><tbody><tr><td id="tabMove" style="display: none; position: absolute; filter: alpha(opacity=50); opacity:0.5;"></td></tr></tbody></table>
+
+                <table>
+                    <tbody><tr>
+                        <td>
+                        </td>
+                        <td align="left" valign="top">
+                            <div id="ctl00_cphMain_panVer">
+	
+                                    <table id="ctl00_cphMain_dltVer" cellspacing="0" border="0" style="border-collapse:collapse;">
+		<tbody><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltVer_ctl00_panVer" title="可點選後拖曳變更位置" class="VerPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'V',0,event)" onmouseover="PanelMouseOver(this,'V',0)">
+				
+                                                資料期間
+                                            
+			</div>
+                                        </td><td>
+                                            <div id="ctl00_cphMain_dltVer_ctl01_panVer" title="可點選後拖曳變更位置" class="VerPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'V',1,event)" onmouseover="PanelMouseOver(this,'V',1)">
+				
+                                                
+                                            
+			</div>
+                                        </td>
+		</tr>
+	</tbody></table>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" style="vertical-align: top;">
+                            <div id="ctl00_cphMain_panHor">
+	
+                                    <table id="ctl00_cphMain_dltHor" cellspacing="0" border="0" style="border-collapse:collapse;">
+		<tbody><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl00_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',0,event)" onmouseover="PanelMouseOver(this,'H',0)">
+				
+                                                罪名別
+                                            
+			</div>
+                                        </td>
+		</tr><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl01_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',1,event)" onmouseover="PanelMouseOver(this,'H',1)">
+				
+                                                監獄前科情形
+                                            
+			</div>
+                                        </td>
+		</tr><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl02_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',2,event)" onmouseover="PanelMouseOver(this,'H',2)">
+				
+                                                性別
+                                            
+			</div>
+                                        </td>
+		</tr>
+	</tbody></table>
+</div>
+                        </td>
+                        <td valign="top">
+                            <input type="submit" name="ctl00$cphMain$btnCallback" value="" id="ctl00_cphMain_btnCallback" style="display: none;"><input type="hidden" name="ctl00$cphMain$hidCallback" id="ctl00_cphMain_hidCallback"><div id="ctl00_cphMain_panVaule">
+	
+                                    <table id="ctl00_cphMain_tabResult" class="Result" cellpadding="5" border="0">
+		<tbody><tr>
+			<td class="HorVerCross" colspan="2" rowspan="4">項目別</td><td class="HorDim" colspan="8" rowspan="1">勞動基準法</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDim" colspan="2" rowspan="2">無前科</td><td class="HorDim" colspan="6" rowspan="1">有前科</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDimSep" colspan="2" rowspan="1"></td><td class="HorDim" colspan="2" rowspan="1">再犯</td><td class="HorDim" colspan="2" rowspan="1">累犯</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">105年</td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeftTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">106年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td>
+		</tr>
+	</tbody></table>
+                                
+</div>
+                        </td>
+                    </tr>
+                </tbody></table>
+            
+            <br>
+        
+    <br>
+
+    </div>
+    <br>
+    <div class="Footer" style="padding-top: 15px;">
+        <table cellpadding="0" cellspacing="2" style="width: 100%;">
+            <tbody><tr>
+                <td style="width: 20%; text-align: right; vertical-align: middle;">
+                    <a href="http://get.adobe.com/tw/flashplayer/" target="adobe">
+                        <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/get_flash.jpg" style="width: 120px;" title="Flash 免費軟體下載(另開新視窗)"></a><br>
+                    <a href="http://get.adobe.com/tw/reader/" target="adobe" style="margin-top: 5px;">
+                        <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/get_pdf.jpg" style="width: 120px; margin-top: 5px;" title="PDF 免費軟體下載(另開新視窗)"></a>
+                </td>
+                <td>
+                    法務部：10048 臺北市重慶南路一段130號 電話：(02)2191-0189 <a href="../common/OfficeLocation.aspx">交通資訊</a><br>
+                    第二辦公室：10048 臺北市貴陽街一段235號 電話：(02)2191-0189 <a href="../common/SubOfficeLocation.aspx">
+                        交通資訊</a><br>
+                    建議使用IE 8.0 以上版本 最佳觀看解析度1024x768
+                </td>
+                <td style="width: 20%;">
+                </td>
+            </tr>
+        </tbody></table>
+        <br>
+    </div>
+    <br>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.initialize();
+//]]>
+</script>
+</form>
+
+
+</body></html>
