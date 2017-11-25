@@ -24,10 +24,11 @@
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/3.png)
 
 6. 點擊右側Pull Requests的按鈕
-![https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/4.png]
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/4.png)
 
 7. Merge本地的develop branch到原專案的develop branch。
 
+8. 等YD哥哥幫你Merge
 
 ## 資料清單彙整
 警政署、法務部與司法院的資料統計
