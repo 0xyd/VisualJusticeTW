@@ -7,8 +7,6 @@ from selenium.common.exceptions import NoSuchElementException
 # 20171010 Y.D.: This is used for debugging time_range_select function.
 index = 1
 
-shot_number = 0
-
 class Spider():
 
     def __init__(self):
@@ -44,12 +42,16 @@ class Spider():
         sleep(3)
 
     # 20171010 Y.D.
-    def select_time_range(self, start_year, end_year, start_month=1, end_month=12):
+    def select_time_range(self, start_year, end_year, start_month=1, end_month=12, opt_name='mon'):
         global index
+        if opt_name == 'mon':
+            base_year = 99
+        else:
+            base_year = 94
 
         begin_year_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQYearBegin')
         begin_years = begin_year_selector.find_elements_by_css_selector('option')
-        begin_yr_index = start_year - 94
+        begin_yr_index = start_year - base_year
 
         # Click year options
         try:
@@ -60,7 +62,7 @@ class Spider():
             if begin_yr_index < 0:
                 print('Begin year should be set 民國 94 or later.')
             else:
-                print('The begin latest year is 民國 %d' % (93+len(years)))
+                print('The begin latest year is 民國 %d' % (93+len(begin_years)))
 
         try:
             months = self.spider.find_elements_by_css_selector('#ctl00_cphMain_ddlQDateBegin > option')
@@ -74,7 +76,7 @@ class Spider():
 
         end_year_selector = self.spider.find_element_by_id('ctl00_cphMain_ddlQYearEnd')
         end_years = end_year_selector.find_elements_by_css_selector('option')
-        end_yr_index = end_year - 94
+        end_yr_index = end_year - base_year
         try:
             end_years[end_yr_index].click()
             self.take_snapshot('end_year_click_' + str(index) + '.png')
@@ -83,7 +85,7 @@ class Spider():
             if end_yr_index < 0:
                 print('End year should be set 民國 94 or later.')
             else:
-                print('The end latest year is 民國 %d' % (93+len(years)))
+                print('The end latest year is 民國 %d' % (93+len(end_years)))
             
         try:
             months = self.spider.find_elements_by_css_selector('#ctl00_cphMain_ddlQDateEnd > option')
