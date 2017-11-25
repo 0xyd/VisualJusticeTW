@@ -4,6 +4,29 @@
 ## 目錄
 
 
+## 如何貢獻原始碼
+1. Fork 看見思法專案
+術前：
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/1.png)
+
+術後：
+！[](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/2.png)
+2.  把你剛剛的專案Clone到你的本機
+```bash
+    git clone https://fork_repository.git
+```
+3. 修改你看不爽的地方
+4. Commit程式碼到develop branch
+```
+    git push origin develop
+```
+5. 回到Fork出的專案頁面點擊Pull Request
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/3.png)
+
+6. 點擊右側Pull Requests的按鈕
+![https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/4.png]
+
+7. Merge本地的develop branch到原專案的develop branch。
 
 
 ## 資料清單彙整
@@ -11,7 +34,7 @@
 [資料清單](https://hackmd.io/AwDmDYHYFME5oLQDMCGAjcCAsAmNWEUVYkEBjaMpAEyTLTNjViA=?both)
 
 
-## 使用Selenium + PhantomJS 作為爬蟲
+## 使用Selenium + Headless Chrome 作為爬蟲
 主要是為了處理法務部網站cookie的複雜問題所以採取下策 ><|||
 
 ### 環境架設與工具安裝
@@ -32,17 +55,14 @@
 
 **Windows**<br>
 
-#### PhantomJS
-PhantomJS是一個Headless的瀏覽器引擎，所以執行時不會跳出瀏覽器顯示頁面。PhantomJS可以繞過網站對爬蟲的阻擋，當然缺點就是比較消耗資源...而且PhantomJS已經沒在維護了。
+#### Headless Chrome
 
-**Mac**<br>
+**下載**<br>
+請在[這裡](https://sites.google.com/a/chromium.org/chromedriver/downloads)Chrome Driver下載。
 
-```bash
-    brew install phantomjs
-```
-**Linux**<br>
-
-**Windows**<br>
+**設定**<br>
+解壓縮檔案之後，將driver放到預設的路徑。目前在setting.py的設定為*./driver/chromedriver*
+請自行建立driver目錄於service_crawler中，或者指定setting.py中Headless driver的路徑到解壓縮檔案的位置。
 
 #### Tabula
 Tabula主要是為了處理政府大量釋出的Pdf資料轉換成機器可讀。
@@ -51,3 +71,4 @@ Tabula主要是為了處理政府大量釋出的Pdf資料轉換成機器可讀�
 
 在進入[Tabula](http://tabula.nerdpower.org/)官網後，就可以下載windows、Mac OS的安裝檔，如果是老手的話，也可以選擇Github手動安裝，而我是選擇直接download for Mac。
 
+## 
