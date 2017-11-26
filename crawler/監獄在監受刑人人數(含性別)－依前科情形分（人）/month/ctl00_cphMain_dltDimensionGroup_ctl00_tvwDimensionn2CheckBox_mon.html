@@ -1,0 +1,918 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta http-equiv="X-Frame-Options" content="deny"><meta http-equiv="X-UA-Compatible" content="IE=edge"><title>
+	法務部 法務統計資訊網
+</title>
+
+    
+
+    <script type="text/javascript">
+	    if (self == top) {
+	        var antiClickjack = document.getElementById("antiClickjack");
+	        antiClickjack.parentNode.removeChild(antiClickjack);
+	    } else {
+	        top.location = self.location;
+	    } 
+    </script>
+
+    <link href="http://www.rjsd.moj.gov.tw/RJSDWeb/library/RJSDWeb.css" rel="stylesheet" type="text/css">
+
+    <script src="http://www.rjsd.moj.gov.tw/RJSDWeb/library/RJSDWeb.js" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        window.name = "rjsd_main";
+    </script>
+
+    
+    <style type="text/css">
+        .Propose
+        {
+            font-size: 10pt;
+            color: blue;
+        }
+        .Category
+        {
+            width: 95%;
+            margin-top: 5px;
+        }
+        .CategoryPath
+        {
+            padding-right: 10px;
+        }
+        .FieldGroup
+        {
+            margin-top: 5px;
+            background-color: #D9FF9F;            
+        }
+        .FieldGroup td
+        {
+            font-size: 11pt;
+            color: #000000;
+            text-indent: -16pt;
+            padding-left: 16pt;
+        }
+        .Query
+        {
+            padding-left: 20px;
+            margin-top: 10px;
+            line-height: 18pt;
+        }
+        .Query table
+        {
+            width: 99%;
+        }
+        .DimensionCheckAll
+        {
+            font-size: 10pt;
+        }
+        .Dimension td
+        {
+            font-size: 10pt;
+        }
+        .Help
+        {
+            display: block;
+            margin-top: 10px;
+            font-size: 10pt;
+            color: #0056e5;
+        }
+        .Help1 span
+        {
+            display: block;
+            margin-left: 1em;
+        }        
+        .Help2 span
+        {
+            display: block;
+            text-indent: -1em;
+            margin-left: 2em;
+        }        
+        .CellCount
+        {
+            display: block;
+            position: relative;
+            left: 10px;
+            font-size: 10pt;
+        }
+    </style>
+
+    <script type="text/javascript">
+        function DimensionClick(e, objTree) {
+            var objTarget = e.target || e.srcElement
+
+            if (objTarget.id.match("^" + objTree.id + "n")) {
+                // alert(strClickID)
+                SelectedCount();
+            }
+            else if (objTarget.id.match("^" + objTree.id + "t")) {
+                var strCheckID = objTree.id + "n" + objTarget.id.substr(objTree.id.length + 1) + "CheckBox";
+                var objCheck = document.getElementById(strCheckID);
+
+                objCheck.checked = !objCheck.checked;
+                SelectedCount();
+            }
+        }
+
+        function ShowNounDialog(strWebGroupID) {
+            window.open('../noun/NounCollection.aspx?web_group_id=' + strWebGroupID, 'rjsd_noun', 'width=800, height=600, resizable=yes, scrollbars=yes');
+        }
+
+        function CheckAll(strHolder, blnChecked) {
+            var aryCheck = document.getElementById(strHolder).getElementsByTagName('input');
+            var i;
+
+            for (i = 0; i < aryCheck.length; i++) {
+                if (aryCheck[i].type == "checkbox")
+                    aryCheck[i].checked = blnChecked
+            }
+            SelectedCount();
+        }
+
+        var m_intDateCount = 1;
+
+        // 計算選取之儲存格數
+        function SelectedCount() {
+            var i, intAllowCount, intSelectedCount, intCanCount, intDimCount, intDimNo, chkDim;
+            var lblCellCount;
+
+            intSelectedCount = m_intDateCount;
+            for (i = 0; i < m_aryDimTree.length; i++) {
+                intDimNo = 0;
+                intDimCount = 0;
+                while (true) {
+                    chkDim = document.getElementById(m_aryDimTree[i] + "n" + String(intDimNo) + "CheckBox");
+                    if (chkDim==null) break;
+
+                    if (chkDim.checked) intDimCount += 1;
+                    intDimNo += 1;
+                }
+                if (intDimCount > 0) intSelectedCount *= intDimCount;
+            }
+
+            lblCellCount = document.getElementById("ctl00_cphMain_lblCellCount")
+            if (lblCellCount) {
+                intAllowCount = 10000;
+                intCanCount = intAllowCount - intSelectedCount;
+                lblCellCount.style.color = intCanCount < 0 ? "red" : "";
+                lblCellCount.innerHTML = "可選取之儲存格數：" + FormatNumber(intAllowCount) + "；已選取數：" + FormatNumber(intSelectedCount) + "；尚可選取數：" + FormatNumber(intCanCount < 0 ? 0 : intCanCount);
+            }
+        }
+
+        function FormatNumber(intCount) {
+            var strNumber = String(intCount);
+            var strDestination = "";
+            var intLen = strNumber.length;
+            var intPartLen, i;
+
+            intPartLen = intLen % 3;
+            if (intPartLen==0) intPartLen = 3;
+
+            i = 0;
+            while (i < intLen) {
+                if (strDestination!="") strDestination += ","
+                strDestination += strNumber.substr(i, intPartLen);
+                i += intPartLen;
+                intPartLen = 3;
+            }
+            return strDestination;
+        }
+        
+    </script>
+
+    <link href="./InquireAdvanceTable.css" rel="stylesheet" type="text/css">
+</head>
+<body style="margin: 0px;">
+    <form name="aspnetForm" method="post" action="InquireAdvance.aspx" id="aspnetForm">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__LASTFOCUS" id="__LASTFOCUS" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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">
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['aspnetForm'];
+if (!theForm) {
+    theForm = document.aspnetForm;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/RJSDWEB/WebResource.axd?d=Hx-pgabEQV5rVMhrIGit8WMsr7wF-zjPiEQf0vtSPTDvsL7GAwe3DWvLe_0zoVMqLTELF1BIY2TwYDroQoab6lUz6g41&amp;t=636271959501517547" type="text/javascript"></script>
+
+
+<script type="text/javascript">
+//<![CDATA[
+function ChangeDirection(strSourceDirect, intSourcePos, strOverDirect, intOverPos) {
+document.getElementById('ctl00_cphMain_hidCallback').value = strSourceDirect + intSourcePos + '|' + strOverDirect + intOverPos;
+document.getElementById('ctl00_cphMain_btnCallback').click();
+}//]]>
+</script>
+
+<script src="/RJSDWEB/ScriptResource.axd?d=iF-EL1hhl3WRpbg8hwB55KDR0WU26DVSpDtMjFK6S4uRoMmC-GoOiH3DeqH6Jfpw-gyh8XE4U6yBxgWFZlQn7g_xbnAnaYlVbYRte6UrPF8wGvvcIQOzN6xwNLhU5AdvRpjQoJszM0hMg96snJ2q6RayeQij4kcQHiNHtQQm-I6SO2nK0&amp;t=2e2045e2" type="text/javascript"></script>
+<script src="/RJSDWEB/ScriptResource.axd?d=HZ1dg2cB5VTR98G1LOx6_sWCky_AQgZV7DE8YSLuzkVS4e843QGwcQz9mmGOvIWyJoQzMVzdq6h9GrtJw_TCle-CnesNHy3gKi63RzgT3xn6Mu_8EKtfMQmq8ovcwXBbVOjM2kaSV6lY0zsJy1AUEmFgXnDu0P7HFb9i7pUTDFe04igN0&amp;t=2e2045e2" type="text/javascript"></script>
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="95EF47B5">
+</div>
+    <table cellpadding="0" cellspacing="0" style="width: 100%;">
+        <tbody><tr>
+            <td style="white-space: nowrap;">
+                <a href="http://www.moj.gov.tw" target="_blank">
+                    <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_01.gif" alt="法務部"></a><a href="../default.aspx"><img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_02.gif" alt="法務統計資訊網"></a> </td>
+            <td style="width: 99%; background-image: url(&quot;http://www.rjsd.moj.gov.tw/RJSDWeb/images/index_03.gif&quot;);" class="TopMenu">
+                ::: <a href="../Default.aspx">回首頁</a> | <a href="http://www.moj.gov.tw" target="_blank">
+                    回法務部首頁</a> | <a href="../common/SiteMap.aspx">網站導覽</a> |
+                <a id="ctl00_lnkEnglish" href="http://www.moj.gov.tw/np.asp?ctNode=11618&amp;mp=095" target="_blank">English</a>
+                <br>
+                <span id="ctl00_lblEmviroment" style="color:Red;font-family:微軟正黑體;font-size:18pt;"></span>
+            </td>
+        </tr>
+    </tbody></table>
+    <div style="white-space: nowrap; background: url(../images/index_10.gif);">
+        <a id="ctl00_uctlMenu1_repMenu_ctl00_lnkTitle" title="關於法務統計" href="/RJSDWEB/common/SubMenu.aspx?menu=ABOUT"><img id="ctl00_uctlMenu1_repMenu_ctl00_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt1_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl00_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt1_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl00_panSubMenu')" src="/RJSDWEB/images/index_bt1_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl00_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl00_lnkSubMenuTitle" title="統計處簡介" href="/RJSDWEB/common/HtmlPage.aspx?menu=ABO_INTRODUCTION">統計處簡介</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl01_lnkSubMenuTitle" title="最新消息" href="/RJSDWEB/news/Bulletin.aspx">最新消息</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl02_lnkSubMenuTitle" title="預告統計發布時間" href="http://win.dgbas.gov.tw/dgbas03/bs7/calendar/calendar.asp?selorg=10" target="_blank">預告統計發布時間</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl00_repSubMenu_ctl03_lnkSubMenuTitle" title="重要統計事項變更" href="/RJSDWEB/history/HistoryReform.aspx">重要統計事項變更</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl01_lnkTitle" title="統計資訊服務" href="/RJSDWEB/common/SubMenu.aspx?menu=INFORMATION"><img id="ctl00_uctlMenu1_repMenu_ctl01_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt2_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl01_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt2_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl01_panSubMenu')" src="/RJSDWEB/images/index_bt2_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl01_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl00_lnkSubMenuTitle" title="法務績效圖示" href="/RJSDWEB/common/WebList4.aspx?menu=INF_PERFORMANCE_CHART">法務績效圖示</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl01_lnkSubMenuTitle" title="重要統計指標" href="/RJSDWEB/indicator/Indicator.aspx">重要統計指標</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_lnkSubMenuTitle" title="常用統計查詢" onmouseover="MenuSOver(this,'ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2')" onmouseout="MenuSOut(this,'ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2')" href="/RJSDWEB/common/SubMenu.aspx?menu=INF_COMMON">常用統計查詢</a>
+                                <div id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_divSubMenu2" style="position:absolute;display:none;" class="SubMenu" onmouseover="SubMenuOver2()" onmouseout="SubMenuOut2()">
+                                    <ul>
+                                        
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl00_lnkSubMenuTitle" title="檢察統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_P">檢察統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl01_lnkSubMenuTitle" title="矯正統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_C">矯正統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl02_lnkSubMenuTitle" title="司法保護統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_Q">司法保護統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl03_lnkSubMenuTitle" title="行政執行統計" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_A">行政執行統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl02_repSubMenu_ctl04_lnkSubMenuTitle" title="其他業務" href="/RJSDWEB/common/WebList3.aspx?menu=INF_COMMON_O">其他業務</a></li>
+                                            
+                                    </ul>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl01_repSubMenu_ctl03_lnkSubMenuTitle" title="進階統計查詢" href="/RJSDWEB/inquiry/InquireAdvance.aspx">進階統計查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl02_lnkTitle" title="性別統計" href="/RJSDWEB/common/SubMenu.aspx?menu=GENDER"><img id="ctl00_uctlMenu1_repMenu_ctl02_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt3_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl02_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt3_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl02_panSubMenu')" src="/RJSDWEB/images/index_bt3_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl02_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl00_lnkSubMenuTitle" title="性別統計圖" href="/RJSDWEB/common/WebList4.aspx?menu=GEN_CHAER">性別統計圖</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_lnkSubMenuTitle" title="性別統計表" onmouseover="MenuSOver(this,'ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2')" onmouseout="MenuSOut(this,'ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2')" href="/RJSDWEB/common/SubMenu.aspx?menu=GEN_REPORT">性別統計表</a>
+                                <div id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_divSubMenu2" style="position:absolute;display:none;" class="SubMenu" onmouseover="SubMenuOver2()" onmouseout="SubMenuOut2()">
+                                    <ul>
+                                        
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl00_lnkSubMenuTitle" title="檢察統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_PROSECUTION">檢察統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl01_lnkSubMenuTitle" title="矯正統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_REDRESS">矯正統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl02_lnkSubMenuTitle" title="司法保護統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_JUDICIAL">司法保護統計</a></li>
+                                            
+                                                <li>
+                                                    <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl01_repSubMenu_ctl03_lnkSubMenuTitle" title="行政執行統計" href="/RJSDWEB/common/WebList3.aspx?menu=GEN_ADMINISTRATIVE">行政執行統計</a></li>
+                                            
+                                    </ul>
+                                </div>
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl02_lnkSubMenuTitle" title="性別統計分析" href="/RJSDWEB/common/WebList2.aspx?menu=GEN_ANALYSIS">性別統計分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl02_repSubMenu_ctl03_lnkSubMenuTitle" title="性別統計進階查詢" href="/RJSDWEB/inquiry/InquireAdvance.aspx?gender=1">性別統計進階查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl03_lnkTitle" title="統計書刊" href="/RJSDWEB/common/SubMenu.aspx?menu=BOOK"><img id="ctl00_uctlMenu1_repMenu_ctl03_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt4_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl03_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt4_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl03_panSubMenu')" src="/RJSDWEB/images/index_bt4_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl03_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl00_lnkSubMenuTitle" title="書刊介紹" href="/RJSDWEB/book/BookIntro.aspx">書刊介紹</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl01_lnkSubMenuTitle" title="法務統計摘要" href="/RJSDWEB/book/Book.aspx?category_id=9">法務統計摘要</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl02_lnkSubMenuTitle" title="法務統計重要參考指標" href="/RJSDWEB/book/Book.aspx?category_id=8">法務統計重要參考指標</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl03_lnkSubMenuTitle" title="法務統計月報" href="/RJSDWEB/book/Book.aspx?category_id=5">法務統計月報</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl04_lnkSubMenuTitle" title="法務統計年報" href="/RJSDWEB/book/Book.aspx?category_id=4">法務統計年報</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl05_lnkSubMenuTitle" title="法務部統計手冊" href="/RJSDWEB/book/Book.aspx?category_id=6">法務部統計手冊</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl03_repSubMenu_ctl06_lnkSubMenuTitle" title="書刊統計表查詢" href="/RJSDWEB/book/BookReport.aspx">書刊統計表查詢</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl04_lnkTitle" title="統計分析" href="/RJSDWEB/common/SubMenu.aspx?menu=ANALYSIS"><img id="ctl00_uctlMenu1_repMenu_ctl04_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt5_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl04_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt5_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl04_panSubMenu')" src="/RJSDWEB/images/index_bt5_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl04_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl00_lnkSubMenuTitle" title="統計摘要分析" href="/RJSDWEB/common/WebList2.aspx?menu=AYA_SPECIAL_REPORT">統計摘要分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl01_lnkSubMenuTitle" title="統計短文" href="/RJSDWEB/common/Propaganda.aspx">統計短文</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl02_lnkSubMenuTitle" title="統計年報提要分析" href="/RJSDWEB/common/WebList2.aspx?menu=AYA_ANNUAL_REPORT">統計年報提要分析</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl04_repSubMenu_ctl03_lnkSubMenuTitle" title="調查提要分析" href="/RJSDWEB/common/ProjectReport.aspx">調查提要分析</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div><a id="ctl00_uctlMenu1_repMenu_ctl05_lnkTitle" title="視覺化查詢" href="/RJSDWEB/visualization/justice/justice_homepage.html" target="_blank"><img id="ctl00_uctlMenu1_repMenu_ctl05_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt6_02.gif?v=1.2','')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt6_01.gif?v=1.2','')" src="/RJSDWEB/images/index_bt6_01.gif?v=1.2" style="border-width:0px;"></a><a id="ctl00_uctlMenu1_repMenu_ctl06_lnkTitle" title="其他服務" href="/RJSDWEB/common/SubMenu.aspx?menu=OTHER"><img id="ctl00_uctlMenu1_repMenu_ctl06_imgTitle" onmouseover="MenuOver(this,'/RJSDWEB/images/index_bt7_02.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl06_panSubMenu')" onmouseout="MenuOut(this,'/RJSDWEB/images/index_bt7_01.gif?v=1.2','ctl00_uctlMenu1_repMenu_ctl06_panSubMenu')" src="/RJSDWEB/images/index_bt7_01.gif?v=1.2" style="border-width:0px;"></a><div id="ctl00_uctlMenu1_repMenu_ctl06_panSubMenu" class="SubMenu" onmouseover="SubMenuOver()" onmouseout="SubMenuOut()" style="display:none;">
+	
+                <ul>
+                    
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl00_lnkSubMenuTitle" title="統計用詞解釋" href="/RJSDWEB/noun/Noun.aspx">統計用詞解釋</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl01_lnkSubMenuTitle" title="統計資料紀事" href="/RJSDWEB/history/History.aspx">統計資料紀事</a>
+                                
+                            </li>
+                        
+                            <li>
+                                <a id="ctl00_uctlMenu1_repMenu_ctl06_repSubMenu_ctl02_lnkSubMenuTitle" title="相關統計網站" href="/RJSDWEB/common/RelatedWebsite.aspx">相關統計網站</a>
+                                
+                            </li>
+                        
+                </ul>
+            
+</div>
+
+    </div>
+    <div id="Content">
+        <div id="ctl00_panPath" class="path">
+	
+            目前位置：<a id="ctl00_lnkHome" href="../Default.aspx">首頁</a>
+            &gt;
+            
+                    <a id="ctl00_repPath_ctl00_lnkMenu" title="統計資訊服務" href="../common/SubMenu.aspx?menu=INFORMATION">統計資訊服務</a>
+                
+                    &gt;
+                
+                    <a id="ctl00_repPath_ctl02_lnkMenu" title="進階統計查詢" href="InquireAdvance.aspx">進階統計查詢</a>
+                
+        
+</div>
+        <table id="ctl00_tabTitle" cellpadding="0" cellspacing="0" width="100%" class="Content_Title">
+	<tbody><tr>
+		<td style="white-space: nowrap;">
+                    <img src="../images/title1.gif" alt=""><span id="Content_String">進階統計查詢</span></td>
+		<td style="width: 99%;">
+                    <span class="Content_SubMenu">
+                        
+    <span style="float: right;"><span class="Propose">建議使用 IE10 以上版本，以達到最佳之執行效果。</span>&nbsp;<span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cntSubMenu$btnHelp" value="查詢說明" onclick="window.open('./InquireAdvance_help.html');return false;" id="ctl00_cntSubMenu_btnHelp"></span></span></span>
+
+                    </span></td>
+	</tr>
+</tbody></table>
+
+        
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$cphMain$ScriptManager1', document.getElementById('aspnetForm'));
+Sys.WebForms.PageRequestManager.getInstance()._updateControls(['tctl00$cphMain$panQuery','tctl00$cphMain$panQCalMode','tctl00$cphMain$panVer','tctl00$cphMain$panHor','tctl00$cphMain$panVaule'], ['ctl00$cphMain$btnCallback'], [], 90);
+//]]>
+</script>
+
+    
+            <table width="99%">
+                <tbody><tr>
+                    
+                    <td valign="top">
+                        <table cellpadding="0" cellspacing="0" width="99%">
+                            <tbody><tr>
+                                <td>
+                                    <span id="ctl00_cphMain_lblGroupName" class="CategoryLabel">監獄在監受刑人人數(含性別)－依前科情形分（人）</span>
+                                </td>
+                                <td align="right">
+                                    <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnBack" value="回上一頁" id="ctl00_cphMain_btnBack"></span></span>
+                                </td>
+                            </tr>
+                        </tbody></table>
+                        <fieldset class="Query">
+                            <legend style="font-weight: bold;">索引條件</legend>
+                            <div style="float: left; white-space: nowrap;">
+                                <div id="ctl00_cphMain_panQuery">
+	
+                                        <span style="white-space: nowrap;">週期：<select name="ctl00$cphMain$ddlQPeriod" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQPeriod\',\'\')', 0)" id="ctl00_cphMain_ddlQPeriod">
+		<option selected="selected" value="M">月</option>
+		<option value="Y">年</option>
+		<option value="YM">年（含月）</option>
+
+	</select>
+                                            &nbsp; </span><span style="white-space: nowrap;">資料期間：民國&nbsp;<select name="ctl00$cphMain$ddlQYearBegin" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQYearBegin\',\'\')', 0)" id="ctl00_cphMain_ddlQYearBegin">
+		<option selected="selected" value="099">99年</option>
+		<option value="100">100年</option>
+		<option value="101">101年</option>
+		<option value="102">102年</option>
+		<option value="103">103年</option>
+		<option value="104">104年</option>
+		<option value="105">105年</option>
+		<option value="106">106年</option>
+
+	</select>
+                                                <select name="ctl00$cphMain$ddlQDateBegin" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQDateBegin\',\'\')', 0)" id="ctl00_cphMain_ddlQDateBegin">
+		<option selected="selected" value="01">1月</option>
+		<option value="02">2月</option>
+		<option value="03">3月</option>
+		<option value="04">4月</option>
+		<option value="05">5月</option>
+		<option value="06">6月</option>
+		<option value="07">7月</option>
+		<option value="08">8月</option>
+		<option value="09">9月</option>
+		<option value="10">10月</option>
+		<option value="11">11月</option>
+		<option value="12">12月</option>
+
+	</select>
+                                                &nbsp;～&nbsp;民國&nbsp;<select name="ctl00$cphMain$ddlQYearEnd" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQYearEnd\',\'\')', 0)" id="ctl00_cphMain_ddlQYearEnd">
+		<option value="099">99年</option>
+		<option value="100">100年</option>
+		<option value="101">101年</option>
+		<option value="102">102年</option>
+		<option value="103">103年</option>
+		<option value="104">104年</option>
+		<option value="105">105年</option>
+		<option selected="selected" value="106">106年</option>
+
+	</select>
+                                                <select name="ctl00$cphMain$ddlQDateEnd" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQDateEnd\',\'\')', 0)" id="ctl00_cphMain_ddlQDateEnd">
+		<option value="01">1月</option>
+		<option value="02">2月</option>
+		<option value="03">3月</option>
+		<option value="04">4月</option>
+		<option value="05">5月</option>
+		<option value="06">6月</option>
+		<option value="07">7月</option>
+		<option value="08">8月</option>
+		<option selected="selected" value="09">9月</option>
+
+	</select>
+                                                &nbsp; </span>
+                                    
+</div>
+                            </div>
+                            <table cellpadding="0" cellspacing="0" style="padding-top: 6px; width: auto; margin-left: auto;">
+                                <tbody><tr>
+                                    <td>
+                                        <div id="ctl00_cphMain_panQCalMode">
+	
+                                                <span style="white-space: nowrap;">計算模式：<select name="ctl00$cphMain$ddlQCalMode" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphMain$ddlQCalMode\',\'\')', 0)" id="ctl00_cphMain_ddlQCalMode">
+		<option selected="selected" value="V">統計值</option>
+		<option value="R">較上年(或上年同月)增減率</option>
+		<option value="P">較上年(或上月)增減率</option>
+		<option value="VR">統計值+較上年(或上年同月)增減率</option>
+		<option value="VP">統計值+較上年(或上月)增減率</option>
+
+	</select>
+                                                    &nbsp; </span>
+                                            
+</div>
+                                    </td>
+                                    <td>
+                                        <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnQuery" value="查　詢" id="ctl00_cphMain_btnQuery"></span></span>&nbsp;&nbsp;&nbsp;
+                                        <span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnExcel" value="匯出Excel檔" id="ctl00_cphMain_btnExcel"></span></span>&nbsp;&nbsp;&nbsp;<span class="ThreeDButton ThreeDButtonBackground" onmouseover="this.className='ThreeDButton ThreeDButtonMouseOver';" onmouseout="this.className='ThreeDButton ThreeDButtonBackground';"><span><input type="submit" name="ctl00$cphMain$btnNoun" value="相關統計用詞" onclick="ShowNounDialog('135');return false;" id="ctl00_cphMain_btnNoun"></span></span></td>
+                                </tr>
+                            </tbody></table>
+                        </fieldset>
+                        
+                        <br>
+                        
+                        
+                    </td>
+                </tr>
+            </tbody></table>
+            
+
+                <script type="text/javascript" src="./ExtendedTable.js"></script><table cellpadding="0" cellspacing="0"><tbody><tr><td id="tabMove" style="display: none; position: absolute; filter: alpha(opacity=50); opacity:0.5;"></td></tr></tbody></table>
+
+                <table>
+                    <tbody><tr>
+                        <td>
+                        </td>
+                        <td align="left" valign="top">
+                            <div id="ctl00_cphMain_panVer">
+	
+                                    <table id="ctl00_cphMain_dltVer" cellspacing="0" border="0" style="border-collapse:collapse;">
+		<tbody><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltVer_ctl00_panVer" title="可點選後拖曳變更位置" class="VerPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'V',0,event)" onmouseover="PanelMouseOver(this,'V',0)">
+				
+                                                資料期間
+                                            
+			</div>
+                                        </td><td>
+                                            <div id="ctl00_cphMain_dltVer_ctl01_panVer" title="可點選後拖曳變更位置" class="VerPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'V',1,event)" onmouseover="PanelMouseOver(this,'V',1)">
+				
+                                                
+                                            
+			</div>
+                                        </td>
+		</tr>
+	</tbody></table>
+</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" valign="top" style="vertical-align: top;">
+                            <div id="ctl00_cphMain_panHor">
+	
+                                    <table id="ctl00_cphMain_dltHor" cellspacing="0" border="0" style="border-collapse:collapse;">
+		<tbody><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl00_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',0,event)" onmouseover="PanelMouseOver(this,'H',0)">
+				
+                                                罪名別
+                                            
+			</div>
+                                        </td>
+		</tr><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl01_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',1,event)" onmouseover="PanelMouseOver(this,'H',1)">
+				
+                                                監獄前科情形
+                                            
+			</div>
+                                        </td>
+		</tr><tr>
+			<td>
+                                            <div id="ctl00_cphMain_dltHor_ctl02_panHor" title="可點選後拖曳變更位置" class="HorPanel" onmouseout="PanelMouseOut(this)" onmousedown="PanelMouseDown(this,'H',2,event)" onmouseover="PanelMouseOver(this,'H',2)">
+				
+                                                性別
+                                            
+			</div>
+                                        </td>
+		</tr>
+	</tbody></table>
+</div>
+                        </td>
+                        <td valign="top">
+                            <input type="submit" name="ctl00$cphMain$btnCallback" value="" id="ctl00_cphMain_btnCallback" style="display: none;"><input type="hidden" name="ctl00$cphMain$hidCallback" id="ctl00_cphMain_hidCallback"><div id="ctl00_cphMain_panVaule">
+	
+                                    <table id="ctl00_cphMain_tabResult" class="Result" cellpadding="5" border="0">
+		<tbody><tr>
+			<td class="HorVerCross" colspan="2" rowspan="4">項目別</td><td class="HorDim" colspan="8" rowspan="1">內亂罪</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDim" colspan="2" rowspan="2">無前科</td><td class="HorDim" colspan="6" rowspan="1">有前科</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDimSep" colspan="2" rowspan="1"></td><td class="HorDim" colspan="2" rowspan="1">再犯</td><td class="HorDim" colspan="2" rowspan="1">累犯</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="HorDim" colspan="1" rowspan="1">男性</td><td class="HorDim" colspan="1" rowspan="1">女性</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">99年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeftTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="ValueTop" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">100年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">101年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">102年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">103年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">104年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">105年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">10月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">11月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">12月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDim" colspan="1" rowspan="1">106年</td><td class="VerDim" colspan="1" rowspan="1">1月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">2月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">3月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">4月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">5月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">6月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">7月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">8月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="VerDimSep" colspan="1" rowspan="1"></td><td class="VerDim" colspan="1" rowspan="1">9月</td><td class="ValueLeft" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="Value" colspan="1" rowspan="1" style="mso-number-format:'#,##0_ ';">-</td><td class="RightBorder" colspan="1" rowspan="1"></td>
+		</tr><tr>
+			<td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td><td class="Width" colspan="1" rowspan="1"><div>
+
+			</div></td>
+		</tr>
+	</tbody></table>
+                                
+</div>
+                        </td>
+                    </tr>
+                </tbody></table>
+            
+            <br>
+        
+    <br>
+
+    </div>
+    <br>
+    <div class="Footer" style="padding-top: 15px;">
+        <table cellpadding="0" cellspacing="2" style="width: 100%;">
+            <tbody><tr>
+                <td style="width: 20%; text-align: right; vertical-align: middle;">
+                    <a href="http://get.adobe.com/tw/flashplayer/" target="adobe">
+                        <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/get_flash.jpg" style="width: 120px;" title="Flash 免費軟體下載(另開新視窗)"></a><br>
+                    <a href="http://get.adobe.com/tw/reader/" target="adobe" style="margin-top: 5px;">
+                        <img src="http://www.rjsd.moj.gov.tw/RJSDWeb/images/get_pdf.jpg" style="width: 120px; margin-top: 5px;" title="PDF 免費軟體下載(另開新視窗)"></a>
+                </td>
+                <td>
+                    法務部：10048 臺北市重慶南路一段130號 電話：(02)2191-0189 <a href="../common/OfficeLocation.aspx">交通資訊</a><br>
+                    第二辦公室：10048 臺北市貴陽街一段235號 電話：(02)2191-0189 <a href="../common/SubOfficeLocation.aspx">
+                        交通資訊</a><br>
+                    建議使用IE 8.0 以上版本 最佳觀看解析度1024x768
+                </td>
+                <td style="width: 20%;">
+                </td>
+            </tr>
+        </tbody></table>
+        <br>
+    </div>
+    <br>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.initialize();
+//]]>
+</script>
+</form>
+
+
+</body></html>
