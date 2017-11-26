@@ -16,7 +16,7 @@
     git clone https://fork_repository.git
 ```
 3. 修改你看不爽的地方
-4. Commit程式碼到develop branch
+4. Commit程式碼到** develop branch **
 ```
     git push origin develop
 ```
@@ -26,9 +26,13 @@
 6. 點擊右側Pull Requests的按鈕
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/4.png)
 
-7. Merge本地的develop branch到原專案的develop branch。
+7. 選擇Fork專案更新的branch以及原看見思法的 **develop** branch並點擊 **Create pull request**。
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/24085092_1924492617567691_267545069_o.png)
 
-8. 等YD哥哥幫你Merge
+8. 說明一下Pull Request的內容，包括新增哪一些功能，修了什麼問題等等；完成之後點擊右下角的 **Create Pull Request**。
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/23998375_1924492600901026_1323635938_o.png)
+
+9. 回去洗洗睡，等YD哥哥幫你Merge :)
 
 ## 資料清單彙整
 警政署、法務部與司法院的資料統計
