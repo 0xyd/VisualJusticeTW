@@ -3,7 +3,6 @@
 
 ## 目錄
 ### <a href="#share_note">共筆歷史</a>
-### <a href="#contrib_code">專案資料夾目錄說明</a>
 ### <a href="#github">如何使用Github貢獻原始碼</a>
 ### <a href="#dev_note">開發文件 </a>
 
