@@ -47,7 +47,7 @@
 ### 爬蟲邏輯
 
 爬蟲邏輯放在Rules.py，裡面的Rule如RULE_PRISONER_AGE(監獄受刑人年齡分別)、RULE_PRISONER_CRIME_RECORD(監獄受刑人前科情形)就代表針對哪一個項目的資料做操作。裡面的基本架構如以下範例
-```json
+```python
 {
 	'main_business': 'ctl00$cphMain$ctl42',
     'subject': 'ctl00_cphMain_rltFieldGroup_1',
@@ -87,5 +87,11 @@ Filter 1 與 Filter 2也是一樣，右鍵選擇元件，屬性值可在id裡面
 
 ![Filter 2](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/Filter_2_Detail.png)
 
+### 開始撰寫法務部進階統計
 
+
+
+```python
+
+```
 
