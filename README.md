@@ -2,78 +2,54 @@
 看見思法網站的開發文件，希望能夠無縫與開發者介接。
 
 ## 目錄
+### <a href="#share_note">共筆歷史</a>
+### <a href="#contrib_code">專案資料夾目錄說明</a>
+### <a href="#github">如何使用Github貢獻原始碼</a>
+### <a href="#dev_note">開發文件 </a>
+
+## <span id="share_note">共筆歷史</span>
+
+[第零次看見思法小松共筆](https://hackmd.io/OwVgbApsYCZgtADhsAzPALCDAzeBDYfATnhBIAYAmHGfc1DIA===)  
+[看見思法第27次g0v黑客松共筆](https://hackmd.io/GYFgHArATAjAnAQwLRgKbAMZJHVAjJOEBMbDPABijjj1QGYJgg==)  
+[第二次看見思法小松共筆](https://hackmd.io/KYQwrCAsAmBMCMBaA7ABgGysZARrAxojqgBxiIDMk8CBYJAnDUA=)  
+
+[資料清單彙整](https://hackmd.io/AwDmDYHYFME5oLQDMCGAjcCAsAmNWEUVYkEBjaMpAEyTLTNjViA=?both)  
 
 
-## 如何貢獻原始碼
+## <span id="contrib_code">如何貢獻原始碼</span>
 1. Fork 看見思法專案
 術前：
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/1.png)
 
 術後：
-！[](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/2.png)
+![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/2.png)
 2.  把你剛剛的專案Clone到你的本機
 ```bash
     git clone https://fork_repository.git
 ```
+ <br>
 3. 修改你看不爽的地方
+ <br>
 4. Commit程式碼到** develop branch **
 ```
     git push origin develop
 ```
 5. 回到Fork出的專案頁面點擊Pull Request
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/3.png)
-
+ <br>
 6. 點擊右側Pull Requests的按鈕
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/4.png)
-
+ <br>
 7. 選擇Fork專案更新的branch以及原看見思法的 **develop** branch並點擊 **Create pull request**。
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/24085092_1924492617567691_267545069_o.png)
-
+ <br>
 8. 說明一下Pull Request的內容，包括新增哪一些功能，修了什麼問題等等；完成之後點擊右下角的 **Create Pull Request**。
 ![](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/23998375_1924492600901026_1323635938_o.png)
-
+ <br>
 9. 回去洗洗睡，等YD哥哥幫你Merge :)
+ <br>
 
-## 資料清單彙整
-警政署、法務部與司法院的資料統計
-[資料清單](https://hackmd.io/AwDmDYHYFME5oLQDMCGAjcCAsAmNWEUVYkEBjaMpAEyTLTNjViA=?both)
+### <span id="dev_note">開發文件 </span>
 
-
-## 使用Selenium + Headless Chrome 作為爬蟲
-主要是為了處理法務部網站cookie的複雜問題所以採取下策 ><|||
-
-### 環境架設與工具安裝
-
-#### Python
-目前使用Python版本為3+。
-
-#### Selenium
-
-**Mac**<br>
-安裝Selenium建議是透過Brew安裝。
-安裝homebrew的方式在[這裡](https://brew.sh)
-```bash
-    brew install selenium
-```
-
-**Linux**<br>
-
-**Windows**<br>
-
-#### Headless Chrome
-
-**下載**<br>
-請在[這裡](https://sites.google.com/a/chromium.org/chromedriver/downloads)Chrome Driver下載。
-
-**設定**<br>
-解壓縮檔案之後，將driver放到預設的路徑。目前在setting.py的設定為*./driver/chromedriver*
-請自行建立driver目錄於service_crawler中，或者指定setting.py中Headless driver的路徑到解壓縮檔案的位置。
-
-#### Tabula
-Tabula主要是為了處理政府大量釋出的Pdf資料轉換成機器可讀。
-
-**安裝** <br>
-
-在進入[Tabula](http://tabula.nerdpower.org/)官網後，就可以下載windows、Mac OS的安裝檔，如果是老手的話，也可以選擇Github手動安裝，而我是選擇直接download for Mac。
-
-## 
+爬蟲文件[在此](https://github.com/yudazilian/VisualJusticeTW/tree/develop/crawler)
+解析器文件[在此](https://github.com/yudazilian/VisualJusticeTW/tree/develop/parser)
