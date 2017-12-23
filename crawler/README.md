@@ -5,6 +5,8 @@
 ### 開發環境設定
 ### 爬蟲開發：法務部進階統計網爬蟲
 
+----------------------------------------
+
 ## Tabula
 
 ## 開發環境設定
@@ -86,12 +88,4 @@ Filter 1 與 Filter 2也是一樣，右鍵選擇元件，屬性值可在id裡面
 ![Filter 1](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/Filter_1_Detail.png)
 
 ![Filter 2](https://raw.githubusercontent.com/yudazilian/VisualJusticeTW/develop/static/Filter_2_Detail.png)
-
-### 開始撰寫法務部進階統計
-
-
-
-```python
-
-```
 
